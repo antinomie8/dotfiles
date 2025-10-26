@@ -336,6 +336,7 @@ return {
 	["divides.not.rev"]           = { cchar = "⫮", hl = "TypstConcealSymbol" },
 	["divides.struck"]            = { cchar = "⟊", hl = "TypstConcealSymbol" },
 	["dot.op"]                    = { cchar = "⋅", hl = "TypstConcealSymbol" },
+	["dot"]                       = { cchar = "·", hl = "TypstConcealSymbol" },
 	["dot.c"]                     = { cchar = "·", hl = "TypstConcealSymbol" },
 	["dot.circle"]                = { cchar = "⊙", hl = "TypstConcealSymbol" },
 	["dot.circle.big"]            = { cchar = "⨀", hl = "TypstConcealSymbol" },

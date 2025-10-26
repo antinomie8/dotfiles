@@ -18,6 +18,19 @@ local function conceal_char_at(row, col, ns, chars)
 	})
 end
 
+local function has_ancestor(node, name)
+	if not node then return end
+	local parent = node:parent()
+	while parent do
+		if name == parent:type() then
+			return true
+		end
+		parent = parent:parent()
+	end
+	return false
+end
+
+
 -- conceal delimiters
 local ns_delims = vim.api.nvim_create_namespace("typst_delims")
 
@@ -37,7 +50,11 @@ local function conceal_delims(first, last)
 	local root = tree:root()
 
 	for capture, opts in pairs(nodes) do
-		local ok, query = pcall(vim.treesitter.query.parse, "typst", string.format("(%s) @%s", opts.node, capture))
+		local ok, query = pcall(
+			vim.treesitter.query.parse,
+			"typst",
+			string.format("((%s) @%s)", opts.node, capture, capture)
+		)
 		if not ok then
 			vim.notify("Typst conceal: failed to compile query", vim.log.levels.ERROR)
 			return
@@ -166,6 +183,7 @@ local queries = {
 				(call)
 				@function
 				(#has-ancestor? @function math)
+				(#not-has-ancestor? @function attach)
 			)
 		]]
 	),
@@ -192,6 +210,8 @@ local function math_conceal(first, last)
 
 	-- subscripts and superscripts
 	local function conceal_script(node, map)
+		if not node then return end
+
 		local concealed = ""
 		if node:type() == "field" or node:type() == "ident" then
 			local text = vim.treesitter.get_node_text(node, 0, {})
@@ -220,6 +240,17 @@ local function math_conceal(first, last)
 				concealed = concealed .. (map[text:sub(i, i)] or text:sub(i, i))
 			end
 			return concealed
+		elseif node:type() == "fraction" then
+			concealed = concealed .. conceal_script(node:child(0), map)
+			concealed = concealed .. (map["/"] or "")
+			concealed = concealed .. conceal_script(node:child(2), map)
+			return concealed
+		elseif node:type() == "call" then
+			concealed = concealed .. conceal_script(node:child(0), map)
+			concealed = concealed .. (map["("] or "")
+			concealed = concealed .. conceal_script(node:child(2), map)
+			concealed = concealed .. (map[")"] or "")
+			return concealed
 		elseif node:child_count() then
 			for child in node:iter_children() do
 				concealed = concealed .. conceal_script(child, map)
@@ -232,19 +263,23 @@ local function math_conceal(first, last)
 	end
 
 	for _, node in queries.scripts.subscripts:iter_captures(root, buf, first, last) do
-		local sr, sc, er, ec = node:range()
-		conceal_char_at(sr, sc - 1, ns_math, "_")
-		conceal_char_at(sr, sc, ns_math, "(")
-		conceal_char_at(er, ec - 1, ns_math, ")")
-		conceal_node_recursively(node, subscripts, conceal_script, "TypstConcealScript")
+		if not has_ancestor(node:parent():parent(), "attach") then
+			local sr, sc, er, ec = node:range()
+			conceal_char_at(sr, sc - 1, ns_math, "_")
+			conceal_char_at(sr, sc, ns_math, "(")
+			conceal_char_at(er, ec - 1, ns_math, ")")
+			conceal_node_recursively(node, subscripts, conceal_script, "TypstConcealScript")
+		end
 	end
 
 	for _, node in queries.scripts.superscripts:iter_captures(root, buf, first, last) do
-		local sr, sc, er, ec = node:range()
-		conceal_char_at(sr, sc - 1, ns_math, "^")
-		conceal_char_at(sr, sc, ns_math, "(")
-		conceal_char_at(er, ec - 1, ns_math, ")")
-		conceal_node_recursively(node, superscripts, conceal_script, "TypstConcealScript")
+		if not has_ancestor(node:parent():parent(), "attach") then
+			local sr, sc, er, ec = node:range()
+			conceal_char_at(sr, sc - 1, ns_math, "^")
+			conceal_char_at(sr, sc, ns_math, "(")
+			conceal_char_at(er, ec - 1, ns_math, ")")
+			conceal_node_recursively(node, superscripts, conceal_script, "TypstConcealScript")
+		end
 	end
 
 	-- function calls
@@ -271,6 +306,8 @@ local function math_conceal(first, last)
 						local repl = map[text]
 						if repl then
 							return repl
+						else
+							return text
 						end
 					elseif node:child_count() then
 						for child in node:iter_children() do

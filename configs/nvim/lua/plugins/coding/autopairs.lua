@@ -17,6 +17,17 @@ return {
 				end
 			end
 
+			local in_node = function(...)
+				local nodes = {...}
+				return function(fn, obj, pair)
+					if not obj then return true end
+					if obj.key == vim.api.nvim_replace_termcodes(pair.pair, true, false, true) then
+						return fn.in_node(nodes)
+					else
+						return false
+					end
+				end
+			end
 			local not_in_node = function(...)
 				local nodes = {...}
 				return function(fn, obj, pair)
@@ -30,7 +41,15 @@ return {
 			end
 
 			local typst = {}
-			typst.in_text = not_in_node("math", "raw_span", "raw_blck", "string", "code")
+			typst.in_text = function(fn, obj, pair)
+				if in_node("math", "raw_span", "raw_blck", "string")(fn, obj, pair) then
+					return false
+				end
+				if in_node("code")(fn, obj, pair) then
+					return in_node("content")(fn, obj, pair)
+				end
+				return true
+			end
 			typst.not_import = function(_, obj) return not obj.line:match("^%s*#import") end
 
 			local markdown = {}
