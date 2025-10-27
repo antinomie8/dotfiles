@@ -1,22 +1,9 @@
 local ls = require("snippets.luasnip")
-local s, t, i, c, d, sn, rep, fmt =
-      ls.s, ls.t, ls.i, ls.c, ls.d, ls.sn, ls.rep, ls.fmt
+local s, i, fmt = ls.s, ls.i, ls.fmt
 local helpers = require("snippets.helpers")
 local line_begin = helpers.line_begin
 
 return {
-	s({ trig = "!T", dscr = "theorem", snippetType = "autosnippet", cond = line_begin },
-		fmt(
-			[[
-				#theorem[
-					<>
-				]
-			]],
-			{
-				i(1),
-			}
-		)
-	),
 	s({ trig = "!thm", dscr = "theorem", snippetType = "autosnippet", cond = line_begin },
 		fmt(
 			[[
@@ -29,7 +16,19 @@ return {
 			}
 		)
 	),
-	s({ trig = "!L", dscr = "lemma", snippetType = "autosnippet", cond = line_begin },
+	s({ trig = "!T", dscr = "theorem", snippetType = "autosnippet", cond = line_begin },
+		fmt(
+			[[
+				#theorem[
+					<>
+				]
+			]],
+			{
+				i(1),
+			}
+		)
+	),
+	s({ trig = "!lem", dscr = "lemma", snippetType = "autosnippet", cond = line_begin },
 		fmt(
 			[[
 				#lemma[
@@ -41,7 +40,7 @@ return {
 			}
 		)
 	),
-	s({ trig = "!lem", dscr = "lemma", snippetType = "autosnippet", cond = line_begin },
+	s({ trig = "!L", dscr = "lemma", snippetType = "autosnippet", cond = line_begin },
 		fmt(
 			[[
 				#lemma[
@@ -65,7 +64,7 @@ return {
 			}
 		)
 	),
-	s({ trig = "!C", dscr = "corollary", snippetType = "autosnippet", cond = line_begin },
+	s({ trig = "!cor", dscr = "corollary", snippetType = "autosnippet", cond = line_begin },
 		fmt(
 			[[
 				#corollary[
@@ -77,7 +76,7 @@ return {
 			}
 		)
 	),
-	s({ trig = "!cor", dscr = "corollary", snippetType = "autosnippet", cond = line_begin },
+	s({ trig = "!C", dscr = "corollary", snippetType = "autosnippet", cond = line_begin },
 		fmt(
 			[[
 				#corollary[
@@ -101,7 +100,19 @@ return {
 			}
 		)
 	),
-	s({ trig = "!E", dscr = "exercise", snippetType = "autosnippet", cond = line_begin },
+	s({ trig = "!P", dscr = "proposition", snippetType = "autosnippet", cond = line_begin },
+		fmt(
+			[[
+				#proposition[
+					<>
+				]
+			]],
+			{
+				i(1),
+			}
+		)
+	),
+	s({ trig = "!exer", dscr = "exercise", snippetType = "autosnippet", cond = line_begin },
 		fmt(
 			[[
 				#exercise[
@@ -113,10 +124,10 @@ return {
 			}
 		)
 	),
-	s({ trig = "!Q", dscr = "question", snippetType = "autosnippet", cond = line_begin },
+	s({ trig = "!E", dscr = "exercise", snippetType = "autosnippet", cond = line_begin },
 		fmt(
 			[[
-				#question[
+				#exercise[
 					<>
 				]
 			]],

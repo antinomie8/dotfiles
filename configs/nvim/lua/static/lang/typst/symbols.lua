@@ -1,4 +1,9 @@
 return {
+	["dot"]                       = { cchar = "·", hl = "TypstConcealSymbol" },
+	["dots"]                      = { cchar = "…", hl = "TypstConcealSymbol" },
+	["dots.c"]                    = { cchar = "⋯", hl = "TypstConcealSymbol" },
+	["space"]                     = { cchar = "space", hl = "Comment" },
+
 	["AA"]                        = { cchar = "𝔸", hl = "TypstConcealSet" },
 	["Alpha"]                     = { cchar = "Α", hl = "TypstConcealSet" },
 	["BB"]                        = { cchar = "𝔹", hl = "TypstConcealSet" },
@@ -336,7 +341,6 @@ return {
 	["divides.not.rev"]           = { cchar = "⫮", hl = "TypstConcealSymbol" },
 	["divides.struck"]            = { cchar = "⟊", hl = "TypstConcealSymbol" },
 	["dot.op"]                    = { cchar = "⋅", hl = "TypstConcealSymbol" },
-	["dot"]                       = { cchar = "·", hl = "TypstConcealSymbol" },
 	["dot.c"]                     = { cchar = "·", hl = "TypstConcealSymbol" },
 	["dot.circle"]                = { cchar = "⊙", hl = "TypstConcealSymbol" },
 	["dot.circle.big"]            = { cchar = "⨀", hl = "TypstConcealSymbol" },
