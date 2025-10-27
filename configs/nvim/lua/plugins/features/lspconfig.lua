@@ -34,21 +34,29 @@ return {
 			})
 
 			local lspconfigs = {
-				["asm-lsp"] = {},
+				asm_lsp = {},
 
-				["bashls"] = {
+				asy_ls = {
+					cmd = { "asy", "-lsp" },
+					filetypes = { "asy" },
+					root_markers = { ".git", ".latexmkrc" },
+					single_file_support = true,
+					settings = {},
+				},
+
+				bashls = {
 					filetypes = { "bash", "sh", "zsh" },
 				},
 
-				["clangd"] = {},
+				clangd = {},
 
-				["cmake"] = {},
+				cmake = {},
 
-				["cssls"] = {
+				cssls = {
 					filetypes = { "html", "css", "scss" },
 				},
 
-				["jsonls"] = {
+				jsonls = {
 					settings = {
 						json = {
 							schemas = function()
@@ -64,7 +72,7 @@ return {
 					},
 				},
 
-				["lua_ls"] = {
+				lua_ls = {
 					on_init = function(client)
 						if client.workspace_folders then
 							local path = client.workspace_folders[1].name
@@ -118,7 +126,7 @@ return {
 					},
 				},
 
-				["tinymist"] = {
+				tinymist = {
 					on_init = function() vim.api.nvim_set_hl(0, "@lsp.type.comment.typst", { fg = "none", bg = "none" }) end,
 
 					settings = {
@@ -157,7 +165,7 @@ return {
 					end,
 				},
 
-				["yamlls"] = {
+				yamlls = {
 					settings = {
 						yaml = {
 							schemaStore = {

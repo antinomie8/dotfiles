@@ -47,7 +47,13 @@ return {
 		keys = {
 			{
 				"<localleader>S",
-				function() require("rip-substitute").sub() end,
+				function()
+					local ok, notifications = pcall(require, "noice.message.router")
+					if ok then
+						notifications.dismiss()
+					end
+					require("rip-substitute").sub()
+				end,
 				mode = { "n", "x" },
 				desc = "Substitute in this buffer",
 			},

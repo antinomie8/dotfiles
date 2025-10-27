@@ -161,9 +161,10 @@ return {
 						module = "blink-cmp-words.dictionary",
 						opts = {
 							dictionary_search_threshold = 3, -- number of characters required to trigger completion (lower will hinder performance)
-							score_offset = -2, -- less priority
+							score_offset = -2,        -- less priority
 						},
 					},
+					buffer = {},
 				},
 				per_filetype = {
 					text = { inherit_defaults = true, "dictionary" },

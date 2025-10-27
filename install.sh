@@ -89,7 +89,7 @@ if [[ -f /etc/pulse/client.conf ]] &&
 fi
 
 # specific things to do on operating systems using pacman as a package manager
-packages=("7zip" "bat" "btop" "clang" "cronie" "eza" "fd" "feh" "firefox" "fzf"
+packages=("7zip" "asymptote" "bat" "btop" "clang" "cronie" "eza" "fd" "feh" "firefox" "fzf"
 	"gcc" "git" "git-delta" "github-cli" "hexyl" "i3-wm" "imagemagick" "kitty"
 	"lazygit" "lynx" "man-db" "nasm" "ncdu" "neovim" "notmuch" "npm" "obsidian" "picom"
 	"python" "ripgrep" "rofi" "rsync" "texlive-langfrench" "tldr" "tmux" "tree-sitter-cli"

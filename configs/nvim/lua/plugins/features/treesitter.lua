@@ -29,7 +29,12 @@ return {
 				end,
 			})
 
-			vim.treesitter.language.register("bash", "zsh") -- for conditional autosnippet expansion
+			vim.treesitter.language.register("c", "asy")
+			vim.treesitter.query.add_predicate("in_asy?", function(_, _, source)
+				return vim.bo[source].filetype == "asy"
+			end)
+
+			vim.treesitter.language.register("bash", "zsh")
 
 			require("nvim-treesitter").install({
 				"asm",

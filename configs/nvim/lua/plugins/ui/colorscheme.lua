@@ -45,9 +45,11 @@ return {
 			overrides = function(colors)
 				local theme = colors.theme
 				local palette = colors.palette
+
 				return {
 					-- syntax highlighting
 					Boolean = { bold = false },
+					DiagnosticUnnecessary = { force = true },
 
 					-- user interface
 					NormalFloat = { bg = "none" },

@@ -65,7 +65,6 @@ vim.api.nvim_create_user_command("LatexToTypst", function(opts)
 		"-t", "typst",
 	}, { text = true, stdin = input }, function(obj)
 		if #obj.stderr ~= 0 then
-			vim.notify(vim.inspect({ obj.stderr, #obj.stderr }))
 			if obj.code ~= 0 then
 				vim.notify(obj.stderr, vim.log.levels.ERROR, { title = "Pandoc", icon = "󰈙" })
 			else

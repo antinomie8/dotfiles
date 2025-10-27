@@ -116,6 +116,8 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "mail", "text", "plaintex", "typst", "gitcommit", "markdown", "tex" },
 	callback = function()
+		if not vim.bo.modifiable then return end
+
 		vim.opt_local.wrap = true
 		vim.opt_local.spell = true
 		vim.opt_local.formatoptions = "t,c,q,n,2,j"
