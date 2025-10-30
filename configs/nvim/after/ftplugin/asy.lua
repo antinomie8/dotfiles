@@ -29,6 +29,10 @@ local function asy(args, bufnr, notify)
 		{ text = true, stdin = input },
 		function(obj)
 			if notify and #obj.stderr ~= 0 then
+				obj.stderr = obj.stderr:gsub("%-: (%d+)%.", function(num)
+					local new_num = tonumber(num) - 16
+					return string.format("-: %d.1:", new_num)
+				end)
 				if obj.code ~= 0 then
 					vim.notify(obj.stderr, vim.log.levels.ERROR, { title = "Asymptote", icon = "󰒕" })
 				else
