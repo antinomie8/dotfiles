@@ -17,6 +17,7 @@ local function asy(args, bufnr, notify)
 
 	local text = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
 	local preamble = require("static.lang.asy.preamble")
+	local preamble_size = select(2, preamble:gsub("\n", ""))
 	local input = preamble .. table.concat(text, "\n")
 
 	vim.system(
@@ -30,7 +31,7 @@ local function asy(args, bufnr, notify)
 		function(obj)
 			if notify and #obj.stderr ~= 0 then
 				obj.stderr = obj.stderr:gsub("%-: (%d+)%.", function(num)
-					local new_num = tonumber(num) - 16
+					local new_num = tonumber(num) - preamble_size
 					return string.format("-: %d.1:", new_num)
 				end)
 				if obj.code ~= 0 then
