@@ -11,7 +11,6 @@ return {
 		{
 			trig = "autocmd ",
 			dscr = "Neovim autocmd",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = not_in_string_comment * line_begin,
 		},

@@ -50,15 +50,13 @@ return {
 	},
 	opts = {
 		formatters_by_ft = {
+			asy = { "clang_format", "asy" },
 			cpp = { "clang_format" },
 			bash = { "shfmt" },
 			sh = { "shfmt" },
 			css = { "prettier" },
 			js = { "prettier" },
-			tex = function(bufnr)
-				require("formatters.tex").format(bufnr)
-				return { "tex_fmt" }
-			end,
+			tex = { "tex", "tex_fmt" },
 			typst = { "typstyle" },
 
 			["*"] = { "trim_whitespace", "trim_newlines" },

@@ -10,9 +10,10 @@ local query_text = table.concat(vim.fn.readfile(query_path), "\n")
 vim.treesitter.query.set("c", "highlights", query_text)
 
 -- compile asy code
-local function asy(args, bufnr)
+local function asy(args, bufnr, notify)
 	if not args then args = { "-f", "pdf" } end
 	if not bufnr then bufnr = 0 end
+	if notify == nil then notify = true end
 
 	local text = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
 	local preamble = require("static.lang.asy.preamble")
@@ -27,7 +28,7 @@ local function asy(args, bufnr)
 		}):flatten():totable(),
 		{ text = true, stdin = input },
 		function(obj)
-			if #obj.stderr ~= 0 then
+			if notify and #obj.stderr ~= 0 then
 				if obj.code ~= 0 then
 					vim.notify(obj.stderr, vim.log.levels.ERROR, { title = "Asymptote", icon = "󰒕" })
 				else
@@ -55,9 +56,9 @@ vim.api.nvim_buf_create_user_command(0, "LiveRender", function(args)
 		vim.b.asy_live_rendering = false
 	elseif not id then
 		vim.b.asy_live_render_autocmd_id =
-			vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+			vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
 				callback = function(event)
-					asy(nil, event.buf)
+					asy(nil, event.buf, false)
 				end,
 				buffer = 0,
 			})
