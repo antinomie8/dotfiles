@@ -30,6 +30,13 @@ confirm: true
 abbreviations:
   Shortlist: ISL
 
+# directory structure to store contests
+# available variables are: date, contest, year, problem and source
+contest_format:
+  Club: "Club/${date}"
+  Test: "POFM/Tests/${year}/${contest} ${year} ${problem}"
+  Valbonne: "POFM/Valbonne/${year}/${source}"
+
 # added right after \documentclass in the preview file
 packages: '\usepackage[french]{antoine}
 

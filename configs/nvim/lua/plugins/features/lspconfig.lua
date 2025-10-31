@@ -204,13 +204,13 @@ return {
 				end,
 			})
 
-			vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol", buffer = true })
-			vim.keymap.set("n", "<leader>doc", vim.lsp.buf.hover, { desc = "Hover documentation", buffer = true })
-			vim.keymap.set("n", "<leader>def", vim.lsp.buf.definition, { desc = "Go to definition", buffer = true })
-			vim.keymap.set("n", "<leader>dec", vim.lsp.buf.declaration, { desc = "Go to declaration", buffer = true })
-			vim.keymap.set("n", "<leader>ref", vim.lsp.buf.references, { desc = "References", buffer = true })
-			vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, { desc = "Signature help", buffer = true })
-			-- vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions", buffer = true })
+			vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
+			vim.keymap.set("n", "<leader>doc", vim.lsp.buf.hover, { desc = "Hover documentation" })
+			vim.keymap.set("n", "<leader>def", vim.lsp.buf.definition, { desc = "Go to definition" })
+			vim.keymap.set("n", "<leader>dec", vim.lsp.buf.declaration, { desc = "Go to declaration" })
+			vim.keymap.set("n", "<leader>ref", vim.lsp.buf.references, { desc = "References" })
+			vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, { desc = "Signature help" })
+			-- vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
 		end,
 	},
 	{
