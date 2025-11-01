@@ -13,7 +13,7 @@ local function conceal_char_at(row, col, ns, chars)
 		end_row = row,
 		end_col = col + 1,
 		conceal = "",
-		priority = 101,
+		priority = 103,
 		hl_group = "TypstConcealDelims",
 	})
 end
@@ -30,7 +30,6 @@ local function has_ancestor(node, name)
 	return false
 end
 
-
 -- conceal delimiters
 local ns_delims = vim.api.nvim_create_namespace("typst_delims")
 
@@ -43,8 +42,8 @@ local nodes = {
 local function conceal_delims(first, last)
 	vim.api.nvim_buf_clear_namespace(buf, ns_delims, first, last)
 
-	local parser = vim.treesitter.get_parser(buf, "typst")
-	if not parser then return end
+	local ok, parser = pcall(vim.treesitter.get_parser, buf, "typst")
+	if not ok or not parser then return end
 	local tree = parser:parse()[1]
 	if not tree then return end
 	local root = tree:root()
@@ -70,7 +69,7 @@ local function conceal_delims(first, last)
 	end
 end
 
-vim.api.nvim_buf_attach(buf, false, {
+vim.api.nvim_buf_attach(0, false, {
 	on_lines = function(_, _, _, first, last)
 		conceal_delims(first, last)
 	end,
@@ -129,7 +128,7 @@ local function conceal_at_positions(bufnr, sr, sc, er, ec, text, hl)
 				end_col = pos.col + #pos.ch,
 				conceal = tch[i],
 				hl_group = hl,
-				priority = 105,
+				priority = 102,
 			})
 		end
 	end
@@ -223,7 +222,9 @@ local function math_conceal(first, last)
 				if repl then
 					return repl.cchar
 				else
-					return text
+					for i = 1, #text + 1 do
+						concealed = concealed .. (map[text:sub(i, i)] or text:sub(i, i))
+					end
 				end
 			end
 		elseif node:type() == "letter" or node:type() == "symbol" then
@@ -234,50 +235,45 @@ local function math_conceal(first, last)
 			else
 				return text
 			end
-		elseif node:type() == "number" then
+		elseif node:type() == "number" or node:type() == "string" then
 			local text = vim.treesitter.get_node_text(node, 0, {})
 			for i = 1, #text + 1 do
 				concealed = concealed .. (map[text:sub(i, i)] or text:sub(i, i))
 			end
-			return concealed
 		elseif node:type() == "fraction" then
-			concealed = concealed .. conceal_script(node:child(0), map)
+			concealed = concealed .. conceal_script(node:named_child(0), map)
 			concealed = concealed .. (map["/"] or "")
-			concealed = concealed .. conceal_script(node:child(2), map)
-			return concealed
+			concealed = concealed .. conceal_script(node:named_child(1), map)
 		elseif node:type() == "call" then
-			concealed = concealed .. conceal_script(node:child(0), map)
-			concealed = concealed .. (map["("] or "")
-			concealed = concealed .. conceal_script(node:child(2), map)
-			concealed = concealed .. (map[")"] or "")
-			return concealed
+			concealed = concealed .. conceal_script(node:named_child(0), map)
+			concealed = concealed .. (map["("] or "(")
+			concealed = concealed .. conceal_script(node:named_child(1), map)
+			concealed = concealed .. (map[")"] or ")")
 		elseif node:child_count() then
 			for child in node:iter_children() do
 				concealed = concealed .. conceal_script(child, map)
 			end
 		else
 			local text = vim.treesitter.get_node_text(node, 0, {})
-			return text
+			for i = 1, #text + 1 do
+				concealed = concealed .. (map[text:sub(i, i)] or text:sub(i, i))
+			end
 		end
 		return concealed
 	end
 
 	for _, node in queries.scripts.subscripts:iter_captures(root, buf, first, last) do
 		if not has_ancestor(node:parent():parent(), "attach") then
-			local sr, sc, er, ec = node:range()
+			local sr, sc = node:range()
 			conceal_char_at(sr, sc - 1, ns_math, "_")
-			conceal_char_at(sr, sc, ns_math, "(")
-			conceal_char_at(er, ec - 1, ns_math, ")")
 			conceal_node_recursively(node, subscripts, conceal_script, "TypstConcealScript")
 		end
 	end
 
 	for _, node in queries.scripts.superscripts:iter_captures(root, buf, first, last) do
 		if not has_ancestor(node:parent():parent(), "attach") then
-			local sr, sc, er, ec = node:range()
+			local sr, sc = node:range()
 			conceal_char_at(sr, sc - 1, ns_math, "^")
-			conceal_char_at(sr, sc, ns_math, "(")
-			conceal_char_at(er, ec - 1, ns_math, ")")
 			conceal_node_recursively(node, superscripts, conceal_script, "TypstConcealScript")
 		end
 	end

@@ -42,13 +42,7 @@ return {
 
 			local typst = {}
 			typst.in_text = function(fn, obj, pair)
-				if in_node("math", "raw_span", "raw_blck", "string")(fn, obj, pair) then
-					return false
-				end
-				if in_node("code")(fn, obj, pair) then
-					return in_node("content")(fn, obj, pair)
-				end
-				return true
+				return not_in_node("math", "raw_span", "raw_blck", "string")(fn, obj, pair)
 			end
 			typst.not_import = function(_, obj) return not obj.line:match("^%s*#import") end
 

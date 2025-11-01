@@ -1,5 +1,5 @@
 local ls = require("snippets.luasnip")
-local s, t, c = ls.s, ls.t, ls.c
+local i, s, t, c = ls.i, ls.s, ls.t, ls.c
 local tex = require("snippets.tex_utils")
 
 return {
@@ -12,8 +12,8 @@ return {
 		},
 		{
 			c(1, {
-				{ t("Supposons par l'absurde ") },
-				{ t("Assume for the sake of contradiction ") },
+				{ t("Supposons par l'absurde "), i(1) },
+				{ t("Assume for the sake of contradiction "), i(1)  },
 			})
 		}
 	),
@@ -26,8 +26,8 @@ return {
 		},
 		{
 			c(1, {
-				{ t("Supposons sans perte de généralité que ") },
-				{ t("Without loss of generality, ") },
+				{ t("Supposons sans perte de généralité que "), i(1)  },
+				{ t("Without loss of generality, "), i(1)  },
 			})
 		}
 	),
@@ -40,8 +40,8 @@ return {
 		},
 		{
 			c(1, {
-				{ t("sans perte de généralité ") },
-				{ t("without loss of generality ") },
+				{ t("sans perte de généralité "), i(1)  },
+				{ t("without loss of generality "), i(1)  },
 			})
 		}
 	),
@@ -53,7 +53,7 @@ return {
 			condition = tex.in_text * tex.in_document * tex.not_in_cmd,
 		},
 		{
-			t("à partir d'un certain rang")
+			t("à partir d'un certain rang ")
 		}
 	),
 	s(
@@ -64,6 +64,20 @@ return {
 			condition = tex.in_text * tex.in_document * tex.not_in_cmd,
 		},
 		{
-			t("À partir d'un certain rang") }
+			t("À partir d'un certain rang ") }
+	),
+	s(
+		{
+			trig = "wrt ",
+			dscr = "with respect to",
+			snippetType = "autosnippet",
+			condition = tex.in_text * tex.in_document * tex.not_in_cmd,
+		},
+		{
+			c(1, {
+				{ t("par rapport à "), i(1)  },
+				{ t("with respect to "), i(1)  },
+			})
+		}
 	),
 }
