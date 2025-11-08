@@ -1,12 +1,10 @@
-KITTY_SOCKET=$(echo $KITTY_LISTEN_ON)
-
 function kitty_set_spacing() {
-	[[ -z "$NVIM" && -z "$TMUX" && -n "$KITTY_SOCKET" ]] &&
-		kitty @ --to $KITTY_SOCKET set-spacing padding=20 margin=0
+	[[ -z "$NVIM" && -z "$TMUX" && -n "$KITTY_LISTEN_ON" ]] &&
+		kitty @ --to $KITTY_LISTEN_ON set-spacing padding=20 margin=0
 }
 function kitty_remove_spacing() {
-	[[ -z "$NVIM" && -z "$TMUX" && -n "$KITTY_SOCKET" ]] &&
-		kitty @ --to $KITTY_SOCKET set-spacing padding=0 margin=0
+	[[ -z "$NVIM" && -z "$TMUX" && -n "$KITTY_LISTEN_ON" ]] &&
+		kitty @ --to $KITTY_LISTEN_ON set-spacing padding=0 margin=0
 }
 
 kitty_set_spacing
