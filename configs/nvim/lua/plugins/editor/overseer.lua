@@ -19,11 +19,6 @@ return {
 		"CMake",
 	},
 	opts = {
-		strategy = {
-			"toggleterm",
-			open_on_start = false,
-			close_on_exit = true,
-		},
 		templates = { "builtin" },
 		template_dirs = { "overseer.template" },
 		dap = false,
@@ -161,7 +156,7 @@ return {
 		component_aliases = {
 			-- Most tasks are initialized with the default components
 			default = {
-				{ "display_duration",    detail_level = 2 },
+				{ "display_duration", detail_level = 2 },
 				"on_output_summarize",
 				"on_exit_set_status",
 				"on_complete_notify",
