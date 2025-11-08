@@ -100,18 +100,6 @@ return {
 			}
 		)
 	),
-	s({ trig = "!P", dscr = "proposition", snippetType = "autosnippet", cond = line_begin },
-		fmt(
-			[[
-				#proposition[
-					<>
-				]
-			]],
-			{
-				i(1),
-			}
-		)
-	),
 	s({ trig = "!exer", dscr = "exercise", snippetType = "autosnippet", cond = line_begin },
 		fmt(
 			[[
@@ -128,6 +116,30 @@ return {
 		fmt(
 			[[
 				#exercise[
+					<>
+				]
+			]],
+			{
+				i(1),
+			}
+		)
+	),
+	s({ trig = "!R", dscr = "remark", snippetType = "autosnippet", cond = line_begin },
+		fmt(
+			[[
+				#remark[
+					<>
+				]
+			]],
+			{
+				i(1),
+			}
+		)
+	),
+	s({ trig = "!D", dscr = "definition", snippetType = "autosnippet", cond = line_begin },
+		fmt(
+			[[
+				#definition[
 					<>
 				]
 			]],

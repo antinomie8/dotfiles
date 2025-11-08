@@ -36,6 +36,7 @@ contest_format:
   Club: "Club/${date}"
   Test Novembre: "POFM/Tests/${year}/${contest} ${year}/${contest} ${year} ${problem}"
   Valbonne: "POFM/Valbonne/${year}/${source}"
+  Cours en ligne: "POFM/Cours en ligne/${year}/${date}"
 
 # added right after \documentclass in the preview file
 packages: '\usepackage[french]{antoine}
