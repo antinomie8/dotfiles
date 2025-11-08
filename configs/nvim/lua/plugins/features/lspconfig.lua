@@ -187,10 +187,7 @@ return {
 
 			for server, config in pairs(lspconfigs) do
 				vim.lsp.config(server, config)
-				vim.api.nvim_create_autocmd("FileType", {
-					pattern = vim.lsp.config[server].filetypes,
-					callback = function() vim.lsp.enable(server) end,
-				})
+				vim.lsp.enable(server)
 			end
 
 			vim.api.nvim_create_autocmd("LspAttach", {
@@ -201,6 +198,7 @@ return {
 						vim.wo[win][0].foldmethod = "expr"
 						vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
 					end
+					vim.lsp.document_color.enable(false, args.buf)
 				end,
 			})
 

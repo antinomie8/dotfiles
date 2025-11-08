@@ -10,7 +10,7 @@ return {
 		},
 	},
 	dependencies = {
-		"MunifTanjim/nui.nvim",
+		-- MunifTanjim/nui.nvim
 		{
 			"anonymousgrasshopper/nvim-notify",
 			opts = function()
@@ -26,10 +26,10 @@ return {
 	},
 	opts = {
 		presets = {
-			bottom_search = true, -- use a classic bottom cmdline for search
-			command_palette = true, -- position the cmdline and popupmenu together
+			bottom_search = true,      -- use a classic bottom cmdline for search
+			command_palette = true,    -- position the cmdline and popupmenu together
 			long_message_to_split = true, -- long messages will be sent to a split
-			lsp_doc_border = true, -- add a border to hover docs and signature help
+			lsp_doc_border = true,     -- add a border to hover docs and signature help
 		},
 		cmdline = {
 			format = {
@@ -97,7 +97,8 @@ return {
 					event = "notify",
 					kind = "warn",
 					cond = function(message)
-						return message.opts.title == "telescope.nvim" --[[ and message.content():match("Nothing currently selected") ]]
+						return message.opts.title ==
+							"telescope.nvim" --[[ and message.content():match("Nothing currently selected") ]]
 					end,
 				},
 				opts = { skip = true },

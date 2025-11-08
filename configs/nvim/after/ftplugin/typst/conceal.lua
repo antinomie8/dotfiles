@@ -209,7 +209,7 @@ local function math_conceal(first, last)
 
 	-- subscripts and superscripts
 	local function conceal_script(node, map)
-		if not node then return end
+		if not node then return "" end
 
 		local concealed = ""
 		if node:type() == "field" or node:type() == "ident" then
