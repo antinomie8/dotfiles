@@ -7,11 +7,12 @@ return [[
 	settings.outformat="pdf";
 
 	pen thickp = linewidth(0.8);
-	pen thinp = linewidth(0.5);
+	pen thinp = linewidth(0.3);
 
 	// geometry
 	import geometry;
 	pair foot(pair P, pair A, pair B) { return foot(triangle(A,B,P).VC); }
+	pair foot(pair P, line l) { return intersectionpoint(perpendicular(P, l), l); }
 	pair midpoint(pair A, pair B) { return (A + B) /2; }
 	pair centroid(pair A, pair B, pair C) { return (A+B+C)/3; }
 	line ray(pair A, pair B) { return line(A, false, B); }

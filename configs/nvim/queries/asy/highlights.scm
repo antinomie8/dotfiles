@@ -35,4 +35,7 @@
 	"darkolive" "darkgray" "orange" "fuchsia" "chartreuse"
 	"springgreen" "purple" "royalblue" "salmon" "brown"
 	"olive" "darkbrown" "pink" "palegrey" "lightgrey"
-	"mediumgrey" "grey" "heavygrey" "deepgrey" "darkgrey"))
+	"mediumgrey" "grey" "heavygrey" "deepgrey" "darkgrey"
+
+	"thinp" "thickp"
+	))
