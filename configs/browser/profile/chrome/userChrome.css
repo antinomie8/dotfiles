@@ -34,10 +34,10 @@
 
 /* hide stuff */
 .titlebar-button,
-.urlbarView-row::before,
-button[title="Tridactyl sidebar"],
-button[title="Customize sidebar"] {
-	display: none;
+.buttons-wrapper,
+#sidebar-tools-and-extensions-splitter,
+.urlbarView-row::before {
+	display: none !important;
 }
 
 /* tab groups */
