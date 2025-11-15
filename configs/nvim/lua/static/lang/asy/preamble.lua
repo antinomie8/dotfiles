@@ -25,7 +25,7 @@ return [[
 	}
 	segment chord(line l, circle C) {
 		pair[] inter = intersectionpoints(l, C);
-		assert(inter.length >= 2);
+		assert(inter.length == 2);
 		pair X = inter[0], Y = inter[1];
 		return segment(X, Y);
 	}

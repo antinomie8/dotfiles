@@ -5,6 +5,14 @@
   }
 }
 
+/* hide promotional content on AoPS */
+@-moz-document domain("artofproblemsolving.com") {
+  .infobar {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
+
 /* dark mode for pdf.js */
 :root:not([darkpdf]) #sidebarContainer > #sidebarContent > #thumbnailView {
 	--sidebaritem-bg-color: #1f1f28;
