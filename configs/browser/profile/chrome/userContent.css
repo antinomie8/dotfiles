@@ -1,16 +1,20 @@
 /* hide things on firefox home page */
 @-moz-document url("about:newtab"), url("about:home") {
-  .wallpaper-attribution, .logo, .wordmark, img[role="presentation"] {
-    display: none !important;
-  }
+	.wallpaper-attribution,
+	.logo,
+	.wordmark,
+	.personalizeButtonWrapper,
+	img[role="presentation"] {
+		display: none !important;
+	}
 }
 
 /* hide promotional content on AoPS */
 @-moz-document domain("artofproblemsolving.com") {
-  .infobar {
-    display: none !important;
-    visibility: hidden !important;
-  }
+	.infobar {
+		display: none !important;
+		visibility: hidden !important;
+	}
 }
 
 /* dark mode for pdf.js */
@@ -18,11 +22,22 @@
 	--sidebaritem-bg-color: #1f1f28;
 }
 
-:root:not([darkpdf]) #viewerContainer > #viewer > .page > .canvasWrapper > canvas {
+:root:not([darkpdf])
+	#viewerContainer
+	> #viewer
+	> .page
+	> .canvasWrapper
+	> canvas {
 	filter: grayscale(100%) invert(90%);
 }
 
-:root:not([darkpdf]) #sidebarContainer > #sidebarContent > #thumbnailView .thumbnailImage {
+:root:not([darkpdf])
+	#sidebarContainer
+	> #sidebarContent
+	> #thumbnailView
+	.thumbnailImage {
 	filter: grayscale(100%) invert(90%);
-	box-shadow: 0 0 0 1px hsla(0, 0%, 100%, 0.5), 0 2px 8px hsla(0, 0%, 100%, 0.3) !important;
+	box-shadow:
+		0 0 0 1px hsla(0, 0%, 100%, 0.5),
+		0 2px 8px hsla(0, 0%, 100%, 0.3) !important;
 }
