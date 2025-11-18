@@ -18,17 +18,7 @@ local function conceal_char_at(row, col, ns, chars)
 	})
 end
 
-local function has_ancestor(node, name)
-	if not node then return end
-	local parent = node:parent()
-	while parent do
-		if name == parent:type() then
-			return true
-		end
-		parent = parent:parent()
-	end
-	return false
-end
+local has_ancestor = require("utils.treesitter").has_ancestor
 
 -- conceal delimiters
 local ns_delims = vim.api.nvim_create_namespace("typst_delims")

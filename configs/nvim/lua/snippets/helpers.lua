@@ -18,22 +18,29 @@ function helpers.get_visual(_, parent)
 	end
 end
 
-function helpers.check_not_in_node(ignored_nodes)
+function helpers.in_node(node_type)
+	return make_cond(function()
+		local buf = vim.api.nvim_get_current_buf()
+		local highlighter = require("vim.treesitter.highlighter")
+		if not highlighter.active[buf] then
+			return false
+		end
+		local pos = vim.api.nvim_win_get_cursor(0)
+		local row, col = pos[1] - 1, pos[2] - 1
+		local node = vim.treesitter.get_node({ pos = { row, col } })
+		return require("utils.treesitter").has_ancestor(node, node_type)
+	end)
+end
+
+helpers.not_in_string_comment = make_cond(function()
+	local ignored_nodes = { "string", "string_content", "comment", "comment_content" }
 	local buf = vim.api.nvim_get_current_buf()
 	local highlighter = require("vim.treesitter.highlighter")
-	if not highlighter.active[buf] then
-		return true
-	end
+	if not highlighter.active[buf] then return true end
 	local pos = vim.api.nvim_win_get_cursor(0)
 	local row, col = pos[1] - 1, pos[2] - 1
 	local node_type = vim.treesitter.get_node({ pos = { row, col } }):type()
 	return not vim.tbl_contains(ignored_nodes, node_type)
-end
-
-helpers.not_in_string_comment = make_cond(function()
-	return helpers.check_not_in_node(
-		{ "string", "string_content", "comment", "comment_content" }
-	)
 end)
 
 function helpers.line_match(pattern)
@@ -64,5 +71,4 @@ function helpers.check_not_expanded(...)
 	end)
 end
 
-helpers.check_not_expanded("hello", "wworld", "again")
 return helpers
