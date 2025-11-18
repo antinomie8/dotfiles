@@ -38,6 +38,10 @@ contest_format:
   Valbonne: "POFM/Valbonne/${year}/${source}"
   Cours en ligne: "POFM/Cours en ligne/${year}/${date}"
   Liste: "POFM/Listes/${source}"
+  TN: "POFM/Vidéos/TN/${source}"
+  Géo: "POFM/Vidéos/Géo/${source}"
+  Alg: "POFM/Vidéos/Alg/${source}"
+  Comb: "POFM/Vidéos/Comb/${source}"
 
 # added right after \documentclass in the preview file
 packages: '\usepackage[french]{antoine}
