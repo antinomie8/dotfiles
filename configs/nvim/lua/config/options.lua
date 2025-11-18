@@ -105,4 +105,5 @@ opt.shortmess      = "tToOcCFI"
 opt.belloff        = "all"
 
 -- spellcheck
-opt.spelllang      = "en_us,fr"
+opt.spelllang      = "en,fr"
+vim.api.nvim_exec_autocmds("OptionSet", { pattern = "spelllang" })

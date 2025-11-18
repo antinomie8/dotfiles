@@ -145,6 +145,23 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+-- update &spellfile when &spelllang changes
+vim.api.nvim_create_autocmd("OptionSet", {
+	pattern = "spelllang",
+	callback = function()
+		local spell_dir = vim.fn.stdpath("config") .. "/spell"
+		local langs = vim.opt.spelllang:get()
+
+		local add_files = {}
+		for _, lang in ipairs(langs) do
+			local filename = string.format("%s/%s.utf-8.add", spell_dir, lang)
+			table.insert(add_files, filename)
+		end
+
+		vim.opt.spellfile = table.concat(add_files, ",")
+	end,
+})
+
 -- remove terminal padding on leave
 vim.api.nvim_create_autocmd("VimLeave", {
 	callback = function()
