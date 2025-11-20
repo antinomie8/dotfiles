@@ -137,7 +137,7 @@ return {
 				{ "`", "`",     ft = { "typst" }, cond = typst.in_text, space = true },
 				{ "/*", "*/",   ft = { "typst" }, cond = typst.in_text, newline = true },
 				{ "_", "_",     ft = { "typst" }, cond = typst.in_text },
-				{ "*", "*",     ft = { "typst" }, cond = function(fn, obj) return typst.in_text(fn) and typst.not_import(fn, obj) end },
+				{ "*", "*",     ft = { "typst" }, cond = function(fn, obj, pair) return typst.in_text(fn, obj, pair) and typst.not_import(fn, obj) end },
 				--markdown
 				{ "$", "$",     ft = { "markdown" }, cond = markdown.in_text },
 				{ "$$", "$$",   ft = { "markdown" }, cond = markdown.in_text, newline = true },

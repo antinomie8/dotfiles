@@ -16,7 +16,7 @@ return {
 			}
 		)
 	),
-	s({ trig = "!T", dscr = "theorem", snippetType = "autosnippet", cond = line_begin },
+	s({ trig = "!T", dscr = "theorem", snippetType = "autosnippet", cond = line_begin, hidden = true },
 		fmt(
 			[[
 				#theorem[
@@ -40,7 +40,7 @@ return {
 			}
 		)
 	),
-	s({ trig = "!L", dscr = "lemma", snippetType = "autosnippet", cond = line_begin },
+	s({ trig = "!L", dscr = "lemma", snippetType = "autosnippet", cond = line_begin, hidden = true },
 		fmt(
 			[[
 				#lemma[
@@ -52,7 +52,7 @@ return {
 			}
 		)
 	),
-	s({ trig = "!P", dscr = "proof", snippetType = "autosnippet", cond = line_begin },
+	s({ trig = "!P", dscr = "proof", snippetType = "autosnippet", cond = line_begin, hidden = true },
 		fmt(
 			[[
 				#proof[
@@ -76,7 +76,7 @@ return {
 			}
 		)
 	),
-	s({ trig = "!C", dscr = "corollary", snippetType = "autosnippet", cond = line_begin },
+	s({ trig = "!C", dscr = "corollary", snippetType = "autosnippet", cond = line_begin, hidden = true },
 		fmt(
 			[[
 				#corollary[
@@ -112,7 +112,7 @@ return {
 			}
 		)
 	),
-	s({ trig = "!E", dscr = "exercise", snippetType = "autosnippet", cond = line_begin },
+	s({ trig = "!E", dscr = "exercise", snippetType = "autosnippet", cond = line_begin, hidden = true },
 		fmt(
 			[[
 				#exercise[
@@ -124,7 +124,7 @@ return {
 			}
 		)
 	),
-	s({ trig = "!R", dscr = "remark", snippetType = "autosnippet", cond = line_begin },
+	s({ trig = "!R", dscr = "remark", snippetType = "autosnippet", cond = line_begin, hidden = true },
 		fmt(
 			[[
 				#remark[
@@ -136,7 +136,7 @@ return {
 			}
 		)
 	),
-	s({ trig = "!D", dscr = "definition", snippetType = "autosnippet", cond = line_begin },
+	s({ trig = "!D", dscr = "definition", snippetType = "autosnippet", cond = line_begin, hidden = true },
 		fmt(
 			[[
 				#definition[

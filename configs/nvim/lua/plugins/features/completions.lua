@@ -159,12 +159,22 @@ return {
 					dictionary = {
 						name = "blink-cmp-words",
 						module = "blink-cmp-words.dictionary",
-						opts = {
-							dictionary_search_threshold = 3, -- number of characters required to trigger completion (lower will hinder performance)
-							score_offset = -2,        -- less priority
-						},
+						enabled = function()
+							local lang = vim.opt.spelllang:get()
+							return vim.tbl_contains(lang, "en")
+						end,
+						min_keyword_length = 3,
+						score_offset = -100,
+						opts = {},
 					},
 					buffer = {},
+					path = {
+						opts = {
+							get_cwd = function(_)
+								return vim.fn.getcwd()
+							end,
+						},
+					},
 				},
 				per_filetype = {
 					text = { inherit_defaults = true, "dictionary" },
@@ -197,9 +207,9 @@ return {
 		config = function()
 			local ls = require("luasnip")
 			ls.config.set_config({
-				history = true,
 				updateevents = "TextChanged,TextChangedI",
 				enable_autosnippets = true,
+				region_check_events = "CursorMoved",
 				delete_check_events = "TextChanged",
 				store_selection_keys = "<Tab>",
 				ext_opts = {

@@ -158,6 +158,16 @@ return {
 	),
 	s(
 		{
+			trig = "â",
+			dscr = "^a",
+			wordTrig = false,
+			snippetType = "autosnippet",
+			condition = typst.in_math,
+		},
+		t("^a")
+	),
+	s(
+		{
 			trig = "cd",
 			dscr = "cdot",
 			wordTrig = false,
