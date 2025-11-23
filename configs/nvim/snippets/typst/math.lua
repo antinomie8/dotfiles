@@ -212,7 +212,7 @@ return {
 	),
 	s(
 		{
-			trig = "([%w%)%]%}]);",
+			trig = "([%w%)%]%}])@",
 			dscr = "subscript",
 			wordTrig = false,
 			regTrig = true,

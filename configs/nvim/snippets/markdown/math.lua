@@ -257,7 +257,7 @@ return {
 	),
 	s(
 		{
-			trig = "([%w%)%]%}])'",
+			trig = "([%w%)%]%}])`",
 			dscr = "superscript",
 			wordTrig = false,
 			regTrig = true,
@@ -271,7 +271,7 @@ return {
 	),
 	s(
 		{
-			trig = "([%w%)%]%}]);",
+			trig = "([%w%)%]%}])@",
 			dscr = "subscript",
 			wordTrig = false,
 			regTrig = true,
