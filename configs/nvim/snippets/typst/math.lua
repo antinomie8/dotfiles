@@ -168,8 +168,8 @@ return {
 	),
 	s(
 		{
-			trig = "cd",
-			dscr = "cdot",
+			trig = ".",
+			dscr = "dot",
 			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = typst.in_math,
@@ -198,7 +198,7 @@ return {
 	),
 	s(
 		{
-			trig = "([%w%)%]%}])'",
+			trig = "([%w%)%]%}])`",
 			dscr = "superscript",
 			wordTrig = false,
 			regTrig = true,

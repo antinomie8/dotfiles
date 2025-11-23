@@ -3,6 +3,8 @@ vim.opt_local.commentstring = "// %s"
 vim.opt_local.makeprg = "asy %"
 vim.opt_local.errorformat = "%f: %l.%c: %m"
 
+vim.b.output_format = "pdf"
+
 -- use c treesitter highlighting with custom queries
 local query_path = vim.fn.stdpath("config") .. "/queries/asy/highlights.scm"
 if vim.fn.filereadable(query_path) ~= 1 then return end
@@ -11,7 +13,7 @@ vim.treesitter.query.set("c", "highlights", query_text)
 
 -- compile asy code
 local function asy(args, bufnr, notify)
-	if not args then args = { "-f", "pdf" } end
+	args = vim.iter({ "-f", vim.b.output_format or "pdf", args }):flatten():totable()
 	if not bufnr then bufnr = 0 end
 	if notify == nil then notify = true end
 
@@ -25,7 +27,7 @@ local function asy(args, bufnr, notify)
 			"asy",
 			args,
 			"-o",
-			vim.fn.expand("%:t:r"),
+			vim.fn.expand("%:r"),
 		}):flatten():totable(),
 		{ text = true, stdin = input },
 		function(obj)
@@ -44,12 +46,10 @@ local function asy(args, bufnr, notify)
 end
 
 vim.keymap.set("n", "<localleader>p", function()
-	asy({ "-f", "pdf", "-V" })
+	asy("-V")
 end, { desc = "compile and open", buffer = true })
 
-vim.keymap.set("n", "<localleader>c", function()
-	asy()
-end, { desc = "compile", buffer = true })
+vim.keymap.set("n", "<localleader>c", asy, { desc = "compile", buffer = true })
 
 -- live rendering
 vim.b.asy_live_rendering = nil

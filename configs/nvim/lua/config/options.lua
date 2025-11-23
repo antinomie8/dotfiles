@@ -40,7 +40,7 @@ opt.formatlistpat  = [[^\s*\%(\d\+[\]\-:.)}\t ]\|[-+]\s\)\s*]]
 
 -- writing, undo & backup
 opt.autowrite      = false
-opt.swapfile       = false
+opt.swapfile       = true
 opt.undofile       = true
 opt.undolevels     = 1024
 opt.confirm        = false

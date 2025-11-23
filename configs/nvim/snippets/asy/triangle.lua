@@ -21,7 +21,7 @@ return {
 			t({
 				"",
 				"",
-				[[draw(A--B--C--cycle);]],
+				[[draw(A--B--C--cycle, thickp);]],
 				"",
 				[[dot("$A$", A, dir(A));]],
 				[[dot("$B$", B, dir(B));]],

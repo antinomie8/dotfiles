@@ -19,6 +19,7 @@ return [[
 	point intersect(line l1, line l2) { return intersectionpoint(l1, l2); }
 	real dist(pair A, pair B) { return abs(A-B); }
 	transform reflect(point O) { return scale(-1, O); }
+	point reflect(point A, point O) { return scale(-1, 0) * A; }
 	circle circletangentat(line l, point T, point X) {
 		point center = intersectionpoint(perpendicular(T, l), bisector(segment(T, X)));
 		return circle(center, abs(center - T));
