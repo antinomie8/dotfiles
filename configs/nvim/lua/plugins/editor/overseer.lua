@@ -1,6 +1,5 @@
 return {
 	"stevearc/overseer.nvim",
-	branch = "stevearc-rewrite",
 	cmd = {
 		"OverseerOpen",
 		"OverseerClose",

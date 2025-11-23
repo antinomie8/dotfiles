@@ -51,7 +51,7 @@
   "nvim-various-textobjs": { "branch": "main", "commit": "a1866beb7ed07bd69e48cb8479bfbb8d5fb14ae9" },
   "nvim-web-devicons": { "branch": "master", "commit": "8dcb311b0c92d460fac00eac706abd43d94d68af" },
   "obsidian.nvim": { "branch": "main", "commit": "4065c233f618cdbfbf084d87e97317f8d019ef59" },
-  "overseer.nvim": { "branch": "stevearc-rewrite", "commit": "485949725d38537a4ae2efa9e011df2af1e09ead" },
+  "overseer.nvim": { "branch": "master", "commit": "36298eab791cca87ac3a228933413d094423400e" },
   "plenary.nvim": { "branch": "master", "commit": "b9fd5226c2f76c951fc8ed5923d85e4de065e509" },
   "pretty-fold.nvim": { "branch": "master", "commit": "1eb18f228972e86b7b8f5ef33ca8091e53fb1e49" },
   "quicker.nvim": { "branch": "master", "commit": "12a2291869a326424b1cbee937f4f80334433012" },
