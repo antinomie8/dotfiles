@@ -14,7 +14,7 @@ return {
 			envs = { enabled = 1 },
 		}
 
-		vim.api.nvim_create_autocmd("Filetype", {
+		vim.api.nvim_create_autocmd("FileType", {
 			pattern = "tex",
 			callback = function()
 				vim.keymap.set("n", "<leader>K", "<Plug>(vimtex-doc-package)", { desc = "Hover documentation", buffer = true })

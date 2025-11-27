@@ -170,11 +170,10 @@ return {
 		{
 			trig = ".",
 			dscr = "dot",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
-		t("dot")
+		t("dot ")
 	),
 	s(
 		{

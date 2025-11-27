@@ -42,12 +42,12 @@ return {
 
 			local typst = {}
 			typst.in_text = function(fn, obj, pair)
-				return not_in_node("math", "raw_span", "raw_blck", "string")(fn, obj, pair)
+				return not_in_node("math", "raw_span", "raw_blck", "string", "comment")(fn, obj, pair)
 			end
 			typst.not_import = function(_, obj) return not obj.line:match("^%s*#import") end
 
 			local markdown = {}
-			markdown.in_text = not_in_node("math", "raw_span", "raw_blck", "string", "code")
+			markdown.in_text = not_in_node("math", "raw_span", "raw_blck", "string", "code", "comment")
 
 			return {
 				filetype = {

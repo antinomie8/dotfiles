@@ -91,46 +91,11 @@ local function highlight_hrule(first, last)
 	end
 end
 
-local function set_typst_root()
-	local root_path = vim.b[buf].typst_root
-	if not root_path then return end
-
-	local root_buf = vim.fn.bufadd(root_path)
-	vim.fn.bufload(root_buf)
-	vim.bo[root_buf].buflisted = false
-
-	local client = vim.lsp.get_clients({ bufnr = buf, name = "tinymist" })[1]
-	if client then
-		client:exec_cmd({
-			title = "pin",
-			command = "tinymist.pinMain",
-			arguments = { vim.api.nvim_buf_get_name(root_buf) },
-		}, { bufnr = buf })
-		client:exec_cmd({
-			title = "exportpdf",
-			command = "tinymist.exportPdf",
-			arguments = { vim.api.nvim_buf_get_name(root_buf) },
-		}, { bufnr = buf })
-	else
-		vim.defer_fn(set_typst_root, 1000)
-		vim.notify("No LSP client found for tinymist in buffer " .. root_buf, vim.log.levels.WARN)
-	end
-end
-
 if vim.env.OLY and not vim.b[buf].oly_highlight then
-	vim.b[buf].oly_highlight = true
-
 	vim.opt.autochdir = true
 
-	if vim.uv.fs_stat(vim.fn.expand("%:p:h") .. "/preview.typ") then
-		vim.b[buf].typst_root = vim.fn.expand("%:p:h") .. "/preview.typ"
-	end
-
-	vim.api.nvim_create_autocmd("LspAttach", {
-		callback = set_typst_root,
-		once = true,
-		buffer = buf,
-	})
+	vim.b[buf].oly_highlight = true
+	vim.b[buf].typst_root = vim.fn.expand("%:p:h") .. "/preview.typ"
 
 	highlight_metadata(0, -1)
 	highlight_hrule(0, -1)

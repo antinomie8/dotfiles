@@ -85,25 +85,18 @@ opt.gdefault       = true
 opt.ignorecase     = true
 opt.smartcase      = true
 
+-- spellcheck
+opt.spelllang      = "en,fr"
+vim.api.nvim_exec_autocmds("OptionSet", { pattern = "spelllang" })
+
 -- colors
 opt.termguicolors  = true
 opt.background     = "dark"
 
--- cursor
+-- miscellaneous
 opt.guicursor      = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,a:Cursor/lCursor"
-
--- backspace
 opt.backspace      = "indent,eol,start"
-
--- command-line completion
 opt.wildmode       = "longest:full,full"
-
--- prompts
 opt.shortmess      = "tToOcCFI"
-
--- bell
 opt.belloff        = "all"
-
--- spellcheck
-opt.spelllang      = "en,fr"
-vim.api.nvim_exec_autocmds("OptionSet", { pattern = "spelllang" })
+opt.exrc = true

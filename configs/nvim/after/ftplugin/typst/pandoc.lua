@@ -48,7 +48,7 @@ local function format(lines)
 	return lines
 end
 
-vim.api.nvim_create_user_command("LatexToTypst", function(opts)
+vim.api.nvim_buf_create_user_command(0, "LatexToTypst", function(opts)
 	local start_line, end_line
 	if opts.range == 0 then
 		start_line, end_line = 1, -1

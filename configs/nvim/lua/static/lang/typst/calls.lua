@@ -7,6 +7,7 @@ return {
 	["ceil"]      = { left = "⌈",     right = "⌉" },
 	["round"]     = { left = "⌊",     right = "⌉" },
 	["pmod"]      = { left = "(mod ", right = ")" },
+	["hat"]       = { left = "∠(",    right = ")" },
 
 	-- Mathematical Calligraphic (aka cal)
 	cal = {

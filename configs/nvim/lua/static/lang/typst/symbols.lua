@@ -2,7 +2,9 @@ return {
 	["dot"]                       = { cchar = "·", hl = "TypstConcealSymbol" },
 	["dots"]                      = { cchar = "…", hl = "TypstConcealSymbol" },
 	["dots.c"]                    = { cchar = "⋯", hl = "TypstConcealSymbol" },
+	["tilde"]                     = { cchar = "∼", hl = "TypstConcealSymbol" },
 	["space"]                     = { cchar = "space", hl = "Comment" },
+	["quad"]                      = { cchar = "quad", hl = "Comment" },
 
 	["AA"]                        = { cchar = "𝔸", hl = "TypstConcealSet" },
 	["Alpha"]                     = { cchar = "Α", hl = "TypstConcealSet" },
