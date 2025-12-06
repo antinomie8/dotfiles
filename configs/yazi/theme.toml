@@ -33,7 +33,7 @@ unset_main = { fg = "#1f1f28", bg = "#dca561" }
 unset_alt = { fg = "#9cabca", bg = "#54546d" }
 
 [status]
-overall = { bg = "#2a2a37" }
+overall = { fg = "#7e9cd8", bg = "#2a2a37" }
 sep_left = { open = "", close = "" }
 sep_right = { open = "", close = "" }
 
@@ -112,21 +112,21 @@ icon_error = { fg = "#e82424" }
 
 [filetype]
 rules = [
-	{ name = "*", is = "hidden", fg = "#54546d" },
-	{ name = "*/", is = "hidden", fg = "#54546d" },
-	{ name = "*", is = "block", fg = "#e6c384" },
-	{ name = "*", is = "char", fg = "#e6c384" },
-	{ name = "*", is = "exec", fg = "#ff5d62" },
-	{ name = "*", is = "fifo", fg = "#c0a36e" },
-	{ name = "*", is = "link", fg = "#6a9598" },
-	{ name = "*/", is = "link", fg = "#6a9598" },
-	{ name = "*", is = "orphan", fg = "#e82424" },
-	{ name = "*/", is = "orphan", fg = "#e82424" },
-	{ name = "*", is = "sock", fg = "#957fb8" },
-	{ name = "*", is = "sticky", fg = "#7fb4ca" },
-	{ name = "*/", is = "sticky", fg = "#7fb4ca" },
-	{ name = "*/", fg = "#7e9cd8" },
-	{ name = "*", fg = "#dcd7ba" },
+	{ url = "*", is = "hidden", fg = "#54546d" },
+	{ url = "*/", is = "hidden", fg = "#54546d" },
+	{ url = "*", is = "block", fg = "#e6c384" },
+	{ url = "*", is = "char", fg = "#e6c384" },
+	{ url = "*", is = "exec", fg = "#ff5d62" },
+	{ url = "*", is = "fifo", fg = "#c0a36e" },
+	{ url = "*", is = "link", fg = "#6a9598" },
+	{ url = "*/", is = "link", fg = "#6a9598" },
+	{ url = "*", is = "orphan", fg = "#e82424" },
+	{ url = "*/", is = "orphan", fg = "#e82424" },
+	{ url = "*", is = "sock", fg = "#957fb8" },
+	{ url = "*", is = "sticky", fg = "#7fb4ca" },
+	{ url = "*/", is = "sticky", fg = "#7fb4ca" },
+	{ url = "*/", fg = "#7e9cd8" },
+	{ url = "*", fg = "#dcd7ba" },
 ]
 
 [icon]
