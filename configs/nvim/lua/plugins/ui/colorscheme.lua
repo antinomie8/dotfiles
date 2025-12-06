@@ -114,6 +114,8 @@ return {
 
 					NeoTreePopupWinSeparator = { fg = palette.sumiInk6, bg = palette.sumiInk3 },
 					NeoTreeFileIcon = { fg = palette.oldWhite },
+					NeoTreeDotfile = { fg = palette.sumiInk6 },
+					NeoTreeHiddenByName = { fg = palette.sumiInk6 },
 
 					TelescopePromptPrefix = { fg = palette.autumnYellow, bg = palette.sumiInk3 },
 

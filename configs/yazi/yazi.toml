@@ -7,40 +7,48 @@ sort_translit = true
 show_hidden = true
 show_symlink = true
 scrollof = 200
+title_format = "{cwd}"
 
 [preview]
 wrap = "no"
 tab_size = 2
 cache_dir = "/home/Antoine/.cache/yazi"
 image_filter = "nearest"
+image_quality = 50
 
 [opener]
 edit = [
-{ run = '$EDITOR "$@"', block = true, for = "unix" },
+	{ run = '$EDITOR "$@"', block = true, desc = "Edit" },
 ]
 open = [
-{ run = 'xdg-open "$@"', desc = "Open" },
+	{ run = 'xdg-open "$@"', desc = "Open" },
+]
+zathura = [
+	{ run = 'zathura "$@"', orphan = true, desc = "Open PDF" }
+]
+
+[open]
+prepend_rules = [
+	{ name = "*.pdf", use = "zathura" }
 ]
 
 [plugin]
+prepend_fetchers = [
+	{ id   = "git", name = "*", run  = "git" },
+	{ id   = "git", name = "*/", run  = "git" },
+]
 append_previewers = [
-{ name = "*", run = "hexyl" },
-]
-prepend_previewers = [
-{ name = "*/", run = "folder", sync = true },
-{ mime = "text/*",                 run = "bat" },
-{ mime = "*/xml",                  run = "bat" },
-{ mime = "*/cs",                   run = "bat" },
-{ mime = "*/javascript",           run = "bat" },
-{ mime = "*/x-wine-extension-ini", run = "bat" },
+	{ name = "*", run = "hexyl" },
 ]
 
-[[plugin.prepend_fetchers]]
-id   = "git"
-name = "*"
-run  = "git"
+[input]
+cursor_blink = false
+shell_origin = "center"
+shell_offset = [0, -2, 50, 3]
+create_origin = "center"
+create_offset = [0, -2, 50, 3]
 
-[[plugin.prepend_fetchers]]
-id   = "git"
-name = "*/"
-run  = "git"
+[which]
+sort = "desc"
+sort_sensitive = false
+sort_translit = true

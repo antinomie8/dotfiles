@@ -8,6 +8,7 @@ local function highlight_metadata(first, last)
 	local lines = vim.api.nvim_buf_get_lines(buf, first, last, false)
 
 	local valid_keywords = {
+		title = true,
 		source = true,
 		topic = true,
 		tags = true,

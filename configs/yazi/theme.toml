@@ -3,17 +3,13 @@ cwd = { fg = "#e6c384", bold = true }
 hovered = { bg = "#363646" }
 preview_hovered = {}
 
-find_keyword = { fg = "#dca561", bg = "#1f1f28" }
+find_keyword = { fg = "#e82424" }
 find_position = {}
-
-tab_active = { reversed = true }
-tab_inactive = {}
-tab_width = 1
 
 marker_copied = { fg = "#98bb6c" }
 marker_cut = { fg = "#e46876" }
-marker_selected = { fg = "#ffa066" }
 marker_marked = { fg = "#957fb8" }
+marker_selected = { fg = "#ffa066" }
 
 count_copied = { fg = "#1f1f28" }
 count_cut = { fg = "#1f1f28" }
@@ -22,6 +18,11 @@ count_selected = { fg = "#1f1f28" }
 border_symbol = "│"
 border_style = { fg = "#54546d" }
 
+syntect_theme = "~/.config/bat/themes/Kanagawa/Kanagawa.tmTheme"
+
+[tabs]
+active = { fg = "#1f1f28", bg = "#7e9cd8" }
+inactive = { fg = "#7e9cd8", bg = "#363646" }
 
 [mode]
 normal_main = { fg = "#1f1f28", bg = "#7e9cd8" }
@@ -31,22 +32,49 @@ select_alt = { fg = "#9cabca", bg = "#54546d" }
 unset_main = { fg = "#1f1f28", bg = "#dca561" }
 unset_alt = { fg = "#9cabca", bg = "#54546d" }
 
-
 [status]
-separator_open = ""
-separator_close = ""
-separator_style = { fg = "reset", bg = "#2a2a37" }
+overall = { bg = "#2a2a37" }
+sep_left = { open = "", close = "" }
+sep_right = { open = "", close = "" }
 
-progress_label = { fg = "#7e9cd8", bg = "#2a2a37", bold = true }
-progress_normal = { fg = "#2a2a37", bg = "#1f1f28" }
-progress_error = { fg = "#2a2a37", bg = "#1f1f28" }
-
-perm_type = { fg = "#98bb6c" }
+perm_type = { fg = "#957fb8" }
 perm_read = { fg = "#e6c384" }
 perm_write = { fg = "#ff5d62" }
 perm_exec = { fg = "#7aa89f" }
-perm_sep = { fg = "#957fb8" }
+perm_sep = { fg = "#54546d" }
 
+progress_label = { fg = "#7e9cd8", bg = "#2a2a37", bold = true }
+progress_normal = { fg = "#2a2a37", bg = "#1f1f28" }
+progress_error = { fg = "#e82424", bg = "#1f1f28" }
+
+[which]
+cols = 3
+mask = { bg = "#16161d" }
+cand = { fg = "#7e9cd8" }
+rest = { fg = "#727169" }
+desc = { fg = "#54546d" }
+separator = " ➜ "
+separator_style = { fg = "#727169" }
+
+[confirm]
+border = { fg = "#54546d" }
+title = { fg = "#54546d" }
+content = { fg = "#dcd7ba" }
+list = { fg = "#c8c093" }
+btn_yes = { bg = "#98bb6c", fg = "#1f1f28" }
+btn_no = { bg = "#e46876", fg = "#1f1f28" }
+btn_labels = ["[Y]es", "[N]o"]
+
+[spot]
+border = { fg = "#54546d" }
+title = { fg = "#54546d" }
+tbl_col = { fg = "#9cabca" }
+tbl_cell = { fg = "#b8b4d0" }
+
+[notify]
+title_info = { fg = "#6a9598" }
+title_warn = { fg = "#ff9e3b" }
+title_error = { fg = "#e82424" }
 
 [pick]
 border = { fg = "#54546d" }
@@ -55,28 +83,22 @@ inactive = {}
 
 [input]
 border = { fg = "#54546d" }
-title = { fg = "#dcd7ba" }
+title = { fg = "#54546d" }
 value = {}
 selected = { reversed = true }
 
-[completion]
+[cmp]
 border = { fg = "#54546d" }
 active = { reversed = true }
 inactive = {}
+# icon_file = ""
+# icon_folder = ""
+# icon_command = ""
 
 [tasks]
 border = { fg = "#54546d" }
-title = {}
+title = { fg = "#54546d" }
 hovered = { fg = "#957fb8" }
-
-[which]
-cols = 2
-separator = " - "
-separator_style = { fg = "#727169" }
-mask = { bg = "#16161d" }
-rest = { fg = "#727169" }
-cand = { fg = "#7e9cd8" }
-desc = { fg = "#54546d" }
 
 [help]
 on = { fg = "#7aa89f" }
@@ -84,14 +106,30 @@ run = { fg = "#957fb8" }
 desc = {}
 hovered = { reversed = true, bold = true }
 footer = { fg = "#1f1f28", bg = "#dcd7ba" }
-
-[notify]
-title_info = { fg = "#6A9598" }
-title_warn = { fg = "#ff9e3b" }
-title_error = { fg = "#e82424" }
+icon_info = { fg = "#6a9598" }
+icon_warn = { fg = "#ff9e3b" }
+icon_error = { fg = "#e82424" }
 
 [filetype]
 rules = [
-  # { name = "*", fg = "#dcd7ba" },
-  { name = "*/", fg = "#7e9cd8" },
+	{ name = "*", is = "hidden", fg = "#54546d" },
+	{ name = "*/", is = "hidden", fg = "#54546d" },
+	{ name = "*", is = "block", fg = "#e6c384" },
+	{ name = "*", is = "char", fg = "#e6c384" },
+	{ name = "*", is = "exec", fg = "#ff5d62" },
+	{ name = "*", is = "fifo", fg = "#c0a36e" },
+	{ name = "*", is = "link", fg = "#6a9598" },
+	{ name = "*/", is = "link", fg = "#6a9598" },
+	{ name = "*", is = "orphan", fg = "#e82424" },
+	{ name = "*/", is = "orphan", fg = "#e82424" },
+	{ name = "*", is = "sock", fg = "#957fb8" },
+	{ name = "*", is = "sticky", fg = "#7fb4ca" },
+	{ name = "*/", is = "sticky", fg = "#7fb4ca" },
+	{ name = "*/", fg = "#7e9cd8" },
+	{ name = "*", fg = "#dcd7ba" },
+]
+
+[icon]
+append_exts = [
+	{ name = "asy", text = "󰒕", fg = "#ff0000" },
 ]
