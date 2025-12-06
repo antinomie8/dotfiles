@@ -1,37 +1,37 @@
 [[plugin.deps]]
 use = "yazi-rs/plugins:full-border"
-rev = "b886025"
+rev = "19dc890"
 hash = "3996fc74044bc44144b323686f887e1"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:smart-enter"
-rev = "b886025"
+rev = "19dc890"
 hash = "56fdabc96fc1f4d53c96eb884b02a5be"
 
 [[plugin.deps]]
-use = "imsi32/yatline"
-rev = "88bd1c5"
-hash = "981acbe9b758b1af3a8154c932bb936d"
-
-[[plugin.deps]]
 use = "yazi-rs/plugins:jump-to-char"
-rev = "b886025"
-hash = "d2f04875bbd4ed3dd5696e8c4b094fde"
+rev = "19dc890"
+hash = "ce67445ebb1bf3d97b8e44f50904b2c5"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:git"
-rev = "b886025"
-hash = "63b6c222bf2103b3023389dde5e2ecfe"
+rev = "19dc890"
+hash = "94081eed9bc9fe176715c33b0db55d35"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:mount"
-rev = "b886025"
-hash = "f10a14e823382d90fab5b3ee54cb38fe"
+rev = "19dc890"
+hash = "4fccaaf10c36dc2466e2438a386ff017"
 
 [[plugin.deps]]
 use = "Reledia/hexyl"
 rev = "016a09b"
 hash = "50da29476e744dba37d77fb209328fd1"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:piper"
+rev = "19dc890"
+hash = "b26d542e75151835d7bc885f6dda74cb"
 
 [flavor]
 deps = []

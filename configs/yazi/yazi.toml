@@ -38,7 +38,7 @@ prepend_fetchers = [
 	{ id   = "git", name = "*/", run  = "git" },
 ]
 append_previewers = [
-	{ name = "*", run = "hexyl" },
+	{ url = "*", run = 'piper -- hexyl --border=none --terminal-width=$w "$1"' },
 ]
 
 [input]

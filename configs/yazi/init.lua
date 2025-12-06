@@ -14,7 +14,7 @@ th.git.untracked_sign = " "
 th.git.ignored_sign = ""
 require("git"):setup()
 
--- status
+-- statusline components
 function Status:mode()
 	local mode = tostring(self._tab.mode):upper()
 
@@ -112,7 +112,7 @@ function Status:position()
 	})
 end
 
--- header
+-- merge tabs into header
 Header:children_add(function()
 	if #cx.tabs == 1 then return "" end
 	local lines = {}
@@ -158,4 +158,4 @@ Header:children_add(function()
 	return ui.Line(lines)
 end, 9000, Header.RIGHT)
 
-function Tabs.height() return 0 end
+function Tabs.height() return 0 end -- hide tab bar
