@@ -84,7 +84,7 @@ return {
 										{ '""', "()", "[]", "{}", "''", "<>", "$$", "**", "~~", "``" },
 									}, -- if the two characters before the cursor are paired, don't remove them
 									-- snippets
-									{ "*", { "markdown", "tex" }, col - 6, "\\left" },
+									{ "*", { "markdown", "tex" }, col - 5, "\\left" },
 									{ "[", { "bash", "zsh", "sh" }, 1, { "if%s+$", "while%s+$" }, regex = true },
 									{ "(", "cpp", col - 5, "%Wall", regex = true },
 									{ "(", "lua", col - 9, "function" },

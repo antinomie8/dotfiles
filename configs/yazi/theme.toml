@@ -43,9 +43,9 @@ perm_write = { fg = "#ff5d62" }
 perm_exec = { fg = "#7aa89f" }
 perm_sep = { fg = "#54546d" }
 
-progress_label = { fg = "#7e9cd8", bg = "#2a2a37", bold = true }
-progress_normal = { fg = "#2a2a37", bg = "#1f1f28" }
-progress_error = { fg = "#e82424", bg = "#1f1f28" }
+progress_label = { fg = "#c8c093", bg = "#2a2a37", bold = true }
+progress_normal = {}
+progress_error = {}
 
 [which]
 cols = 3
