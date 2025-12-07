@@ -24,6 +24,11 @@ run  = "plugin smart-switch 1"
 desc = "Switch or create tab 2"
 
 [[mgr.prepend_keymap]]
+on = [ "g", "r" ]
+run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"'
+desc = "cd back to the root of the git repository"
+
+[[mgr.prepend_keymap]]
 on  = "J"
 run = "arrow 5"
 
@@ -38,7 +43,3 @@ run = "plugin mount"
 [[mgr.prepend_keymap]]
 on  = "<C-m>"
 run = 'shell --block -- neomutt -a "$@"'
-
-[[mgr.prepend_keymap]]
-on = [ "g", "r" ]
-run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"'

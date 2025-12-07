@@ -37,7 +37,7 @@ overall = { fg = "#7e9cd8", bg = "#2a2a37" }
 sep_left = { open = "", close = "" }
 sep_right = { open = "", close = "" }
 
-perm_type = { fg = "#957fb8" }
+perm_type = { fg = "#7e9cd8", bold = true }
 perm_read = { fg = "#e6c384" }
 perm_write = { fg = "#ff5d62" }
 perm_exec = { fg = "#7aa89f" }

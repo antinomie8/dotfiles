@@ -34,8 +34,8 @@ prepend_rules = [
 
 [plugin]
 prepend_fetchers = [
-	{ id   = "git", name = "*", run  = "git" },
-	{ id   = "git", name = "*/", run  = "git" },
+	{ id = "git", name = "*", run = "git" },
+	{ id = "git", name = "*/", run = "git" },
 ]
 append_previewers = [
 	{ url = "*", run = 'piper -- hexyl --border=none --terminal-width=$w "$1"' },

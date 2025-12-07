@@ -5,13 +5,25 @@ require("full-border"):setup({
 	type = ui.Border.ROUNDED,
 })
 
+require("smart-enter"):setup({
+	open_multi = true,
+})
+
+require("folder-rules"):setup()
+
 th.git = th.git or {}
-th.git.added_sign = " "
-th.git.modified_sign = " "
-th.git.deleted_sign = "󱟃 "
-th.git.updated_sign = " "
-th.git.untracked_sign = " "
-th.git.ignored_sign = ""
+th.git.added_sign = ""
+th.git.modified_sign = ""
+th.git.deleted_sign = "󱟃"
+th.git.updated_sign = ""
+th.git.untracked_sign = ""
+th.git.ignored_sign = ""
+th.git.added = ui.Style():fg("#76946a")
+th.git.modified = ui.Style():fg("#dca561")
+th.git.deleted = ui.Style():fg("#c34043")
+th.git.updated = ui.Style():fg("#5fd700")
+th.git.untracked = ui.Style():fg("#957fb8")
+th.git.ignored = ui.Style():fg("#727169")
 require("git"):setup()
 
 -- statusline components
@@ -39,15 +51,26 @@ end
 
 function Status:name()
 	local h = self._current.hovered
-	if not h then
-		return ui.Line({})
-	end
-	local icon = h:icon()
+	if not h then return ui.Line({}) end
 
-	return ui.Line({
-		ui.Span(" " .. tostring(h.url) .. " "),
-		ui.Span(icon.text):style(icon.style),
-	})
+	local icon = h:icon()
+	local url = tostring(h.url)
+	local home = os.getenv("HOME")
+	if home and url:sub(1, #home) == home then
+		url = "~" .. url:sub(#home + 1)
+	end
+	local spans = {
+		ui.Span(" " .. tostring(url)),
+		ui.Span(" " .. icon.text):style(icon.style),
+	}
+
+	if h.link_to then
+		local color = h:style()
+		table.insert(spans, 2, ui.Span(" -> "):fg(h:style():fg()))
+		table.insert(spans, 3, ui.Span(tostring(h.link_to)))
+	end
+
+	return ui.Line(spans)
 end
 
 function Status:perm()
@@ -61,7 +84,12 @@ function Status:perm()
 		return ""
 	end
 
-	local spans = {}
+	local spans = {
+		ui.Span(ya.user_name(h.cha.uid) or tostring(h.cha.uid)):fg("magenta"),
+		":",
+		ui.Span(ya.group_name(h.cha.gid) or tostring(h.cha.gid)):fg("magenta"),
+		" ",
+	}
 	for i = 1, #perm do
 		local c = perm:sub(i, i)
 		local style = th.status.perm_type
@@ -74,7 +102,7 @@ function Status:perm()
 		elseif c == "x" or c == "s" or c == "S" or c == "t" or c == "T" then
 			style = th.status.perm_exec
 		end
-		spans[i] = ui.Span(c):style(style)
+		spans[i + 4] = ui.Span(c):style(style)
 	end
 	return ui.Line(spans)
 end
@@ -159,3 +187,46 @@ Header:children_add(function()
 end, 9000, Header.RIGHT)
 
 function Tabs.height() return 0 end -- hide tab bar
+
+-- change linemode style
+th.linemode = ui.Style():fg("#54546d")
+
+function Linemode:size()
+	local size = self._file:size()
+	if size then
+		return ui.Span(ya.readable_size(size)):style(th.linemode)
+	else
+		local folder = cx.active:history(self._file.url)
+		return folder and ui.Span(tostring(#folder.files)):style(th.linemode) or ""
+	end
+end
+
+function Linemode:btime()
+	local time = math.floor(self._file.cha.btime or 0)
+	if time == 0 then
+		return ""
+	elseif os.date("%Y", time) == os.date("%Y") then
+		return ui.Span(os.date("%m/%d %H:%M", time)):style(th.linemode)
+	else
+		return ui.Span(os.date("%m/%d  %Y", time)):style(th.linemode)
+	end
+end
+
+function Linemode:mtime()
+	local time = math.floor(self._file.cha.mtime or 0)
+	if time == 0 then
+		return ""
+	elseif os.date("%Y", time) == os.date("%Y") then
+		return ui.Span(os.date("%m/%d %H:%M", time)):style(th.linemode)
+	else
+		return ui.Span(os.date("%m/%d  %Y", time)):style(th.linemode)
+	end
+end
+
+function Linemode:permissions() return ui.Span(self._file.cha:perm() or ""):style(th.linemode) end
+
+function Linemode:owner()
+	local user = ya.user_name and ya.user_name(self._file.cha.uid) or self._file.cha.uid
+	local group = ya.group_name and ya.group_name(self._file.cha.gid) or self._file.cha.gid
+	return ui.Span(string.format("%s:%s", user, group)):style(th.linemode)
+end
