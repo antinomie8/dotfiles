@@ -48,7 +48,6 @@ return {
 		{
 			trig = "sm",
 			dscr = "sum",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = tex.in_math * tex.not_in_cmd,
 		},
@@ -67,7 +66,6 @@ return {
 		{
 			trig = "cycsm",
 			dscr = "cyclic sum",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = tex.in_math * tex.not_in_cmd,
 		},
@@ -77,7 +75,6 @@ return {
 		{
 			trig = "symsm",
 			dscr = "symmetric sum",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = tex.in_math * tex.not_in_cmd,
 		},
@@ -87,7 +84,6 @@ return {
 		{
 			trig = "pd",
 			dscr = "product",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = tex.in_math * tex.not_in_cmd,
 		},
@@ -106,7 +102,6 @@ return {
 		{
 			trig = "cycpd",
 			dscr = "cyclic prod",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = tex.in_math * tex.not_in_cmd,
 		},
@@ -116,7 +111,6 @@ return {
 		{
 			trig = "sympd",
 			dscr = "symmetric prod",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = tex.in_math * tex.not_in_cmd,
 		},
@@ -126,7 +120,6 @@ return {
 		{
 			trig = "ff",
 			dscr = "fraction",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = tex.in_math * tex.not_in_cmd,
 		},
@@ -142,7 +135,6 @@ return {
 		{
 			trig = "sq",
 			dscr = "square root",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = tex.in_math * tex.not_in_cmd,
 		},
@@ -157,7 +149,6 @@ return {
 		{
 			trig = "cbrt",
 			dscr = "cubic root",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = tex.in_math * tex.not_in_cmd,
 		},
@@ -172,7 +163,6 @@ return {
 		{
 			trig = "tx",
 			dscr = "text",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = tex.in_math * tex.not_in_cmd,
 		},
@@ -186,7 +176,6 @@ return {
 		{
 			trig = "op",
 			dscr = "operatorname",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = tex.in_math * tex.not_in_cmd,
 		},
@@ -210,7 +199,6 @@ return {
 		{
 			trig = "cd",
 			dscr = "cdot",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = tex.in_math * tex.not_in_cmd,
 		},
@@ -220,7 +208,6 @@ return {
 		{
 			trig = "Bx",
 			dscr = "QED box",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = tex.in_math * tex.not_in_cmd,
 		},
@@ -239,7 +226,6 @@ return {
 		{
 			trig = "all",
 			dscr = "universal quantifier",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = tex.in_math * tex.not_in_cmd,
 		},
@@ -249,7 +235,6 @@ return {
 		{
 			trig = "ex",
 			dscr = "existensial quantifier",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = tex.in_math * tex.not_in_cmd,
 		},
@@ -303,7 +288,6 @@ return {
 			trig = "(\\?left)",
 			dscr = "pairs",
 			regTrig = true,
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = tex.in_math,
 		},

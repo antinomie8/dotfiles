@@ -148,4 +148,16 @@ return {
 			}
 		)
 	),
+	s({ trig = "!S", dscr = "solution", snippetType = "autosnippet", cond = line_begin, hidden = true },
+		fmt(
+			[[
+				#solution[
+					<>
+				]
+			]],
+			{
+				i(1),
+			}
+		)
+	),
 }
