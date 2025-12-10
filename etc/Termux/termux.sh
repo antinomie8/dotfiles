@@ -42,13 +42,8 @@ function program {
 	fi
 }
 
-if [[ -n $TERMUX_VERSION ]]; then
-	echo -en "${BLUE}It appears you are running Termux. Do you want to run  ${GREEN}./etc/Termux/termux.sh${BLUE} instead ? (y/n) ${WHITE}"
-	if get_answer; then
-		printf '\n'
-		./etc/Termux/termux.sh
-	fi
-fi
+usr=/data/data/com.termux/files/usr/
+etc=$usr/etc
 
 # warn the user if the script is being runned as root
 if [[ "$EUID" == 0 && ! "$SCRIPT_DIR" =~ ^/root ]]; then
@@ -79,22 +74,16 @@ fi
 function add_line {
 	if [[ -f "$2" ]]; then
 		if ! grep --silent "$1" "$2"; then
-			echo "$1" | sudo tee -a "$2" >/dev/null
+			echo "$1" | tee -a "$2" >/dev/null
 		fi
 	else
-		[[ -d "$(dirname "$2")" ]] || sudo mkdir -p "$(dirname "$2")"
-		sudo touch "$2"
-		echo "$1" | sudo tee -a "$2" >/dev/null
+		[[ -d "$(dirname "$2")" ]] || mkdir -p "$(dirname "$2")"
+		touch "$2"
+		echo "$1" | tee -a "$2" >/dev/null
 	fi
 }
-add_line "export ZDOTDIR=\$HOME/.config/zsh" /etc/zsh/zshenv
-add_line "zsh-newuser-install() { :; }" /etc/zsh/zshrc
-
-# configure Pulseaudio to avoid having its cookies in ~/.config
-if [[ -f /etc/pulse/client.conf ]] &&
-	! grep --silent -E "cookie-file = /.+/.cache/pulse/cookie" /etc/pulse/client.conf; then
-	printf "\ncookie-file = %s/.cache/pulse/cookie" "$HOME" | sudo tee -a /etc/pulse/client.conf >/dev/null
-fi
+add_line "export ZDOTDIR=\$HOME/.config/zsh" $etc/zsh/zshenv
+add_line "zsh-newuser-install() { :; }" $etc/zsh/zshrc
 
 # specific things to do on operating systems using pacman as a package manager
 packages=("7zip" "asymptote" "bat" "btop" "clang" "cronie" "eza" "fd" "feh" "firefox" "fzf"
@@ -102,33 +91,10 @@ packages=("7zip" "asymptote" "bat" "btop" "clang" "cronie" "eza" "fd" "feh" "fir
 	"lazygit" "lynx" "man-db" "nasm" "ncdu" "neovim" "notmuch" "npm" "obsidian" "picom"
 	"python" "ripgrep" "rofi" "rsync" "texlive-langfrench" "tldr" "tmux" "tree-sitter-cli"
 	"rustup" "unzip" "wget" "xdotool" "yazi" "zathura" "zathura-pdf-mupdf" "zoxide" "zsh"
-	"lua-language-server" "stylua" "bash-language-server" "shellcheck" "shfmt" "prettier") # Neovim
-if program pacman; then
-	# Install yay (AUR helper)
-	if ! program yay; then
-		echo -en "${BLUE}Do you want to install the Yet Another Yogurt AUR helper (y/n) ? ${WHITE}"
-		if get_answer; then
-			sudo pacman -S --needed git base-devel binutils fakeroot debugedit
-			git clone https://aur.archlinux.org/yay.git /tmp/yay
-			if cd /tmp/yay; then
-				makepkg -si
-				rm -rf /tmp/yay
-				cd "$SCRIPT_DIR" || exit
-			else
-				echo "${RED} Cloning yay failed. Check your internet connection and try again."
-			fi
-		fi
-	fi
-
-	# install required packages
-	if program yay; then
-		package_manager="yay"
-		packages+=("abook" "cppman" "map-gnupg" "ttf-juliamono") # misc
-		packages+=("texlab" "tex-fmt" "asm-lsp")                 # Neovim
-	else
-		package_manager="sudo pacman"
-	fi
-	echo -en "${BLUE}Would you like to synchronize the required packages with ${package_manager##* } ? (y/n) ${WHITE}"
+	"lua-language-server" "stylua" "bash-language-server" "shellcheck" "shfmt" "prettier" # Neovim
+	"ttf-jetbrains-mono-nerd")
+if program pkg; then
+	echo -en "${BLUE}Would you like to synchronize the required packages with pkg ? (y/n) ${WHITE}"
 	if get_answer; then
 		if ! program pdflatex; then
 			echo -en "${BLUE}Do you also want to install the TexLive LaTeX distribution ? (y/n) ${WHITE}"
@@ -136,44 +102,10 @@ if program pacman; then
 				packages+=("texlive")
 			fi
 		fi
-		$package_manager -S --needed "${packages[@]}"
+		pkg install "${packages[@]}"
 	else
 		echo -e "${GREEN}Make sure the following packages are installed :"
 		echo -e "${WHITE}${packages[*]}"
-	fi
-
-	# install fonts
-	function install_font {
-		if [[ ! -f /usr/share/fonts/TTF/$3/$2-Regular.ttf ]] &&
-			[[ ! -f /usr/share/fonts/TTF/$2-Regular.ttf ]]; then
-			echo -en "${BLUE}Would you like to install the $1 ? (y/n) ${WHITE}"
-			if get_answer; then
-				sudo pacman -S "$4"
-			fi
-		fi
-		if [[ -f "/usr/share/fonts/TTF/$2-Regular.ttf" ]]; then
-			[[ -d "/usr/share/fonts/TTF/$3" ]] || sudo mkdir -p "/usr/share/fonts/TTF/$3"
-			sudo mv "/usr/share/fonts/TTF/$2"*.ttf "/usr/share/fonts/TTF/$3/"
-		fi
-	}
-	install_font "JetBrains Mono Nerd Font" JetBrainsMonoNerdFont JetBrainsMono ttf-jetbrains-mono-nerd
-	install_font "FiraCode Nerd Font" FiraCodeNerdFont FiraCode ttf-firacode-nerd
-	if [[ ! -d /usr/share/fonts/noto ]]; then
-		echo -en "${BLUE}Would you like to install the Noto font to have a fallback font for unicode symbols ? (y/n) ${WHITE}"
-		if get_answer; then
-			sudo pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
-		fi
-	fi
-
-	# install, enable and start paccache
-	if ! systemctl status paccache.timer >/dev/null 2>&1; then
-		echo -en "${BLUE}Would you like to use paccache to automatically clean up the package cache ? (y/n) ${WHITE}"
-		if get_answer; then
-			program paccache || sudo pacman -S pacman-contrib
-			[[ -f /etc/systemd/system/paccache.timer ]] || cat <./etc/paccache.timer >/etc/systemd/system/paccache.timer
-			sudo systemctl enable paccache.timer
-			sudo systemctl start paccache.timer
-		fi
 	fi
 else
 	echo -e "${GREEN}Make sure the following packages are installed :"
@@ -185,17 +117,6 @@ else
 	fi
 fi
 printf '\n'
-
-# check the user has a home directory
-if [[ -z "$HOME" ]]; then
-	echo "${RED}You don't have a home directory. Create one ? (y/n) ${WHITE}"
-	if get_answer && program mkhomedir_helper; then
-		sudo mkhomedir_helper "$USER"
-	else
-		echo "${RED}Aborting..."
-	fi
-	[[ -z "$HOME" ]] && exit 1
-fi
 
 # copy scripts to ~/.local/bin
 (
@@ -281,7 +202,7 @@ ${RED}Enter a number (default 3) :${WHITE} "
 			if ! program git || ! program cmake; then
 				installed=true
 				if program pacman; then
-					sudo pacman -S --needed git cmake
+					pacman -S --needed git cmake
 				fi
 				if ! program cmake; then
 					echo "${RED} cmake is required in order to build oly."
@@ -299,10 +220,10 @@ ${RED}Enter a number (default 3) :${WHITE} "
 			if cd "${TMPDIR:-/tmp}"/oly_build; then
 				cmake -DCMAKE_BUILD_TYPE=Release build
 				cmake --build build
-				sudo cp build/bin/oly /usr/local/bin/oly
+				cp build/bin/oly $usr/local/bin/oly
 				cp -r assets/typst ~/.local/
-				[[ -d /usr/local/share/zsh/site-functions ]] || sudo mkdir -p /usr/local/share/zsh/site-functions/
-				sudo cp assets/extras/_oly /usr/local/share/zsh/site-functions/
+				[[ -d $usr/local/share/zsh/site-functions ]] || mkdir -p $usr/local/share/zsh/site-functions/
+				cp assets/extras/_oly $usr/local/share/zsh/site-functions/
 				rm -rf "${TMPDIR:-/tmp}"/oly_build
 				printf '\n'
 				cd "$SCRIPT_DIR" || exit
