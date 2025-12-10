@@ -235,7 +235,7 @@ fi
 		else
 			difference=false
 			while read -r -d ''; do # check wether the version in the repo and in ~/.config differ or not
-				if ! diff --ignore-matching-lines='\S*@\S*' --ignore-matching-lines='export.*API_KEY=' \
+				if ! diff --ignore-matching-lines='\S*@\S*' --ignore-matching-lines='^export.*API_KEY=' --ignore-matching-lines='^cache_dir = ' \
 					"$REPLY" "$HOME/.config/$REPLY" >/dev/null 2>&1; then # ignore obfuscated e-mail adresses
 					difference=true
 					break
@@ -299,7 +299,7 @@ ${RED}Enter a number (default 3) :${WHITE} "
 			git clone https://github.com/anonymousgrasshopper/oly "${TMPDIR:-/tmp}"/oly_build
 			if cd "${TMPDIR:-/tmp}"/oly_build; then
 				[[ -d build ]] || mkdir build
-				cmake -DCMAKE_BUILD_TYPE=Release build
+				cmake -DCMAKE_BUILD_TYPE=Release -B build
 				cmake --build build
 				cp build/bin/oly /usr/local/bin/oly
 				cp -r assets/typst ~/.local/
