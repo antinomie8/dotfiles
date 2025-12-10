@@ -79,12 +79,12 @@ fi
 function add_line {
 	if [[ -f "$2" ]]; then
 		if ! grep --silent "$1" "$2"; then
-			echo "$1" | tee -a "$2" >/dev/null
+			echo "$1" >"$2"
 		fi
 	else
 		[[ -d "$(dirname "$2")" ]] || mkdir -p "$(dirname "$2")"
 		touch "$2"
-		echo "$1" | tee -a "$2" >/dev/null
+		echo "$1" >"$2"
 	fi
 }
 add_line "export ZDOTDIR=\$HOME/.config/zsh" $etc/zsh/zshenv
