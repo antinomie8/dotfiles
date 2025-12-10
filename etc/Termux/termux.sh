@@ -86,22 +86,15 @@ add_line "export ZDOTDIR=\$HOME/.config/zsh" $etc/zsh/zshenv
 add_line "zsh-newuser-install() { :; }" $etc/zsh/zshrc
 
 # specific things to do on operating systems using pacman as a package manager
-packages=("7zip" "asymptote" "bat" "btop" "clang" "cronie" "eza" "fd" "feh" "firefox" "fzf"
-	"gcc" "git" "git-delta" "github-cli" "hexyl" "i3-wm" "imagemagick" "kitty"
-	"lazygit" "lynx" "man-db" "nasm" "ncdu" "neovim" "notmuch" "npm" "obsidian" "picom"
-	"python" "ripgrep" "rofi" "rsync" "texlive-langfrench" "tldr" "tmux" "tree-sitter-cli"
-	"rustup" "unzip" "wget" "xdotool" "yazi" "zathura" "zathura-pdf-mupdf" "zoxide" "zsh"
-	"lua-language-server" "stylua" "bash-language-server" "shellcheck" "shfmt" "prettier" # Neovim
-	"ttf-jetbrains-mono-nerd")
+packages=("7zip" "asymptote" "bat" "clang" "cmake" "cronie" "eza" "fd" "fzf"
+	"git" "git-delta" "gh" "hexyl" "imagemagick"
+	"lazygit" "lynx" "nasm" "ncdu" "neovim" "notmuch"
+	"python" "ripgrep" "rsync" "tmux"
+	"unzip" "wget" "yazi" "zoxide" "zsh"
+	"lua-language-server" "stylua" "shellcheck" "shfmt") # Neovim
 if program pkg; then
 	echo -en "${BLUE}Would you like to synchronize the required packages with pkg ? (y/n) ${WHITE}"
 	if get_answer; then
-		if ! program pdflatex; then
-			echo -en "${BLUE}Do you also want to install the TexLive LaTeX distribution ? (y/n) ${WHITE}"
-			if get_answer; then
-				packages+=("texlive")
-			fi
-		fi
 		pkg install "${packages[@]}"
 	else
 		echo -e "${GREEN}Make sure the following packages are installed :"
@@ -110,11 +103,6 @@ if program pkg; then
 else
 	echo -e "${GREEN}Make sure the following packages are installed :"
 	echo -e "${WHITE}${packages[*]}"
-	# TexLive
-	if ! program pdflatex; then
-		echo -e "${WHITE}Follow instructions at ${BLUE}https://www.tug.org/texlive/quickinstall.html${BLUE} to install TexLive."
-		printf '\n'
-	fi
 fi
 printf '\n'
 
@@ -233,11 +221,6 @@ ${RED}Enter a number (default 3) :${WHITE} "
 		fi
 	fi
 )
-
-# setup rust toolchain
-if program rustup && ! program cargo; then
-	rustup default stable
-fi
 
 # rebuild bat cache
 if program bat && ! bat --list-themes | grep --silent "Kanagawa"; then
