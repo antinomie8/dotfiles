@@ -47,7 +47,7 @@ function program {
 	fi
 }
 
-usr=/data/data/com.termux/files/usr/
+usr=/data/data/com.termux/files/usr
 etc=$usr/etc
 
 # warn the user if the script is being runned as root
@@ -79,16 +79,16 @@ fi
 function add_line {
 	if [[ -f "$2" ]]; then
 		if ! grep --silent "$1" "$2"; then
-			echo "$1" >"$2"
+			echo "$1" >>"$2"
 		fi
 	else
 		[[ -d "$(dirname "$2")" ]] || mkdir -p "$(dirname "$2")"
 		touch "$2"
-		echo "$1" >"$2"
+		echo "$1" >>"$2"
 	fi
 }
-add_line "export ZDOTDIR=\$HOME/.config/zsh" $etc/zsh/zshenv
-add_line "zsh-newuser-install() { :; }" $etc/zsh/zshrc
+add_line "export ZDOTDIR=\$HOME/.config/zsh" $etc/zshenv
+add_line "zsh-newuser-install() { :; }" $etc/zshrc
 
 # specific things to do on operating systems using pacman as a package manager
 packages=("7zip" "asymptote" "bat" "clang" "cmake" "cronie" "eza" "fd" "fzf"
