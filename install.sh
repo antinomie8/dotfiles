@@ -282,33 +282,34 @@ ${RED}Enter a number (default 3) :${WHITE} "
 			if ! program git || ! program cmake; then
 				installed=true
 				if program pacman; then
-					sudo pacman -S --needed git cmake
+					pacman -S --needed git cmake
 				fi
 				if ! program cmake; then
-					echo "${RED} cmake is required in order to build oly."
+					echo -e "${RED} cmake is required in order to build oly."
 					installed=false
 				fi
 				if ! program git; then
-					echo "${RED} git is required to clone oly."
+					echo -e "${RED} git is required to clone oly."
 					installed=false
 				fi
 				if ! $installed; then
-					exit 1
+					exit
 				fi
 			fi
 			git clone https://github.com/anonymousgrasshopper/oly "${TMPDIR:-/tmp}"/oly_build
 			if cd "${TMPDIR:-/tmp}"/oly_build; then
+				[[ -d build ]] || mkdir build
 				cmake -DCMAKE_BUILD_TYPE=Release build
 				cmake --build build
-				sudo cp build/bin/oly /usr/local/bin/oly
+				cp build/bin/oly /usr/local/bin/oly
 				cp -r assets/typst ~/.local/
-				[[ -d /usr/local/share/zsh/site-functions ]] || sudo mkdir -p /usr/local/share/zsh/site-functions/
-				sudo cp assets/extras/_oly /usr/local/share/zsh/site-functions/
+				[[ -d /usr/local/share/zsh/site-functions ]] || mkdir -p /usr/local/share/zsh/site-functions/
+				cp assets/extras/_oly /usr/local/share/zsh/site-functions/
 				rm -rf "${TMPDIR:-/tmp}"/oly_build
 				printf '\n'
-				cd "$SCRIPT_DIR" || exit 1
+				cd "$SCRIPT_DIR" || exit
 			else
-				echo "${RED} Cloning oly failed. Check your internet connection and try again."
+				echo -e "${RED} Cloning oly failed. Check your internet connection and try again."
 			fi
 		fi
 	fi

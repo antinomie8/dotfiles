@@ -7,9 +7,16 @@ GREEN='\x1b[38;2;106;149;137m' #6a9589
 BLUE='\x1b[38;2;126;156;216m'  #7e9cD8
 WHITE='\x1b[38;2;220;215;186m' #dcd7ba
 
+if [[ -z $TERMUX_VERSION ]]; then
+	echo -e "${RED} TERMUX_VERSION variable is not set. Are you really on Termux ?"
+	exit 1
+fi
+
 # cd to the script's directory
-SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
-cd "$SCRIPT_DIR"/../.. || exit
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)/../..
+cd "$SCRIPT_DIR" || exit
+
+echo $PWD
 
 # parse arguments
 while [[ $# -ge 1 ]]; do
@@ -193,11 +200,11 @@ ${RED}Enter a number (default 3) :${WHITE} "
 					pacman -S --needed git cmake
 				fi
 				if ! program cmake; then
-					echo "${RED} cmake is required in order to build oly."
+					echo -e "${RED} cmake is required in order to build oly."
 					installed=false
 				fi
 				if ! program git; then
-					echo "${RED} git is required to clone oly."
+					echo -e "${RED} git is required to clone oly."
 					installed=false
 				fi
 				if ! $installed; then
@@ -206,6 +213,7 @@ ${RED}Enter a number (default 3) :${WHITE} "
 			fi
 			git clone https://github.com/anonymousgrasshopper/oly "${TMPDIR:-/tmp}"/oly_build
 			if cd "${TMPDIR:-/tmp}"/oly_build; then
+				[[ -d build ]] || mkdir build
 				cmake -DCMAKE_BUILD_TYPE=Release build
 				cmake --build build
 				cp build/bin/oly $usr/local/bin/oly
@@ -216,7 +224,7 @@ ${RED}Enter a number (default 3) :${WHITE} "
 				printf '\n'
 				cd "$SCRIPT_DIR" || exit
 			else
-				echo "${RED} Cloning oly failed. Check your internet connection and try again."
+				echo -e "${RED} Cloning oly failed. Check your internet connection and try again."
 			fi
 		fi
 	fi
