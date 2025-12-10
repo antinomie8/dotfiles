@@ -17,6 +17,7 @@ for i in {1..7}; do
 	dots="$dots."
 	back="$back../"
 done
+alias 'gitcd'='cd "$(git rev-parse --show-toplevel)"'
 
 # miscellaneous
 function cfd() {
