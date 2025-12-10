@@ -9,7 +9,7 @@ WHITE='\x1b[38;2;220;215;186m' #dcd7ba
 
 # cd to the script's directory
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
-cd "$SCRIPT_DIR" || exit
+cd "$SCRIPT_DIR"/../.. || exit
 
 # parse arguments
 while [[ $# -ge 1 ]]; do
@@ -247,9 +247,5 @@ fi
 # modify yazi cache directory
 [[ -f ~/.config/yazi/yazi.toml ]] && sed -i 's@/home/Antoine@'"$HOME"'@g' ~/.config/yazi/yazi.toml
 
-# run etc/install.sh
-echo -en "${BLUE}Do you want to run ${GREEN}./etc/install.sh${BLUE} ? (y/n) ${WHITE}"
-if get_answer; then
-	printf '\n'
-	./etc/install.sh
-fi
+cp ./etc/Termux/font.ttf ~/.termux/font.ttf
+cp ./etc/Termux/color.properties ~/.termux/color.properties

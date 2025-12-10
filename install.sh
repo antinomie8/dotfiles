@@ -9,7 +9,7 @@ WHITE='\x1b[38;2;220;215;186m' #dcd7ba
 
 # cd to the script's directory
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
-cd "$SCRIPT_DIR" || exit
+cd "$SCRIPT_DIR" || exit 1
 
 # parse arguments
 while [[ $# -ge 1 ]]; do
@@ -47,6 +47,7 @@ if [[ -n $TERMUX_VERSION ]]; then
 	if get_answer; then
 		printf '\n'
 		./etc/Termux/termux.sh
+		exit 0
 	fi
 fi
 
@@ -292,7 +293,7 @@ ${RED}Enter a number (default 3) :${WHITE} "
 					installed=false
 				fi
 				if ! $installed; then
-					exit
+					exit 1
 				fi
 			fi
 			git clone https://github.com/anonymousgrasshopper/oly "${TMPDIR:-/tmp}"/oly_build
@@ -305,7 +306,7 @@ ${RED}Enter a number (default 3) :${WHITE} "
 				sudo cp assets/extras/_oly /usr/local/share/zsh/site-functions/
 				rm -rf "${TMPDIR:-/tmp}"/oly_build
 				printf '\n'
-				cd "$SCRIPT_DIR" || exit
+				cd "$SCRIPT_DIR" || exit 1
 			else
 				echo "${RED} Cloning oly failed. Check your internet connection and try again."
 			fi
