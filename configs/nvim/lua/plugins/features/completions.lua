@@ -147,7 +147,7 @@ return {
 				default = { "lsp", "path", "snippets", "buffer" },
 				providers = {
 					lsp = {
-						score_offset = 10,
+						score_offset = 100,
 					},
 					cmdline = {
 						enabled = function()
@@ -164,7 +164,7 @@ return {
 							return vim.tbl_contains(lang, "en")
 						end,
 						min_keyword_length = 3,
-						score_offset = -100,
+						score_offset = -10,
 						opts = {},
 					},
 					buffer = {},
