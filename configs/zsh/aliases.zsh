@@ -2,6 +2,14 @@
 ############################################# Aliases #############################################
 ###################################################################################################
 
+# suffix aliases
+alias -s   c="nvim"
+alias -s cpp="nvim"
+alias -s tex="nvim"
+alias -s lua="nvim"
+alias -s asm="nvim"
+alias -s typ="nvim"
+
 # global aliases
 alias -g C='| wc -l'
 alias -g NUL=">/dev/null 2>&1"
@@ -17,7 +25,6 @@ for i in {1..7}; do
 	dots="$dots."
 	back="$back../"
 done
-alias 'gitcd'='cd "$(git rev-parse --show-toplevel)"'
 
 # miscellaneous
 function cfd() {
@@ -112,6 +119,18 @@ alias llag="eza --icons=always --group-directories-first --no-quotes -alh --git"
 alias tree="eza --icons=always --group-directories-first --no-quotes --tree"
 
 # git
+alias gc="git commit"
+alias amend="git commit --amend"
+alias ga="git add"
+alias gb="git branch"
+alias gco="git checkout"
+alias push="git push"
+alias gitcd='cd "$(git rev-parse --show-toplevel)"'
+gacp() {
+	git add .
+	git commit -m $@
+	git push
+}
 function clone() {
 	[[ $# == 0 ]] && { echo "clone: missing operand"; return 1 }
 	[[ ! "$1" =~ ^https?:// ]] && 1="https://github.com/$1" # default domain
@@ -119,17 +138,6 @@ function clone() {
 	[[ "$2" == . || -d "$dir" ]] && dir+="/${1:t}"
 	[[ -z "$2" && "$dir" =~ ^(.*)/([^/]+)\.git$ ]] && dir="${match[1]}/${match[2]}" # strip trailing .git, if any
 	git clone "$1" "$dir" && cd "$dir"
-}
-alias gc="git commit"
-alias amend="git commit --amend"
-alias ga="git add"
-alias gb="git branch"
-alias gco="git checkout"
-alias push="git push"
-gacp() {
-	git add .
-	git commit -m $@
-	git push
 }
 gitdot() {
 	if [[ $# == 0 ]]; then

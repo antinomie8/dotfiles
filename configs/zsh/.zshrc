@@ -161,9 +161,3 @@ eval "$(zoxide init zsh --cmd cd)"
 
 # Aliases
 source "$ZDOTDIR/aliases.zsh"
-
-alias -s   c="nvim"
-alias -s cpp="nvim"
-alias -s tex="nvim"
-alias -s lua="nvim"
-alias -s asm="nvim"
