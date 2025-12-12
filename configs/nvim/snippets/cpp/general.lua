@@ -34,7 +34,7 @@ return {
 			trig = "if ",
 			dscr = "conditional statement",
 			snippetType = "autosnippet",
-			condition = not_in_string_comment * check_not_expanded("%(.*%)$"),
+			condition = not_in_string_comment * check_not_expanded("{$"),
 		},
 		fmt("if <>) {\n\t<>\n}<>", {
 				c(1, {
@@ -62,7 +62,7 @@ return {
 			trig = "elif ",
 			dscr = "else if statement",
 			snippetType = "autosnippet",
-			condition = not_in_string_comment * check_not_expanded("%(.*%)$"),
+			condition = not_in_string_comment * check_not_expanded("{$"),
 		},
 		fmt("else if (<>) {\n\t<>\n}<>", {
 			i(1),
@@ -75,7 +75,7 @@ return {
 			trig = "for ",
 			dscr = "for loop",
 			snippetType = "autosnippet",
-			condition = not_in_string_comment * check_not_expanded("%(.*%)$"),
+			condition = not_in_string_comment * check_not_expanded("{$"),
 		},
 		fmt(
 			[[
@@ -100,7 +100,7 @@ return {
 			trig = "while ",
 			dscr = "while loop",
 			snippetType = "autosnippet",
-			condition = not_in_string_comment * check_not_expanded("%(.*%)$"),
+			condition = not_in_string_comment * check_not_expanded("{$"),
 		},
 		fmt(
 			[[
