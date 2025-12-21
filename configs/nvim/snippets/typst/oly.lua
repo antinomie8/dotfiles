@@ -1,7 +1,8 @@
 local ls = require("snippets.luasnip")
-local s, i, fmt = ls.s, ls.i, ls.fmt
+local s, i, d, fmt = ls.s, ls.i, ls.d, ls.fmt
 local helpers = require("snippets.helpers")
 local line_begin = helpers.line_begin
+local get_visual = helpers.get_visual
 
 return {
 	s({ trig = "!thm", dscr = "theorem", snippetType = "autosnippet", cond = line_begin },
@@ -157,6 +158,18 @@ return {
 			]],
 			{
 				i(1),
+			}
+		)
+	),
+	s(
+		{
+			trig = "voc",
+			dscr = "vocabulary",
+		},
+		fmt(
+			'#vocab("<>")',
+			{
+				d(1, get_visual),
 			}
 		)
 	),

@@ -42,7 +42,21 @@ return {
 
 			local typst = {}
 			typst.in_text = function(fn, obj, pair)
-				return not_in_node("math", "raw_span", "raw_blck", "string", "comment")(fn, obj, pair)
+				if in_node("math", "raw_span", "raw_blck", "string", "comment")(fn, obj, pair) then
+					return false
+				end
+				local node = vim.treesitter.get_node({ pos = { obj.row - 1, obj.col - 1 } })
+				if not node then return true end
+				local parent = node:parent()
+				while parent do
+					if parent:type() == "content" then
+						return true
+					elseif parent:type() == "code" then
+						return false
+					end
+					parent = parent:parent()
+				end
+				return true
 			end
 			typst.not_import = function(_, obj) return not obj.line:match("^%s*#import") end
 

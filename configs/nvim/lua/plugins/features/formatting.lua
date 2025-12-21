@@ -89,6 +89,10 @@ return {
 				command = "prettier",
 				prepend_args = { "--use-tabs" },
 			},
+			typstyle = {
+				command = "typstyle",
+				prepend_args = { "--line-width", "100" },
+			},
 		},
 		format_on_save = function(bufnr)
 			if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
