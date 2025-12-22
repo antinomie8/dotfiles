@@ -29,14 +29,16 @@ scripts=("assemble" "compile_sfml" "fix_corrupt_history" "fzf_preview_wrapper" "
 
 # overwrite configs in the dotfiles repo
 for config in ${configs[@]}; do
-	copy "$HOME/.config/$config" "configs"
+	copy "$HOME/.config/$config" configs
 done
 # overwrite scripts in the dotfiles repo
 for script in ${scripts[@]}; do
-	copy "$HOME/.local/bin/$script" "scripts"
+	copy "$HOME/.local/bin/$script" scripts
 done
 # overwrite dbg.h
-copy "$CPLUS_INCLUDE_PATH/dbg.h" "etc"
+copy "$CPLUS_INCLUDE_PATH/dbg.h" etc
+copy "$HOME/.local/share/typst/packages/local/oly" etc
+fd . etc/oly -tf -e 'pdf' -x rm {}
 
 # remove chosen files and directories
 [[ -f configs/zsh/.zcompdump ]] && rm configs/zsh/.zcompdump
