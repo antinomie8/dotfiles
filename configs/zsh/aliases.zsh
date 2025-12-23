@@ -6,9 +6,9 @@
 alias -s   c="nvim"
 alias -s cpp="nvim"
 alias -s tex="nvim"
-alias -s lua="nvim"
 alias -s asm="nvim"
 alias -s typ="nvim"
+alias -s pdf="zathura"
 
 # global aliases
 alias -g C='| wc -l'
