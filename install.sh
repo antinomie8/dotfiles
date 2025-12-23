@@ -6,6 +6,7 @@ YELLOW='\x1b[38;2;255;158;59m' #ff9e3b
 GREEN='\x1b[38;2;106;149;137m' #6a9589
 BLUE='\x1b[38;2;126;156;216m'  #7e9cD8
 WHITE='\x1b[38;2;220;215;186m' #dcd7ba
+COLOR_RESET='\x1b[0m'
 
 # cd to the script's directory
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
@@ -43,7 +44,7 @@ function program {
 }
 
 if [[ -n $TERMUX_VERSION ]]; then
-	echo -en "${BLUE}It appears you are running Termux. Do you want to run  ${GREEN}./etc/Termux/termux.sh${BLUE} instead ? (y/n) ${WHITE}"
+	echo -en "${BLUE}It appears you are running Termux. Do you want to run  ${GREEN}./etc/Termux/termux.sh${BLUE} instead ? (y/n) ${COLOR_RESET}"
 	if get_answer; then
 		printf '\n'
 		./etc/Termux/termux.sh
@@ -54,9 +55,9 @@ fi
 # warn the user if the script is being runned as root
 if [[ "$EUID" == 0 && ! "$SCRIPT_DIR" =~ ^/root ]]; then
 	echo -e "${YELLOW} Running this script as root might cause permission issues."
-	echo -en "${YELLOW}  Do you really want to continue ? (y/n) ${WHITE}"
+	echo -en "${YELLOW}  Do you really want to continue ? (y/n) ${COLOR_RESET}"
 	if ! get_answer; then
-		echo -e "${RED}  Aborting..."
+		echo -e "${RED}  Aborting...${COLOR_RESET}"
 		exit 1
 	fi
 fi
@@ -64,14 +65,14 @@ fi
 # check wether the default shell is zsh or not
 if [[ ! "$SHELL" =~ /zsh$ ]]; then
 	if [[ -f /bin/zsh ]]; then
-		echo -en "${BLUE}Do you want to make zsh your default shell ? (y/n) ${WHITE}"
+		echo -en "${BLUE}Do you want to make zsh your default shell ? (y/n) ${COLOR_RESET}"
 		if get_answer; then
 			chsh --shell /bin/zsh
 		fi
 	else
 		echo -e "${WHITE}Install zsh and make it your default shell :"
 		echo -e "${GREEN}> ${BLUE}chsh $USER"
-		echo -e "${GREEN}> ${BLUE}/bin/zsh"
+		echo -e "${GREEN}> ${BLUE}/usr/bin/zsh${COLOR_RESET}"
 	fi
 	printf '\n'
 fi
@@ -98,8 +99,8 @@ if [[ -f /etc/pulse/client.conf ]] &&
 fi
 
 # specific things to do on operating systems using pacman as a package manager
-packages=("7zip" "asymptote" "bat" "btop" "clang" "cronie" "eza" "fd" "feh" "firefox" "fzf"
-	"gcc" "git" "git-delta" "github-cli" "hexyl" "i3-wm" "imagemagick" "kitty"
+packages=("7zip" "asymptote" "bat" "btop" "clang" "cmake" "cronie" "eza" "fd" "feh" "firefox"
+	"fzf" "gcc" "git" "git-delta" "github-cli" "hexyl" "i3-wm" "imagemagick" "kitty"
 	"lazygit" "lynx" "man-db" "nasm" "ncdu" "neovim" "notmuch" "npm" "obsidian" "picom"
 	"python" "ripgrep" "rofi" "rsync" "texlive-langfrench" "tldr" "tmux" "tree-sitter-cli"
 	"rustup" "unzip" "wget" "xdotool" "yazi" "zathura" "zathura-pdf-mupdf" "zoxide" "zsh"
@@ -107,7 +108,7 @@ packages=("7zip" "asymptote" "bat" "btop" "clang" "cronie" "eza" "fd" "feh" "fir
 if program pacman; then
 	# Install yay (AUR helper)
 	if ! program yay; then
-		echo -en "${BLUE}Do you want to install the Yet Another Yogurt AUR helper (y/n) ? ${WHITE}"
+		echo -en "${BLUE}Do you want to install the Yet Another Yogurt AUR helper (y/n) ? ${COLOR_RESET}"
 		if get_answer; then
 			sudo pacman -S --needed git base-devel binutils fakeroot debugedit
 			git clone https://aur.archlinux.org/yay.git /tmp/yay
@@ -116,7 +117,7 @@ if program pacman; then
 				rm -rf /tmp/yay
 				cd "$SCRIPT_DIR" || exit
 			else
-				echo "${RED} Cloning yay failed. Check your internet connection and try again."
+				echo "${RED} Cloning yay failed. Check your internet connection and try again.${COLOR_RESET}"
 			fi
 		fi
 	fi
@@ -129,25 +130,25 @@ if program pacman; then
 	else
 		package_manager="sudo pacman"
 	fi
-	echo -en "${BLUE}Would you like to synchronize the required packages with ${package_manager##* } ? (y/n) ${WHITE}"
+	echo -en "${BLUE}Would you like to synchronize the required packages with ${package_manager##* } ? (y/n) ${COLOR_RESET}"
 	if get_answer; then
 		if ! program pdflatex; then
-			echo -en "${BLUE}Do you also want to install the TexLive LaTeX distribution ? (y/n) ${WHITE}"
+			echo -en "${BLUE}Do you also want to install the TexLive LaTeX distribution ? (y/n) ${COLOR_RESET}"
 			if get_answer; then
 				packages+=("texlive")
 			fi
 		fi
 		$package_manager -S --needed "${packages[@]}"
 	else
-		echo -e "${GREEN}Make sure the following packages are installed :"
-		echo -e "${WHITE}${packages[*]}"
+		echo -e "${GREEN}Make sure the following packages are installed :${COLOR_RESET}"
+		echo -e "${WHITE}${packages[*]}${COLOR_RESET}"
 	fi
 
 	# install fonts
 	function install_font {
 		if [[ ! -f /usr/share/fonts/TTF/$3/$2-Regular.ttf ]] &&
 			[[ ! -f /usr/share/fonts/TTF/$2-Regular.ttf ]]; then
-			echo -en "${BLUE}Would you like to install the $1 ? (y/n) ${WHITE}"
+			echo -en "${BLUE}Would you like to install the $1 ? (y/n) ${COLOR_RESET}"
 			if get_answer; then
 				sudo pacman -S "$4"
 			fi
@@ -160,7 +161,7 @@ if program pacman; then
 	install_font "JetBrains Mono Nerd Font" JetBrainsMonoNerdFont JetBrainsMono ttf-jetbrains-mono-nerd
 	install_font "FiraCode Nerd Font" FiraCodeNerdFont FiraCode ttf-firacode-nerd
 	if [[ ! -d /usr/share/fonts/noto ]]; then
-		echo -en "${BLUE}Would you like to install the Noto font to have a fallback font for unicode symbols ? (y/n) ${WHITE}"
+		echo -en "${BLUE}Would you like to install the Noto font to have a fallback font for unicode symbols ? (y/n) ${COLOR_RESET}"
 		if get_answer; then
 			sudo pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
 		fi
@@ -168,7 +169,7 @@ if program pacman; then
 
 	# install, enable and start paccache
 	if ! systemctl status paccache.timer >/dev/null 2>&1; then
-		echo -en "${BLUE}Would you like to use paccache to automatically clean up the package cache ? (y/n) ${WHITE}"
+		echo -en "${BLUE}Would you like to use paccache to automatically clean up the package cache ? (y/n) ${COLOR_RESET}"
 		if get_answer; then
 			program paccache || sudo pacman -S pacman-contrib
 			[[ -f /etc/systemd/system/paccache.timer ]] || cat <./etc/paccache.timer >/etc/systemd/system/paccache.timer
@@ -178,10 +179,10 @@ if program pacman; then
 	fi
 else
 	echo -e "${GREEN}Make sure the following packages are installed :"
-	echo -e "${WHITE}${packages[*]}"
+	echo -e "${WHITE}${packages[*]}${COLOR_RESET}"
 	# TexLive
 	if ! program pdflatex; then
-		echo -e "${WHITE}Follow instructions at ${BLUE}https://www.tug.org/texlive/quickinstall.html${BLUE} to install TexLive."
+		echo -e "${WHITE}Follow instructions at ${BLUE}https://www.tug.org/texlive/quickinstall.html${BLUE} to install TexLive.${COLOR_RESET}"
 		printf '\n'
 	fi
 fi
@@ -189,11 +190,11 @@ printf '\n'
 
 # check the user has a home directory
 if [[ -z "$HOME" ]]; then
-	echo "${RED}You don't have a home directory. Create one ? (y/n) ${WHITE}"
+	echo "${RED}You don't have a home directory. Create one ? (y/n) ${COLOR_RESET}"
 	if get_answer && program mkhomedir_helper; then
 		sudo mkhomedir_helper "$USER"
 	else
-		echo "${RED}Aborting..."
+		echo "${RED}Aborting...${COLOR_RESET}"
 	fi
 	[[ -z "$HOME" ]] && exit 1
 fi
@@ -201,7 +202,7 @@ fi
 # copy scripts to ~/.local/bin
 (
 	cd scripts || {
-		echo -e "${RED}Error:${WHITE} scripts directory is not present in $SCRIPT_DIR"
+		echo -e "${RED}Error:${WHITE} scripts directory is not present in $SCRIPT_DIR${COLOR_RESET}"
 		exit 1
 	}
 	[[ -d "$HOME/.local/bin" ]] || mkdir -p "$HOME/.local/bin"
@@ -211,7 +212,7 @@ fi
 			chmod +x "$HOME/.local/bin/$file"
 		elif ! cmp --silent "$file" "$HOME/.local/bin/$file"; then
 			if [[ -z $OVERWRITE ]]; then
-				echo -en "${BLUE}Would you like to delete your current ${GREEN}$file${BLUE} script to replace it with the one in this repo ? (y/n) ${WHITE}"
+				echo -en "${BLUE}Would you like to delete your current ${GREEN}$file${BLUE} script to replace it with the one in this repo ? (y/n) ${COLOR_RESET}"
 			fi
 			if [[ -n $OVERWRITE ]] || get_answer; then
 				cp "$file" "$HOME/.local/bin/"
@@ -226,7 +227,7 @@ fi
 (
 	[[ -d "$HOME/.config" ]] || mkdir "$HOME/.config"
 	cd "$SCRIPT_DIR/configs" || {
-		echo -e "${RED}Error:${WHITE} configs directory is not present in $SCRIPT_DIR"
+		echo -e "${RED}Error:${WHITE} configs directory is not present in $SCRIPT_DIR${COLOR_RESET}"
 		exit 1
 	}
 	for item in *; do
@@ -247,7 +248,7 @@ fi
 	${BLUE}- 1 :${WHITE} create a backup of your current ${GREEN}$item${WHITE} config before replacing it
 	${BLUE}- 2 :${WHITE} delete your current ${GREEN}$item${WHITE} config and replace it
 	${BLUE}- 3 :${WHITE} skip this step and keep your current ${GREEN}$item${WHITE} config ?
-${RED}Enter a number (default 3) :${WHITE} "
+${RED}Enter a number (default 3) :${COLOR_RESET} "
 					read -r answer
 				else
 					answer=2
@@ -265,7 +266,7 @@ ${RED}Enter a number (default 3) :${WHITE} "
 					cp -r "$item" "$HOME/.config/"
 					;;
 				*)
-					echo -e "${WHITE}Skipping..."
+					echo -e "${WHITE}Skipping...${COLOR_RESET}"
 					;;
 				esac
 			fi
@@ -277,19 +278,19 @@ ${RED}Enter a number (default 3) :${WHITE} "
 # install oly
 (
 	if ! program oly; then
-		echo -en "${BLUE}Do you want to install oly (y/n) ? ${WHITE}"
+		echo -en "${BLUE}Do you want to install oly (y/n) ? ${COLOR_RESET}"
 		if get_answer; then
 			if ! program git || ! program cmake; then
 				installed=true
 				if program pacman; then
-					pacman -S --needed git cmake
+					sudo pacman -S --needed git cmake
 				fi
 				if ! program cmake; then
-					echo -e "${RED} cmake is required in order to build oly."
+					echo -e "${RED} cmake is required in order to build oly.${COLOR_RESET}"
 					installed=false
 				fi
 				if ! program git; then
-					echo -e "${RED} git is required to clone oly."
+					echo -e "${RED} git is required to clone oly.${COLOR_RESET}"
 					installed=false
 				fi
 				if ! $installed; then
@@ -301,15 +302,15 @@ ${RED}Enter a number (default 3) :${WHITE} "
 				[[ -d build ]] || mkdir build
 				cmake -DCMAKE_BUILD_TYPE=Release -B build
 				cmake --build build
-				cp build/bin/oly /usr/local/bin/oly
-				cp -r assets/typst ~/.local/
-				[[ -d /usr/local/share/zsh/site-functions ]] || mkdir -p /usr/local/share/zsh/site-functions/
-				cp assets/extras/_oly /usr/local/share/zsh/site-functions/
+				sudo cp build/bin/oly /usr/local/bin/oly
+				cp -r assets/typst ~/.local/share/
+				[[ -d /usr/local/share/zsh/site-functions ]] || sudo mkdir -p /usr/local/share/zsh/site-functions/
+				sudo cp assets/extras/_oly /usr/local/share/zsh/site-functions/
 				rm -rf "${TMPDIR:-/tmp}"/oly_build
 				printf '\n'
 				cd "$SCRIPT_DIR" || exit
 			else
-				echo -e "${RED} Cloning oly failed. Check your internet connection and try again."
+				echo -e "${RED} Cloning oly failed. Check your internet connection and try again.${COLOR_RESET}"
 			fi
 		fi
 	fi
@@ -329,7 +330,7 @@ fi
 [[ -f ~/.config/yazi/yazi.toml ]] && sed -i 's@/home/Antoine@'"$HOME"'@g' ~/.config/yazi/yazi.toml
 
 # run etc/install.sh
-echo -en "${BLUE}Do you want to run ${GREEN}./etc/install.sh${BLUE} ? (y/n) ${WHITE}"
+echo -en "${BLUE}Do you want to run ${GREEN}./etc/install.sh${BLUE} ? (y/n) ${COLOR_RESET}"
 if get_answer; then
 	printf '\n'
 	./etc/install.sh

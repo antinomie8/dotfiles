@@ -1,7 +1,5 @@
 [mgr]
 cwd = { fg = "#e6c384", bold = true }
-hovered = { bg = "#363646" }
-preview_hovered = {}
 
 find_keyword = { fg = "#e82424" }
 find_position = {}
@@ -19,6 +17,11 @@ border_symbol = "│"
 border_style = { fg = "#54546d" }
 
 syntect_theme = "~/.config/bat/themes/Kanagawa/Kanagawa.tmTheme"
+
+[indicator]
+parent = { bg = "#363646" }
+current = { bg = "#363646" }
+preview = { bold = true }
 
 [tabs]
 active = { fg = "#1f1f28", bg = "#7e9cd8" }

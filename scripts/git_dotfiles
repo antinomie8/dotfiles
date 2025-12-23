@@ -3,18 +3,19 @@
 # colors
 RED='\x1b[38;2;232;36;36m'     #e82424
 YELLOW='\x1b[38;2;255;158;59m' #ff9e3b
+COLOR_RESET='\x1b[0m'
 
 # clone the repo if it is not in ~/.config ans cd into it
 [[ -d ~/.config/dotfiles ]] || git clone https://github.com/anonymousgrasshopper/dotfiles ~/.config/dotfiles
 cd ~/.config/dotfiles || {
-	echo "${RED}Cloning the GitHub repository failed. Check you internet connection and try again"
+	echo "${RED}Cloning the GitHub repository failed. Check you internet connection and try again${COLOR_RESET}"
 	exit
 }
 
 # $1: file to copy relative to ~/.config/dotfiles, $2: destination
 function copy {
 	[[ -e "$1" ]] || {
-		echo -e "${YELLOW} $1 not found"
+		echo -e "${YELLOW} $1 not found${COLOR_RESET}"
 		return 1
 	}
 	[[ -d "$1" ]] && rsync -a --delete "$1/" "$2/$(basename "$1")/"
