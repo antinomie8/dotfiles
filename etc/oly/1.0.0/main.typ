@@ -156,7 +156,8 @@
   set enum(indent: 1em)
   set list(indent: 1em)
 
-  // show strong: set text(font: fonts.sans, size: 0.9em)
+  // Allow math blocks to break across pages
+  show math.equation: set block(breakable: true)
 
   // package settings
   show: thmrules.with(qed-symbol: $square$)

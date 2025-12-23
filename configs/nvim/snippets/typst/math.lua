@@ -168,15 +168,6 @@ return {
 	),
 	s(
 		{
-			trig = ".",
-			dscr = "dot",
-			snippetType = "autosnippet",
-			condition = typst.in_math,
-		},
-		t("dot ")
-	),
-	s(
-		{
 			trig = "all",
 			dscr = "universal quantifier",
 			wordTrig = false,
