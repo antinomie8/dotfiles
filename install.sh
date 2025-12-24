@@ -237,7 +237,10 @@ fi
 		else
 			difference=false
 			while read -r -d ''; do # check wether the version in the repo and in ~/.config differ or not
-				if ! diff --ignore-matching-lines='\S*@\S*' --ignore-matching-lines='^export.*API_KEY=' --ignore-matching-lines='^cache_dir = ' \
+				if ! diff --brief -r \
+					--ignore-matching-lines='\S*@\S*' \
+					--ignore-matching-lines='^export.*API_KEY=' \
+					--ignore-matching-lines='^cache_dir = ' \
 					"$REPLY" "$HOME/.config/$REPLY" >/dev/null 2>&1; then # ignore obfuscated e-mail adresses
 					difference=true
 					break

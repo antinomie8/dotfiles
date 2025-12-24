@@ -22,7 +22,7 @@ function copy_item {
 	[[ -d "$2" ]] || $sudo mkdir -p "$2" 2>/dev/null
 	if [[ ! -f "$2/$1" && ! -d "$2/$1" ]]; then
 		$sudo cp -r "$1" "$2/" 2>/dev/null || echo -e "${RED} ${WHITE}You need to manually move ${GREEN}$1${WHITE} to ${GREEN}$2${COLOR_RESET}"
-	elif ! cmp --silent "$1" "$2/$1"; then
+	elif ! diff --brief -r "$1" "$2/$1" >/dev/null 2>&1; then
 		echo -en "${BLUE}Would you like to delete your current ${GREEN}$1${BLUE} to replace it with the one in this repo ? (y/n) ${COLOR_RESET}"
 		read -r answer
 		case "$answer" in
@@ -47,6 +47,7 @@ program picom && copy_item picom.conf /etc/xdg
 program hyprland && copy_item Bibata "$HOME"/.local/share/icons
 program neomutt && copy_item neomutt.desktop /usr/share/applications
 program neomutt && copy_item neomutt.png "$HOME"/.local/share/icons/hicolor/325x325/apps
+program typst && copy_item oly "$HOME"/.local/share/typst/packages/local
 [[ -f /etc/systemd/journald.conf ]] && copy_item journald.conf /etc/systemd
 [[ -n "$CPLUS_INCLUDE_PATH" ]] && copy_item dbg.h "$CPLUS_INCLUDE_PATH"
 
