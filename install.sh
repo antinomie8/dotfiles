@@ -101,10 +101,10 @@ fi
 # specific things to do on operating systems using pacman as a package manager
 packages=("7zip" "asymptote" "bat" "btop" "clang" "cmake" "cronie" "eza" "fd" "feh" "firefox"
 	"fzf" "gcc" "git" "git-delta" "github-cli" "hexyl" "i3-wm" "imagemagick" "kitty"
-	"lazygit" "lynx" "man-db" "nasm" "ncdu" "neovim" "notmuch" "npm" "obsidian" "picom"
-	"python" "ripgrep" "rofi" "rsync" "texlive-langfrench" "tldr" "tmux" "tree-sitter-cli"
-	"rustup" "unzip" "wget" "xdotool" "yazi" "zathura" "zathura-pdf-mupdf" "zoxide" "zsh"
-	"lua-language-server" "stylua" "bash-language-server" "shellcheck" "shfmt" "prettier") # Neovim
+	"lazygit" "lynx" "man-db" "nasm" "ncdu" "notmuch" "npm" "obsidian" "picom"
+	"python" "ripgrep" "rofi" "rsync" "texlive-langfrench" "tldr" "tmux" "tree-sitter-cli" "typst"
+	"rustup" "unzip" "wget" "xdotool" "zathura" "zathura-pdf-mupdf" "zoxide" "zsh"
+	"lua-language-server" "stylua" "tinymist" "bash-language-server" "shellcheck" "shfmt" "prettier") # Neovim
 if program pacman; then
 	# Install yay (AUR helper)
 	if ! program yay; then
@@ -127,6 +127,7 @@ if program pacman; then
 		package_manager="yay"
 		packages+=("abook" "cppman" "map-gnupg" "ttf-juliamono") # misc
 		packages+=("texlab" "tex-fmt" "asm-lsp")                 # Neovim
+		packages+=("neovim-nightly-bin" "yazi-nightly-bin")
 	else
 		package_manager="sudo pacman"
 	fi

@@ -41,11 +41,13 @@ return {
 				"bash",
 				"c",
 				"cpp",
+				"kitty",
 				"lua",
 				"markdown",
 				"markdown_inline",
 				"python",
 				"regex",
+				"typst",
 				"vim",
 				"vimdoc",
 			})

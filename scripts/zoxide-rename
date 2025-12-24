@@ -1,0 +1,112 @@
+#!/usr/bin/env lua
+
+-- colors
+local function rgb(hex)
+	assert(#hex == 7 and hex:sub(1, 1) == "#")
+	local r = tonumber(hex:sub(2, 3), 16)
+	local g = tonumber(hex:sub(4, 5), 16)
+	local b = tonumber(hex:sub(6, 7), 16)
+	return string.format("\27[38;2;%d;%d;%dm", r, g, b)
+end
+
+local RESET = "\27[0m"
+local RED = rgb("#e82424")
+local YELLOW = rgb("#ff9e3b")
+local GREEN = rgb("#6a9589")
+local GRAY = rgb("#54546d")
+
+-- utilities
+local function shell_escape(s)
+	-- minimal POSIX-safe shell escaping
+	return "'" .. s:gsub("'", "'\\''") .. "'"
+end
+
+local function escape_lua_pattern(s)
+	return (s:gsub("([%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1"))
+end
+
+-- argument parsing
+local options = {
+	["dry-run"] = false,
+}
+local positional = {}
+
+for _, a in ipairs(arg) do
+	if a == "--dry-run" or a == "-n" then
+		options["dry-run"] = true
+	elseif a:sub(1, 2) == "--" then
+		io.stderr:write("Unknown option: " .. a .. "\n")
+		os.exit(1)
+	else
+		table.insert(positional, a)
+	end
+end
+
+local old = positional[1]
+local new = positional[2]
+local command
+
+if #positional == 3 then
+	command = "cat " .. positional[3]
+	options["from-file"] = true
+elseif #positional == 2 then
+	command = "zoxide query -als"
+else
+	io.stderr:write([[
+Usage: zoxide-rename [OPTIONS] <old> <new> [file]
+
+Options:
+  --dry-run, -n   Show what would change, but do not modify zoxide
+]])
+	os.exit(1)
+end
+
+-- main program
+local cmd = io.popen(command)
+if not cmd then
+	if options["from-file"] then
+		io.stderr:write(RED .. "Failed to open " .. positional[3] .. RESET .. "\n")
+	else
+		io.stderr:write(RED .. "Failed to run zoxide query\n" .. RESET)
+	end
+	os.exit(1)
+end
+
+for line in cmd:lines() do
+	-- skip empty or whitespace-only lines
+	if not line:match("^%s*$") then
+		local score, path = line:match("^%s*(%S+)%s+(.+)$")
+
+		if not score or not path then
+			io.stderr:write(YELLOW .. "Skipping malformed line: " .. RESET .. line .. "\n")
+		else
+			local escaped_old = escape_lua_pattern(old)
+			local new_path = path:gsub(escaped_old, new, 1)
+
+			if new_path ~= path then
+				if not options["dry-run"] then
+					-- remove old path
+					os.execute(
+						"zoxide remove " .. shell_escape(path) .. " >/dev/null 2>&1"
+					)
+					-- reset score and add new path with score
+					os.execute(
+						"zoxide remove " .. shell_escape(new_path) .. " >/dev/null 2>&1"
+					)
+					os.execute(
+						"zoxide add " .. shell_escape(new_path) ..
+						" --score " .. tonumber(score) / 4 -- need divide by 4
+					)
+				end
+				print(string.format(
+					GREEN .. "✔" .. GRAY .. " %s → %s (score=%s)" .. RESET,
+					path, new_path, score
+				))
+			else
+				io.stderr:write(
+					GRAY .. "No substitution made, skipping: " .. path .. "\n" .. RESET
+				)
+			end
+		end
+	end
+end

@@ -18,6 +18,7 @@ alias -g NUL=">/dev/null 2>&1"
 alias     q="exit"
 alias     c="clear"
 alias -- +x="chmod u+x"
+alias -- -x="chmod u+x"
 dots="..";
 back="../"
 for i in {1..7}; do
