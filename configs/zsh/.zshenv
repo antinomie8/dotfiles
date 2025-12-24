@@ -6,7 +6,7 @@
 export LANG="en_US.UTF-8"
 export EDITOR="nvim"
 export SUDO_EDITOR="$EDITOR"
-export BROWSER="/mnt/c/Program Files/Mozilla Firefox/firefox.exe"
+export BROWSER="firefox"
 
 # program-specific variables
 export PASSWORD_STORE_DIR="$HOME/.local/share/password-store"
@@ -28,10 +28,3 @@ export MANPAGER="nvim +Man!"
 # Path
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$PATH:/usr/local/texlive/2024/bin/x86_64-linux"
-
-# XDG environment variables
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DOWNLOAD_DIR="$HOME/Téléchargements"
-
-# WSL graphics
-# export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0

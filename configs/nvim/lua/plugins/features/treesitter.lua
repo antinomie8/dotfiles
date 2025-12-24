@@ -41,6 +41,7 @@ return {
 				"bash",
 				"c",
 				"cpp",
+				"hyprlang",
 				"kitty",
 				"lua",
 				"markdown",
