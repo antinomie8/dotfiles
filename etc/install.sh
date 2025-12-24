@@ -6,42 +6,49 @@ YELLOW='\x1b[38;2;255;158;59m' #ff9e3b
 GREEN='\x1b[38;2;106;149;137m' #6a9589
 BLUE='\x1b[38;2;126;156;216m'  #7e9cd8
 WHITE='\x1b[38;2;220;215;186m' #dcd7ba
+COLOR_RESET='\x1b[0m'
 
 # change dir to the script's directory
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 cd "$SCRIPT_DIR" || exit
 
-[[ -n "$WSL_DISTRO_NAME" ]] && WINDOWS=1
-
 # $1: file to copy relative to $SCRIPT_DIR, $2: destination
-function copy_file {
-	[[ -f "$1" ]] || {
+function copy_item {
+	[[ -f "$1" || -d "$1" ]] || {
 		echo -e "${YELLOW} $1 not found"
 		return 1
 	}
-	[[ "$2" = ^/home ]] || sudo="sudo"
+	[[ "$2" == "$HOME"* ]] && sudo="" || sudo="sudo"
 	[[ -d "$2" ]] || $sudo mkdir -p "$2" 2>/dev/null
-	if [[ ! -f "$2/$1" ]]; then
-		$sudo cp "$1" "$2/" 2>/dev/null || echo -e "${RED} ${WHITE}You need to manually move ${GREEN}$1${WHITE} to ${GREEN}$2${WHITE}"
+	if [[ ! -f "$2/$1" && ! -d "$2/$1" ]]; then
+		$sudo cp -r "$1" "$2/" 2>/dev/null || echo -e "${RED} ${WHITE}You need to manually move ${GREEN}$1${WHITE} to ${GREEN}$2${COLOR_RESET}"
 	elif ! cmp --silent "$1" "$2/$1"; then
-		echo -en "${BLUE}Would you like to delete your current ${GREEN}$1${BLUE} to replace it with the one in this repo ? (y/n) ${WHITE}"
+		echo -en "${BLUE}Would you like to delete your current ${GREEN}$1${BLUE} to replace it with the one in this repo ? (y/n) ${COLOR_RESET}"
 		read -r answer
 		case "$answer" in
 		[yY][eE][sS] | [yY])
-			$sudo cp "$1" "$2/" 2>/dev/null || echo -e "${RED} ${WHITE}You need to manually move ${GREEN}$1${WHITE} to ${GREEN}$2${WHITE}"
+			$sudo cp -r "$1" "$2/" 2>/dev/null || echo -e "${RED} ${WHITE}You need to manually move ${GREEN}$1${WHITE} to ${GREEN}$2${COLOR_RESET}"
 			;;
 		esac
 	fi
 }
 
 # place system-wide configuration files
-[[ -f /bin/pacman ]] && copy_file pacman.conf /etc
-eval type picom >/dev/null 2>&1 && copy_file picom.conf /etc/xdg
-[[ -f /etc/arch-release ]] && copy_file paccache.timer /etc/systemd/system
-[[ -f /etc/systemd/journald.conf ]] && copy_file journald.conf /etc/systemd
-[[ -n "$CPLUS_INCLUDE_PATH" ]] && copy_file dbg.h "$CPLUS_INCLUDE_PATH"
-[[ -f /usr/bin/neomutt ]] && copy_file neomutt.desktop /usr/share/applications
-[[ -f /usr/bin/neomutt ]] && copy_file neomutt.png /usr/share/icons/hicolor/325x325/apps
+function program {
+	if type "$1" >/dev/null 2>&1; then
+		return 0
+	else
+		return 1
+	fi
+}
+program pacman && copy_item pacman.conf /etc
+program pacman && copy_item paccache.timer /etc/systemd/system
+program picom && copy_item picom.conf /etc/xdg
+program hyprland && copy_item Bibata "$HOME"/.local/share/icons
+program neomutt && copy_item neomutt.desktop /usr/share/applications
+program neomutt && copy_item neomutt.png "$HOME"/.local/share/icons/hicolor/325x325/apps
+[[ -f /etc/systemd/journald.conf ]] && copy_item journald.conf /etc/systemd
+[[ -n "$CPLUS_INCLUDE_PATH" ]] && copy_item dbg.h "$CPLUS_INCLUDE_PATH"
 
 # Windows and WSL specific files
 if [[ -n "$WSLENV" ]]; then
@@ -75,7 +82,7 @@ if [[ -n "$WSLENV" ]]; then
 
 		# move each file to their destination
 		for i in "${!wsl_scripts[@]}"; do
-			copy_file "$i" "${wsl_scripts[$i]}"
+			copy_item "$i" "${wsl_scripts[$i]}"
 		done
 	)
 fi
