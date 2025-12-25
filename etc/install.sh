@@ -48,6 +48,8 @@ program hyprland && copy_item Bibata "$HOME"/.local/share/icons
 program neomutt && copy_item neomutt.desktop /usr/share/applications
 program neomutt && copy_item neomutt.png "$HOME"/.local/share/icons/hicolor/325x325/apps
 program typst && copy_item oly "$HOME"/.local/share/typst/packages/local
+program firefox && copy_item autoconfig.js /usr/lib/firefox/defaults/pref
+program firefox && copy_item firefox.cfg /usr/lib/firefox
 [[ -f /etc/systemd/journald.conf ]] && copy_item journald.conf /etc/systemd
 [[ -n "$CPLUS_INCLUDE_PATH" ]] && copy_item dbg.h "$CPLUS_INCLUDE_PATH"
 
