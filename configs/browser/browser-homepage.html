@@ -141,7 +141,7 @@
 
 				const links = {
 					" club": "https://math.univ-lyon1.fr/~lass/club.html",
-					"󱉟 Bibliothèque": "https://bm.ville-caluire.fr",
+					"󱉟 bibliothèque": "https://bm.ville-caluire.fr",
 					" lycée": "https://saint-exupery-lyon.ent.auvergnerhonealpes.fr/",
 					" github": "https://github.com/",
 					"󰐱 aops": "https://artofproblemsolving.com/community/c13_contest",
@@ -180,9 +180,9 @@
 					if (event.key === "Enter") {
 						const inputText = inputBox.value.trim().toLowerCase();
 						if (links[inputText]) {
-							window.open(links[inputText], "_self");
+							location.assign(links[inputText], "_self");
 						} else {
-							window.open(
+							location.assign(
 								`https://duckduckgo.com/search?q=${encodeURIComponent(inputText)}`,
 								"_self",
 							);
@@ -196,7 +196,7 @@
 					item.addEventListener("click", function () {
 						const text = item.innerText.toLowerCase();
 						if (links[text]) {
-							window.open(links[text], "_blank");
+							location.assign(links[text], "_blank");
 						}
 					});
 				});

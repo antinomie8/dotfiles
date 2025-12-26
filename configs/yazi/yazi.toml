@@ -17,19 +17,14 @@ image_filter = "nearest"
 image_quality = 50
 
 [opener]
+play = [
+	{ run = "xdg-open %s", orphan = true, desc = "Play" },
+]
 edit = [
-	{ run = '$EDITOR "$@"', block = true, desc = "Edit" },
+	{ run = "$EDITOR %s", block = true, desc = "Edit" },
 ]
 open = [
-	{ run = 'xdg-open "$@"', desc = "Open" },
-]
-zathura = [
-	{ run = 'zathura "$@"', orphan = true, desc = "Open PDF" }
-]
-
-[open]
-prepend_rules = [
-	{ name = "*.pdf", use = "zathura" }
+	{ run = "xdg-open %s", orphan = true, desc = "Open" },
 ]
 
 [plugin]

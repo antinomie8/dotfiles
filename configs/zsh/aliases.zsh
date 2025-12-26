@@ -37,12 +37,6 @@ function mkcd() {
 	[[ $# -ne 1 ]] && return 1
 	mkdir -p "$1"  && cd "$1"
 }
-function run() {
-	[[ $# == 0 ]] && { echo "run: missing operand"; return 1 }
-	command="$1"
-	shift
-	nohup "$command" $@ >/dev/null 2>&1 &
-}
 function compile() {
 	local file_extension="$1:e"
 	local ouput_filename="$1:r"
@@ -101,6 +95,7 @@ function far() {
 alias grep="grep --color=auto"
 alias diff="diff --color=auto"
 alias fzf="fzf --preview='~/.local/bin/fzf_preview_wrapper {}'"
+alias run='runapp --dir "$(pwd)"'
 
 # programs
 alias top="btop"
@@ -111,7 +106,6 @@ alias mutt="neomutt"
 alias m="neomutt"
 
 # eza
-alias eza="LS_COLORS= eza" # prevent eza from reading LS_COLORS instead of ~/.config/eza/theme.yml
 alias ls="eza --icons=always --group-directories-first --no-quotes"
 alias l="eza --icons=always --group-directories-first --no-quotes -a"
 alias ll="eza --icons=always --group-directories-first --no-quotes -alh"

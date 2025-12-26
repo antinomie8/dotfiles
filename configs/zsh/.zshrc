@@ -19,6 +19,8 @@ if [[ ! -d "$ZINIT_HOME" ]]; then
 fi
 source "${ZINIT_HOME}/zinit.zsh"
 
+eval "$(dircolors "$ZDOTDIR/dircolors")" # colorize completion menu entries
+export LS_COLORS=$LS_COLORS":.*=38;2;114;113;105:" # dotfiles in gray
 
 # completions
 zstyle ':completion:*'                 use-cache on
@@ -30,7 +32,6 @@ zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w 
 zstyle ':completion:*:git-checkout:*'  sort false
 zstyle ':completion:*:git-rebase:*'    sort false
 zstyle ':completion:*:descriptions'    format '[%d]'
-eval "$(dircolors "$ZDOTDIR/dircolors")" # colorize completion menu entries
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 # preview
@@ -132,12 +133,13 @@ bindkey "^n"   history-search-forward
 bindkey "^[[A" history-search-backward
 bindkey "^[[B" history-search-forward
 
-bindkey "\cb"  .beginning-of-line
-bindkey "\ce"  .end-of-line
-bindkey "\ei"  .beginning-of-line
-bindkey "\ea"  .end-of-line
-bindkey "\ef"  .forward-word
-bindkey "\eb"  .backward-word
+bindkey "\cb"  beginning-of-line
+bindkey "\ce"  end-of-line
+bindkey "\ei"  beginning-of-line
+bindkey "\ea"  end-of-line
+bindkey "\ef"  forward-word
+bindkey "\eb"  backward-word
+bindkey '^Z'   undo
 
 bindkey "\ee"  autosuggest-accept
 

@@ -99,10 +99,10 @@ if [[ -f /etc/pulse/client.conf ]] &&
 fi
 
 # specific things to do on operating systems using pacman as a package manager
-packages=("7zip" "asymptote" "bat" "btop" "clang" "cmake" "cronie" "eza" "fd" "feh" "firefox"
-	"fzf" "gcc" "git" "git-delta" "github-cli" "hexyl" "i3-wm" "imagemagick" "kitty"
+packages=("7zip" "asymptote" "bat" "btop" "clang" "cmake" "cronie" "eza" "fd" "firefox"
+	"fzf" "gcc" "git" "git-delta" "github-cli" "hexyl" "imagemagick" "kitty"
 	"lazygit" "lynx" "man-db" "nasm" "ncdu" "notmuch" "npm" "obsidian" "picom"
-	"python" "ripgrep" "rofi" "rsync" "texlive-langfrench" "tldr" "tmux" "tree-sitter-cli" "typst"
+	"python" "ripgrep" "rofi" "rsync" "tldr" "tmux" "tree-sitter-cli" "typst"
 	"rustup" "unzip" "wget" "xdotool" "zathura" "zathura-pdf-mupdf" "zoxide" "zsh"
 	"lua-language-server" "stylua" "tinymist" "bash-language-server" "shellcheck" "shfmt" "prettier") # Neovim
 if program pacman; then
@@ -125,18 +125,19 @@ if program pacman; then
 	# install required packages
 	if program yay; then
 		package_manager="yay"
-		packages+=("abook" "cppman" "map-gnupg" "ttf-juliamono") # misc
-		packages+=("texlab" "tex-fmt" "asm-lsp")                 # Neovim
+		packages+=("abook" "cppman" "ttf-juliamono" "runapp") # misc
+		packages+=("texlab" "tex-fmt" "asm-lsp")              # Neovim
 		packages+=("neovim-nightly-bin" "yazi-nightly-bin")
 	else
 		package_manager="sudo pacman"
+		packages+=("neovim" "yazi")
 	fi
 	echo -en "${BLUE}Would you like to synchronize the required packages with ${package_manager##* } ? (y/n) ${COLOR_RESET}"
 	if get_answer; then
 		if ! program pdflatex; then
 			echo -en "${BLUE}Do you also want to install the TexLive LaTeX distribution ? (y/n) ${COLOR_RESET}"
 			if get_answer; then
-				packages+=("texlive")
+				packages+=("texlive" "texlive-langfrench")
 			fi
 		fi
 		$package_manager -S --needed "${packages[@]}"
@@ -332,6 +333,13 @@ fi
 
 # modify yazi cache directory
 [[ -f ~/.config/yazi/yazi.toml ]] && sed -i 's@/home/Antoine@'"$HOME"'@g' ~/.config/yazi/yazi.toml
+
+# check gnupg directory exists and is properly configured
+if [[ ! -d ~/.local/share/gnupg ]]; then
+	mkdir -p ~/.local/share/gnupg
+	chmod 700 ~/.local/share/gnupg
+	gpg --list-keys
+fi
 
 # run etc/install.sh
 echo -en "${BLUE}Do you want to run ${GREEN}./etc/install.sh${BLUE} ? (y/n) ${COLOR_RESET}"

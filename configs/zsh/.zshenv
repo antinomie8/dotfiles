@@ -6,6 +6,7 @@
 export LANG="en_US.UTF-8"
 export EDITOR="nvim"
 export SUDO_EDITOR="$EDITOR"
+export TERMINAL="kitty -1"
 export BROWSER="firefox"
 
 # program-specific variables
