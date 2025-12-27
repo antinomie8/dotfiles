@@ -92,31 +92,38 @@ return {
 								local function table_convert(arg) return type(arg) == "table" and arg or { arg } end
 								local conds = {
 									{
-										"<bs>",
-										"*",
-										col - 2,
-										{ '""', "()", "[]", "{}", "''", "<>", "$$", "**", "~~", "``" },
+										key = "<bs>",
+										ft = "*",
+										text = { '""', "()", "[]", "{}", "''", "<>", "$$", "**", "~~", "``" },
 									}, -- if the two characters before the cursor are paired, don't remove them
 									-- snippets
-									{ "*", { "markdown", "tex" }, col - 5, "\\left" },
-									{ "[", { "bash", "zsh", "sh" }, 1, { "if%s+$", "while%s+$" }, regex = true },
-									{ "(", "cpp", col - 5, "%Wall", regex = true },
-									{ "(", "lua", col - 9, "function" },
+									{ key = "*", ft = { "markdown", "tex" }, text = "\\left" },
+									{ key = "[", ft = { "bash", "zsh", "sh" }, text = { "if ", "while " } }, -- use sh in case ft is wrong
+									{ key = "(", ft = "cpp", regex = { { "%Wall", 4 } } },
 								}
 								for _, cond in ipairs(conds) do
-									local key = #cond[1] == 1 and cond[1] or vim.api.nvim_replace_termcodes(cond[1], true, false, true)
+									local key = #cond.key == 1 and cond.key or vim.api.nvim_replace_termcodes(cond.key, true, false, true)
 									if key == "*" or key == obj.key then
 										if
-											vim.tbl_contains(table_convert(cond[2]), function(v)
+											vim.tbl_contains(table_convert(cond.ft), function(v)
 												return v == "*" or v == ft
 											end, { predicate = true })
 										then
-											local start, stop = table_convert(cond[3])[1], table_convert(cond[3])[2] or col - 1
-											local text = line:sub(start, stop)
-											local patterns = table_convert(cond[4])
-											for _, pattern in ipairs(patterns) do
-												if cond.regex and text:match("^" .. pattern .. "$") or text == pattern then
-													return false
+											if cond.text then
+												for _, text in ipairs(table_convert(cond.text)) do
+													local buffer_text = line:sub(col - #text, col - 1)
+													if buffer_text == text then
+														return false
+													end
+												end
+											end
+											if cond.regex then
+												for _, regex in ipairs(cond.regex) do
+													local pattern, length = regex[1], (regex[2] or #regex[1])
+													local buffer_text = line:sub(col - length, col - 1)
+													if buffer_text:match("^" .. pattern .. "$") then
+														return false
+													end
 												end
 											end
 										end

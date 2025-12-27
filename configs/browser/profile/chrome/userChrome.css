@@ -36,6 +36,7 @@
 .titlebar-button,
 .buttons-wrapper,
 #sidebar-tools-and-extensions-splitter,
+#PersonalToolbar,
 .urlbarView-row::before {
 	display: none !important;
 }

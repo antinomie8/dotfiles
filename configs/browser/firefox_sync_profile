@@ -1,21 +1,26 @@
 #!/bin/bash
 
 # colors
-RED='\x1b[38;2;232;36;36m'     #e82424
-BLUE='\x1b[38;2;126;156;216m'  #7e9cd8
-WHITE='\x1b[38;2;220;215;186m' #dcd7ba
+RED='\x1b[38;2;232;36;36m'    #e82424
+BLUE='\x1b[38;2;126;156;216m' #7e9cd8
+COLOR_RESET='\x1b[0m'
 
 # find the firefox proile dir
-FIREFOX_PROFILES_DIR=~/.mozilla/firefox
-if [[ -n "$WSLENV" ]]; then
+if [[ -z "$WSLENV" ]]; then
+	if [[ -d ${XDG_CONFIG_HOME:-$HOME/.config}/mozilla/firefox ]]; then
+		FIREFOX_PROFILES_DIR=${XDG_CONFIG_HOME:-$HOME/.config}/mozilla/firefox
+	else
+		FIREFOX_PROFILES_DIR=~/.mozilla/firefox
+	fi
+else
 	# get the Windows username
 	while true; do
-		echo -en "${BLUE}What is your Windows username ? ${WHITE}"
+		echo -en "${BLUE}What is your Windows username ? ${COLOR_RESET}"
 		read -r win_username
 		if [[ -n "$win_username" && -d "/mnt/c/Users/$win_username" ]]; then
 			break
 		else
-			echo -e "${RED}Home directory not found. Try again..."
+			echo -e "${RED}Home directory not found. Try again...${COLOR_RESET}"
 		fi
 	done
 
@@ -25,13 +30,13 @@ fi
 # check there is at least one directory in $FIREFOX_PROFILES_DIR
 exists_profile=false
 for item in "$FIREFOX_PROFILES_DIR"/*; do
-	if [[ -d "$item" ]]; then
+	if [[ -d "$item" && "$item" != "Crash Reports" && "$item" != "Pending Pings" && "$item" != "Profile Groups" ]]; then
 		exists_profile=true
 		break
 	fi
 done
 $exists_profile || {
-	echo -e "${RED}Where even is your Firefox profile ?"
+	echo -e "${RED}Where even is your Firefox profile ?${COLOR_RESET}"
 	exit 1
 }
 
@@ -40,10 +45,11 @@ FIREFOX_PROFILE_DIR=$(
 	fd --hidden --max-depth 1 -td . "$FIREFOX_PROFILES_DIR" |
 		grep -v "Crash Reports" |
 		grep -v "Pending Pings" |
+		grep -v "Profile Groups" |
 		fzf --select-1 --preview='eza -1alh --group-directories-first --color=always --icons {}'
 )
 if [[ -z "$FIREFOX_PROFILE_DIR" ]]; then
-	echo -e "${RED}Please select a Firefox profile."
+	echo -e "${RED}Please select a Firefox profile.${COLOR_RESET}"
 	exit 1
 fi
 
