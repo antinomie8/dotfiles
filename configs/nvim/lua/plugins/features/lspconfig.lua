@@ -126,6 +126,8 @@ return {
 					},
 				},
 
+				pyright = {},
+
 				qmlls = {
 					cmd = { "qmlls6" },
 				},

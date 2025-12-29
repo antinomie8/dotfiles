@@ -11,7 +11,7 @@ MOD_SEPARATORS = ['+', ' ']
 COMMENT_BIND_PATTERN = "#/#"
 
 parser = argparse.ArgumentParser(description='Hyprland keybind reader')
-parser.add_argument('--path', type=str, default="$HOME/.config/hypr/hyprland/keybindings", help='path to keybind dir')
+parser.add_argument('--path', type=str, default="$HOME/.config/hypr/hyprland.conf", help='path to keybind file (sourcing isn\'t supported)')
 args = parser.parse_args()
 content_lines = []
 reading_line = 0
@@ -136,7 +136,9 @@ def autogenerate_comment(dispatcher: str, params: str = "") -> str:
         case _:
             return ""
 
-def get_keybind_at_line(line, line_start = 0):
+def get_keybind_at_line(line_number, line_start = 0):
+    global content_lines
+    line = content_lines[line_number]
     _, keys = line.split("=", 1)
     keys, *comment = keys.split("#", 1)
 
@@ -189,7 +191,7 @@ def get_binds_recursive(current_content, scope):
             current_content["children"].append(get_binds_recursive(Section([], [], section_name), heading_scope))
 
         elif line.startswith(COMMENT_BIND_PATTERN):
-            keybind = get_keybind_at_line(line, line_start=len(COMMENT_BIND_PATTERN))
+            keybind = get_keybind_at_line(reading_line, line_start=len(COMMENT_BIND_PATTERN))
             if(keybind != None):
                 current_content["keybinds"].append(keybind)
 
@@ -197,7 +199,7 @@ def get_binds_recursive(current_content, scope):
             pass
 
         else: # Normal keybind
-            keybind = get_keybind_at_line(line)
+            keybind = get_keybind_at_line(reading_line)
             if(keybind != None):
                 current_content["keybinds"].append(keybind)
 
@@ -205,43 +207,18 @@ def get_binds_recursive(current_content, scope):
 
     return current_content;
 
-def parse_keys(path: str) -> Dict[str, List[KeyBinding]] | str:
+def parse_keys(path: str) -> Dict[str, List[KeyBinding]]:
     global content_lines
-    global reading_line
-
-    source_file_reading_line = 0
-    source_file_lines = read_content(path).splitlines()
-    if source_file_lines[0] == "error":
+    content_lines = read_content(path).splitlines()
+    if content_lines[0] == "error":
         return "error"
-
-    keybinds = Section([], [], "")
-    sections = [0, 0, 1, 1, 2, 2, 2, 2]
-    for _ in range(sections[-1] + 1):
-        keybinds["children"].append(Section([], [], ""))
-
-    nb_sections = 0
-    while source_file_reading_line < len(source_file_lines):
-        line = source_file_lines[source_file_reading_line]
-        if line.startswith("source"):
-            _, filepath = line.split("=", 1)
-            filepath = filepath.split("#", 1)[0].strip()
-            filepath = os.path.join(os.path.dirname(path), filepath)
-            content_lines = read_content(filepath).splitlines()
-            reading_line = 0
-            if content_lines[0] != "error":
-                section_name = os.path.splitext(os.path.basename(filepath))[0].capitalize()
-                keybinds["children"][sections[nb_sections]]["children"].append(get_binds_recursive(Section([], [], section_name), 0))
-                nb_sections += 1
-
-        source_file_reading_line += 1
-
-    return keybinds
+    return get_binds_recursive(Section([], [], ""), 0)
 
 
 if __name__ == "__main__":
     import json
 
-    ParsedKeys = parse_keys(os.path.expandvars(args.path))
+    ParsedKeys = parse_keys(args.path)
     print(json.dumps(ParsedKeys))
-    with open("/home/antoine/" + os.path.basename(os.path.dirname(args.path)) + ".log.json", "a") as f:
+    with open("/home/antoine/ii_" + os.path.basename(os.path.dirname(args.path)) + ".log.json", "a") as f:
         print(json.dumps(ParsedKeys, indent=4), file=f)
