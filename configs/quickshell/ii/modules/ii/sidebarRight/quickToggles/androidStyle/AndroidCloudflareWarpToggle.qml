@@ -7,7 +7,7 @@ import Quickshell
 import Quickshell.Io
 
 AndroidQuickToggleButton {
-    id: root
+	id: root
 
-    toggleModel: CloudflareWarpToggle {}
+	toggleModel: CloudflareWarpToggle {}
 }

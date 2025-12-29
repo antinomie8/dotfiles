@@ -7,19 +7,19 @@ import qs.modules.common
 import qs.modules.waffle.looks
 
 AppButton {
-    id: root
+	id: root
 
-    iconName: checked ? "system-search-checked" : "system-search"
-    separateLightDark: true
+	iconName: checked ? "system-search-checked" : "system-search"
+	separateLightDark: true
 
-    checked: GlobalStates.searchOpen && LauncherSearch.query !== ""
-    onClicked: {
-        GlobalStates.searchOpen = !GlobalStates.searchOpen; // For now...
-    }
+	checked: GlobalStates.searchOpen && LauncherSearch.query !== ""
+	onClicked: {
+		GlobalStates.searchOpen = !GlobalStates.searchOpen; // For now...
+	}
 
-    BarToolTip {
-        id: tooltip
-        text: Translation.tr("Search")
-        extraVisibleCondition: root.shouldShowTooltip
-    }
+	BarToolTip {
+		id: tooltip
+		text: Translation.tr("Search")
+		extraVisibleCondition: root.shouldShowTooltip
+	}
 }

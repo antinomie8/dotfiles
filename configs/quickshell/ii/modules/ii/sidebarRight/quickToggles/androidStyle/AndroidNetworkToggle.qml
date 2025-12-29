@@ -6,8 +6,7 @@ import qs.modules.common.widgets
 import QtQuick
 
 AndroidQuickToggleButton {
-    id: root
-    
-    toggleModel: NetworkToggle {}
-}
+	id: root
 
+	toggleModel: NetworkToggle {}
+}

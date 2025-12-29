@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 if [[ -z "$1" ]]; then
-    echo "Usage: $0 <target_locale> [model]"
-    exit 1
+	echo "Usage: $0 <target_locale> [model]"
+	exit 1
 fi
 
 # Variables
@@ -27,11 +27,12 @@ content=$(cat "${TRANSLATIONS_DIR}/en_US.json")
 prompt_json=$(jq -n --arg prompt_text "$instruction" --arg content "$content" '$prompt_text + "\n```\n" + $content + "\n```\n"')
 
 # Prepare request data using jq
-payload=$(jq -n \
-    --arg prompt "$prompt_json" \
-    --arg temperature "0" \
-    --arg model "$MODEL" \
-    '{
+payload=$(
+	jq -n \
+		--arg prompt "$prompt_json" \
+		--arg temperature "0" \
+		--arg model "$MODEL" \
+		'{
         contents: [{
             parts: [
                 {text: $prompt}
@@ -53,13 +54,13 @@ notify-send "Translation started" "Will take 2 minutes, and you'll be notified w
 
 # Make the request
 response=$(curl "https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent" \
--H "x-goog-api-key: $API_KEY" \
--H 'Content-Type: application/json' \
--X POST \
--d "$payload" 2> /dev/null)
+	-H "x-goog-api-key: $API_KEY" \
+	-H 'Content-Type: application/json' \
+	-X POST \
+	-d "$payload" 2>/dev/null)
 # echo "$response" | jq
 
 # Write the result
-echo "$response" | jq -r '.candidates[0].content.parts[0].text' > "${TRANSLATIONS_TARGET_DIR}/${TARGET_LOCALE}.json"
-jq --arg locale "$TARGET_LOCALE" '.language.ui = $locale' "$SHELL_CONFIG_FILE" > "${SHELL_CONFIG_FILE}.tmp" && mv "${SHELL_CONFIG_FILE}.tmp" "$SHELL_CONFIG_FILE"
+echo "$response" | jq -r '.candidates[0].content.parts[0].text' >"${TRANSLATIONS_TARGET_DIR}/${TARGET_LOCALE}.json"
+jq --arg locale "$TARGET_LOCALE" '.language.ui = $locale' "$SHELL_CONFIG_FILE" >"${SHELL_CONFIG_FILE}.tmp" && mv "${SHELL_CONFIG_FILE}.tmp" "$SHELL_CONFIG_FILE"
 notify-send "Translation complete" "Enjoy! In case you wanna refine it, the file is in ${TRANSLATIONS_TARGET_DIR}/${TARGET_LOCALE}.json" -a "$NOTIFICATION_APP_NAME"

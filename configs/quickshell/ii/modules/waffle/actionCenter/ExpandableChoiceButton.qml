@@ -12,18 +12,18 @@ import qs.modules.waffle.looks
 import qs.modules.waffle.actionCenter
 
 WChoiceButton {
-    id: root
+	id: root
 
-    property bool expanded: false
-    checked: expanded
-    clip: true
+	property bool expanded: false
+	checked: expanded
+	clip: true
 
-    horizontalPadding: 12
-    verticalPadding: 6
-    animateChoiceHighlight: false
+	horizontalPadding: 12
+	verticalPadding: 6
+	animateChoiceHighlight: false
 
-    Behavior on implicitHeight {
-        animation: Looks.transition.resize.createObject(this)
-    }
-    onClicked: expanded = !expanded
+	Behavior on implicitHeight {
+		animation: Looks.transition.resize.createObject(this)
+	}
+	onClicked: expanded = !expanded
 }

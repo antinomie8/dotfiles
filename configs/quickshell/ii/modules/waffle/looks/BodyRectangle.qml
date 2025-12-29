@@ -8,7 +8,7 @@ import qs.modules.common.functions
 import qs.modules.waffle.looks
 
 Rectangle {
-    Layout.fillHeight: true
-    Layout.fillWidth: true
-    color: Looks.colors.bgPanelBody
+	Layout.fillHeight: true
+	Layout.fillWidth: true
+	color: Looks.colors.bgPanelBody
 }

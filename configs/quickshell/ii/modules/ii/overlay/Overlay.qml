@@ -11,84 +11,85 @@ import Quickshell.Wayland
 import Quickshell.Hyprland
 
 Scope {
-    id: root
+	id: root
 
-    property Component regionComponent: Component {
-        Region {}
-    }
-    
-    Loader {
-        id: overlayLoader
-        active: GlobalStates.overlayOpen || OverlayContext.hasPinnedWidgets
-        sourceComponent: PanelWindow {
-            id: overlayWindow
-            exclusionMode: ExclusionMode.Ignore
-            WlrLayershell.namespace: "quickshell:overlay"
-            WlrLayershell.layer: WlrLayer.Overlay
-            // Use OnDemand for pinned widgets to allow focus switching with mouse clicks
-            WlrLayershell.keyboardFocus: GlobalStates.overlayOpen ? WlrKeyboardFocus.Exclusive : (OverlayContext.clickableWidgets.length > 0 ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None)
-            visible: true
-            color: "transparent"
+	property Component regionComponent: Component {
+		Region {}
+	}
 
-            mask: Region {
-                item: GlobalStates.overlayOpen ? overlayContent : null
-                regions: OverlayContext.clickableWidgets.map((widget) => regionComponent.createObject(this, {
-                    item: widget
-                }));
-            }
+	Loader {
+		id: overlayLoader
+		active: GlobalStates.overlayOpen || OverlayContext.hasPinnedWidgets
+		sourceComponent: PanelWindow {
+			id: overlayWindow
+			exclusionMode: ExclusionMode.Ignore
+			WlrLayershell.namespace: "quickshell:overlay"
+			WlrLayershell.layer: WlrLayer.Overlay
+			// Use OnDemand for pinned widgets to allow focus switching with mouse clicks
+			WlrLayershell.keyboardFocus: GlobalStates.overlayOpen ? WlrKeyboardFocus.Exclusive : (OverlayContext.clickableWidgets.length > 0 ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None)
+			visible: true
+			color: "transparent"
 
-            anchors {
-                top: true
-                bottom: true
-                left: true
-                right: true
-            }
+			mask: Region {
+				item: GlobalStates.overlayOpen ? overlayContent : null
+				regions: OverlayContext.clickableWidgets.map(widget => regionComponent.createObject(this, {
+						item: widget
+					}))
+			}
 
-            HyprlandFocusGrab {
-                id: grab
-                windows: [overlayWindow]
-                active: false
-                onCleared: () => {
-                    if (!active) GlobalStates.overlayOpen = false;
-                }
-            }
+			anchors {
+				top: true
+				bottom: true
+				left: true
+				right: true
+			}
 
-            Connections {
-                target: GlobalStates
-                function onOverlayOpenChanged() {
-                    delayedGrabTimer.restart();
-                }
-            }
+			HyprlandFocusGrab {
+				id: grab
+				windows: [overlayWindow]
+				active: false
+				onCleared: () => {
+					if (!active)
+						GlobalStates.overlayOpen = false;
+				}
+			}
 
-            Timer {
-                id: delayedGrabTimer
-                interval: Appearance.animation.elementMoveFast.duration
-                onTriggered: {
-                    grab.active = GlobalStates.overlayOpen;
-                }
-            }
+			Connections {
+				target: GlobalStates
+				function onOverlayOpenChanged() {
+					delayedGrabTimer.restart();
+				}
+			}
 
-            OverlayContent {
-                id: overlayContent
-                anchors.fill: parent
-            }
-        }
-    }
+			Timer {
+				id: delayedGrabTimer
+				interval: Appearance.animation.elementMoveFast.duration
+				onTriggered: {
+					grab.active = GlobalStates.overlayOpen;
+				}
+			}
 
-    IpcHandler {
-        target: "overlay"
+			OverlayContent {
+				id: overlayContent
+				anchors.fill: parent
+			}
+		}
+	}
 
-        function toggle(): void {
-            GlobalStates.overlayOpen = !GlobalStates.overlayOpen;
-        }
-    }
+	IpcHandler {
+		target: "overlay"
 
-    GlobalShortcut {
-        name: "overlayToggle"
-        description: "Toggles overlay on press"
+		function toggle(): void {
+			GlobalStates.overlayOpen = !GlobalStates.overlayOpen;
+		}
+	}
 
-        onPressed: {
-            GlobalStates.overlayOpen = !GlobalStates.overlayOpen;
-        }
-    }
+	GlobalShortcut {
+		name: "overlayToggle"
+		description: "Toggles overlay on press"
+
+		onPressed: {
+			GlobalStates.overlayOpen = !GlobalStates.overlayOpen;
+		}
+	}
 }

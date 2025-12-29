@@ -9,22 +9,22 @@ import qs.modules.common.functions
 import qs.modules.waffle.looks
 
 Item {
-    id: root
+	id: root
 
-    property string icon: ""
-    property real implicitSize: 16
-    implicitWidth: implicitSize
-    implicitHeight: implicitSize
+	property string icon: ""
+	property real implicitSize: 16
+	implicitWidth: implicitSize
+	implicitHeight: implicitSize
 
-    Kirigami.Icon {
-        anchors.fill: parent
-        implicitWidth: root.implicitSize
-        implicitHeight: root.implicitSize
+	Kirigami.Icon {
+		anchors.fill: parent
+		implicitWidth: root.implicitSize
+		implicitHeight: root.implicitSize
 
-        source: root.icon || fallback
-        fallback: `${Looks.iconsPath}/apps.svg`
-        roundToIconSize: false
-        isMask: !root.icon
-        color: Looks.colors.fg
-    }
+		source: root.icon || fallback
+		fallback: `${Looks.iconsPath}/apps.svg`
+		roundToIconSize: false
+		isMask: !root.icon
+		color: Looks.colors.fg
+	}
 }

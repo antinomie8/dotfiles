@@ -6,6 +6,5 @@ import qs.modules.common.widgets
 import QtQuick
 
 AndroidQuickToggleButton {
-    toggleModel: IdleInhibitorToggle {}
+	toggleModel: IdleInhibitorToggle {}
 }
-

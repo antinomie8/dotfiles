@@ -8,18 +8,18 @@ import qs.modules.common.functions
 import qs.modules.waffle.looks
 
 Rectangle {
-    id: root
+	id: root
 
-    required property var target
-    z: 0
+	required property var target
+	z: 0
 
-    anchors {
-        fill: target
-        margins: -border.width
-    }
+	anchors {
+		fill: target
+		margins: -border.width
+	}
 
-    border.color: Looks.colors.ambientShadow
-    border.width: 1
-    color: "transparent"
-    radius: target.radius + border.width
+	border.color: Looks.colors.ambientShadow
+	border.width: 1
+	color: "transparent"
+	radius: target.radius + border.width
 }

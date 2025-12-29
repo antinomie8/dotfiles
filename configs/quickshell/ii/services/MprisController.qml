@@ -15,45 +15,45 @@ import qs.modules.common
  * A service that provides easy access to the active Mpris player.
  */
 Singleton {
-	id: root;
-	property list<MprisPlayer> players: Mpris.players.values.filter(player => isRealPlayer(player));
-	property MprisPlayer trackedPlayer: null;
-	property MprisPlayer activePlayer: trackedPlayer ?? Mpris.players.values[0] ?? null;
-	signal trackChanged(reverse: bool);
+	id: root
+	property list<MprisPlayer> players: Mpris.players.values.filter(player => isRealPlayer(player))
+	property MprisPlayer trackedPlayer: null
+	property MprisPlayer activePlayer: trackedPlayer ?? Mpris.players.values[0] ?? null
+	signal trackChanged(reverse: bool)
 
-	property bool __reverse: false;
+	property bool __reverse: false
 
-	property var activeTrack;
+	property var activeTrack
 
 	property bool hasPlasmaIntegration: false
-    Process {
-        id: plasmaIntegrationAvailabilityCheckProc
-        running: true
-        command: ["bash", "-c", "command -v plasma-browser-integration-host"]
-        onExited: (exitCode, exitStatus) => {
-            root.hasPlasmaIntegration = (exitCode === 0);
-        }
-    }
+	Process {
+		id: plasmaIntegrationAvailabilityCheckProc
+		running: true
+		command: ["bash", "-c", "command -v plasma-browser-integration-host"]
+		onExited: (exitCode, exitStatus) => {
+			root.hasPlasmaIntegration = (exitCode === 0);
+		}
+	}
 	function isRealPlayer(player) {
-        if (!Config.options.media.filterDuplicatePlayers) {
-            return true;
-        }
-        return (
-            // Remove unecessary native buses from browsers if there's plasma integration
-            !(hasPlasmaIntegration && player.dbusName.startsWith('org.mpris.MediaPlayer2.firefox')) && !(hasPlasmaIntegration && player.dbusName.startsWith('org.mpris.MediaPlayer2.chromium')) &&
-            // playerctld just copies other buses and we don't need duplicates
-            !player.dbusName?.startsWith('org.mpris.MediaPlayer2.playerctld') &&
-            // Non-instance mpd bus
-            !(player.dbusName?.endsWith('.mpd') && !player.dbusName.endsWith('MediaPlayer2.mpd')));
-    }
+		if (!Config.options.media.filterDuplicatePlayers) {
+			return true;
+		}
+		return (
+			// Remove unecessary native buses from browsers if there's plasma integration
+			!(hasPlasmaIntegration && player.dbusName.startsWith('org.mpris.MediaPlayer2.firefox')) && !(hasPlasmaIntegration && player.dbusName.startsWith('org.mpris.MediaPlayer2.chromium')) &&
+			// playerctld just copies other buses and we don't need duplicates
+			!player.dbusName?.startsWith('org.mpris.MediaPlayer2.playerctld') &&
+			// Non-instance mpd bus
+			!(player.dbusName?.endsWith('.mpd') && !player.dbusName.endsWith('MediaPlayer2.mpd')));
+	}
 
 	// Original stuff from fox below
 	Instantiator {
-		model: Mpris.players;
+		model: Mpris.players
 
 		Connections {
-			required property MprisPlayer modelData;
-			target: modelData;
+			required property MprisPlayer modelData
+			target: modelData
 
 			Component.onCompleted: {
 				if (root.trackedPlayer == null || modelData.isPlaying) {
@@ -77,7 +77,8 @@ Singleton {
 			}
 
 			function onPlaybackStateChanged() {
-				if (root.trackedPlayer !== modelData) root.trackedPlayer = modelData;
+				if (root.trackedPlayer !== modelData)
+					root.trackedPlayer = modelData;
 			}
 		}
 	}
@@ -98,12 +99,11 @@ Singleton {
 				const r = root.__reverse;
 				root.updateTrack();
 				root.__reverse = r;
-
 			}
 		}
 	}
 
-	onActivePlayerChanged: this.updateTrack();
+	onActivePlayerChanged: this.updateTrack()
 
 	function updateTrack() {
 		//console.log(`update: ${this.activePlayer?.trackTitle ?? ""} : ${this.activePlayer?.trackArtists}`)
@@ -112,20 +112,21 @@ Singleton {
 			artUrl: this.activePlayer?.trackArtUrl ?? "",
 			title: this.activePlayer?.trackTitle || Translation.tr("Unknown Title"),
 			artist: this.activePlayer?.trackArtist || Translation.tr("Unknown Artist"),
-			album: this.activePlayer?.trackAlbum || Translation.tr("Unknown Album"),
+			album: this.activePlayer?.trackAlbum || Translation.tr("Unknown Album")
 		};
 
 		this.trackChanged(__reverse);
 		this.__reverse = false;
 	}
 
-	property bool isPlaying: this.activePlayer && this.activePlayer.isPlaying;
-	property bool canTogglePlaying: this.activePlayer?.canTogglePlaying ?? false;
+	property bool isPlaying: this.activePlayer && this.activePlayer.isPlaying
+	property bool canTogglePlaying: this.activePlayer?.canTogglePlaying ?? false
 	function togglePlaying() {
-		if (this.canTogglePlaying) this.activePlayer.togglePlaying();
+		if (this.canTogglePlaying)
+			this.activePlayer.togglePlaying();
 	}
 
-	property bool canGoPrevious: this.activePlayer?.canGoPrevious ?? false;
+	property bool canGoPrevious: this.activePlayer?.canGoPrevious ?? false
 	function previous() {
 		if (this.canGoPrevious) {
 			this.__reverse = true;
@@ -133,7 +134,7 @@ Singleton {
 		}
 	}
 
-	property bool canGoNext: this.activePlayer?.canGoNext ?? false;
+	property bool canGoNext: this.activePlayer?.canGoNext ?? false
 	function next() {
 		if (this.canGoNext) {
 			this.__reverse = false;
@@ -141,18 +142,18 @@ Singleton {
 		}
 	}
 
-	property bool canChangeVolume: this.activePlayer && this.activePlayer.volumeSupported && this.activePlayer.canControl;
+	property bool canChangeVolume: this.activePlayer && this.activePlayer.volumeSupported && this.activePlayer.canControl
 
-	property bool loopSupported: this.activePlayer && this.activePlayer.loopSupported && this.activePlayer.canControl;
-	property var loopState: this.activePlayer?.loopState ?? MprisLoopState.None;
+	property bool loopSupported: this.activePlayer && this.activePlayer.loopSupported && this.activePlayer.canControl
+	property var loopState: this.activePlayer?.loopState ?? MprisLoopState.None
 	function setLoopState(loopState: var) {
 		if (this.loopSupported) {
 			this.activePlayer.loopState = loopState;
 		}
 	}
 
-	property bool shuffleSupported: this.activePlayer && this.activePlayer.shuffleSupported && this.activePlayer.canControl;
-	property bool hasShuffle: this.activePlayer?.shuffle ?? false;
+	property bool shuffleSupported: this.activePlayer && this.activePlayer.shuffleSupported && this.activePlayer.canControl
+	property bool hasShuffle: this.activePlayer?.shuffle ?? false
 	function setShuffle(shuffle: bool) {
 		if (this.shuffleSupported) {
 			this.activePlayer.shuffle = shuffle;
@@ -161,7 +162,7 @@ Singleton {
 
 	function setActivePlayer(player: MprisPlayer) {
 		const targetPlayer = player ?? Mpris.players[0];
-		console.log(`[Mpris] Active player ${targetPlayer} << ${activePlayer}`)
+		console.log(`[Mpris] Active player ${targetPlayer} << ${activePlayer}`);
 
 		if (targetPlayer && this.activePlayer) {
 			this.__reverse = Mpris.players.indexOf(targetPlayer) < Mpris.players.indexOf(this.activePlayer);
@@ -178,12 +179,19 @@ Singleton {
 
 		function pauseAll(): void {
 			for (const player of Mpris.players.values) {
-				if (player.canPause) player.pause();
+				if (player.canPause)
+					player.pause();
 			}
 		}
 
-		function playPause(): void { root.togglePlaying(); }
-		function previous(): void { root.previous(); }
-		function next(): void { root.next(); }
+		function playPause(): void {
+			root.togglePlaying();
+		}
+		function previous(): void {
+			root.previous();
+		}
+		function next(): void {
+			root.next();
+		}
 	}
 }

@@ -11,53 +11,53 @@ import qs.modules.waffle.looks
 import qs.modules.waffle.actionCenter.mainPage
 
 WBarAttachedPanelContent {
-    id: root
+	id: root
 
-    readonly property bool barAtBottom: Config.options.waffles.bar.bottom
-    
-    contentItem: ColumnLayout {
-        // This somewhat sophisticated anchoring is needed to make opening anim not jump abruptly when stuff appear
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: root.barAtBottom ? undefined : parent.top
-            bottom: root.barAtBottom ? parent.bottom : undefined
-            margins: root.visualMargin
-            bottomMargin: 0
-        }
-        spacing: 12
+	readonly property bool barAtBottom: Config.options.waffles.bar.bottom
 
-        WPane {
-            opacity: (MprisController.activePlayer != null && MprisController.isRealPlayer(MprisController.activePlayer)) ? 1 : 0
-            Layout.fillWidth: true
-            contentItem: MediaPaneContent {}
-        }
-        WPane {
-            Layout.fillWidth: true
-            contentItem: WStackView {
-                id: stackView
-                implicitWidth: initItem.implicitWidth
-                implicitHeight: initItem.implicitHeight
+	contentItem: ColumnLayout {
+		// This somewhat sophisticated anchoring is needed to make opening anim not jump abruptly when stuff appear
+		anchors {
+			left: parent.left
+			right: parent.right
+			top: root.barAtBottom ? undefined : parent.top
+			bottom: root.barAtBottom ? parent.bottom : undefined
+			margins: root.visualMargin
+			bottomMargin: 0
+		}
+		spacing: 12
 
-                initialItem: WPanelPageColumn {
-                    id: initItem
-                    MainPageBody {}
-                    WPanelSeparator {}
-                    MainPageFooter {}
-                }
+		WPane {
+			opacity: (MprisController.activePlayer != null && MprisController.isRealPlayer(MprisController.activePlayer)) ? 1 : 0
+			Layout.fillWidth: true
+			contentItem: MediaPaneContent {}
+		}
+		WPane {
+			Layout.fillWidth: true
+			contentItem: WStackView {
+				id: stackView
+				implicitWidth: initItem.implicitWidth
+				implicitHeight: initItem.implicitHeight
 
-                Component.onCompleted: {
-                    ActionCenterContext.stackView = this;
-                }
+				initialItem: WPanelPageColumn {
+					id: initItem
+					MainPageBody {}
+					WPanelSeparator {}
+					MainPageFooter {}
+				}
 
-                MouseArea {
-                    anchors.fill: parent
-                    acceptedButtons: Qt.BackButton
-                    onClicked: {
-                        ActionCenterContext.back();
-                    }
-                }
-            }
-        }
-    }
+				Component.onCompleted: {
+					ActionCenterContext.stackView = this;
+				}
+
+				MouseArea {
+					anchors.fill: parent
+					acceptedButtons: Qt.BackButton
+					onClicked: {
+						ActionCenterContext.back();
+					}
+				}
+			}
+		}
+	}
 }

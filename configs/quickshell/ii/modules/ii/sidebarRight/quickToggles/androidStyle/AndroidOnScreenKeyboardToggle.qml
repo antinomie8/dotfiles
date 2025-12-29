@@ -7,5 +7,5 @@ import QtQuick
 import Quickshell
 
 AndroidQuickToggleButton {
-    toggleModel: OnScreenKeyboardToggle {}
+	toggleModel: OnScreenKeyboardToggle {}
 }

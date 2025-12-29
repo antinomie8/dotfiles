@@ -6,8 +6,7 @@ import QtQuick
 import Quickshell
 
 AndroidQuickToggleButton {
-    id: root
+	id: root
 
-    toggleModel: AntiFlashbangToggle {}
+	toggleModel: AntiFlashbangToggle {}
 }
-

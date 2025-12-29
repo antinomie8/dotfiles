@@ -12,147 +12,147 @@ import Quickshell.Wayland
 import Quickshell.Hyprland
 
 WindowDialog {
-    id: root
-    property var screen: root.QsWindow.window?.screen
-    property var brightnessMonitor: Brightness.getMonitorForScreen(screen)
-    backgroundHeight: 600
+	id: root
+	property var screen: root.QsWindow.window?.screen
+	property var brightnessMonitor: Brightness.getMonitorForScreen(screen)
+	backgroundHeight: 600
 
-    WindowDialogTitle {
-        text: Translation.tr("Eye protection")
-    }
-    
-    WindowDialogSectionHeader {
-        text: Translation.tr("Night Light")
-    }
+	WindowDialogTitle {
+		text: Translation.tr("Eye protection")
+	}
 
-    WindowDialogSeparator {
-        Layout.topMargin: -22
-        Layout.leftMargin: 0
-        Layout.rightMargin: 0
-    }
+	WindowDialogSectionHeader {
+		text: Translation.tr("Night Light")
+	}
 
-    Column {
-        id: nightLightColumn
-        Layout.topMargin: -16
-        Layout.fillWidth: true
+	WindowDialogSeparator {
+		Layout.topMargin: -22
+		Layout.leftMargin: 0
+		Layout.rightMargin: 0
+	}
 
-        ConfigSwitch {
-            anchors {
-                left: parent.left
-                right: parent.right
-            }
-            iconSize: Appearance.font.pixelSize.larger
-            buttonIcon: "lightbulb"
-            text: Translation.tr("Enable now")
-            checked: Hyprsunset.active
-            onCheckedChanged: {
-                Hyprsunset.toggle(checked)
-            }
-        }
+	Column {
+		id: nightLightColumn
+		Layout.topMargin: -16
+		Layout.fillWidth: true
 
-        ConfigSwitch {
-            anchors {
-                left: parent.left
-                right: parent.right
-            }
-            iconSize: Appearance.font.pixelSize.larger
-            buttonIcon: "night_sight_auto"
-            text: Translation.tr("Automatic")
-            checked: Config.options.light.night.automatic
-            onCheckedChanged: {
-                Config.options.light.night.automatic = checked;
-            }
-        }
+		ConfigSwitch {
+			anchors {
+				left: parent.left
+				right: parent.right
+			}
+			iconSize: Appearance.font.pixelSize.larger
+			buttonIcon: "lightbulb"
+			text: Translation.tr("Enable now")
+			checked: Hyprsunset.active
+			onCheckedChanged: {
+				Hyprsunset.toggle(checked);
+			}
+		}
 
-        WindowDialogSlider {
-            anchors {
-                left: parent.left
-                right: parent.right
-                leftMargin: 4
-                rightMargin: 4
-            }
-            text: Translation.tr("Intensity")
-            from: 6500
-            to: 1200
-            stopIndicatorValues: [5000, to]
-            value: Config.options.light.night.colorTemperature
-            onMoved: Config.options.light.night.colorTemperature = value
-            tooltipContent: `${Math.round(value)}K`
-        }
-    }
+		ConfigSwitch {
+			anchors {
+				left: parent.left
+				right: parent.right
+			}
+			iconSize: Appearance.font.pixelSize.larger
+			buttonIcon: "night_sight_auto"
+			text: Translation.tr("Automatic")
+			checked: Config.options.light.night.automatic
+			onCheckedChanged: {
+				Config.options.light.night.automatic = checked;
+			}
+		}
 
-    WindowDialogSectionHeader {
-        text: Translation.tr("Anti-flashbang (experimental)")
-    }
+		WindowDialogSlider {
+			anchors {
+				left: parent.left
+				right: parent.right
+				leftMargin: 4
+				rightMargin: 4
+			}
+			text: Translation.tr("Intensity")
+			from: 6500
+			to: 1200
+			stopIndicatorValues: [5000, to]
+			value: Config.options.light.night.colorTemperature
+			onMoved: Config.options.light.night.colorTemperature = value
+			tooltipContent: `${Math.round(value)}K`
+		}
+	}
 
-    WindowDialogSeparator {
-        Layout.topMargin: -22
-        Layout.leftMargin: 0
-        Layout.rightMargin: 0
-    }
+	WindowDialogSectionHeader {
+		text: Translation.tr("Anti-flashbang (experimental)")
+	}
 
-    Column {
-        id: antiFlashbangColumn
-        Layout.topMargin: -16
-        Layout.fillWidth: true
+	WindowDialogSeparator {
+		Layout.topMargin: -22
+		Layout.leftMargin: 0
+		Layout.rightMargin: 0
+	}
 
-        ConfigSwitch {
-            anchors {
-                left: parent.left
-                right: parent.right
-            }
-            iconSize: Appearance.font.pixelSize.larger
-            buttonIcon: "flash_off"
-            text: Translation.tr("Enable")
-            checked: Config.options.light.antiFlashbang.enable
-            onCheckedChanged: {
-                Config.options.light.antiFlashbang.enable = checked;
-            }
-            StyledToolTip {
-                text: Translation.tr("Example use case: eroge on one workspace, dark Discord window on another")
-            }
-        }
-    }
+	Column {
+		id: antiFlashbangColumn
+		Layout.topMargin: -16
+		Layout.fillWidth: true
 
-    WindowDialogSectionHeader {
-        text: Translation.tr("Brightness")
-    }
+		ConfigSwitch {
+			anchors {
+				left: parent.left
+				right: parent.right
+			}
+			iconSize: Appearance.font.pixelSize.larger
+			buttonIcon: "flash_off"
+			text: Translation.tr("Enable")
+			checked: Config.options.light.antiFlashbang.enable
+			onCheckedChanged: {
+				Config.options.light.antiFlashbang.enable = checked;
+			}
+			StyledToolTip {
+				text: Translation.tr("Example use case: eroge on one workspace, dark Discord window on another")
+			}
+		}
+	}
 
-    WindowDialogSeparator {
-        Layout.topMargin: -22
-        Layout.leftMargin: 0
-        Layout.rightMargin: 0
-    }
+	WindowDialogSectionHeader {
+		text: Translation.tr("Brightness")
+	}
 
-    Column {
-        id: brightnessColumn
-        Layout.topMargin: -16
-        Layout.fillWidth: true
-        Layout.fillHeight: true
+	WindowDialogSeparator {
+		Layout.topMargin: -22
+		Layout.leftMargin: 0
+		Layout.rightMargin: 0
+	}
 
-        WindowDialogSlider {
-            anchors {
-                left: parent.left
-                right: parent.right
-                leftMargin: 4
-                rightMargin: 4
-            }
-            // text: Translation.tr("Brightness")
-            value: root.brightnessMonitor.brightness
-            onMoved: root.brightnessMonitor.setBrightness(value)
-        }
-    }
-    
-    WindowDialogButtonRow {
-        Layout.fillWidth: true
+	Column {
+		id: brightnessColumn
+		Layout.topMargin: -16
+		Layout.fillWidth: true
+		Layout.fillHeight: true
 
-        Item {
-            Layout.fillWidth: true
-        }
+		WindowDialogSlider {
+			anchors {
+				left: parent.left
+				right: parent.right
+				leftMargin: 4
+				rightMargin: 4
+			}
+			// text: Translation.tr("Brightness")
+			value: root.brightnessMonitor.brightness
+			onMoved: root.brightnessMonitor.setBrightness(value)
+		}
+	}
 
-        DialogButton {
-            buttonText: Translation.tr("Done")
-            onClicked: root.dismiss()
-        }
-    }
+	WindowDialogButtonRow {
+		Layout.fillWidth: true
+
+		Item {
+			Layout.fillWidth: true
+		}
+
+		DialogButton {
+			buttonText: Translation.tr("Done")
+			onClicked: root.dismiss()
+		}
+	}
 }

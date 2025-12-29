@@ -8,7 +8,7 @@ import Quickshell
 import Quickshell.Bluetooth
 
 AndroidQuickToggleButton {
-    id: root
-    
-    toggleModel: BluetoothToggle {}
+	id: root
+
+	toggleModel: BluetoothToggle {}
 }

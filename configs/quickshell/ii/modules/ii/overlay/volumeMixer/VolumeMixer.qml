@@ -9,72 +9,72 @@ import qs.modules.ii.overlay
 import qs.modules.ii.sidebarRight.volumeMixer
 
 StyledOverlayWidget {
-    id: root
-    minimumWidth: 300
-    minimumHeight: 380
+	id: root
+	minimumWidth: 300
+	minimumHeight: 380
 
-    contentItem: OverlayBackground {
-        radius: root.contentRadius
-        property real padding: 6
+	contentItem: OverlayBackground {
+		radius: root.contentRadius
+		property real padding: 6
 
-        ColumnLayout {
-            id: contentColumn
-            anchors {
-                fill: parent
-                margins: parent.padding
-            }
-            spacing: 8
+		ColumnLayout {
+			id: contentColumn
+			anchors {
+				fill: parent
+				margins: parent.padding
+			}
+			spacing: 8
 
-            SecondaryTabBar {
-                id: tabBar
+			SecondaryTabBar {
+				id: tabBar
 
-                currentIndex: Persistent.states.overlay.volumeMixer.tabIndex
-                onCurrentIndexChanged: {
-                    Persistent.states.overlay.volumeMixer.tabIndex = tabBar.currentIndex;
-                }
+				currentIndex: Persistent.states.overlay.volumeMixer.tabIndex
+				onCurrentIndexChanged: {
+					Persistent.states.overlay.volumeMixer.tabIndex = tabBar.currentIndex;
+				}
 
-                SecondaryTabButton {
-                    buttonIcon: "media_output"
-                    buttonText: Translation.tr("Output")
-                }
-                SecondaryTabButton {
-                    buttonIcon: "mic"
-                    buttonText: Translation.tr("Input")
-                }
-            }
-            SwipeView {
-                id: swipeView
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                currentIndex: Persistent.states.overlay.volumeMixer.tabIndex
-                onCurrentIndexChanged: {
-                    Persistent.states.overlay.volumeMixer.tabIndex = swipeView.currentIndex;
-                }
-                clip: true
+				SecondaryTabButton {
+					buttonIcon: "media_output"
+					buttonText: Translation.tr("Output")
+				}
+				SecondaryTabButton {
+					buttonIcon: "mic"
+					buttonText: Translation.tr("Input")
+				}
+			}
+			SwipeView {
+				id: swipeView
+				Layout.fillWidth: true
+				Layout.fillHeight: true
+				currentIndex: Persistent.states.overlay.volumeMixer.tabIndex
+				onCurrentIndexChanged: {
+					Persistent.states.overlay.volumeMixer.tabIndex = swipeView.currentIndex;
+				}
+				clip: true
 
-                PaddedVolumeDialogContent { 
-                    isSink: true 
-                }
-                PaddedVolumeDialogContent { 
-                    isSink: false 
-                }
-            }
-        }
-    }
+				PaddedVolumeDialogContent {
+					isSink: true
+				}
+				PaddedVolumeDialogContent {
+					isSink: false
+				}
+			}
+		}
+	}
 
-    component PaddedVolumeDialogContent: Item {
-        id: paddedVolumeDialogContent
-        property alias isSink: volDialogContent.isSink
-        property real padding: 12
-        implicitWidth: volDialogContent.implicitWidth + padding * 2
-        implicitHeight: volDialogContent.implicitHeight + padding * 2
+	component PaddedVolumeDialogContent: Item {
+		id: paddedVolumeDialogContent
+		property alias isSink: volDialogContent.isSink
+		property real padding: 12
+		implicitWidth: volDialogContent.implicitWidth + padding * 2
+		implicitHeight: volDialogContent.implicitHeight + padding * 2
 
-        VolumeDialogContent {
-            id: volDialogContent
-            anchors {
-                fill: parent
-                margins: paddedVolumeDialogContent.padding
-            }
-        }
-    }
+		VolumeDialogContent {
+			id: volDialogContent
+			anchors {
+				fill: parent
+				margins: paddedVolumeDialogContent.padding
+			}
+		}
+	}
 }

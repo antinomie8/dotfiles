@@ -152,7 +152,7 @@
         "tooltips": {
             "clickToShow": false
         },
-        "topLeftIcon": "spark",
+        "topLeftIcon": "arch",
         "utilButtons": {
             "showColorPicker": false,
             "showDarkModeToggle": false,
@@ -260,7 +260,7 @@
             "enable": false
         },
         "night": {
-            "automatic": true,
+            "automatic": false,
             "colorTemperature": 5000,
             "from": "19:00",
             "to": "06:30"
@@ -409,8 +409,16 @@
                         "type": "network"
                     },
                     {
-                        "size": 2,
+                        "size": 1,
                         "type": "bluetooth"
+                    },
+                    {
+                        "size": 1,
+                        "type": "notifications"
+                    },
+                    {
+                        "size": 1,
+                        "type": "nightLight"
                     },
                     {
                         "size": 1,
@@ -418,15 +426,19 @@
                     },
                     {
                         "size": 1,
-                        "type": "mic"
+                        "type": "screenSnip"
                     },
                     {
-                        "size": 2,
+                        "size": 1,
                         "type": "audio"
                     },
                     {
-                        "size": 2,
-                        "type": "nightLight"
+                        "size": 1,
+                        "type": "mic"
+                    },
+                    {
+                        "size": 1,
+                        "type": "powerProfile"
                     }
                 ]
             },

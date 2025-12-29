@@ -8,10 +8,10 @@ import qs.modules.common.functions
 import qs.modules.waffle.looks
 
 Rectangle {
-    Layout.fillHeight: false
-    Layout.fillWidth: true
-    color: "transparent"
+	Layout.fillHeight: false
+	Layout.fillWidth: true
+	color: "transparent"
 
-    implicitWidth: 358
-    implicitHeight: 47
+	implicitWidth: 358
+	implicitHeight: 47
 }

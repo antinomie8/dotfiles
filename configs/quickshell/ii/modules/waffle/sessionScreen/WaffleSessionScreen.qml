@@ -12,105 +12,105 @@ import Quickshell.Wayland
 import Quickshell.Hyprland
 
 Scope {
-    id: root
-    property var focusedScreen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name)
+	id: root
+	property var focusedScreen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name)
 
-    Loader {
-        id: sessionLoader
-        active: GlobalStates.sessionOpen
-        onActiveChanged: {
-            if (sessionLoader.active) SessionWarnings.refresh();
-        }
+	Loader {
+		id: sessionLoader
+		active: GlobalStates.sessionOpen
+		onActiveChanged: {
+			if (sessionLoader.active)
+				SessionWarnings.refresh();
+		}
 
-        Connections {
-            target: GlobalStates
-            function onScreenLockedChanged() {
-                if (GlobalStates.screenLocked) {
-                    GlobalStates.sessionOpen = false;
-                }
-            }
-        }
+		Connections {
+			target: GlobalStates
+			function onScreenLockedChanged() {
+				if (GlobalStates.screenLocked) {
+					GlobalStates.sessionOpen = false;
+				}
+			}
+		}
 
-        sourceComponent: PanelWindow { // Session menu
-            id: sessionRoot
-            visible: sessionLoader.active
-            property string subtitle
-            
-            function hide() {
-                GlobalStates.sessionOpen = false;
-            }
+		sourceComponent: PanelWindow { // Session menu
+			id: sessionRoot
+			visible: sessionLoader.active
+			property string subtitle
 
-            exclusionMode: ExclusionMode.Ignore
-            WlrLayershell.namespace: "quickshell:session"
-            WlrLayershell.layer: WlrLayer.Overlay
-            WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
-            // This is a big surface so we needa carefully choose the transparency,
-            // or we'll get a large scary rgb blob
-            color: "#000000"
+			function hide() {
+				GlobalStates.sessionOpen = false;
+			}
 
-            anchors {
-                top: true
-                left: true
-                right: true
-                bottom: true
-            }
+			exclusionMode: ExclusionMode.Ignore
+			WlrLayershell.namespace: "quickshell:session"
+			WlrLayershell.layer: WlrLayer.Overlay
+			WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+			// This is a big surface so we needa carefully choose the transparency,
+			// or we'll get a large scary rgb blob
+			color: "#000000"
 
-            Item {
-                anchors.fill: parent
-                Keys.onPressed: (event) => {
-                    if (event.key === Qt.Key_Escape) {
-                        sessionRoot.hide();
-                    }
-                }
+			anchors {
+				top: true
+				left: true
+				right: true
+				bottom: true
+			}
 
-                SessionScreenContent {
-                    anchors.fill: parent
-                }
-            }
-        }
-    }
+			Item {
+				anchors.fill: parent
+				Keys.onPressed: event => {
+					if (event.key === Qt.Key_Escape) {
+						sessionRoot.hide();
+					}
+				}
 
-    IpcHandler {
-        target: "session"
+				SessionScreenContent {
+					anchors.fill: parent
+				}
+			}
+		}
+	}
 
-        function toggle(): void {
-            GlobalStates.sessionOpen = !GlobalStates.sessionOpen;
-        }
+	IpcHandler {
+		target: "session"
 
-        function close(): void {
-            GlobalStates.sessionOpen = false
-        }
+		function toggle(): void {
+			GlobalStates.sessionOpen = !GlobalStates.sessionOpen;
+		}
 
-        function open(): void {
-            GlobalStates.sessionOpen = true
-        }
-    }
+		function close(): void {
+			GlobalStates.sessionOpen = false;
+		}
 
-    GlobalShortcut {
-        name: "sessionToggle"
-        description: "Toggles session screen on press"
+		function open(): void {
+			GlobalStates.sessionOpen = true;
+		}
+	}
 
-        onPressed: {
-            GlobalStates.sessionOpen = !GlobalStates.sessionOpen;
-        }
-    }
+	GlobalShortcut {
+		name: "sessionToggle"
+		description: "Toggles session screen on press"
 
-    GlobalShortcut {
-        name: "sessionOpen"
-        description: "Opens session screen on press"
+		onPressed: {
+			GlobalStates.sessionOpen = !GlobalStates.sessionOpen;
+		}
+	}
 
-        onPressed: {
-            GlobalStates.sessionOpen = true
-        }
-    }
+	GlobalShortcut {
+		name: "sessionOpen"
+		description: "Opens session screen on press"
 
-    GlobalShortcut {
-        name: "sessionClose"
-        description: "Closes session screen on press"
+		onPressed: {
+			GlobalStates.sessionOpen = true;
+		}
+	}
 
-        onPressed: {
-            GlobalStates.sessionOpen = false
-        }
-    }
+	GlobalShortcut {
+		name: "sessionClose"
+		description: "Closes session screen on press"
 
+		onPressed: {
+			GlobalStates.sessionOpen = false;
+		}
+	}
 }

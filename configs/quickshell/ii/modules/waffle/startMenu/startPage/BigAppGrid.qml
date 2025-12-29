@@ -12,26 +12,26 @@ import qs.modules.common.widgets
 import qs.modules.waffle.looks
 
 GridLayout {
-    id: root
+	id: root
 
-    property list<var> desktopEntries: []
+	property list<var> desktopEntries: []
 
-    columnSpacing: 0
-    rowSpacing: 0
+	columnSpacing: 0
+	rowSpacing: 0
 
-    uniformCellHeights: true
-    uniformCellWidths: true
+	uniformCellHeights: true
+	uniformCellWidths: true
 
-    Repeater {
-        model: root.desktopEntries
-        delegate: StartAppButton {
-            id: pinnedAppButton
-            required property var modelData
-            desktopEntry: modelData
-            onClicked: {
-                GlobalStates.searchOpen = false;
-                desktopEntry.execute();
-            }
-        }
-    }
+	Repeater {
+		model: root.desktopEntries
+		delegate: StartAppButton {
+			id: pinnedAppButton
+			required property var modelData
+			desktopEntry: modelData
+			onClicked: {
+				GlobalStates.searchOpen = false;
+				desktopEntry.execute();
+			}
+		}
+	}
 }
