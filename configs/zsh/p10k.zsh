@@ -1,8 +1,3 @@
-###################################################################################################
-########################################## POWERLEVEL10K ##########################################
-###################################################################################################
-
-
 # Wizard options: nerdfont-v3 + powerline, small icons, unicode, lean, 2 lines, solid,
 # no frame, darkest-ornaments, sparse, few icons, concise, transient_prompt,
 # instant_prompt=verbose.

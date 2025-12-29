@@ -99,4 +99,6 @@ opt.backspace      = "indent,eol,start"
 opt.wildmode       = "longest:full,full"
 opt.shortmess      = "tToOcCFI"
 opt.belloff        = "all"
-opt.exrc = true
+opt.exrc           = true
+opt.title          = true
+opt.titlestring    = " %t"

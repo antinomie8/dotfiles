@@ -1,7 +1,3 @@
-###################################################################################################
-############################################## ZSHRC ##############################################
-###################################################################################################
-
 # terminal emulator specific settings
 [[ "$TERM" == "xterm-kitty" && -f "$ZDOTDIR/kitty.zsh" ]] && source "$ZDOTDIR/kitty.zsh"
 
@@ -125,6 +121,19 @@ function _set_cursor_beam() {
 	echo -ne '\e[6 q'
 }
 precmd_functions+=(_set_cursor_beam)
+
+# title
+autoload -Uz add-zsh-hook
+
+_precmd_title() {
+  print -Pn "\e]0; %~\a"
+}
+_preexec_title() {
+  print -Pn "\e]0; $2\a"
+}
+
+add-zsh-hook precmd _precmd_title
+add-zsh-hook preexec _preexec_title
 
 
 # keybindings
