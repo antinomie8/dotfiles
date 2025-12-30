@@ -12,7 +12,6 @@ return {
 		{
 			trig = "sm",
 			dscr = "sum",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
@@ -31,7 +30,6 @@ return {
 		{
 			trig = "cycsm",
 			dscr = "cyclic sum",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
@@ -41,7 +39,6 @@ return {
 		{
 			trig = "symsm",
 			dscr = "symmetric sum",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
@@ -51,7 +48,6 @@ return {
 		{
 			trig = "pd",
 			dscr = "product",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
@@ -70,7 +66,6 @@ return {
 		{
 			trig = "cycpd",
 			dscr = "cyclic prod",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
@@ -80,7 +75,6 @@ return {
 		{
 			trig = "sympd",
 			dscr = "symmetric prod",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
@@ -90,7 +84,6 @@ return {
 		{
 			trig = "ff",
 			dscr = "fraction",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
@@ -106,7 +99,6 @@ return {
 		{
 			trig = "sq",
 			dscr = "square root",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
@@ -121,7 +113,6 @@ return {
 		{
 			trig = "cbrt",
 			dscr = "cubic root",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
@@ -136,7 +127,6 @@ return {
 		{
 			trig = "op",
 			dscr = "operatorname",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
@@ -170,7 +160,6 @@ return {
 		{
 			trig = "all",
 			dscr = "universal quantifier",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
@@ -180,7 +169,6 @@ return {
 		{
 			trig = "ex",
 			dscr = "existensial quantifier",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},

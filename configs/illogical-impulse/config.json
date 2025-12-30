@@ -42,7 +42,7 @@
         "wallpaperTheming": {
             "enableAppsAndShell": true,
             "enableQtApps": true,
-            "enableTerminal": true,
+            "enableTerminal": false,
             "terminalGenerationProps": {
                 "forceDarkMode": false,
                 "harmonizeThreshold": 100,
