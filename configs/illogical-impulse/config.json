@@ -199,10 +199,10 @@
             "comment": 14,
             "key": 14
         },
-        "splitButtons": false,
+        "splitButtons": true,
         "superKey": "",
         "useFnSymbol": false,
-        "useMacSymbol": false,
+        "useMacSymbol": true,
         "useMouseSymbol": false
     },
     "conflictKiller": {
