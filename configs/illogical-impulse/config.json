@@ -98,7 +98,17 @@
                     "useSineCookie": false
                 },
                 "digital": {
-                    "animateChange": true
+                    "adaptiveAlignment": true,
+                    "animateChange": true,
+                    "font": {
+                        "family": "Google Sans Flex",
+                        "roundness": 0,
+                        "size": 90,
+                        "weight": 350,
+                        "width": 100
+                    },
+                    "showDate": true,
+                    "vertical": false
                 },
                 "enable": false,
                 "placementStrategy": "leastBusy",
