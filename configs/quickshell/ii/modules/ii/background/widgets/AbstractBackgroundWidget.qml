@@ -61,7 +61,9 @@ AbstractWidget {
 		}
 	}
 	function refreshPlacementIfNeeded() {
-		if (!Config.ready || (root.placementStrategy === "free" && root.needsColText))
+		if (!Config.ready)
+			return;
+		if (root.placementStrategy === "free" && !root.needsColText)
 			return;
 		leastBusyRegionProc.wallpaperPath = root.wallpaperPath;
 		leastBusyRegionProc.running = false;

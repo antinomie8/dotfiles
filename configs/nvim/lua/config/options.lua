@@ -75,10 +75,6 @@ opt.completeopt    = "menu,menuone,noselect"
 opt.laststatus     = 3
 opt.showmode       = false
 opt.ruler          = false
-opt.cmdheight      = 0
-
--- mouse
-opt.mouse          = "nvi"
 
 -- search settings
 opt.gdefault       = true
@@ -91,7 +87,18 @@ vim.api.nvim_exec_autocmds("OptionSet", { pattern = "spelllang" })
 
 -- colors
 opt.termguicolors  = true
+opt.cmdheight      = 0
 opt.background     = "dark"
+
+-- title
+opt.title          = true
+opt.titlestring    = " %t"
+
+-- diffs
+opt.diffopt        = "internal,filler,closeoff,indent-heuristic,inline:char,linematch:40,iwhiteall"
+
+-- mouse
+opt.mouse          = "nvi"
 
 -- miscellaneous
 opt.guicursor      = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,a:Cursor/lCursor"
@@ -100,5 +107,3 @@ opt.wildmode       = "longest:full,full"
 opt.shortmess      = "tToOcCFI"
 opt.belloff        = "all"
 opt.exrc           = true
-opt.title          = true
-opt.titlestring    = " %t"

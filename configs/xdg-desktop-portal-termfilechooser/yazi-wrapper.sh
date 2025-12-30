@@ -44,7 +44,7 @@ else
 fi
 
 cmd="yazi"
-termcmd="${TERMCMD:-kitty --title \"$title\"}"
+termcmd="${TERMCMD:-kitty --class yazi --title \"$title\"}"
 
 if [[ "$save" = "1" ]]; then
 	# save a file

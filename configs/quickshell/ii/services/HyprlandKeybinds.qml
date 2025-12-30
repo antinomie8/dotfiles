@@ -47,7 +47,6 @@ Singleton {
 			onRead: data => {
 				try {
 					root.defaultKeybinds = JSON.parse(data);
-					console.log(data);
 				} catch (e) {
 					console.error("[CheatsheetKeybinds] Error parsing keybinds:", e);
 				}
@@ -64,7 +63,6 @@ Singleton {
 			onRead: data => {
 				try {
 					root.userKeybinds = JSON.parse(data);
-					console.log(data);
 				} catch (e) {
 					console.error("[CheatsheetKeybinds] Error parsing keybinds:", e);
 				}
