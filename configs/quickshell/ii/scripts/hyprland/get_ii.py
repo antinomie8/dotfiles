@@ -220,5 +220,3 @@ if __name__ == "__main__":
 
     ParsedKeys = parse_keys(args.path)
     print(json.dumps(ParsedKeys))
-    with open("/home/antoine/ii_" + os.path.basename(os.path.dirname(args.path)) + ".log.json", "a") as f:
-        print(json.dumps(ParsedKeys, indent=4), file=f)

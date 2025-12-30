@@ -10,7 +10,7 @@ return {
 					local buf = event.buf
 					local disabled_filetypes = { "checkhealth" }
 					local regex_highlighting = { "tex" }
-					local no_indentexpr = { "bash", "sh", "typst" }
+					local no_indentexpr = { "bash", "sh", "typst", "qml" }
 					if not vim.tbl_contains(disabled_filetypes, vim.bo[buf].filetype) then
 						if pcall(vim.treesitter.start) then
 							local win = vim.api.nvim_get_current_win()
