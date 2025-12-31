@@ -5,7 +5,7 @@ local first_line, line_begin = helpers.first_line, helpers.line_begin
 
 local update_filetype = function(index)
 	return f(function(arg)
-		local shells = { "bash", "zsh", "sh", "python" }
+		local shells = { "bash", "zsh", "fish", "sh", "python", "lua" }
 		for _, shell in ipairs(shells) do
 			if arg[1][1]:match(shell) then
 				vim.bo.filetype = shell
@@ -25,7 +25,7 @@ return {
 			condition = first_line * line_begin,
 		},
 		{
-			t("#!/bin/"),
+			t("#!/usr/bin/env "),
 			i(1, vim.bo.filetype),
 			update_filetype(1),
 		}

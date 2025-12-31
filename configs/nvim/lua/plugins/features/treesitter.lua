@@ -34,8 +34,6 @@ return {
 				return vim.bo[source].filetype == "asy"
 			end)
 
-			vim.treesitter.language.register("bash", "zsh")
-
 			require("nvim-treesitter").install({
 				"asm",
 				"bash",
@@ -51,6 +49,7 @@ return {
 				"typst",
 				"vim",
 				"vimdoc",
+				"zsh",
 			})
 		end,
 	},

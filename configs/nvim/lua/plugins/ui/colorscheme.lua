@@ -117,6 +117,8 @@ return {
 					NeoTreeDotfile = { fg = palette.sumiInk6 },
 					NeoTreeHiddenByName = { fg = palette.sumiInk6 },
 
+					BlinkCmpKindText = { link = "String" },
+
 					TelescopePromptPrefix = { fg = palette.autumnYellow, bg = palette.sumiInk3 },
 
 					LightBulbSign = { fg = palette.oldWhite },

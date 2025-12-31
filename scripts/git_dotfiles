@@ -24,8 +24,8 @@ function copy {
 
 # list of configs and scripts to copy
 configs=("bat" "btop" "browser" "clangd" "eza" "fastfetch" "formatters" "git" "hypr"
-	"hyprland-preview-share-picker" "illogical-impulse" "kitty" "lazygit" "mpv" "mutt"
-	"ncdu" "npm" "nvim" "oly" "quickshell" "texmf" "thundery" "tmux" "wget" "yazi"
+	"hyprland-preview-share-picker" "illogical-impulse" "kitty" "kmonad" "lazygit" "mpv"
+	"mutt" "ncdu" "npm" "nvim" "oly" "quickshell" "texmf" "thundery" "tmux" "wget" "yazi"
 	"zathura" "zsh" "fzf.conf" "mimeapps.list" "ripgrep.conf" "shellcheckrc" "user-dirs.dirs"
 	"xdg-desktop-portal" "xdg-desktop-portal-termfilechooser")
 scripts=("assemble" "compile_sfml" "fix_corrupt_history" "fzf_preview_wrapper" "git_dotfiles"

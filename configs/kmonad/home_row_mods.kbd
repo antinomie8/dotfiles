@@ -1,0 +1,29 @@
+(defcfg
+	input  (device-file "/dev/input/by-path/platform-i8042-serio-0-event-kbd")
+  output (uinput-sink "kmonad")
+
+  ;; This option tells KMonad to let non-configured keys act normal
+  fallthrough true
+)
+
+(defsrc
+    a    s    d    f    g    h    j    k    l    ;
+)
+
+(defalias
+    alt_a (tap-hold-next-release 180 a lalt)
+    ctl_s (tap-hold-next-release 180 s lctl)
+    sft_d (tap-hold-next-release 180 d lsft)
+    met_f (tap-hold-next-release 180 f lmet)
+
+    met_j (tap-hold-next-release 180 j rmet)
+    sft_k (tap-hold-next-release 180 k rsft)
+    ctl_l (tap-hold-next-release 180 l rctl)
+    alt_; (tap-hold-next-release 180 ; lalt)
+)
+
+(deflayer homerowmods
+	@alt_a   @ctl_s   @sft_d   @met_f   g   h   @met_j   @sft_k   @ctl_l   @alt_;
+)
+
+;; vim: ft=lisp

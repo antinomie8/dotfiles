@@ -47,7 +47,7 @@
                 "forceDarkMode": false,
                 "harmonizeThreshold": 100,
                 "harmony": 0.6,
-                "termFgBoost": 0.35
+                "termFgBoost": 0
             }
         }
     },
@@ -271,7 +271,7 @@
         },
         "night": {
             "automatic": false,
-            "colorTemperature": 5000,
+            "colorTemperature": 3136,
             "from": "19:00",
             "to": "06:30"
         }
