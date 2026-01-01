@@ -67,9 +67,11 @@ setopt globdots     # show dotfiles on tab completion
 setopt autocd       # cd in a directory by typing its name
 setopt auto_pushd   # automatically push the last directory on the directory stack
 setopt cdable_vars  # cd to a directory by typing its path relative to $HOME
+setopt pushd_silent # do not print the directory stack after pushd or popd
 setopt correct      # correction for invalid command names
 setopt rcquotes     # escape single quotes with '' instead of '\'' in singly quoted strings
-setopt c_bases      # use 0x and 0 for displaying hexadecimal and octal numbers
+setopt c_bases      # use 0x for displaying hexadecimal numbers
+setopt octal_zeroes # use 0 for displaying octal numbers
 
 
 # history

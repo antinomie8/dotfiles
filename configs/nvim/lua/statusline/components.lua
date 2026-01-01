@@ -358,13 +358,14 @@ components.ExtensionB = {
 
 components.ExtensionC = {
 	condition = function() return vim.tbl_contains(extension_filetypes, vim.bo.filetype) end,
-	components.Space,
 	{
 		provider = function()
 			if vim.bo.filetype == "lazy" then
 				if pcall(require("lazy.status").has_updates) then
 					return require("lazy.status").updates()
 				end
+			elseif vim.bo.filetype == "man" then
+				return "󱚊"
 			end
 		end,
 	},
@@ -386,7 +387,6 @@ components.ExtensionY = {
 			["dapui_breakpoints"] = "",
 			["DiffviewFiles"] = "󰊢",
 			["lazy"] = "󰒲",
-			["man"] = "󱚊",
 			["neo-tree"] = "󰙅",
 			["TelescopePrompt"] = "󰭎",
 			["toggleterm"] = " ",

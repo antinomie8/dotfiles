@@ -100,7 +100,7 @@ fi
 
 # specific things to do on operating systems using pacman as a package manager
 packages=("7zip" "asymptote" "bat" "btop" "clang" "cmake" "cronie" "eza" "fd" "firefox"
-	"fzf" "gcc" "git" "git-delta" "github-cli" "hexyl" "imagemagick" "kitty"
+	"fzf" "gcc" "git" "git-delta" "github-cli" "hexyl" "imagemagick" "kitty" "kmonad"
 	"lazygit" "lynx" "man-db" "nasm" "ncdu" "notmuch" "npm" "obsidian" "picom"
 	"python" "ripgrep" "rofi" "rsync" "tldr" "tmux" "tree-sitter-cli" "typst"
 	"rustup" "unzip" "wget" "xdotool" "zathura" "zathura-pdf-mupdf" "zoxide" "zsh"

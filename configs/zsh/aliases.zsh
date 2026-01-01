@@ -53,6 +53,7 @@ function compile() {
 	[[ -n "$compiler" ]] && command "$compiler" "$1" -o "$ouput_filename"
 }
 alias path='echo -e ${PATH//:/\\n}' # human-readable path
+alias uncompress='tar -xvzf'
 
 # rm that only asks for confirmation for nonempty files
 alias rm=rm_confirm_nonempty
