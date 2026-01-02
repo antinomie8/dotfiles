@@ -15,6 +15,7 @@ if [[ ! -d "$ZINIT_HOME" ]]; then
 fi
 source "${ZINIT_HOME}/zinit.zsh"
 
+
 eval "$(dircolors "$ZDOTDIR/dircolors")" # colorize completion menu entries
 export LS_COLORS=$LS_COLORS":.*=38;2;114;113;105:" # dotfiles in gray
 
@@ -92,7 +93,7 @@ setopt hist_find_no_dups
 
 # Vi mode and cursor style
 bindkey -v # enable vi keybindings
-export KEYTIMEOUT=1 # time in ms to wait for key sequences
+KEYTIMEOUT=1 # time in ms to wait for key sequences
 zle_highlight=(region:bg="#223249" fg=15) # visual mode highlight color
 
 function zle-keymap-select() {
@@ -124,18 +125,9 @@ function _set_cursor_beam() {
 }
 precmd_functions+=(_set_cursor_beam)
 
-# title
-autoload -Uz add-zsh-hook
-
-_precmd_title() {
-  print -Pn "\e]0; %~\a"
-}
-_preexec_title() {
-  print -Pn "\e]0; $2\a"
-}
-
-add-zsh-hook precmd _precmd_title
-add-zsh-hook preexec _preexec_title
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey "^x^e" edit-command-line
 
 
 # keybindings
@@ -152,10 +144,25 @@ bindkey "\ef"  forward-word
 bindkey "\eb"  backward-word
 bindkey '^Z'   undo
 
+bindkey " "    magic-space
 bindkey "\ee"  autosuggest-accept
 
 bindkey -a -r  ':' # disable vicmd mode
 bindkey "^?"   backward-delete-char # fix backspace in insert mode
+
+
+# title
+autoload -Uz add-zsh-hook
+
+function _precmd_title() {
+  print -Pn "\e]0; %~\a"
+}
+function _preexec_title() {
+  print -Pn "\e]0; $2\a"
+}
+
+add-zsh-hook precmd _precmd_title
+add-zsh-hook preexec _preexec_title
 
 
 # plugins
@@ -169,7 +176,10 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 # setup programs
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh --cmd cd)"
+
+#prompt
 [[ -f "$ZDOTDIR/p10k.zsh" ]] && source "$ZDOTDIR/p10k.zsh"
+PS2='%F{240}󱞩 %f'
 
 
 # Aliases

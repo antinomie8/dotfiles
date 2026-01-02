@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # colors
-RED='\x1b[38;2;232;36;36m'     #e82424
-YELLOW='\x1b[38;2;255;158;59m' #ff9e3b
-COLOR_RESET='\x1b[0m'
+RED='\e[91m'
+YELLOW='\e[93m'
+COLOR_RESET='\e[0m'
 
 # clone the repo if it is not in ~/.config ans cd into it
 [[ -d ~/.config/dotfiles ]] || git clone https://github.com/anonymousgrasshopper/dotfiles ~/.config/dotfiles

@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [[ -d $1 ]]; then
 	eza -1al --git --group-directories-first --color=always --icons "$1"
 elif [[ -f $1 ]]; then
 	filetype=$(file --brief "$1")
 	if echo "$filetype" | grep --silent "image"; then
-		kitten icat "$1" 2>/dev/null
+		kitty icat --clear --transfer-mode=stream --unicode-placeholder --stdin=no --place=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}@0x0 "$1"
 	elif echo "$filetype" | grep --silent "text"; then
 		bat --plain --color=always "$1"
 	else

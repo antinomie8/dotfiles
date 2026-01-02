@@ -1,6 +1,6 @@
 [filechooser]
 cmd=yazi-wrapper.sh
-default_dir=$HOME
+default_dir=$(xdg-user-dir DOWNLOAD)
 ; Uncomment to skip creating destination save files with instructions in them
 ; create_help_file=0
 

@@ -280,6 +280,7 @@ local extension_filetypes = {
 	"lazy",
 	"man",
 	"neo-tree",
+	"notmuch-threads",
 	"qf",
 	"toggleterm",
 	"TelescopePrompt",
@@ -291,39 +292,45 @@ components.ExtensionA = {
 	condition = function() return vim.tbl_contains(extension_filetypes, vim.bo.filetype) end,
 	init = function(self)
 		self.ft = vim.bo.filetype
-		self.extension_names = {
-			["aerial"] = function() return "Aerial" end,
-			["checkhealth"] = function() return "Health" end,
+		self.filetype_data = {
+			["aerial"] = "Aerial",
+			["checkhealth"] = "Health",
 			["CompetiTest"] = function() return vim.b.competitest_title or "CompetiTest" end,
-			["dap-repl"] = function() return "repl" end,
-			["dapui_scopes"] = function() return "Scopes" end,
-			["dapui_stacks"] = function() return "Call Stack" end,
-			["dapui_watches"] = function() return "Watches" end,
-			["dapui_console"] = function() return "Console" end,
-			["dapui_breakpoints"] = function() return "Breakpoints" end,
+			["dap-repl"] = "repl",
+			["dapui_scopes"] = "Scopes",
+			["dapui_stacks"] = "Call Stack",
+			["dapui_watches"] = "Watches",
+			["dapui_console"] = "Console",
+			["dapui_breakpoints"] = "Breakpoints",
 			["DiffviewFiles"] = function() return " " .. (vim.b.gitsigns_status_dict.head or " ") end,
 			["fugitive"] = function() return " " .. (vim.b.gitsigns_status_dict.head or " ") end,
 			["git"] = function() return " " .. (vim.b.gitsigns_status_dict.head or " ") end,
-			["lazy"] = function() return "Lazy" end,
-			["man"] = function() return "MAN" end,
+			["lazy"] = "Lazy",
+			["man"] = "MAN",
 			["neo-tree"] = function() return vim.fn.fnamemodify(vim.fn.getcwd(), ":~") end,
+			["notmuch-threads"] = "Mail",
 			["qf"] = function() return is_loclist() and "Location List" or "Quickfix List" end,
-			["TelescopePrompt"] = function() return "Telescope" end,
+			["TelescopePrompt"] = "Telescope",
 			["toggleterm"] = function() return "Terminal #" .. vim.b.toggle_number end,
-			["yazi"] = function() return "Yazi" end,
-			["undotree"] = function() return "Undotree" end,
+			["yazi"] = "Yazi",
+			["undotree"] = "Undotree",
 		}
 	end,
-	provider = function(self) return self.extension_names[vim.bo.filetype]() end,
+	provider = function(self)
+		if type(self.filetype_data[self.ft]) == "function" then
+			return self.filetype_data[self.ft]()
+		else
+			return self.filetype_data[self.ft]
+		end
+	end,
 }
 
 components.ExtensionB = {
 	init = function(self)
 		local git_root = require("utils.git").git_root
-
 		self.ft = vim.bo.filetype
-		self.extension_left = {
-			["checkhealth"] = function() return "󰓙 " end,
+		self.filetype_data = {
+			["checkhealth"] = "󰓙 ",
 			["lazy"] = function() return "loaded: " .. require("lazy").stats().loaded .. "/" .. require("lazy").stats().count end,
 			["man"] = function() return vim.fn.expand("%"):sub(7) end,
 			["diffview"] = git_root,
@@ -337,21 +344,26 @@ components.ExtensionB = {
 			end,
 		}
 	end,
-	condition = function()
-		local filetypes = {
+	condition = function(self)
+		return vim.tbl_contains({
 			"checkhealth",
+			"lazy",
+			"man",
 			"diffview",
 			"fugitive",
 			"git",
-			"lazy",
-			"man",
 			"qf",
-		}
-		return vim.tbl_contains(filetypes, vim.bo.filetype)
+		}, vim.bo.filetype)
 	end,
 	components.Space,
 	{
-		provider = function(self) return self.extension_left[vim.bo.filetype]() end,
+		provider = function(self)
+			if type(self.filetype_data[self.ft]) == "function" then
+				return self.filetype_data[self.ft]()
+			else
+				return self.filetype_data[self.ft]
+			end
+		end,
 	},
 	components.Space,
 }
@@ -373,10 +385,10 @@ components.ExtensionC = {
 }
 
 components.ExtensionY = {
-	condition = function(self) return self.extension_icons[vim.bo.filetype] end,
+	condition = function(self) return self.filetype_data[vim.bo.filetype] end,
 	init = function(self) self.ft = vim.bo.filetype end,
 	static = {
-		extension_icons = {
+		filetype_data = {
 			["aerial"] = "󱏒",
 			["CompetiTest"] = "",
 			["dap-repl"] = "",
@@ -388,13 +400,20 @@ components.ExtensionY = {
 			["DiffviewFiles"] = "󰊢",
 			["lazy"] = "󰒲",
 			["neo-tree"] = "󰙅",
+			["notmuch-threads"] = function() return "󰇯 " .. vim.api.nvim_buf_line_count(0) - 1 end,
 			["TelescopePrompt"] = "󰭎",
 			["toggleterm"] = " ",
 			["undotree"] = "󱁊",
 			["yazi"] = "󰇥",
 		},
 	},
-	provider = function(self) return self.extension_icons[vim.bo.filetype] end,
+	provider = function(self)
+		if type(self.filetype_data[self.ft]) == "function" then
+			return self.filetype_data[self.ft]()
+		else
+			return self.filetype_data[self.ft]
+		end
+	end,
 }
 
 return components

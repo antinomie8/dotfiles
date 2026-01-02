@@ -98,7 +98,7 @@ return {
 									}, -- if the two characters before the cursor are paired, don't remove them
 									-- snippets
 									{ key = "*", ft = { "markdown", "tex" }, text = "\\left" },
-									{ key = "[", ft = { "bash", "zsh", "sh" }, text = { "if ", "while " } }, -- use sh in case ft is wrong
+									-- { key = "[", ft = { "bash", "zsh", "sh" }, text = { "if ", "while " } }, -- use sh in case ft is wrong
 									{ key = "(", ft = "cpp", regex = { { "%Wall", 4 } } },
 								}
 								for _, cond in ipairs(conds) do

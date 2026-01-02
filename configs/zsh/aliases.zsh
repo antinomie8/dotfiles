@@ -1,22 +1,29 @@
 # suffix aliases
-alias -s   c="nvim"
-alias -s cpp="nvim"
-alias -s tex="nvim"
-alias -s asm="nvim"
-alias -s typ="nvim"
-alias -s pdf="zathura"
+alias -s   c='nvim'
+alias -s cpp='nvim'
+alias -s tex='nvim'
+alias -s asm='nvim'
+alias -s typ='nvim'
+alias -s pdf='zathura'
+alias -s json='view_json'
+alias -s jsonc='view_json'
 
 # global aliases
 alias -g C='| wc -l'
-alias -g NUL=">/dev/null 2>&1"
+alias -g NUL='>/dev/null 2>&1'
+
+# zmv
+autoload -Uz zmv
+alias zcp='zmv -C'  # Copy with patterns
+alias zln='zmv -L'  # Link with patterns
 
 # shortcuts
-alias     q="exit"
-alias     c="clear"
-alias -- +x="chmod u+x"
-alias -- -x="chmod u+x"
-dots="..";
-back="../"
+alias     q='exit'
+alias     c='clear'
+alias -- +x='chmod u+x'
+alias -- -x='chmod u+x'
+dots='..'
+back='../'
 for i in {1..7}; do
 	alias $dots="cd $back"
 	dots="$dots."
@@ -51,6 +58,9 @@ function compile() {
 			;;
 	esac
 	[[ -n "$compiler" ]] && command "$compiler" "$1" -o "$ouput_filename"
+}
+function view_json() {
+	jq . $1 -C | less -R
 }
 alias path='echo -e ${PATH//:/\\n}' # human-readable path
 alias uncompress='tar -xvzf'
@@ -99,8 +109,7 @@ alias top="btop"
 alias fetch="fastfetch"
 alias lg="lazygit"
 alias py="python3"
-alias mutt="neomutt"
-alias m="neomutt"
+alias m="nvim -c Inbox"
 
 # eza
 alias ls="eza --icons=always --group-directories-first --no-quotes"
@@ -118,7 +127,7 @@ alias gb="git branch"
 alias gco="git checkout"
 alias push="git push"
 alias gitcd='cd "$(git rev-parse --show-toplevel)"'
-gacp() {
+function gacp() {
 	git add .
 	git commit -m $@
 	git push
@@ -223,3 +232,15 @@ function x() {
 
 # zathura
 alias zathura="run zathura"
+
+# pandoc
+function pdfconvert() {
+	[[ $# ==  0 ]] && echo "pdfconvert: expected filename"
+	[[ $# -ne 1 ]] && return 1
+	while (($#)); do
+		local input=$1 
+		local ext=${1:e}
+		pandoc --from $ext --to pdf $1 --output "${1:r}.pdf"
+		shift
+	done
+}

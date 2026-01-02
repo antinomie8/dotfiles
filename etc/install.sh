@@ -14,10 +14,10 @@ cd "$SCRIPT_DIR" || exit
 
 # $1: file to copy relative to $SCRIPT_DIR, $2: destination
 function copy_item {
-	[[ -f "$1" || -d "$1" ]] || {
+	if ! [[ -e "$1" ]]; then
 		echo -e "${YELLOW} $1 not found"
 		return 1
-	}
+	fi
 	[[ "$2" == "$HOME"* ]] && sudo="" || sudo="sudo"
 	[[ -d "$2" ]] || $sudo mkdir -p "$2" 2>/dev/null
 	if [[ ! -f "$2/$1" && ! -d "$2/$1" ]]; then
@@ -43,14 +43,12 @@ function program {
 }
 program pacman && copy_item pacman.conf /etc
 program pacman && copy_item paccache.timer /etc/systemd/system
-program picom && copy_item picom.conf /etc/xdg
 program hyprland && copy_item Bibata "$HOME"/.local/share/icons
 program neomutt && copy_item neomutt.desktop /usr/share/applications
 program neomutt && copy_item neomutt.png "$HOME"/.local/share/icons/hicolor/325x325/apps
 program typst && copy_item oly "$HOME"/.local/share/typst/packages/local
 program firefox && copy_item autoconfig.js /usr/lib/firefox/defaults/pref
 program firefox && copy_item firefox.cfg /usr/lib/firefox
-[[ -f /etc/systemd/journald.conf ]] && copy_item journald.conf /etc/systemd
 [[ -n "$CPLUS_INCLUDE_PATH" ]] && copy_item dbg.h "$CPLUS_INCLUDE_PATH"
 
 # Windows and WSL specific files

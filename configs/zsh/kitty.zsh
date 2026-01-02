@@ -11,46 +11,51 @@ kitty_set_spacing
 
 function nvim() {
 	kitty_remove_spacing
-	/bin/nvim "$@"
+	command nvim "$@"
 	kitty_set_spacing
 }
 function tmux() {
 	kitty_remove_spacing
-	/bin/tmux "$@"
+	command tmux "$@"
 	kitty_set_spacing
 }
 function yazi() {
 	kitty_remove_spacing
-	/bin/yazi "$@"
+	command yazi "$@"
 	kitty_set_spacing
 }
 function lazygit() {
 	kitty_remove_spacing
-	/bin/lazygit "$@"
+	command lazygit "$@"
 	kitty_set_spacing
 }
 function btop() {
 	kitty_remove_spacing
-	/bin/btop "$@"
+	command btop "$@"
 	kitty_set_spacing
 }
 function man() {
 	kitty_remove_spacing
-	/bin/man "$@"
+	command man "$@"
 	kitty_set_spacing
 }
 function ncdu() {
 	kitty_remove_spacing
-	/bin/ncdu "$@"
+	command ncdu "$@"
 	kitty_set_spacing
 }
 function neomutt() {
 	kitty_remove_spacing
-	TERM=xterm-direct /bin/neomutt "$@"
+	TERM=xterm-direct command neomutt "$@"
+	kitty_set_spacing
+}
+function aerc() {
+	kitty_remove_spacing
+	command aerc "$@"
 	kitty_set_spacing
 }
 function cxxmatrix() {
 	kitty_remove_spacing
-	/bin/cxxmatrix "$@"
+	command cxxmatrix "$@"
 	kitty_set_spacing
 }

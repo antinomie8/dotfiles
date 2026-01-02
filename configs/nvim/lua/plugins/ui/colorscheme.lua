@@ -102,7 +102,6 @@ return {
 					TypstConcealSurround = { link = "Delimiter" },
 					TypstConcealSet = { link = "Constant" },
 					TypstConcealLetters = { link = "Special" },
-					["@markup.math.typst"] = { link = "Special" },
 
 					IlluminatedWordText = { bold = true },
 					IlluminatedWordRead = { bold = true },
@@ -124,6 +123,10 @@ return {
 					LightBulbSign = { fg = palette.oldWhite },
 
 					LazyNormal = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m3 },
+
+					-- syntax highlighting
+					["@markup.math.typst"] = { link = "Special" },
+					["MailURL"] = { link = "@string.special.url" },
 				}
 			end,
 			colors = {

@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 filename="$1:e"
 nasm -f elf64 -o "$filename.o" "$1"
 if [[ -f "$filename.o" ]]; then

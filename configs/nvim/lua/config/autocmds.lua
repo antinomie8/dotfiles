@@ -116,7 +116,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "mail", "text", "plaintex", "typst", "gitcommit", "markdown", "tex" },
 	callback = function()
-		if not vim.bo.modifiable then return end
+		if not vim.opt_local.modifiable:get() then return end
 
 		vim.opt_local.wrap = true
 		vim.opt_local.spell = true
@@ -159,6 +159,12 @@ vim.api.nvim_create_autocmd("OptionSet", {
 		end
 
 		vim.opt.spellfile = table.concat(add_files, ",")
+	end,
+})
+vim.api.nvim_create_autocmd("OptionSet", {
+	pattern = "modifiable",
+	callback = function()
+		vim.opt_local.spell = false
 	end,
 })
 

@@ -1,19 +1,11 @@
 #!/usr/bin/env lua
 
 -- colors
-local function rgb(hex)
-	assert(#hex == 7 and hex:sub(1, 1) == "#")
-	local r = tonumber(hex:sub(2, 3), 16)
-	local g = tonumber(hex:sub(4, 5), 16)
-	local b = tonumber(hex:sub(6, 7), 16)
-	return string.format("\27[38;2;%d;%d;%dm", r, g, b)
-end
-
+local RED = "\27[91m"
+local GREEN = "\27[92m"
+local YELLOW = "\27[93m"
+local GRAY = "\27e90m"
 local RESET = "\27[0m"
-local RED = rgb("#e82424")
-local YELLOW = rgb("#ff9e3b")
-local GREEN = rgb("#6a9589")
-local GRAY = rgb("#54546d")
 
 -- utilities
 local function shell_escape(s)

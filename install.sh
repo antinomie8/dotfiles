@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 # colors
-RED='\x1b[38;2;232;36;36m'     #e82424
-YELLOW='\x1b[38;2;255;158;59m' #ff9e3b
-GREEN='\x1b[38;2;106;149;137m' #6a9589
-BLUE='\x1b[38;2;126;156;216m'  #7e9cD8
-WHITE='\x1b[38;2;220;215;186m' #dcd7ba
-COLOR_RESET='\x1b[0m'
+RED='\e[91m'
+GREEN='\e[92m'
+YELLOW='\e[93m'
+BLUE='\e[34m'
+WHITE='\e[37m'
+COLOR_RESET='\e[0m'
 
 # cd to the script's directory
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
@@ -23,7 +23,7 @@ while [[ $# -ge 1 ]]; do
 done
 
 # util function for getting user input
-function get_answer {
+function get_answer() {
 	read -r answer
 	case "$answer" in
 	[yY][eE][sS] | [yY])
@@ -35,7 +35,7 @@ function get_answer {
 	esac
 }
 # util function for checking if a program is in $PATH
-function program {
+function program() {
 	if type "$1" >/dev/null 2>&1; then
 		return 0
 	else
@@ -78,7 +78,7 @@ if [[ ! "$SHELL" =~ /zsh$ ]]; then
 fi
 
 # configure /etc/zsh files for avoiding dotfiles clutter in home directory
-function add_line {
+function add_line() {
 	if [[ -f "$2" ]]; then
 		if ! grep --silent "$1" "$2"; then
 			echo "$1" | sudo tee -a "$2" >/dev/null
@@ -99,11 +99,11 @@ if [[ -f /etc/pulse/client.conf ]] &&
 fi
 
 # specific things to do on operating systems using pacman as a package manager
-packages=("7zip" "asymptote" "bat" "btop" "clang" "cmake" "cronie" "eza" "fd" "firefox"
-	"fzf" "gcc" "git" "git-delta" "github-cli" "hexyl" "imagemagick" "kitty" "kmonad"
-	"lazygit" "lynx" "man-db" "nasm" "ncdu" "notmuch" "npm" "obsidian" "picom"
-	"python" "ripgrep" "rofi" "rsync" "tldr" "tmux" "tree-sitter-cli" "typst"
-	"rustup" "unzip" "wget" "xdotool" "zathura" "zathura-pdf-mupdf" "zoxide" "zsh"
+packages=("7zip" "asymptote" "bat" "btop" "clang" "cmake" "cronie" "eza" "fd"
+	"firefox" "fzf" "gcc" "git" "git-delta" "github-cli" "hexyl" "imagemagick"
+	"kitty" "kmonad" "lazygit" "lynx" "man-db" "nasm" "ncdu" "notmuch" "npm"
+	"obsidian" "pandoc" "python" "ripgrep" "rofi" "rsync" "tldr" "tmux" "tree-sitter-cli"
+	"typst" "rustup" "unzip" "wget" "xdotool" "zathura" "zathura-pdf-mupdf" "zoxide" "zsh"
 	"lua-language-server" "stylua" "tinymist" "bash-language-server" "shellcheck" "shfmt" "prettier") # Neovim
 if program pacman; then
 	# Install yay (AUR helper)
@@ -147,7 +147,7 @@ if program pacman; then
 	fi
 
 	# install fonts
-	function install_font {
+	function install_font() {
 		if [[ ! -f /usr/share/fonts/TTF/$3/$2-Regular.ttf ]] &&
 			[[ ! -f /usr/share/fonts/TTF/$2-Regular.ttf ]]; then
 			echo -en "${BLUE}Would you like to install the $1 ? (y/n) ${COLOR_RESET}"
@@ -208,12 +208,14 @@ fi
 		exit 1
 	}
 	[[ -d "$HOME/.local/bin" ]] || mkdir -p "$HOME/.local/bin"
+	printf '\n'
 	for file in *; do
 		if [[ ! -f "$HOME/.local/bin/$file" ]]; then
 			cp "$file" "$HOME/.local/bin/"
 			chmod +x "$HOME/.local/bin/$file"
 		elif ! cmp --silent "$file" "$HOME/.local/bin/$file"; then
 			if [[ -z $OVERWRITE ]]; then
+				echo -en '\e[A\e[2K' # cursor one line up and clear line
 				echo -en "${BLUE}Would you like to delete your current ${GREEN}$file${BLUE} script to replace it with the one in this repo ? (y/n) ${COLOR_RESET}"
 			fi
 			if [[ -n $OVERWRITE ]] || get_answer; then
@@ -232,6 +234,7 @@ fi
 		echo -e "${RED}Error:${WHITE} configs directory is not present in $SCRIPT_DIR${COLOR_RESET}"
 		exit 1
 	}
+	first=true
 	for item in *; do
 		if [[ ! -e "$HOME/.config/$item" ]]; then
 			cp -r "$item" "$HOME/.config/"
@@ -249,11 +252,20 @@ fi
 			done < <(if [[ -d "$item" ]]; then find "$item" -path "./.git/*" -prune -o -type f -print0; else echo -ne "$item\0"; fi)
 			if $difference; then
 				if [[ ! $OVERWRITE ]]; then
-					echo -en "${BLUE}Would you like to :
-	${BLUE}- 1 :${WHITE} create a backup of your current ${GREEN}$item${WHITE} config before replacing it
-	${BLUE}- 2 :${WHITE} delete your current ${GREEN}$item${WHITE} config and replace it
-	${BLUE}- 3 :${WHITE} skip this step and keep your current ${GREEN}$item${WHITE} config ?
-${RED}Enter a number (default 3) :${COLOR_RESET} "
+					if first; then
+						echo -en "${BLUE}Would you like to :\n\n\n\n${RED}Enter a number (default 3) :${COLOR_RESET} "
+						first=false
+					fi
+					echo -en '\e[A\e[2K' # cursor one line up and clear line
+					echo -en '\e[A\e[2K' # cursor one line up and clear line
+					echo -en '\e[A\e[2K' # cursor one line up and clear line
+					echo -en "  ${BLUE}- 1 :${WHITE} create a backup of your current ${GREEN}$item${WHITE} config before replacing it"
+					echo -en "\e[2B"
+					echo -en "  ${BLUE}- 2 :${WHITE} delete your current ${GREEN}$item${WHITE} config and replace it"
+					echo -en "\e[2B"
+					echo -en "  ${BLUE}- 3 :${WHITE} skip this step and keep your current ${GREEN}$item${WHITE} config ?"
+					echo -en "\e[2B"
+					echo -en "\e[999C" # move cursor to eol
 					read -r answer
 				else
 					answer=2
@@ -269,9 +281,6 @@ ${RED}Enter a number (default 3) :${COLOR_RESET} "
 				2)
 					rm -rf "$HOME/.config/$item"
 					cp -r "$item" "$HOME/.config/"
-					;;
-				*)
-					echo -e "${WHITE}Skipping...${COLOR_RESET}"
 					;;
 				esac
 			fi

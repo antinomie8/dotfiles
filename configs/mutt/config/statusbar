@@ -1,28 +1,34 @@
-set index_format=" %zs %zc %zt  󱓻  %-25.25L  %?M?(%1M)&  ? %?X?&·? %s %.46s %> %{!%a %d %h %H:%M}    "
+set index_format=" %zs %zc %zt  󱓻  %-25.25L  %?M?(%1M)&  ? %?X?&·? %.85s %> %{!%a %d %h %H:%M}    "
 # set index_format=" %zs %zc %zt | %-28.28L  %?X?& ? %.46s %> %{!%a %d %h %H:%M}      "
 set pager_format=" %n%zc %T %s%*  %{!%d %b · %H:%M} %?X?  %X ? %P  "
 set attach_format = "%u%D  %T%-75.75d %?T?   ? %5s · %m/%M"
 
-set status_format = " %f%?r?%r? 󰇯 %m %?n?  %n ?  %?d?  %d ?%?t?  %t ?%?F?  %F? %> %?p?   %p ?"
+set status_format = " %f%?r?%r? 󰇯 %m %?n?  %n ? %?d?  %d ?%?t?  %t ?%?F?  %F? %> %?p?  %p ?"
 
 # colors
+# neomutt doesn't handle glyphs properly
+color status #c8c093 #2a2a37
 color status #76946a #2a2a37 ''
 color status #dca561 #2a2a37 ''
 color status #c34043 #2a2a37 ''
-color status #2a2a37 #7e9cd8 '(.*)' 1
-color status #7e9cd8 #2a2a37 '.*()' 1
+color status #2a2a37 #7e9cd8 '^([^]*)'
+color status #7e9cd8 #54546d '(.*)'
+color status #54546d #2a2a37 '()' 1
+# color status #7e9cd8 #54546d '^[^]*()'
+# color status #7e9cd8 #54546d '().*' 1
+# color status #7e9cd8 #54546d '()' 1
 color status #2a2a37 #7e9cd8 '\s* [0-9]+\s*'
 color status #7e9cd8 #2a2a37 '().*$' 1
 color status #dca561 #2a2a37 '()\s*\s*[0-9]+\s*' 1
 color status #2a2a37 #dca561 '\s*\s*[0-9]+\s*'
 color status #7e9cd8 #dca561 '() ([0-9]+%|all|end) \s*' 1
 color status #2a2a37 #7e9cd8 ' ([0-9]+%|all|end) \s*'
-color status #dca561 #2a2a37 '()\s*' 1
+color status #54546d #2a2a37 '()' 1
+color status #7e9cd8 #2a2a37 '()' 1
 color status default #2a2a37 ''
-color status #c8c093 #2a2a37
 
 
-# set index_format="     %zs %zc %zt | %-28.28L  %?X?& ? %.46s %?M10?(%1M)&? %> %{!%a %d %h %H:%M}      "
+# set index_format="     %zs %zc %zt | %-28.28L  %?X?& ? %.46s M10?(%1M)&? %> %{!%a %d %h %H:%M}      "
 # set pager_format="\n  %n %T %s%*  %{!%d %b · %H:%M} %?X? %X?%P    \n \n"
 # set status_format = "  %f  %?r? %m  ?%?n? %n  ?%?d? %d  ?%?t? %t  ?%?F? %F  ?%?p? %p?  \n \n"
 # set attach_format = "%u%D  %T%-75.75d %?T?   ? %5s · %m/%M"
