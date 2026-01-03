@@ -13,7 +13,7 @@ if [[ ! -d $ANTIDOTE_HOME ]]; then
   git clone --depth=1 https://github.com/mattmc3/antidote $ANTIDOTE_HOME
 fi
 source $ANTIDOTE_HOME/antidote.zsh
-antidote load $ZDOTDIR/zsh_plugins
+antidote load $ZDOTDIR/plugins
 
 
 eval "$(dircolors "$ZDOTDIR/dircolors")" # colorize completion menu entries
