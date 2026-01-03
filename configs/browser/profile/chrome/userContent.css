@@ -17,21 +17,24 @@
 	}
 }
 
+/* hide "Only you can see your full profile" on github */
+@-moz-document domain("github.com") {
+	.flash.mt-4 {
+		display: none !important;
+		visibility: hidden !important;
+	}
+}
+
 /* dark mode for pdf.js */
-:root:not([darkpdf]) #sidebarContainer > #sidebarContent > #thumbnailView {
+:root([darkpdf]) #sidebarContainer > #sidebarContent > #thumbnailView {
 	--sidebaritem-bg-color: #1f1f28;
 }
 
-:root:not([darkpdf])
-	#viewerContainer
-	> #viewer
-	> .page
-	> .canvasWrapper
-	> canvas {
+:root([darkpdf]) #viewerContainer > #viewer > .page > .canvasWrapper > canvas {
 	filter: grayscale(100%) invert(90%);
 }
 
-:root:not([darkpdf])
+:root([darkpdf])
 	#sidebarContainer
 	> #sidebarContent
 	> #thumbnailView
