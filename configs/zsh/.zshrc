@@ -151,8 +151,7 @@ eval "$(fzf --zsh)"
 eval "$(zoxide init zsh --cmd cd)"
 [[ -f "$ZDOTDIR/p10k.zsh" ]] && source "$ZDOTDIR/p10k.zsh"
 
-# Keybindings
+# config files
 source "$ZDOTDIR/keybinds.zsh"
-
-# Aliases
+source "$ZDOTDIR/functions.zsh"
 source "$ZDOTDIR/aliases.zsh"

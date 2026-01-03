@@ -212,10 +212,10 @@ return {
 					hide_by_pattern = { -- uses glob style patterns
 						"*.log",
 					},
-					always_show = {},       -- remains visible even if other settings would normally hide it
-					always_show_by_pattern = {}, -- uses glob style patterns
-					never_show = {},        -- remains hidden even if visible is toggled to true, this overrides always_show
-					never_show_by_pattern = { -- uses glob style patterns
+					always_show = { ".zshrc", ".zshenv" }, -- remains visible even if other settings would normally hide it
+					always_show_by_pattern = {},      -- uses glob style patterns
+					never_show = {},                  -- remains hidden even if visible is toggled to true, this overrides always_show
+					never_show_by_pattern = {         -- uses glob style patterns
 						".git",
 						"*.aux",
 						"*.fls",
@@ -320,7 +320,7 @@ return {
 				renderers = {
 					file = {
 						{ "custom_icon" },
-						{ "name",       use_git_status_colors = true },
+						{ "name", use_git_status_colors = true },
 						-- { "harpoon_index" },
 						{ "diagnostics" },
 						{ "git_status", highlight = "NeoTreeDimText" },
@@ -412,7 +412,7 @@ return {
 						end
 					end,
 				},
-				{ event = "file_moved",   handler = on_move },
+				{ event = "file_moved", handler = on_move },
 				{ event = "file_renamed", handler = on_move },
 				{
 					event = "file_moved",
