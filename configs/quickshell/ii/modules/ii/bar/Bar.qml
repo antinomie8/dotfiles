@@ -3,7 +3,6 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 import Quickshell.Hyprland
-import Quickshell.Services.Notifications
 import qs
 import qs.services
 import qs.modules.common
@@ -62,6 +61,7 @@ Scope {
 				}
 				color: "transparent"
 
+				// Positioning
 				anchors {
 					top: !Config.options.bar.bottom
 					bottom: Config.options.bar.bottom
@@ -72,6 +72,14 @@ Scope {
 				margins {
 					right: (Config.options.interactions.deadPixelWorkaround.enable && barRoot.anchors.right) * -1
 					bottom: (Config.options.interactions.deadPixelWorkaround.enable && barRoot.anchors.bottom) * -1
+				}
+
+				// Include in focus grab
+				Component.onCompleted: {
+					GlobalFocusGrab.addPersistent(barRoot);
+				}
+				Component.onDestruction: {
+					GlobalFocusGrab.removePersistent(barRoot);
 				}
 
 				MouseArea {

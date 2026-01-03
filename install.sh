@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 # colors
-RED='\e[91m'
-GREEN='\e[92m'
-YELLOW='\e[93m'
-BLUE='\e[34m'
+ERROR='\e[38;5;196m'
+WARNING='\e[38;5;226m'
+BLUE='\e[38;5;39m'
+GREEN='\e[38;5;46m'
 WHITE='\e[37m'
 COLOR_RESET='\e[0m'
 
@@ -54,10 +54,10 @@ fi
 
 # warn the user if the script is being runned as root
 if [[ "$EUID" == 0 && ! "$SCRIPT_DIR" =~ ^/root ]]; then
-	echo -e "${YELLOW} Running this script as root might cause permission issues."
-	echo -en "${YELLOW}  Do you really want to continue ? (y/n) ${COLOR_RESET}"
+	echo -e "${WARNING} Running this script as root might cause permission issues."
+	echo -en "${WARNING}  Do you really want to continue ? (y/n) ${COLOR_RESET}"
 	if ! get_answer; then
-		echo -e "${RED}  Aborting...${COLOR_RESET}"
+		echo -e "${ERROR}  Aborting...${COLOR_RESET}"
 		exit 1
 	fi
 fi
@@ -117,7 +117,7 @@ if program pacman; then
 				rm -rf /tmp/yay
 				cd "$SCRIPT_DIR" || exit
 			else
-				echo "${RED} Cloning yay failed. Check your internet connection and try again.${COLOR_RESET}"
+				echo "${ERROR} Cloning yay failed. Check your internet connection and try again.${COLOR_RESET}"
 			fi
 		fi
 	fi
@@ -192,11 +192,11 @@ printf '\n'
 
 # check the user has a home directory
 if [[ -z "$HOME" ]]; then
-	echo "${RED}You don't have a home directory. Create one ? (y/n) ${COLOR_RESET}"
+	echo "${ERROR}You don't have a home directory. Create one ? (y/n) ${COLOR_RESET}"
 	if get_answer && program mkhomedir_helper; then
 		sudo mkhomedir_helper "$USER"
 	else
-		echo "${RED}Aborting...${COLOR_RESET}"
+		echo "${ERROR}Aborting...${COLOR_RESET}"
 	fi
 	[[ -z "$HOME" ]] && exit 1
 fi
@@ -204,7 +204,7 @@ fi
 # copy scripts to ~/.local/bin
 (
 	cd scripts || {
-		echo -e "${RED}Error:${WHITE} scripts directory is not present in $SCRIPT_DIR${COLOR_RESET}"
+		echo -e "${ERROR}Error:${WHITE} scripts directory is not present in $SCRIPT_DIR${COLOR_RESET}"
 		exit 1
 	}
 	[[ -d "$HOME/.local/bin" ]] || mkdir -p "$HOME/.local/bin"
@@ -231,7 +231,7 @@ fi
 (
 	[[ -d "$HOME/.config" ]] || mkdir "$HOME/.config"
 	cd "$SCRIPT_DIR/configs" || {
-		echo -e "${RED}Error:${WHITE} configs directory is not present in $SCRIPT_DIR${COLOR_RESET}"
+		echo -e "${ERROR}Error:${WHITE} configs directory is not present in $SCRIPT_DIR${COLOR_RESET}"
 		exit 1
 	}
 	first=true
@@ -253,7 +253,7 @@ fi
 			if $difference; then
 				if [[ ! $OVERWRITE ]]; then
 					if first; then
-						echo -en "${BLUE}Would you like to :\n\n\n\n${RED}Enter a number (default 3) :${COLOR_RESET} "
+						echo -en "${BLUE}Would you like to :\n\n\n\n${ERROR}Enter a number (default 3) :${COLOR_RESET} "
 						first=false
 					fi
 					echo -en '\e[A\e[2K' # cursor one line up and clear line
@@ -300,11 +300,11 @@ fi
 					sudo pacman -S --needed git cmake
 				fi
 				if ! program cmake; then
-					echo -e "${RED} cmake is required in order to build oly.${COLOR_RESET}"
+					echo -e "${ERROR} cmake is required in order to build oly.${COLOR_RESET}"
 					installed=false
 				fi
 				if ! program git; then
-					echo -e "${RED} git is required to clone oly.${COLOR_RESET}"
+					echo -e "${ERROR} git is required to clone oly.${COLOR_RESET}"
 					installed=false
 				fi
 				if ! $installed; then
@@ -324,7 +324,7 @@ fi
 				printf '\n'
 				cd "$SCRIPT_DIR" || exit
 			else
-				echo -e "${RED} Cloning oly failed. Check your internet connection and try again.${COLOR_RESET}"
+				echo -e "${ERROR} Cloning oly failed. Check your internet connection and try again.${COLOR_RESET}"
 			fi
 		fi
 	fi

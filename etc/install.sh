@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # colors
-RED='\x1b[38;2;232;36;36m'     #e82424
-YELLOW='\x1b[38;2;255;158;59m' #ff9e3b
-GREEN='\x1b[38;2;106;149;137m' #6a9589
-BLUE='\x1b[38;2;126;156;216m'  #7e9cd8
-WHITE='\x1b[38;2;220;215;186m' #dcd7ba
-COLOR_RESET='\x1b[0m'
+ERROR='\e[38;5;196m'
+WARNING='\e[38;5;226m'
+INFO='\e[38;5;39m'
+SUCCESS='\e[38;5;46m'
+WHITE='\e[37m'
+COLOR_RESET='\e[0m'
 
 # change dir to the script's directory
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
@@ -15,19 +15,23 @@ cd "$SCRIPT_DIR" || exit
 # $1: file to copy relative to $SCRIPT_DIR, $2: destination
 function copy_item {
 	if ! [[ -e "$1" ]]; then
-		echo -e "${YELLOW} $1 not found"
+		echo -e "${WARNING} $1 not found"
 		return 1
 	fi
-	[[ "$2" == "$HOME"* ]] && sudo="" || sudo="sudo"
+	if [[ "$2" == "$HOME"* || ${2:0:1} == '~' ]]; then
+		sudo=""
+	else
+		sudo="sudo"
+	fi
 	[[ -d "$2" ]] || $sudo mkdir -p "$2" 2>/dev/null
 	if [[ ! -f "$2/$1" && ! -d "$2/$1" ]]; then
-		$sudo cp -r "$1" "$2/" 2>/dev/null || echo -e "${RED} ${WHITE}You need to manually move ${GREEN}$1${WHITE} to ${GREEN}$2${COLOR_RESET}"
+		$sudo cp -r "$1" "$2/" 2>/dev/null || echo -e "${ERROR} ${WHITE}You need to manually move ${SUCCESS}$1${WHITE} to ${SUCCESS}$2${COLOR_RESET}"
 	elif ! diff --brief -r "$1" "$2/$1" >/dev/null 2>&1; then
-		echo -en "${BLUE}Would you like to delete your current ${GREEN}$1${BLUE} to replace it with the one in this repo ? (y/n) ${COLOR_RESET}"
+		echo -en "${INFO}Would you like to delete your current ${SUCCESS}$1${INFO} to replace it with the one in this repo ? (y/n) ${COLOR_RESET}"
 		read -r answer
 		case "$answer" in
 		[yY][eE][sS] | [yY])
-			$sudo cp -r "$1" "$2/" 2>/dev/null || echo -e "${RED} ${WHITE}You need to manually move ${GREEN}$1${WHITE} to ${GREEN}$2${COLOR_RESET}"
+			$sudo cp -r "$1" "$2/" 2>/dev/null || echo -e "${ERROR} ${WHITE}You need to manually move ${SUCCESS}$1${WHITE} to ${SUCCESS}$2${COLOR_RESET}"
 			;;
 		esac
 	fi
@@ -43,24 +47,28 @@ function program {
 }
 program pacman && copy_item pacman.conf /etc
 program pacman && copy_item paccache.timer /etc/systemd/system
-program hyprland && copy_item Bibata "$HOME"/.local/share/icons
-program neomutt && copy_item neomutt.desktop /usr/share/applications
-program neomutt && copy_item neomutt.png "$HOME"/.local/share/icons/hicolor/325x325/apps
-program typst && copy_item oly "$HOME"/.local/share/typst/packages/local
+program hyprland && copy_item icons/Bibata ~/.local/share/icons
+program typst && copy_item oly ~/.local/share/typst/packages/local
 program firefox && copy_item autoconfig.js /usr/lib/firefox/defaults/pref
 program firefox && copy_item firefox.cfg /usr/lib/firefox
+program yazi && copy_item desktop/yazi.desktop ~/.local/share/applications
+program yazi && copy_item icons/hicolor/1254x1260/apps/yazi.png ~/.local/share/icons/hicolor/1254:1260/apps
+program neomutt && copy_item desktop/neomutt.desktop ~/.local/share/applications
+program neomutt && copy_item icons/hicolor/325x325/apps/neomutt.png ~/.local/share/icons/hicolor/325x325/apps
+program nvim && copy_item desktop/mail.desktop ~/.local/share/applications
+program nvim && copy_item icons/hicolor/scalable/apps/mail.svg ~/.local/share/icons/hicolor/scalable/apps
 [[ -n "$CPLUS_INCLUDE_PATH" ]] && copy_item dbg.h "$CPLUS_INCLUDE_PATH"
 
 # Windows and WSL specific files
 if [[ -n "$WSLENV" ]]; then
 	# get the Windows username
 	while true; do
-		echo -en "${BLUE}What is your Windows username ? ${WHITE}"
+		echo -en "${INFO}What is your Windows username ? ${WHITE}"
 		read -r win_username
 		if [[ -n "$win_username" && -d "/mnt/c/Users/$win_username" ]]; then
 			break
 		else
-			echo -e "${RED}Home directory not found. Try again..."
+			echo -e "${ERROR}Home directory not found. Try again..."
 		fi
 	done
 
@@ -88,5 +96,4 @@ if [[ -n "$WSLENV" ]]; then
 	)
 fi
 
-printf '\n'
-echo -e "${GREEN}Completed !"
+echo -e "${SUCCESS}Completed !"

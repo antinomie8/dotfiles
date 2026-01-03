@@ -86,11 +86,11 @@ Scope { // Scope
 		active: true
 
 		sourceComponent: PanelWindow { // Window
-			id: sidebarRoot
+			id: panelWindow
 			visible: GlobalStates.sidebarLeftOpen
 
 			property bool extend: false
-			property real sidebarWidth: sidebarRoot.extend ? Appearance.sizes.sidebarWidthExtended : Appearance.sizes.sidebarWidth
+			property real sidebarWidth: panelWindow.extend ? Appearance.sizes.sidebarWidthExtended : Appearance.sizes.sidebarWidth
 			property var contentParent: sidebarLeftBackground
 
 			function hide() {
@@ -115,17 +115,17 @@ Scope { // Scope
 				item: sidebarLeftBackground
 			}
 
-			HyprlandFocusGrab { // Click outside to close
-				id: grab
-				windows: [sidebarRoot]
-				active: sidebarRoot.visible && !root.pin
-				onActiveChanged: { // Focus the selected tab
-					if (active)
-						sidebarLeftBackground.children[0].focusActiveItem();
+			onVisibleChanged: {
+				if (visible) {
+					GlobalFocusGrab.addDismissable(panelWindow);
+				} else {
+					GlobalFocusGrab.removeDismissable(panelWindow);
 				}
-				onCleared: () => {
-					if (!active)
-						sidebarRoot.hide();
+			}
+			Connections {
+				target: GlobalFocusGrab
+				function onDismissed() {
+					panelWindow.hide();
 				}
 			}
 
@@ -140,7 +140,7 @@ Scope { // Scope
 				anchors.left: parent.left
 				anchors.topMargin: Appearance.sizes.hyprlandGapsOut
 				anchors.leftMargin: Appearance.sizes.hyprlandGapsOut
-				width: sidebarRoot.sidebarWidth - Appearance.sizes.hyprlandGapsOut - Appearance.sizes.elevationMargin
+				width: panelWindow.sidebarWidth - Appearance.sizes.hyprlandGapsOut - Appearance.sizes.elevationMargin
 				height: parent.height - Appearance.sizes.hyprlandGapsOut * 2
 				color: Appearance.colors.colLayer0
 				border.width: 1
@@ -153,11 +153,11 @@ Scope { // Scope
 
 				Keys.onPressed: event => {
 					if (event.key === Qt.Key_Escape) {
-						sidebarRoot.hide();
+						panelWindow.hide();
 					}
 					if (event.modifiers === Qt.ControlModifier) {
 						if (event.key === Qt.Key_O) {
-							sidebarRoot.extend = !sidebarRoot.extend;
+							panelWindow.extend = !panelWindow.extend;
 						} else if (event.key === Qt.Key_D) {
 							root.toggleDetach();
 						} else if (event.key === Qt.Key_P) {

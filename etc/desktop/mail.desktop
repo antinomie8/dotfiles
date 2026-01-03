@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Name=mail
+
+GenericName=Mail Client
+GenericName[de]=Email Client
+Comment=Launches NeoVim with the Inbox command
+Keywords=Email,Mail,IMAP,SMTP
+Categories=Office;Network;Email;ConsoleOnly
+
+Type=Application
+Icon=mail
+Terminal=true
+Exec=nvim -c Inbox
+MimeType=x-scheme-handler/mailto

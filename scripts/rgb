@@ -1,0 +1,24 @@
+#!/usr/bin/env lua
+
+local COLOR_RESET = "\x1b[0m"
+local ERROR = "\27[38;5;196mError" .. COLOR_RESET .. ": "
+
+local function rgb(hex)
+	local r = tonumber(hex:sub(2, 3), 16)
+	local g = tonumber(hex:sub(4, 5), 16)
+	local b = tonumber(hex:sub(6, 7), 16)
+	return
+		string.format("\27[38;2;%d;%d;%dm", r, g, b) ..
+		hex .. COLOR_RESET .. ": " ..
+		string.format("%d %d %d", r, g, b)
+end
+
+for _, hex_code in ipairs(arg) do
+	if #hex_code == 6 then
+		print("#" .. rgb(hex_code))
+	elseif #hex_code ~= 7 then
+		print(ERROR .. hex_code .. " is not a valid hex code !")
+	else
+		print(rgb(hex_code))
+	end
+end

@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
 
 # colors
-RED='\e[91m'
-YELLOW='\e[93m'
+ERROR='\e[38;5;196m'
+WARNING='\e[38;5;226m'
 COLOR_RESET='\e[0m'
 
 # clone the repo if it is not in ~/.config ans cd into it
 [[ -d ~/.config/dotfiles ]] || git clone https://github.com/anonymousgrasshopper/dotfiles ~/.config/dotfiles
 cd ~/.config/dotfiles || {
-	echo "${RED}Cloning the GitHub repository failed. Check you internet connection and try again${COLOR_RESET}"
+	echo "${ERROR}Cloning the GitHub repository failed. Check you internet connection and try again${COLOR_RESET}"
 	exit
 }
 
 # $1: file to copy relative to ~/.config/dotfiles, $2: destination
 function copy {
 	[[ -e "$1" ]] || {
-		echo -e "${YELLOW} $1 not found${COLOR_RESET}"
+		echo -e "${WARNING} $1 not found${COLOR_RESET}"
 		return 1
 	}
 	[[ -d "$1" ]] && rsync -a --delete "$1/" "$2/$(basename "$1")/"
@@ -29,7 +29,7 @@ configs=("bat" "btop" "browser" "clangd" "eza" "fastfetch" "formatters" "git" "h
 	"zathura" "zsh" "fzf.conf" "mimeapps.list" "ripgrep.conf" "shellcheckrc" "user-dirs.dirs"
 	"xdg-desktop-portal" "xdg-desktop-portal-termfilechooser")
 scripts=("assemble" "compile_sfml" "fix_corrupt_history" "fzf_preview_wrapper" "git_dotfiles"
-	"zoxide-rename")
+	"rgb" "zoxide-rename")
 
 # overwrite configs in the dotfiles repo
 for config in ${configs[@]}; do

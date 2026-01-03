@@ -1,10 +1,10 @@
 #!/usr/bin/env lua
 
 -- colors
-local RED = "\27[91m"
-local GREEN = "\27[92m"
-local YELLOW = "\27[93m"
-local GRAY = "\27e90m"
+local ERROR = "\27[38;5;196m"
+local WARNING = "\27[38;5;226m"
+local SUCCESS = "\27[38;5;46m"
+local TRACE = "\27[38;5;250m"
 local RESET = "\27[0m"
 
 -- utilities
@@ -57,9 +57,9 @@ end
 local cmd = io.popen(command)
 if not cmd then
 	if options["from-file"] then
-		io.stderr:write(RED .. "Failed to open " .. positional[3] .. RESET .. "\n")
+		io.stderr:write(ERROR .. "Failed to open " .. positional[3] .. RESET .. "\n")
 	else
-		io.stderr:write(RED .. "Failed to run zoxide query\n" .. RESET)
+		io.stderr:write(ERROR .. "Failed to run zoxide query\n" .. RESET)
 	end
 	os.exit(1)
 end
@@ -70,7 +70,7 @@ for line in cmd:lines() do
 		local score, path = line:match("^%s*(%S+)%s+(.+)$")
 
 		if not score or not path then
-			io.stderr:write(YELLOW .. "Skipping malformed line: " .. RESET .. line .. "\n")
+			io.stderr:write(WARNING .. "Skipping malformed line: " .. RESET .. line .. "\n")
 		else
 			local escaped_old = escape_lua_pattern(old)
 			local new_path = path:gsub(escaped_old, new, 1)
@@ -91,12 +91,12 @@ for line in cmd:lines() do
 					)
 				end
 				print(string.format(
-					GREEN .. "✔" .. GRAY .. " %s → %s (score=%s)" .. RESET,
+					SUCCESS .. "✔" .. TRACE .. " %s → %s (score=%s)" .. RESET,
 					path, new_path, score
 				))
 			else
 				io.stderr:write(
-					GRAY .. "No substitution made, skipping: " .. path .. "\n" .. RESET
+					TRACE .. "No substitution made, skipping: " .. path .. "\n" .. RESET
 				)
 			end
 		end

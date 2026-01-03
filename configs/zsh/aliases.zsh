@@ -18,8 +18,9 @@ alias zcp='zmv -C'  # Copy with patterns
 alias zln='zmv -L'  # Link with patterns
 
 # shortcuts
-alias     q='exit'
-alias     c='clear'
+alias _='sudo'
+alias  q='exit'
+alias c='clear'
 alias -- +x='chmod u+x'
 alias -- -x='chmod u+x'
 dots='..'
@@ -62,6 +63,12 @@ function compile() {
 function view_json() {
 	jq . $1 -C | less -R
 }
+function bak() {
+	mv "$1" "$1.bak"
+}
+function weather {
+  curl "http://wttr.in/$1"
+}
 alias path='echo -e ${PATH//:/\\n}' # human-readable path
 alias uncompress='tar -xvzf'
 
@@ -99,34 +106,35 @@ function far() {
 }
 
 # CLI tools default options
-alias grep="grep --color=auto"
-alias diff="diff --color=auto"
-alias fzf="fzf --preview='~/.local/bin/fzf_preview_wrapper {}'"
+alias grep='grep --color=auto'
+alias diff='diff --color=auto'
+alias fzf='fzf --preview="~/.local/bin/fzf_preview_wrapper {}"'
 alias run='runapp --dir "$(pwd)"'
 
 # programs
-alias top="btop"
-alias fetch="fastfetch"
-alias lg="lazygit"
-alias py="python3"
-alias m="nvim -c Inbox"
+alias top='btop'
+alias fetch='fastfetch'
+alias lg='lazygit'
+alias py='python3'
+alias m='nvim -c Inbox'
 
 # eza
-alias ls="eza --icons=always --group-directories-first --no-quotes"
-alias l="eza --icons=always --group-directories-first --no-quotes -a"
-alias ll="eza --icons=always --group-directories-first --no-quotes -alh"
-alias llg="eza --icons=always --group-directories-first --no-quotes -alh --git"
-alias llag="eza --icons=always --group-directories-first --no-quotes -alh --git"
-alias tree="eza --icons=always --group-directories-first --no-quotes --tree"
+alias ls='eza --icons=always --group-directories-first --no-quotes'
+alias l='eza --icons=always --group-directories-first --no-quotes -a'
+alias ll='eza --icons=always --group-directories-first --no-quotes -alh'
+alias llg='eza --icons=always --group-directories-first --no-quotes -alh --git'
+alias llag='eza --icons=always --group-directories-first --no-quotes -alh --git'
+alias tree='eza --icons=always --group-directories-first --no-quotes --tree'
 
 # git
-alias gc="git commit"
-alias amend="git commit --amend"
-alias ga="git add"
-alias gb="git branch"
-alias gco="git checkout"
+alias g='git'
+alias gc='git commit'
+alias amend='git commit --amend'
+alias ga='git add'
+alias gb='git branch'
+alias gco='git checkout'
 alias push="git push"
-alias gitcd='cd "$(git rev-parse --show-toplevel)"'
+alias gcd='cd "$(git rev-parse --show-toplevel)"'
 function gacp() {
 	git add .
 	git commit -m $@
@@ -170,55 +178,14 @@ function nfd() {
 		nvim $lines
 	fi
 }
-alias vim="nvim"
-alias nv="nvim"
-alias v="nvim"
+alias vim='nvim'
+alias nv='nvim'
+alias v='nvim'
 
 # pacman
-alias rmpkg="sudo pacman -Rns"
-alias sypkg="sudo pacman -S"
+alias rmpkg='sudo pacman -Rns'
+alias sypkg='sudo pacman -S'
 alias pacmanclean='sudo pacman -Rns $(pacman -Qtdq)'
-
-# tmux
-alias tls="tmux list-session"
-alias trs="tmux rename-session"
-alias trw="tmux rename-window"
-function tns() {
-	if [[ $# == 0 ]]; then
-		tmux new-session
-	else
-		tmux new-session -s"$1"
-	fi
-}
-function tas() {
-	if [[ -n "$TMUX" ]]; then
-		command="switch-client"
-	elif ! /bin/tmux run 2>/dev/null; then
-		tns $@
-		exit
-	else
-		command="attach-session"
-	fi
-	tmux $command -t"$(/bin/tmux list-session | fzf --preview='' --select-1 --query="$1" | sed 's/:.*//')"
-}
-function tmux_choose_pane() {
-	local panes current_window current_pane target target_window target_pane
-	panes=$(tmux list-panes -s -F '#I:#P - #{pane_current_path} #{pane_current_command}')
-	current_pane=$(tmux display-message -p '#I:#P')
-	current_window=$(tmux display-message -p '#I')
-
-	target=$(echo "$panes" | grep -v "$current_pane" | fzf +m --reverse --preview='') || return
-
-	target_window=$(echo $target | awk 'BEGIN{FS=":|-"} {print$1}')
-	target_pane=$(echo $target | awk 'BEGIN{FS=":|-"} {print$2}' | cut -c 1)
-
-	if [[ $current_window -eq $target_window ]]; then
-		tmux select-pane -t ${target_window}.${target_pane}
-	else
-		tmux select-pane -t ${target_window}.${target_pane} &&
-			tmux select-window -t $target_window
-	fi
-}
 
 # yazi
 function x() {
@@ -231,7 +198,7 @@ function x() {
 }
 
 # zathura
-alias zathura="run zathura"
+alias zathura='run zathura'
 
 # pandoc
 function pdfconvert() {

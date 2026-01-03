@@ -6,14 +6,14 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# set the directory where the plugins are stored
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zsh/zinit/"
-
-# download Zinit if it's not here yet and source it
-if [[ ! -d "$ZINIT_HOME" ]]; then
-	git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+# setup the plugin manager
+[[ -d $ZSH_CACHE_DIR ]] || mkdir -p $ZSH_CACHE_DIR
+ANTIDOTE_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zsh/antidote/"
+if [[ ! -d $ANTIDOTE_HOME ]]; then
+  git clone --depth=1 https://github.com/mattmc3/antidote $ANTIDOTE_HOME
 fi
-source "${ZINIT_HOME}/zinit.zsh"
+source $ANTIDOTE_HOME/antidote.zsh
+antidote load $ZDOTDIR/zsh_plugins
 
 
 eval "$(dircolors "$ZDOTDIR/dircolors")" # colorize completion menu entries
@@ -57,22 +57,24 @@ zstyle ':fzf-tab:complete:git-checkout:*' fzf-preview \
 esac'
 
 # load completions
-autoload -Uz compinit && compinit
-zinit cdreplay -q
+ZSH_COMPDUMP="$ZSH_CACHE_DIR/zcompdump"
+autoload -Uz compinit
+compinit -d $ZSH_COMPDUMP
 
 
 # options
-setopt extendedglob # extendglob patterns
-setopt dot_glob     # let globs match dotfiles
-setopt globdots     # show dotfiles on tab completion
-setopt autocd       # cd in a directory by typing its name
-setopt auto_pushd   # automatically push the last directory on the directory stack
-setopt cdable_vars  # cd to a directory by typing its path relative to $HOME
-setopt pushd_silent # do not print the directory stack after pushd or popd
-setopt correct      # correction for invalid command names
-setopt rcquotes     # escape single quotes with '' instead of '\'' in singly quoted strings
-setopt c_bases      # use 0x for displaying hexadecimal numbers
-setopt octal_zeroes # use 0 for displaying octal numbers
+setopt extendedglob         # extend glob patterns
+setopt dot_glob             # let globs match dotfiles
+setopt globdots             # show dotfiles on tab completion
+setopt autocd               # cd in a directory by typing its name
+setopt auto_pushd           # automatically push the last directory on the directory stack
+setopt cdable_vars          # cd to a directory by typing its path relative to $HOME
+setopt pushd_silent         # do not print the directory stack after pushd or popd
+setopt correct              # correction for invalid command names
+setopt rcquotes             # escape single quotes with '' instead of '\'' in singly quoted strings
+setopt c_bases              # use 0x for displaying hexadecimal numbers
+setopt octal_zeroes         # use 0 for displaying octal numbers
+setopt interactive_comments # enable comments in interactive shells
 
 
 # history
@@ -130,27 +132,6 @@ zle -N edit-command-line
 bindkey "^x^e" edit-command-line
 
 
-# keybindings
-bindkey "^p"   history-search-backward
-bindkey "^n"   history-search-forward
-bindkey "^[[A" history-search-backward
-bindkey "^[[B" history-search-forward
-
-bindkey "\cb"  beginning-of-line
-bindkey "\ce"  end-of-line
-bindkey "\ei"  beginning-of-line
-bindkey "\ea"  end-of-line
-bindkey "\ef"  forward-word
-bindkey "\eb"  backward-word
-bindkey '^Z'   undo
-
-bindkey " "    magic-space
-bindkey "\ee"  autosuggest-accept
-
-bindkey -a -r  ':' # disable vicmd mode
-bindkey "^?"   backward-delete-char # fix backspace in insert mode
-
-
 # title
 autoload -Uz add-zsh-hook
 
@@ -165,22 +146,13 @@ add-zsh-hook precmd _precmd_title
 add-zsh-hook preexec _preexec_title
 
 
-# plugins
-zinit light Aloxaf/fzf-tab
-zinit light hlissner/zsh-autopair
-zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-autosuggestions
-zinit light zdharma/fast-syntax-highlighting
-zinit ice depth=1; zinit light romkatv/powerlevel10k
-
 # setup programs
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh --cmd cd)"
-
-#prompt
 [[ -f "$ZDOTDIR/p10k.zsh" ]] && source "$ZDOTDIR/p10k.zsh"
-PS2='%F{240}󱞩 %f'
 
+# Keybindings
+source "$ZDOTDIR/keybinds.zsh"
 
 # Aliases
 source "$ZDOTDIR/aliases.zsh"

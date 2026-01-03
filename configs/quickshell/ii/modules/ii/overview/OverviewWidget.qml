@@ -90,8 +90,7 @@ Item {
 					required property int index
 					spacing: workspaceSpacing
 
-					Repeater {
-						// Workspace repeater
+					Repeater { // Workspace repeater
 						model: Config.options.overview.columns
 						Rectangle { // Workspace
 							id: workspace
@@ -136,8 +135,8 @@ Item {
 								acceptedButtons: Qt.LeftButton
 								onPressed: {
 									if (root.draggingTargetWorkspace === -1) {
-										GlobalStates.overviewOpen = false;
-										Hyprland.dispatch(`workspace ${workspace.workspaceValue}`);
+										GlobalStates.overviewOpen = false
+										Hyprland.dispatch(`workspace ${workspace.workspaceValue}`)
 									}
 								}
 							}
@@ -145,17 +144,16 @@ Item {
 							DropArea {
 								anchors.fill: parent
 								onEntered: {
-									root.draggingTargetWorkspace = workspace.workspaceValue;
-									if (root.draggingFromWorkspace == root.draggingTargetWorkspace)
-										return;
-									hoveredWhileDragging = true;
+									root.draggingTargetWorkspace = workspace.workspaceValue
+									if (root.draggingFromWorkspace == root.draggingTargetWorkspace) return;
+									hoveredWhileDragging = true
 								}
 								onExited: {
-									hoveredWhileDragging = false;
-									if (root.draggingTargetWorkspace == workspace.workspaceValue)
-										root.draggingTargetWorkspace = -1;
+									hoveredWhileDragging = false
+									if (root.draggingTargetWorkspace == workspace.workspaceValue) root.draggingTargetWorkspace = -1
 								}
 							}
+
 						}
 					}
 				}
@@ -168,17 +166,16 @@ Item {
 			implicitWidth: workspaceColumnLayout.implicitWidth
 			implicitHeight: workspaceColumnLayout.implicitHeight
 
-			Repeater {
-				// Window repeater
+			Repeater { // Window repeater
 				model: ScriptModel {
 					values: {
 						// console.log(JSON.stringify(ToplevelManager.toplevels.values.map(t => t), null, 2))
-						return ToplevelManager.toplevels.values.filter(toplevel => {
-							const address = `0x${toplevel.HyprlandToplevel?.address}`;
-							var win = windowByAddress[address];
-							const inWorkspaceGroup = (root.workspaceGroup * root.workspacesShown < win?.workspace?.id && win?.workspace?.id <= (root.workspaceGroup + 1) * root.workspacesShown);
+						return ToplevelManager.toplevels.values.filter((toplevel) => {
+							const address = `0x${toplevel.HyprlandToplevel?.address}`
+							var win = windowByAddress[address]
+							const inWorkspaceGroup = (root.workspaceGroup * root.workspacesShown < win?.workspace?.id && win?.workspace?.id <= (root.workspaceGroup + 1) * root.workspacesShown)
 							return inWorkspaceGroup;
-						});
+						})
 					}
 				}
 				delegate: OverviewWindow {
@@ -232,8 +229,8 @@ Item {
 						repeat: false
 						running: false
 						onTriggered: {
-							window.x = Math.round(xWithinWorkspaceWidget + xOffset);
-							window.y = Math.round(yWithinWorkspaceWidget + yOffset);
+							window.x = Math.round(xWithinWorkspaceWidget + xOffset)
+							window.y = Math.round(yWithinWorkspaceWidget + yOffset)
 						}
 					}
 
@@ -248,44 +245,43 @@ Item {
 						onExited: hovered = false // For hover color change
 						acceptedButtons: Qt.LeftButton | Qt.MiddleButton
 						drag.target: parent
-						onPressed: mouse => {
-							root.draggingFromWorkspace = windowData?.workspace.id;
-							window.pressed = true;
-							window.Drag.active = true;
-							window.Drag.source = window;
-							window.Drag.hotSpot.x = mouse.x;
-							window.Drag.hotSpot.y = mouse.y;
+						onPressed: (mouse) => {
+							root.draggingFromWorkspace = windowData?.workspace.id
+							window.pressed = true
+							window.Drag.active = true
+							window.Drag.source = window
+							window.Drag.hotSpot.x = mouse.x
+							window.Drag.hotSpot.y = mouse.y
 						// console.log(`[OverviewWindow] Dragging window ${windowData?.address} from position (${window.x}, ${window.y})`)
 						}
 						onReleased: {
-							const targetWorkspace = root.draggingTargetWorkspace;
-							window.pressed = false;
-							window.Drag.active = false;
-							root.draggingFromWorkspace = -1;
+							const targetWorkspace = root.draggingTargetWorkspace
+							window.pressed = false
+							window.Drag.active = false
+							root.draggingFromWorkspace = -1
 							if (targetWorkspace !== -1 && targetWorkspace !== windowData?.workspace.id) {
-								Hyprland.dispatch(`movetoworkspacesilent ${targetWorkspace}, address:${window.windowData?.address}`);
-								updateWindowPosition.restart();
+								Hyprland.dispatch(`movetoworkspacesilent ${targetWorkspace}, address:${window.windowData?.address}`)
+								updateWindowPosition.restart()
 							} else {
 								if (!window.windowData.floating) {
-									updateWindowPosition.restart();
-									return;
+									updateWindowPosition.restart()
+									return
 								}
-								const percentageX = Math.round((window.x - xOffset) / root.workspaceImplicitWidth * 100);
-								const percentageY = Math.round((window.y - yOffset) / root.workspaceImplicitHeight * 100);
-								Hyprland.dispatch(`movewindowpixel exact ${percentageX}% ${percentageY}%, address:${window.windowData?.address}`);
+								const percentageX = Math.round((window.x - xOffset) / root.workspaceImplicitWidth * 100)
+								const percentageY = Math.round((window.y - yOffset) / root.workspaceImplicitHeight * 100)
+								Hyprland.dispatch(`movewindowpixel exact ${percentageX}% ${percentageY}%, address:${window.windowData?.address}`)
 							}
 						}
-						onClicked: event => {
-							if (!windowData)
-								return;
+						onClicked: (event) => {
+							if (!windowData) return;
 
 							if (event.button === Qt.LeftButton) {
-								GlobalStates.overviewOpen = false;
-								Hyprland.dispatch(`focuswindow address:${windowData.address}`);
-								event.accepted = true;
+								GlobalStates.overviewOpen = false
+								Hyprland.dispatch(`focuswindow address:${windowData.address}`)
+								event.accepted = true
 							} else if (event.button === Qt.MiddleButton) {
-								Hyprland.dispatch(`closewindow address:${windowData.address}`);
-								event.accepted = true;
+								Hyprland.dispatch(`closewindow address:${windowData.address}`)
+								event.accepted = true
 							}
 						}
 
