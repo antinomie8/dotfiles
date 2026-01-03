@@ -149,13 +149,6 @@ return {
 					lsp = {
 						score_offset = 100,
 					},
-					cmdline = {
-						enabled = function()
-							return
-								vim.fn.getcmdtype() ~= ":" or
-								not vim.fn.getcmdline():match("^[%%0-9,'<>%-:]*!") -- disable when typing an external command
-						end,
-					},
 					dictionary = {
 						name = "blink-cmp-words",
 						module = "blink-cmp-words.dictionary",

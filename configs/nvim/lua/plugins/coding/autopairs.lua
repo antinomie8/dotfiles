@@ -4,19 +4,6 @@ return {
 		event = { "InsertEnter", "CmdlineEnter" },
 		branch = "v0.6",
 		opts = function()
-			local on_bs_check_pattern = function(match_length, pattern)
-				return function(_, obj)
-					if not obj then return false end
-					if obj.key == vim.api.nvim_replace_termcodes("<bs>", true, false, true) then
-						local line, col = obj.line, obj.col
-						if line:sub(col - match_length, col):match(pattern) then
-							return false
-						end
-					end
-					return true
-				end
-			end
-
 			local in_node = function(...)
 				local nodes = {...}
 				return function(fn, obj, pair)
@@ -42,23 +29,24 @@ return {
 
 			local typst = {}
 			typst.in_text = function(fn, obj, pair)
-				if in_node("math", "raw_span", "raw_blck", "string", "comment")(fn, obj, pair) then
+				if in_node("math", "raw_span", "raw_blck", "string", "comment", "ERROR")(fn, obj, pair) then
 					return false
 				end
 				local node = vim.treesitter.get_node({ pos = { obj.row - 1, obj.col - 1 } })
-				if not node then return true end
-				local parent = node:parent()
-				while parent do
-					if parent:type() == "content" then
+				if node and node:type() == "source_file" then
+					-- HACK: sometimes the current position is just out of the edge of the node
+					node = vim.treesitter.get_node({ pos = { obj.row - 1, obj.col - 2 } })
+				end
+				while node do
+					if node:type() == "content" then
 						return true
-					elseif parent:type() == "code" then
+					elseif node:type() == "code" then
 						return false
 					end
-					parent = parent:parent()
+					node = node:parent()
 				end
 				return true
 			end
-			typst.not_import = function(_, obj) return not obj.line:match("^%s*#import") end
 
 			local markdown = {}
 			markdown.in_text = not_in_node("math", "raw_span", "raw_blck", "string", "code", "comment")
@@ -94,11 +82,11 @@ return {
 									{
 										key = "<bs>",
 										ft = "*",
-										text = { '""', "()", "[]", "{}", "''", "<>", "$$", "**", "~~", "``" },
+										text = { '""', "()", "[]", "{}", "''", "<>", "$$", "**", "~~", "``" , "\\(\\)", "\\[\\]" },
 									}, -- if the two characters before the cursor are paired, don't remove them
 									-- snippets
 									{ key = "*", ft = { "markdown", "tex" }, text = "\\left" },
-									-- { key = "[", ft = { "bash", "zsh", "sh" }, text = { "if ", "while " } }, -- use sh in case ft is wrong
+									{ key = "[", ft = { "bash", "zsh", "sh" }, text = { "if ", "while " } }, -- use sh in case ft is wrong
 									{ key = "(", ft = "cpp", regex = { { "%Wall", 4 } } },
 								}
 								for _, cond in ipairs(conds) do
@@ -139,7 +127,16 @@ return {
 					{ '"', '"', suround = false },
 					{ "'", "'", suround = false },
 				},
-				{ "<", ">", disable_start = true, cond = on_bs_check_pattern(1, "^<[^>]?$") },
+				{ "<", ">", cond = function(_, obj)
+					if not obj then return false end
+					local line, col = obj.line, obj.col
+					if obj.key == vim.api.nvim_replace_termcodes("<bs>", true, true, true) then
+						return line:sub(col - 1, col + 1) == "<>" -- do not remove brackets unless they're next to each other
+					elseif obj.key == "<" then -- do not pair if not next to an identifier
+						return line:sub(col - 1, col):match("%w")
+					end
+					return true
+				end },
 				-- comments
 				{ "/*",    "*/",    ft = { "c", "cpp", "css", "go" }, newline = true, space = true },
 				-- shell
@@ -150,15 +147,15 @@ return {
 				{ "[==[",  "]==]",  ft = { "lua" }, newline = true },
 				{ "[===[", "]===]", ft = { "lua" }, newline = true },
 				-- LaTeX
-				{ "\\[", "\\]", ft = { "tex" }, disable_end = true, newline = true, cond = on_bs_check_pattern(4, "\\(\\)") },
-				{ "\\(", "\\)", ft = { "tex" }, disable_end = true, newline = true, cond = on_bs_check_pattern(4, "\\[\\]" ) },
+				{ "\\[", "\\]", ft = { "tex" }, disable_end = true, newline = true },
+				{ "\\(", "\\)", ft = { "tex" }, disable_end = true, newline = true },
 				-- typst
 				{ "$", "$",     ft = { "typst" }, cond = typst.in_text, space = true, newline = true },
 				{ "```", "```", ft = { "typst" }, cond = typst.in_text, space = true, newline = true },
 				{ "`", "`",     ft = { "typst" }, cond = typst.in_text, space = true },
 				{ "/*", "*/",   ft = { "typst" }, cond = typst.in_text, newline = true },
 				{ "_", "_",     ft = { "typst" }, cond = typst.in_text },
-				{ "*", "*",     ft = { "typst" }, cond = function(fn, obj, pair) return typst.in_text(fn, obj, pair) and typst.not_import(fn, obj) end },
+				{ "*", "*",     ft = { "typst" }, cond = function(fn, obj, pair) return typst.in_text(fn, obj, pair) and true end },
 				--markdown
 				{ "$", "$",     ft = { "markdown" }, cond = markdown.in_text },
 				{ "$$", "$$",   ft = { "markdown" }, cond = markdown.in_text, newline = true },
