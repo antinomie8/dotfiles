@@ -60,7 +60,7 @@ components.Git = {
 	condition = conditions.is_git_repo,
 
 	init = function(self)
-		self.status_dict = vim.b.gitsigns_status_dict
+		self.status_dict = vim.b.gitsigns_status_dict or {}
 		self.has_changes = self.status_dict.added ~= 0 or
 		                   self.status_dict.removed ~= 0 or
 		                   self.status_dict.changed ~= 0
@@ -259,7 +259,15 @@ components.Ruler = {
 }
 
 components.Time = {
-	provider = function() return " " .. os.date("%R") end,
+	static = {
+		clocks = { "󱑋 ", "󱑌 ", "󱑍 ", "󱑎 ", "󱑏 ", "󱑐 ", "󱑑 ", "󱑒 ", "󱑓 ", "󱑔 ", "󱑕 ", "󱑖 " }
+	},
+	provider = function(self)
+		local date =  os.date("%R")
+		local hour = tonumber(tostring(date):sub(1, 2))
+		local icon = self.clocks[hour % 12 + 1]
+		return icon .. date
+	end,
 }
 
 local function is_loclist() return vim.fn.getloclist(0, { filewinid = 1 }).filewinid ~= 0 end
@@ -302,9 +310,9 @@ components.ExtensionA = {
 			["dapui_watches"] = "Watches",
 			["dapui_console"] = "Console",
 			["dapui_breakpoints"] = "Breakpoints",
-			["DiffviewFiles"] = function() return " " .. (vim.b.gitsigns_status_dict.head or " ") end,
-			["fugitive"] = function() return " " .. (vim.b.gitsigns_status_dict.head or " ") end,
-			["git"] = function() return " " .. (vim.b.gitsigns_status_dict.head or " ") end,
+			["DiffviewFiles"] = function() return " " .. (vim.b.gitsigns_status_dict and vim.b.gitsigns_status_dict.head or " ") end,
+			["fugitive"] = function() return " " .. (vim.b.gitsigns_status_dict and vim.b.gitsigns_status_dict.head or " ") end,
+			["git"] = function() return " " .. (vim.b.gitsigns_status_dict and vim.b.gitsigns_status_dict.head or " ") end,
 			["lazy"] = "Lazy",
 			["man"] = "MAN",
 			["neo-tree"] = function() return vim.fn.fnamemodify(vim.fn.getcwd(), ":~") end,
