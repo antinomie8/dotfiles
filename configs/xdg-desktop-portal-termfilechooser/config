@@ -7,3 +7,5 @@ default_dir=$(xdg-user-dir DOWNLOAD)
 ; Mode must be one of 'suggested', 'default', or 'last'.
 open_mode=suggested
 save_mode=suggested
+
+; vim: ft=dosini

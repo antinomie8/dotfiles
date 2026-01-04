@@ -168,6 +168,21 @@ vim.api.nvim_create_autocmd("OptionSet", {
 	end,
 })
 
+-- get rid of empty buffers on startup
+vim.api.nvim_create_autocmd("VimEnter", {
+	callback = function()
+		local buf = vim.api.nvim_get_current_buf()
+		for _, b in ipairs(vim.api.nvim_list_bufs()) do
+			if vim.api.nvim_buf_is_loaded(b)
+				and vim.api.nvim_buf_get_name(b) == ""
+				and b ~= buf
+			then
+				vim.api.nvim_buf_delete(b, { force = true })
+			end
+		end
+	end,
+})
+
 -- remove terminal padding on leave
 vim.api.nvim_create_autocmd("VimLeave", {
 	callback = function()

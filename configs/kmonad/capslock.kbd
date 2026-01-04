@@ -1,0 +1,17 @@
+(defcfg
+	input  (device-file "/dev/input/by-path/platform-i8042-serio-0-event-kbd")
+  output (uinput-sink "kmonad")
+  fallthrough true
+  allow-cmd true
+)
+
+(defsrc
+  caps
+)
+
+(deflayer base
+  ;; tap = esc, hold = super
+  (tap-hold 200 esc lmeta)
+)
+
+;; vim: ft=lisp

@@ -14,7 +14,7 @@ title_format = "󰇥 {cwd}"
 [preview]
 wrap = "no"
 tab_size = 2
-cache_dir = "/home/antoine/.cache/yazi"
+cache_dir = "~/.cache/yazi"
 image_filter = "nearest"
 image_quality = 50
 

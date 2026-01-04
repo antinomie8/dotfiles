@@ -90,6 +90,9 @@ if [[ -n "$WSLENV" ]]; then
 		done
 
 		# move each file to their destination
+		copy_item X11/i3 ~/.config
+		copy_item X11/rofi ~/.config
+		program picom && copy_item picom.conf /etc/xdg
 		for i in "${!wsl_scripts[@]}"; do
 			copy_item "$i" "${wsl_scripts[$i]}"
 		done

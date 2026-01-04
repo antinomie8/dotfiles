@@ -76,6 +76,8 @@ setopt c_bases              # use 0x for displaying hexadecimal numbers
 setopt octal_zeroes         # use 0 for displaying octal numbers
 setopt interactive_comments # enable comments in interactive shells
 
+autoload -Uz zargs
+
 
 # history
 HISTSIZE=10000
@@ -87,10 +89,6 @@ HIST_STAMPS="dd/mm/yyyy"
 setopt appendhistory
 setopt sharehistory
 setopt hist_ignore_space
-setopt hist_ignore_all_dups
-setopt hist_save_no_dups
-setopt hist_ignore_dups
-setopt hist_find_no_dups
 
 
 # Vi mode and cursor style
@@ -150,6 +148,11 @@ add-zsh-hook preexec _preexec_title
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh --cmd cd)"
 [[ -f "$ZDOTDIR/p10k.zsh" ]] && source "$ZDOTDIR/p10k.zsh"
+eval "$(atuin init zsh)"
+_zsh_autosuggest_strategy_atuin() {
+	# silence errors, since we don't want to spam the terminal prompt while typing.
+	suggestion=$(ATUIN_QUERY="$1" atuin search --cmd-only --limit 1 --search-mode prefix --exit 0 --cwd "$PWD" 2>/dev/null)
+}
 
 # config files
 source "$ZDOTDIR/keybinds.zsh"

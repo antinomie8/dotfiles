@@ -62,21 +62,6 @@ if [[ "$EUID" == 0 && ! "$SCRIPT_DIR" =~ ^/root ]]; then
 	fi
 fi
 
-# check wether the default shell is zsh or not
-if [[ ! "$SHELL" =~ /zsh$ ]]; then
-	if [[ -f /bin/zsh ]]; then
-		echo -en "${BLUE}Do you want to make zsh your default shell ? (y/n) ${COLOR_RESET}"
-		if get_answer; then
-			chsh --shell /bin/zsh
-		fi
-	else
-		echo -e "${WHITE}Install zsh and make it your default shell :"
-		echo -e "${GREEN}> ${BLUE}chsh $USER"
-		echo -e "${GREEN}> ${BLUE}/usr/bin/zsh${COLOR_RESET}"
-	fi
-	printf '\n'
-fi
-
 # configure /etc/zsh files for avoiding dotfiles clutter in home directory
 function add_line() {
 	if [[ -f "$2" ]]; then
@@ -98,13 +83,8 @@ if [[ -f /etc/pulse/client.conf ]] &&
 	printf "\ncookie-file = %s/.cache/pulse/cookie" "$HOME" | sudo tee -a /etc/pulse/client.conf >/dev/null
 fi
 
-# specific things to do on operating systems using pacman as a package manager
-packages=("7zip" "asymptote" "bat" "btop" "clang" "cmake" "cronie" "eza" "fd"
-	"firefox" "fzf" "gcc" "git" "git-delta" "github-cli" "hexyl" "imagemagick"
-	"kitty" "kmonad" "lazygit" "lynx" "man-db" "nasm" "ncdu" "notmuch" "npm"
-	"obsidian" "pandoc" "python" "ripgrep" "rofi" "rsync" "tldr" "tmux" "tree-sitter-cli"
-	"typst" "rustup" "unzip" "wget" "xdotool" "zathura" "zathura-pdf-mupdf" "zoxide" "zsh"
-	"lua-language-server" "stylua" "tinymist" "bash-language-server" "shellcheck" "shfmt" "prettier") # Neovim
+# install packages
+readarray -t packages < <(grep -vE '^\s*($|#)' packages.txt) # ignore comments and blank lines
 if program pacman; then
 	# Install yay (AUR helper)
 	if ! program yay; then
@@ -190,6 +170,21 @@ else
 fi
 printf '\n'
 
+# check wether the default shell is zsh or not
+if [[ ! "$SHELL" =~ /zsh$ ]]; then
+	if [[ -f /bin/zsh ]]; then
+		echo -en "${BLUE}Do you want to make zsh your default shell ? (y/n) ${COLOR_RESET}"
+		if get_answer; then
+			chsh --shell /bin/zsh
+		fi
+	else
+		echo -e "${WHITE}Install zsh and make it your default shell :"
+		echo -e "${GREEN}> ${BLUE}chsh $USER"
+		echo -e "${GREEN}> ${BLUE}/usr/bin/zsh${COLOR_RESET}"
+	fi
+	printf '\n'
+fi
+
 # check the user has a home directory
 if [[ -z "$HOME" ]]; then
 	echo "${ERROR}You don't have a home directory. Create one ? (y/n) ${COLOR_RESET}"
@@ -239,34 +234,25 @@ fi
 		if [[ ! -e "$HOME/.config/$item" ]]; then
 			cp -r "$item" "$HOME/.config/"
 		else
-			difference=false
-			while read -r -d ''; do # check wether the version in the repo and in ~/.config differ or not
-				if ! diff --brief -r \
-					--ignore-matching-lines='\S*@\S*' \
-					--ignore-matching-lines='^export.*API_KEY=' \
-					--ignore-matching-lines='^cache_dir = ' \
-					"$REPLY" "$HOME/.config/$REPLY" >/dev/null 2>&1; then # ignore obfuscated e-mail adresses
-					difference=true
-					break
-				fi
-			done < <(if [[ -d "$item" ]]; then find "$item" -path "./.git/*" -prune -o -type f -print0; else echo -ne "$item\0"; fi)
-			if $difference; then
+			[[ -d "$item" ]] && recursive="-r" || recursive=""
+			if ! diff --brief $recursive --exclude='.git' \
+				--exclude='*@*\.*' --ignore-matching-lines='\S*@\S*\.\S*' \
+				--ignore-matching-lines='^export.*API_KEY=' \
+				"$item" "$HOME/.config/$item"; then # ignore obfuscated e-mail adresses and API keys
 				if [[ ! $OVERWRITE ]]; then
-					if first; then
-						echo -en "${BLUE}Would you like to :\n\n\n\n${ERROR}Enter a number (default 3) :${COLOR_RESET} "
+					if $first; then
+						echo -en "${BLUE}Would you like to :"
+						printf '\n\n\n\n'
+						echo -en "${ERROR}Enter a number (default 3) :${COLOR_RESET} "
 						first=false
 					fi
-					echo -en '\e[A\e[2K' # cursor one line up and clear line
-					echo -en '\e[A\e[2K' # cursor one line up and clear line
-					echo -en '\e[A\e[2K' # cursor one line up and clear line
-					echo -en "  ${BLUE}- 1 :${WHITE} create a backup of your current ${GREEN}$item${WHITE} config before replacing it"
-					echo -en "\e[2B"
-					echo -en "  ${BLUE}- 2 :${WHITE} delete your current ${GREEN}$item${WHITE} config and replace it"
-					echo -en "\e[2B"
-					echo -en "  ${BLUE}- 3 :${WHITE} skip this step and keep your current ${GREEN}$item${WHITE} config ?"
-					echo -en "\e[2B"
-					echo -en "\e[999C" # move cursor to eol
+					printf "\e[3A" # move the cursor up three lines
+					echo -e "\033[2K\r  ${BLUE}- 3 :${WHITE} skip this step and keep your current ${GREEN}$item${WHITE} config ?"
+					echo -e "\033[2K\r  ${BLUE}- 2 :${WHITE} delete your current ${GREEN}$item${WHITE} config and replace it"
+					echo -e "\033[2K\r  ${BLUE}- 1 :${WHITE} create a backup of your current ${GREEN}$item${WHITE} config before replacing it"
+					echo -en "\e[29C" # move cursor after the prompt
 					read -r answer
+					printf "\e[A" # move the cursor up one line
 				else
 					answer=2
 				fi
@@ -286,6 +272,9 @@ fi
 			fi
 		fi
 	done
+	if ! $first; then # additional newline since the cursor got up
+		printf '\n'
+	fi
 	printf '\n'
 )
 
@@ -339,9 +328,6 @@ fi
 if program bat && ! bat --list-themes | grep --silent "Kanagawa"; then
 	bat cache --build
 fi
-
-# modify yazi cache directory
-[[ -f ~/.config/yazi/yazi.toml ]] && sed -i 's@/home/Antoine@'"$HOME"'@g' ~/.config/yazi/yazi.toml
 
 # check gnupg directory exists and is properly configured
 if [[ ! -d ~/.local/share/gnupg ]]; then

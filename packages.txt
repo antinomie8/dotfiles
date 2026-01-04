@@ -1,0 +1,72 @@
+# software
+kitty
+firefox
+cronie
+kmonad
+zathura
+zathura-pdf-mupdf
+obsidian
+
+# shell
+zsh
+atuin
+
+# CLIs
+zoxide
+fzf
+fd
+eza
+ripgrep
+bat
+hexyl
+btop
+wget
+rsync
+pandoc
+imagemagick
+unzip
+tldr
+ncdu
+man-db
+
+# git
+git
+git-delta
+github-cli
+lazygit
+
+# mail
+msmtp
+msmtp-mta
+s-nail
+notmuch
+lynx
+
+# languages
+gcc
+clang
+cmake
+typst
+asymptote
+rustup
+python
+lua
+nasm
+npm
+
+# Neovim
+tree-sitter-cli
+lua-language-server
+stylua
+tinymist
+bash-language-server
+shellcheck
+shfmt
+prettier
+
+# WM
+uwsm
+runapp
+# hypr* things, quickshell & friends are installed elsewhere
+
+# vim: ft=sh

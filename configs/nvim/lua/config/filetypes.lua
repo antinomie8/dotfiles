@@ -3,11 +3,11 @@ vim.filetype.add({
 		muttrc = "neomuttrc",
 		tex = "tex",
 		tsqx = "tsqx",
+		eml = "mail",
 	},
 	filename = {
 		["clang-format"] = "yaml",
 		["dircolors"] = "dircolors",
-		["compose.eml"] = "mail",
 	},
 	pattern = {
 		["${HOME}/.config/mutt/.+"] = "neomuttrc",

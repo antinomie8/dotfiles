@@ -45,8 +45,7 @@ copy "$HOME/.local/share/typst/packages/local/oly" etc
 fd . etc/oly -tf -e 'pdf' -x rm {}
 
 # remove chosen files and directories
-[[ -f configs/zsh/.zcompdump ]] && rm configs/zsh/.zcompdump
-find configs/mutt/accounts -regex "\S*@\S*" -type f -delete
+find configs/mutt/accounts -regex "\S*@\S*\.\S*" -type f -delete
 # obfuscate email adresses
 [[ -f configs/mutt/muttrc ]] && {
 	sed -i 's:\(source .*/\)\S*@\S*\(<enter>;<check-stats>. "switch to \)\S*@\S*\("\):\1example@mail.com\2example@mail.com\3:' configs/mutt/muttrc
