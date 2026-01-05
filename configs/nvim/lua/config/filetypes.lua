@@ -6,7 +6,6 @@ vim.filetype.add({
 		asy = "asymptote",
 	},
 	filename = {
-		["clang-format"] = "yaml",
 		["dircolors"] = "dircolors",
 	},
 	pattern = {

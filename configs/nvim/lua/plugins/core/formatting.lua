@@ -1,18 +1,3 @@
-local function find_config_file(dirname, filenames)
-	local function default()
-		local config_file = type(filenames) == "table" and filenames[1] or filenames
-		if config_file:sub(1, 1) == "." then
-			config_file = config_file:sub(2)
-		end
-		return (vim.env.XDG_CONFIG_HOME or (vim.env.HOME .. "/.config")) .. "/formatters/" .. config_file
-	end
-	return vim.fs.find(filenames, {
-		type = "file",
-		upward = true,
-		path = dirname,
-	})[1] or default()
-end
-
 return {
 	"stevearc/conform.nvim",
 	event = "BufWritePre",
@@ -85,10 +70,20 @@ return {
 			clang_format = {
 				command = "clang-format",
 				args = function(_, ctx)
-					return {
-						"-assume-filename", "$FILENAME",
-						"--style=file:" .. find_config_file(ctx.dirname, { ".clang-format", "_clang-format" }),
-					}
+					local args = { "-assume-filename", "$FILENAME" }
+					if
+						#vim.fs.find({ ".clang-format", "_clang-format" }, {
+							type = "file",
+							upward = true,
+							path = ctx.dirname,
+						}) == 0
+					then
+						table.insert(args,
+							"--style=file:" ..
+							(vim.env.XDG_CONFIG_HOME or (vim.env.HOME .. "/.config")) .. "/clang-format/config.yaml"
+						)
+					end
+					return args
 				end,
 				range_args = function(self, ctx)
 					local util = require("conform.util")

@@ -5,7 +5,6 @@ local libs = {
 	"nvim-neotest/nvim-nio",
 	"MunifTanjim/nui.nvim",
 	"kevinhwang91/promise-async",
-	"b0o/schemastore.nvim",
 
 	-- completion sources
 	"archie-judd/blink-cmp-words",
