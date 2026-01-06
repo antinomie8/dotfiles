@@ -18,7 +18,7 @@ function copy_item {
 		echo -e "${WARNING} $1 not found"
 		return 1
 	fi
-	if [[ "$2" == "$HOME"* || ${2:0:1} == '~' ]]; then
+	if [[ "$2" == "$HOME"* || ${2:0} == '~' ]]; then
 		sudo=""
 	else
 		sudo="sudo"

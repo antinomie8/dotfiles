@@ -21,7 +21,7 @@ local function find_config_file(...)
 	local function default()
 		local config_file = arg[1]
 		if config_file:sub(1, 1) == "." then
-			config_file = config_file:sub(2, #config_file)
+			config_file = config_file:sub(2)
 		end
 		return (vim.env.XDG_CONFIG_HOME or (vim.env.HOME .. "/.config")) .. "/formatters/" .. config_file
 	end
@@ -115,7 +115,7 @@ return {
 				end
 			end
 
-			return { timeout_ms = 700, lsp_format = "prefer" }
+			return { timeout_ms = 700, lsp_format = "fallback" }
 		end,
 	},
 }

@@ -1,5 +1,5 @@
 # sidebar options
-set sidebar_visible = no
+set sidebar_visible = yes
 set sidebar_width = 30
 set sidebar_divider_char = ''
 set sidebar_next_new_wrap = yes # wrap when searching mailbooxes containing new mail

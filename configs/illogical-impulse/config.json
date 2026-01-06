@@ -358,7 +358,7 @@
     "updateInterval": 3000
   },
   "screenRecord": {
-    "savePath": "/home/antoine/Médias/Vidéos"
+    "savePath": "/home/antoine/Médias/Vidéos/Enregistrements d'écran/"
   },
   "screenSnip": {
     "savePath": ""

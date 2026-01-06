@@ -26,7 +26,7 @@ vim.diagnostic.config({
 
 -- debugging
 local signs = {
-	Stopped = { "󰁕", "DiagnosticWarn", "DapStoppedLine" },
+	Stopped = { "", "DiagnosticWarn", "DapStoppedLine" },
 	Breakpoint = { "" },
 	BreakpointCondition = { "" },
 	BreakpointRejected = { "", "DiagnosticError" },

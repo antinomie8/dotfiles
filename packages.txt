@@ -48,7 +48,7 @@ clang
 cmake
 typst
 asymptote
-rustup
+rust
 python
 lua
 nasm

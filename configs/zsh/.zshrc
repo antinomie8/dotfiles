@@ -152,6 +152,10 @@ eval "$(atuin init zsh)"
 _zsh_autosuggest_strategy_atuin() {
 	# silence errors, since we don't want to spam the terminal prompt while typing.
 	suggestion=$(ATUIN_QUERY="$1" atuin search --cmd-only --limit 1 --search-mode prefix --exit 0 --cwd "$PWD" 2>/dev/null)
+	# last_command=$(fc -ln -1)
+	# if [[ $last_command = "$suggestion" ]]; then
+	# 	suggestion=$(ATUIN_QUERY="$1" atuin search --cmd-only --limit 1 --offset 1 --search-mode prefix --exit 0 --cwd "$PWD" 2>/dev/null)
+	# fi
 }
 
 # config files

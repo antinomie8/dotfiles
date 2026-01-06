@@ -7,7 +7,7 @@ if [[ -f "$STATE_FILE" ]]; then
 	gapsin=$(hyprctl getoption general:gaps_in -j | jq '.custom')
 	gapsout=$(hyprctl getoption general:gaps_out -j | jq '.custom')
 	hyprctl dispatch global quickshell:barOpenForWorkspace
-	hyprctl keyword workspace "$WS", gapsin:${gapsin:1:1}, gapsout:${gapsout:1:1}, rounding:true, decorate:true, border:true
+	hyprctl keyword workspace "$WS", gapsin:${gapsin:1}, gapsout:${gapsout:1}, rounding:true, decorate:true, border:true
 	rm "$STATE_FILE"
 else
 	hyprctl dispatch global quickshell:barCloseForWorkspace

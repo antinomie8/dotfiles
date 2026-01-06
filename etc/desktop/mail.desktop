@@ -1,15 +1,14 @@
 [Desktop Entry]
 Version=1.0
-Name=mail
+Name=Mail
 
 GenericName=Mail Client
-GenericName[de]=Email Client
-Comment=Launches NeoVim with the Inbox command
+Comment=Launches Neovim with the notmuch.nvim plugin
 Keywords=Email,Mail,IMAP,SMTP
 Categories=Office;Network;Email;ConsoleOnly
 
 Type=Application
 Icon=mail
 Terminal=true
-Exec=nvim -c Inbox
+Exec=nvim -c "lua require('notmuch.send').compose(string.sub( %u, 8, -1))"
 MimeType=x-scheme-handler/mailto

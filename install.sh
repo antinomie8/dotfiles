@@ -105,8 +105,8 @@ if program pacman; then
 	# install required packages
 	if program yay; then
 		package_manager="yay"
-		packages+=("abook" "cppman" "ttf-juliamono" "runapp") # misc
-		packages+=("texlab" "tex-fmt" "asm-lsp")              # Neovim
+		packages+=("abook" "cppman" "ttf-juliamono" "runapp")              # misc
+		packages+=("codelldb-bin" "texlab" "tex-fmt" "asm-lsp" "typstyle") # Neovim
 		packages+=("neovim-nightly-bin" "yazi-nightly-bin")
 	else
 		package_manager="sudo pacman"
@@ -318,11 +318,6 @@ fi
 		fi
 	fi
 )
-
-# setup rust toolchain
-if program rustup && ! program cargo; then
-	rustup default stable
-fi
 
 # rebuild bat cache
 if program bat && ! bat --list-themes | grep --silent "Kanagawa"; then
