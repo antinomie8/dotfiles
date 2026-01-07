@@ -238,7 +238,7 @@ fi
 			if ! diff --brief $recursive --exclude='.git' \
 				--exclude='*@*\.*' --ignore-matching-lines='\S*@\S*\.\S*' \
 				--ignore-matching-lines='^export.*API_KEY=' \
-				"$item" "$HOME/.config/$item"; then # ignore obfuscated e-mail adresses and API keys
+				"$item" "$HOME/.config/$item" >/dev/null 2>&1; then # ignore obfuscated e-mail adresses and API keys
 				if [[ ! $OVERWRITE ]]; then
 					if $first; then
 						echo -en "${BLUE}Would you like to :"

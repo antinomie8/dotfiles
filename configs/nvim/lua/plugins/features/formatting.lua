@@ -58,6 +58,7 @@ return {
 			js = { "prettier" },
 			tex = { "tex", "tex_fmt" },
 			typst = { "typstyle" },
+			lua = { "stylua", lsp_format = "prefer" },
 
 			["*"] = { "trim_whitespace", "trim_newlines" },
 		},

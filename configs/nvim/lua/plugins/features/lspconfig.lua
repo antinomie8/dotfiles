@@ -128,10 +128,6 @@ return {
 
 				pyright = {},
 
-				qmlls = {
-					cmd = { "qmlls6" },
-				},
-
 				tinymist = {
 					on_init = function() vim.api.nvim_set_hl(0, "@lsp.type.comment.typst", { fg = "none", bg = "none" }) end,
 

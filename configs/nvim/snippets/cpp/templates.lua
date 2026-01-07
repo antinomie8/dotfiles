@@ -19,7 +19,7 @@ return {
 				using namespace std;
 
 				#ifdef LOCAL
-				#include "dbg.h"
+				#include "dbg.hpp"
 				#else
 				#define n(...) 42
 				#define id(...) 42
@@ -60,7 +60,7 @@ return {
 				using namespace std;
 				
 				#ifdef LOCAL
-				#include "dbg.h"
+				#include "dbg.hpp"
 				#else
 				#define n(...) 42
 				#define id(...) 42

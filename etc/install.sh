@@ -57,7 +57,7 @@ program neomutt && copy_item desktop/neomutt.desktop ~/.local/share/applications
 program neomutt && copy_item icons/hicolor/325x325/apps/neomutt.png ~/.local/share/icons/hicolor/325x325/apps
 program nvim && copy_item desktop/mail.desktop ~/.local/share/applications
 program nvim && copy_item icons/hicolor/scalable/apps/mail.svg ~/.local/share/icons/hicolor/scalable/apps
-[[ -n "$CPLUS_INCLUDE_PATH" ]] && copy_item dbg.h "$CPLUS_INCLUDE_PATH"
+[[ -n "$CPLUS_INCLUDE_PATH" ]] && copy_item dbg.hpp "$CPLUS_INCLUDE_PATH"
 
 # Windows and WSL specific files
 if [[ -n "$WSLENV" ]]; then

@@ -53,14 +53,13 @@ return {
 			open_files_do_not_replace_types = { "CompetiTest", "dap", "terminal", "Trouble", "qf" }, -- when opening files, do not use windows containing these filetypes or buftypes
 			bind_to_cwd = true,
 			sort_case_insensitive = false,
-			sort_function = nil,
-			-- sort_function = function (a,b)
-			--			 if a.type == b.type then
-			--					 return a.path > b.path
-			--			 else
-			--					 return a.type > b.type
-			--			 end
-			--	 end , -- this sorts files and directories descendantly
+			sort_function = function(a, b)
+				if a.type == b.type then
+					return a.path:lower() < b.path:lower()
+				else
+					return a.type < b.type
+				end
+			end, -- this sorts files and directories descendantly
 			default_component_configs = {
 				container = {
 					enable_character_fade = true,
@@ -213,9 +212,9 @@ return {
 						"*.log",
 					},
 					always_show = { ".zshrc", ".zshenv" }, -- remains visible even if other settings would normally hide it
-					always_show_by_pattern = {},      -- uses glob style patterns
-					never_show = {},                  -- remains hidden even if visible is toggled to true, this overrides always_show
-					never_show_by_pattern = {         -- uses glob style patterns
+					always_show_by_pattern = {}, -- uses glob style patterns
+					never_show = {}, -- remains hidden even if visible is toggled to true, this overrides always_show
+					never_show_by_pattern = { -- uses glob style patterns
 						".git",
 						"*.aux",
 						"*.fls",
@@ -226,13 +225,13 @@ return {
 					},
 				},
 				follow_current_file = {
-					enabled = false,                  -- This will find and focus the file in the active buffer every time
+					enabled = false, -- This will find and focus the file in the active buffer every time
 					-- the current file is changed while the tree is open.
-					leave_dirs_open = false,          -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+					leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
 				},
-				group_empty_dirs = false,           -- when true, empty folders will be grouped together
+				group_empty_dirs = false, -- when true, empty folders will be grouped together
 				hijack_netrw_behavior = "open_current", -- netrw disabled, opening a directory opens neo-tree
-				use_libuv_file_watcher = false,     -- This will use the OS level file watchers to detect changes
+				use_libuv_file_watcher = false, -- This will use the OS level file watchers to detect changes
 				-- instead of relying on nvim autocmd events.
 				window = {
 					mappings = {

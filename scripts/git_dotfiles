@@ -39,8 +39,8 @@ done
 for script in ${scripts[@]}; do
 	copy "$HOME/.local/bin/$script" scripts
 done
-# overwrite dbg.h
-copy "$CPLUS_INCLUDE_PATH/dbg.h" etc
+# others
+copy "$CPLUS_INCLUDE_PATH/dbg.hpp" etc
 copy "$HOME/.local/share/typst/packages/local/oly" etc
 fd . etc/oly -tf -e 'pdf' -x rm {}
 
