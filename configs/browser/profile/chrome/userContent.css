@@ -26,15 +26,20 @@
 }
 
 /* dark mode for pdf.js */
-:root([darkpdf]) #sidebarContainer > #sidebarContent > #thumbnailView {
+:root:not([darkpdf]) #sidebarContainer > #sidebarContent > #thumbnailView {
 	--sidebaritem-bg-color: #1f1f28;
 }
 
-:root([darkpdf]) #viewerContainer > #viewer > .page > .canvasWrapper > canvas {
+:root:not([darkpdf])
+	#viewerContainer
+	> #viewer
+	> .page
+	> .canvasWrapper
+	> canvas {
 	filter: grayscale(100%) invert(90%);
 }
 
-:root([darkpdf])
+:root:not([darkpdf])
 	#sidebarContainer
 	> #sidebarContent
 	> #thumbnailView
