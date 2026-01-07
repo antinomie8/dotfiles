@@ -5,19 +5,19 @@ import QtQuick.Controls
 import Quickshell
 
 Singleton {
-	id: root
+    id: root
+    
+    property StackView stackView
 
-	property StackView stackView
+    function push(component) {
+        if (stackView) {
+            stackView.push(component)
+        }
+    }
 
-	function push(component) {
-		if (stackView) {
-			stackView.push(component);
-		}
-	}
-
-	function back() {
-		if (stackView && stackView.depth > 1) {
-			stackView.pop();
-		}
-	}
+    function back() {
+        if (stackView && stackView.depth > 1) {
+            stackView.pop()
+        }
+    }
 }

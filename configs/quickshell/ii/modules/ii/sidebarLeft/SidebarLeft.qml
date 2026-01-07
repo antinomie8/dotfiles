@@ -9,248 +9,246 @@ import Quickshell.Wayland
 import Quickshell.Hyprland
 
 Scope { // Scope
-	id: root
-	property bool detach: false
-	property bool pin: false
-	property Component contentComponent: SidebarLeftContent {}
-	property Item sidebarContent
+    id: root
+    property bool detach: false
+    property bool pin: false
+    property Component contentComponent: SidebarLeftContent {}
+    property Item sidebarContent
 
-	function toggleDetach() {
-		root.detach = !root.detach;
-	}
+    function toggleDetach() {
+        root.detach = !root.detach;
+    }
 
-	Process { // Dodge cursor away, pin, move cursor back
-		id: pinWithFunnyHyprlandWorkaroundProc
-		property var hook: null
-		property int cursorX
-		property int cursorY
-		function doIt() {
-			command = ["hyprctl", "cursorpos"];
-			hook = output => {
-				cursorX = parseInt(output.split(",")[0]);
-				cursorY = parseInt(output.split(",")[1]);
-				doIt2();
-			};
-			running = true;
-		}
-		function doIt2(output) {
-			command = ["bash", "-c", "hyprctl dispatch movecursor 9999 9999"];
-			hook = () => {
-				doIt3();
-			};
-			running = true;
-		}
-		function doIt3(output) {
-			root.pin = !root.pin;
-			command = ["bash", "-c", `sleep 0.01; hyprctl dispatch movecursor ${cursorX} ${cursorY}`];
-			hook = null;
-			running = true;
-		}
-		stdout: StdioCollector {
-			onStreamFinished: {
-				pinWithFunnyHyprlandWorkaroundProc.hook(text);
-			}
-		}
-	}
+    Process { // Dodge cursor away, pin, move cursor back
+        id: pinWithFunnyHyprlandWorkaroundProc
+        property var hook: null
+        property int cursorX;
+        property int cursorY;
+        function doIt() {
+            command = ["hyprctl", "cursorpos"]
+            hook = (output) => {
+                cursorX = parseInt(output.split(",")[0]);
+                cursorY = parseInt(output.split(",")[1]);
+                doIt2();
+            }
+            running = true;
+        }
+        function doIt2(output) {
+            command = ["bash", "-c", "hyprctl dispatch movecursor 9999 9999"];
+            hook = () => {
+                doIt3();
+            }
+            running = true;
+        }
+        function doIt3(output) {
+            root.pin = !root.pin;
+            command = ["bash", "-c", `sleep 0.01; hyprctl dispatch movecursor ${cursorX} ${cursorY}`];
+            hook = null
+            running = true;
+        }
+        stdout: StdioCollector {
+            onStreamFinished: {
+                pinWithFunnyHyprlandWorkaroundProc.hook(text);
+            }
+        }
+    }
 
-	function togglePin() {
-		if (!root.pin)
-			pinWithFunnyHyprlandWorkaroundProc.doIt();
-		else
-			root.pin = !root.pin;
-	}
+    function togglePin() {
+        if (!root.pin) pinWithFunnyHyprlandWorkaroundProc.doIt()
+        else root.pin = !root.pin;
+    }
 
-	Component.onCompleted: {
-		root.sidebarContent = contentComponent.createObject(null, {
-			"scopeRoot": root
-		});
-		sidebarLoader.item.contentParent.children = [root.sidebarContent];
-	}
+    Component.onCompleted: {
+        root.sidebarContent = contentComponent.createObject(null, {
+            "scopeRoot": root,
+        });
+        sidebarLoader.item.contentParent.children = [root.sidebarContent];
+    }
 
-	onDetachChanged: {
-		if (root.detach) {
-			sidebarContent.parent = null; // Detach content from sidebar
-			sidebarLoader.active = false; // Unload sidebar
-			detachedSidebarLoader.active = true; // Load detached window
-			detachedSidebarLoader.item.contentParent.children = [sidebarContent];
-		} else {
-			sidebarContent.parent = null; // Detach content from window
-			detachedSidebarLoader.active = false; // Unload detached window
-			sidebarLoader.active = true; // Load sidebar
-			sidebarLoader.item.contentParent.children = [sidebarContent];
-		}
-	}
+    onDetachChanged: {
+        if (root.detach) {
+            sidebarContent.parent = null; // Detach content from sidebar
+            sidebarLoader.active = false; // Unload sidebar
+            detachedSidebarLoader.active = true; // Load detached window
+            detachedSidebarLoader.item.contentParent.children = [sidebarContent];
+        } else {
+            sidebarContent.parent = null; // Detach content from window
+            detachedSidebarLoader.active = false; // Unload detached window
+            sidebarLoader.active = true; // Load sidebar
+            sidebarLoader.item.contentParent.children = [sidebarContent];
+        }
+    }
 
-	Loader {
-		id: sidebarLoader
-		active: true
+    Loader {
+        id: sidebarLoader
+        active: true
+        
+        sourceComponent: PanelWindow { // Window
+            id: panelWindow
+            visible: GlobalStates.sidebarLeftOpen
+            
+            property bool extend: false
+            property real sidebarWidth: panelWindow.extend ? Appearance.sizes.sidebarWidthExtended : Appearance.sizes.sidebarWidth
+            property var contentParent: sidebarLeftBackground
 
-		sourceComponent: PanelWindow { // Window
-			id: panelWindow
-			visible: GlobalStates.sidebarLeftOpen
+            function hide() {
+                GlobalStates.sidebarLeftOpen = false
+            }
 
-			property bool extend: false
-			property real sidebarWidth: panelWindow.extend ? Appearance.sizes.sidebarWidthExtended : Appearance.sizes.sidebarWidth
-			property var contentParent: sidebarLeftBackground
+            exclusionMode: ExclusionMode.Normal
+            exclusiveZone: root.pin ? sidebarWidth : 0
+            implicitWidth: Appearance.sizes.sidebarWidthExtended + Appearance.sizes.elevationMargin
+            WlrLayershell.namespace: "quickshell:sidebarLeft"
+            // Hyprland 0.49: OnDemand is Exclusive, Exclusive just breaks click-outside-to-close
+            WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+            color: "transparent"
 
-			function hide() {
-				GlobalStates.sidebarLeftOpen = false;
-			}
+            anchors {
+                top: true
+                left: true
+                bottom: true
+            }
 
-			exclusionMode: ExclusionMode.Normal
-			exclusiveZone: root.pin ? sidebarWidth : 0
-			implicitWidth: Appearance.sizes.sidebarWidthExtended + Appearance.sizes.elevationMargin
-			WlrLayershell.namespace: "quickshell:sidebarLeft"
-			// Hyprland 0.49: OnDemand is Exclusive, Exclusive just breaks click-outside-to-close
-			WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
-			color: "transparent"
+            mask: Region {
+                item: sidebarLeftBackground
+            }
 
-			anchors {
-				top: true
-				left: true
-				bottom: true
-			}
+            onVisibleChanged: {
+                if (visible) {
+                    GlobalFocusGrab.addDismissable(panelWindow);
+                } else {
+                    GlobalFocusGrab.removeDismissable(panelWindow);
+                }
+            }
+            Connections {
+                target: GlobalFocusGrab
+                function onDismissed() {
+                    panelWindow.hide();
+                }
+            }
 
-			mask: Region {
-				item: sidebarLeftBackground
-			}
+            // Content
+            StyledRectangularShadow {
+                target: sidebarLeftBackground
+                radius: sidebarLeftBackground.radius
+            }
+            Rectangle {
+                id: sidebarLeftBackground
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.topMargin: Appearance.sizes.hyprlandGapsOut
+                anchors.leftMargin: Appearance.sizes.hyprlandGapsOut
+                width: panelWindow.sidebarWidth - Appearance.sizes.hyprlandGapsOut - Appearance.sizes.elevationMargin
+                height: parent.height - Appearance.sizes.hyprlandGapsOut * 2
+                color: Appearance.colors.colLayer0
+                border.width: 1
+                border.color: Appearance.colors.colLayer0Border
+                radius: Appearance.rounding.screenRounding - Appearance.sizes.hyprlandGapsOut + 1
 
-			onVisibleChanged: {
-				if (visible) {
-					GlobalFocusGrab.addDismissable(panelWindow);
-				} else {
-					GlobalFocusGrab.removeDismissable(panelWindow);
-				}
-			}
-			Connections {
-				target: GlobalFocusGrab
-				function onDismissed() {
-					panelWindow.hide();
-				}
-			}
+                Behavior on width {
+                    animation: Appearance.animation.elementMove.numberAnimation.createObject(this)
+                }
 
-			// Content
-			StyledRectangularShadow {
-				target: sidebarLeftBackground
-				radius: sidebarLeftBackground.radius
-			}
-			Rectangle {
-				id: sidebarLeftBackground
-				anchors.top: parent.top
-				anchors.left: parent.left
-				anchors.topMargin: Appearance.sizes.hyprlandGapsOut
-				anchors.leftMargin: Appearance.sizes.hyprlandGapsOut
-				width: panelWindow.sidebarWidth - Appearance.sizes.hyprlandGapsOut - Appearance.sizes.elevationMargin
-				height: parent.height - Appearance.sizes.hyprlandGapsOut * 2
-				color: Appearance.colors.colLayer0
-				border.width: 1
-				border.color: Appearance.colors.colLayer0Border
-				radius: Appearance.rounding.screenRounding - Appearance.sizes.hyprlandGapsOut + 1
+                Keys.onPressed: (event) => {
+                    if (event.key === Qt.Key_Escape) {
+                        panelWindow.hide();
+                    }
+                    if (event.modifiers === Qt.ControlModifier) {
+                        if (event.key === Qt.Key_O) {
+                            panelWindow.extend = !panelWindow.extend;
+                        } else if (event.key === Qt.Key_D) {
+                            root.toggleDetach();
+                        } else if (event.key === Qt.Key_P) {
+                            root.togglePin();
+                        }
+                        event.accepted = true;
+                    }
+                }
+            }
+        }
+    }
 
-				Behavior on width {
-					animation: Appearance.animation.elementMove.numberAnimation.createObject(this)
-				}
+    Loader {
+        id: detachedSidebarLoader
+        active: false
 
-				Keys.onPressed: event => {
-					if (event.key === Qt.Key_Escape) {
-						panelWindow.hide();
-					}
-					if (event.modifiers === Qt.ControlModifier) {
-						if (event.key === Qt.Key_O) {
-							panelWindow.extend = !panelWindow.extend;
-						} else if (event.key === Qt.Key_D) {
-							root.toggleDetach();
-						} else if (event.key === Qt.Key_P) {
-							root.togglePin();
-						}
-						event.accepted = true;
-					}
-				}
-			}
-		}
-	}
+        sourceComponent: FloatingWindow {
+            id: detachedSidebarRoot
+            property var contentParent: detachedSidebarBackground
+            color: "transparent"
 
-	Loader {
-		id: detachedSidebarLoader
-		active: false
+            visible: GlobalStates.sidebarLeftOpen
+            onVisibleChanged: {
+                if (!visible) GlobalStates.sidebarLeftOpen = false;
+            }
+            
+            Rectangle {
+                id: detachedSidebarBackground
+                anchors.fill: parent
+                color: Appearance.colors.colLayer0
 
-		sourceComponent: FloatingWindow {
-			id: detachedSidebarRoot
-			property var contentParent: detachedSidebarBackground
-			color: "transparent"
+                Keys.onPressed: (event) => {
+                    if (event.modifiers === Qt.ControlModifier) {
+                        if (event.key === Qt.Key_D) {
+                            root.toggleDetach();
+                        }
+                        event.accepted = true;
+                    }
+                }
+            }
+        }
+    }
 
-			visible: GlobalStates.sidebarLeftOpen
-			onVisibleChanged: {
-				if (!visible)
-					GlobalStates.sidebarLeftOpen = false;
-			}
+    IpcHandler {
+        target: "sidebarLeft"
 
-			Rectangle {
-				id: detachedSidebarBackground
-				anchors.fill: parent
-				color: Appearance.colors.colLayer0
+        function toggle(): void {
+            GlobalStates.sidebarLeftOpen = !GlobalStates.sidebarLeftOpen
+        }
 
-				Keys.onPressed: event => {
-					if (event.modifiers === Qt.ControlModifier) {
-						if (event.key === Qt.Key_D) {
-							root.toggleDetach();
-						}
-						event.accepted = true;
-					}
-				}
-			}
-		}
-	}
+        function close(): void {
+            GlobalStates.sidebarLeftOpen = false
+        }
 
-	IpcHandler {
-		target: "sidebarLeft"
+        function open(): void {
+            GlobalStates.sidebarLeftOpen = true
+        }
+    }
 
-		function toggle(): void {
-			GlobalStates.sidebarLeftOpen = !GlobalStates.sidebarLeftOpen;
-		}
+    GlobalShortcut {
+        name: "sidebarLeftToggle"
+        description: "Toggles left sidebar on press"
 
-		function close(): void {
-			GlobalStates.sidebarLeftOpen = false;
-		}
+        onPressed: {
+            GlobalStates.sidebarLeftOpen = !GlobalStates.sidebarLeftOpen;
+        }
+    }
 
-		function open(): void {
-			GlobalStates.sidebarLeftOpen = true;
-		}
-	}
+    GlobalShortcut {
+        name: "sidebarLeftOpen"
+        description: "Opens left sidebar on press"
 
-	GlobalShortcut {
-		name: "sidebarLeftToggle"
-		description: "Toggles left sidebar on press"
+        onPressed: {
+            GlobalStates.sidebarLeftOpen = true;
+        }
+    }
 
-		onPressed: {
-			GlobalStates.sidebarLeftOpen = !GlobalStates.sidebarLeftOpen;
-		}
-	}
+    GlobalShortcut {
+        name: "sidebarLeftClose"
+        description: "Closes left sidebar on press"
 
-	GlobalShortcut {
-		name: "sidebarLeftOpen"
-		description: "Opens left sidebar on press"
+        onPressed: {
+            GlobalStates.sidebarLeftOpen = false;
+        }
+    }
 
-		onPressed: {
-			GlobalStates.sidebarLeftOpen = true;
-		}
-	}
+    GlobalShortcut {
+        name: "sidebarLeftToggleDetach"
+        description: "Detach left sidebar into a window/Attach it back"
 
-	GlobalShortcut {
-		name: "sidebarLeftClose"
-		description: "Closes left sidebar on press"
+        onPressed: {
+            root.detach = !root.detach;
+        }
+    }
 
-		onPressed: {
-			GlobalStates.sidebarLeftOpen = false;
-		}
-	}
-
-	GlobalShortcut {
-		name: "sidebarLeftToggleDetach"
-		description: "Detach left sidebar into a window/Attach it back"
-
-		onPressed: {
-			root.detach = !root.detach;
-		}
-	}
 }

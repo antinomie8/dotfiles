@@ -4,15 +4,16 @@ import QtQuick
 import QtQuick.Controls
 
 ListView {
-	id: root
+    id: root
 
-	boundsBehavior: Flickable.DragOverBounds
+    boundsBehavior: Flickable.DragOverBounds
 
-	ScrollBar.vertical: WScrollBar {}
+    ScrollBar.vertical: WScrollBar {}
 
-	displaced: Transition {
-		animations: [Looks.transition.enter.createObject(this, {
-				property: "y"
-			})]
-	}
+    displaced: Transition {
+        animations: [Looks.transition.enter.createObject(this, {
+                property: "y"
+            })]
+    }
+
 }

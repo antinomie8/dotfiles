@@ -7,23 +7,23 @@ import qs.modules.common.functions
 import qs.modules.common.widgets
 
 QuickToggleModel {
-	name: Translation.tr("Color picker")
-	hasStatusText: false
-	toggled: false
-	icon: "colorize"
+    name: Translation.tr("Color picker")
+    hasStatusText: false
+    toggled: false
+    icon: "colorize"
 
-	mainAction: () => {
-		GlobalStates.sidebarRightOpen = false;
-		delayedActionTimer.start();
-	}
-	Timer {
-		id: delayedActionTimer
-		interval: 300
-		repeat: false
-		onTriggered: {
-			Quickshell.execDetached(["hyprpicker", "-a"]);
-		}
-	}
+    mainAction: () => {
+        GlobalStates.sidebarRightOpen = false;
+        delayedActionTimer.start();
+    }
+    Timer {
+        id: delayedActionTimer
+        interval: 300
+        repeat: false
+        onTriggered: {
+            Quickshell.execDetached(["hyprpicker", "-a"]);
+        }
+    }
 
-	tooltipText: Translation.tr("Color picker")
+    tooltipText: Translation.tr("Color picker")
 }

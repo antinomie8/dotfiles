@@ -7,5 +7,5 @@ import Quickshell
 import Quickshell.Io
 
 AndroidQuickToggleButton {
-	toggleModel: GameModeToggle {}
+    toggleModel: GameModeToggle {}
 }

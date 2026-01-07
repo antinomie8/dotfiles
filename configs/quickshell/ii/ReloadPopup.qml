@@ -6,8 +6,8 @@ import Quickshell.Wayland
 
 Scope {
 	id: root
-	property bool failed
-	property string errorString
+	property bool failed;
+	property string errorString;
 
 	// Connect to the Quickshell global to listen for the reload signals.
 	Connections {
@@ -50,7 +50,7 @@ Scope {
 			Rectangle {
 				id: rect
 				anchors.centerIn: parent
-				color: failed ? "#ffe99195" : "#ffD1E8D5"
+				color: failed ?  "#ffe99195" : "#ffD1E8D5"
 
 				implicitHeight: layout.implicitHeight + 30
 				implicitWidth: layout.implicitWidth + 30
@@ -62,7 +62,7 @@ Scope {
 					id: mouseArea
 					anchors.fill: parent
 					onPressed: {
-						popupLoader.active = false;
+						popupLoader.active = false
 					}
 
 					// makes the mouse area track mouse hovering, so the hide animation
@@ -101,8 +101,8 @@ Scope {
 				// A progress bar on the bottom of the screen, showing how long until the
 				// popup is removed.
 				Rectangle {
-					id: bar
 					z: 2
+					id: bar
 					color: failed ? "#ff93000A" : "#ff0C1F13"
 					anchors.bottom: parent.bottom
 					anchors.left: parent.left
@@ -127,8 +127,8 @@ Scope {
 				}
 				// Its bg
 				Rectangle {
-					id: bar_bg
 					z: 1
+					id: bar_bg
 					color: failed ? "#30af1b25" : "#4027643e"
 					anchors.bottom: parent.bottom
 					anchors.left: parent.left
@@ -147,14 +147,14 @@ Scope {
 
 			DropShadow {
 				id: shadow
-				anchors.fill: rect
-				horizontalOffset: 0
-				verticalOffset: 2
-				radius: 6
-				samples: radius * 2 + 1 // Ideally should be 2 * radius + 1, see qt docs
-				color: "#44000000"
-				source: rect
-			}
+                anchors.fill: rect
+                horizontalOffset: 0
+                verticalOffset: 2
+                radius: 6
+                samples: radius * 2 + 1 // Ideally should be 2 * radius + 1, see qt docs
+                color: "#44000000"
+                source: rect
+            }
 		}
 	}
 }

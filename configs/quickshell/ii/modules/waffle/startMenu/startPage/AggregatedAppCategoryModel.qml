@@ -2,6 +2,6 @@ import QtQuick
 import qs.services
 
 QtObject {
-	property string name
-	property list<string> categories
+    property string name
+    property list<string> categories
 }

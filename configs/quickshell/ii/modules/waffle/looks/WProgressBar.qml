@@ -8,42 +8,42 @@ import qs.modules.common.widgets
 import qs.modules.waffle.looks
 
 ProgressBar {
-	id: root
+    id: root
 
-	Behavior on value {
-		SmoothedAnimation {
-			velocity: Looks.transition.velocity
-		}
-	}
+    Behavior on value {
+        SmoothedAnimation {
+            velocity: Looks.transition.velocity
+        }
+    }
 
-	implicitHeight: 4
-	background: null
+    implicitHeight: 4
+    background: null
+    
+    contentItem: Item {
+        id: background
 
-	contentItem: Item {
-		id: background
+        Rectangle {
+            id: trackTrough
+            anchors {
+                left: parent.left
+                right: parent.right
+                verticalCenter: parent.verticalCenter
+            }
+            radius: root.implicitHeight / 2
+            color: Looks.colors.controlBg
+            implicitHeight: root.implicitHeight
+        }
 
-		Rectangle {
-			id: trackTrough
-			anchors {
-				left: parent.left
-				right: parent.right
-				verticalCenter: parent.verticalCenter
-			}
-			radius: root.implicitHeight / 2
-			color: Looks.colors.controlBg
-			implicitHeight: root.implicitHeight
-		}
-
-		Rectangle {
-			id: trackHighlight
-			anchors {
-				left: parent.left
-				verticalCenter: parent.verticalCenter
-			}
-			radius: root.implicitHeight / 2
-			color: Looks.colors.accent
-			implicitHeight: root.implicitHeight
-			width: background.width * root.value
-		}
-	}
+        Rectangle {
+            id: trackHighlight
+            anchors {
+                left: parent.left
+                verticalCenter: parent.verticalCenter
+            }
+            radius: root.implicitHeight / 2
+            color: Looks.colors.accent
+            implicitHeight: root.implicitHeight
+            width: background.width * root.value
+        }
+    }
 }

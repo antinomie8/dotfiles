@@ -9,79 +9,77 @@ import qs.modules.common
 import qs.modules.common.widgets
 
 Scope {
-	id: root
+    id: root
 
-	Connections {
-		target: GlobalStates
+    Connections {
+        target: GlobalStates
 
-		function onSidebarRightOpenChanged() {
-			if (GlobalStates.sidebarRightOpen)
-				panelLoader.active = true;
-		}
-	}
+        function onSidebarRightOpenChanged() {
+            if (GlobalStates.sidebarRightOpen) panelLoader.active = true;
+        }
+    }
 
-	Loader {
-		id: panelLoader
-		active: GlobalStates.sidebarRightOpen
-		sourceComponent: PanelWindow {
-			id: panelWindow
-			exclusiveZone: 0
-			WlrLayershell.namespace: "quickshell:wNotificationCenter"
-			WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
-			color: "transparent"
+    Loader {
+        id: panelLoader
+        active: GlobalStates.sidebarRightOpen
+        sourceComponent: PanelWindow {
+            id: panelWindow
+            exclusiveZone: 0
+            WlrLayershell.namespace: "quickshell:wNotificationCenter"
+            WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+            color: "transparent"
 
-			anchors {
-				bottom: true
-				top: true
-				right: true
-			}
+            anchors {
+                bottom: true
+                top: true
+                right: true
+            }
 
-			implicitWidth: content.implicitWidth
-			implicitHeight: content.implicitHeight
+            implicitWidth: content.implicitWidth
+            implicitHeight: content.implicitHeight
 
-			HyprlandFocusGrab {
-				id: focusGrab
-				active: true
-				windows: [panelWindow]
-				onCleared: content.close()
-			}
+            HyprlandFocusGrab {
+                id: focusGrab
+                active: true
+                windows: [panelWindow]
+                onCleared: content.close();
+            }
 
-			Connections {
-				target: GlobalStates
-				function onSidebarRightOpenChanged() {
-					if (!GlobalStates.sidebarRightOpen)
-						content.close();
-				}
-			}
+            Connections {
+                target: GlobalStates
+                function onSidebarRightOpenChanged() {
+                    if (!GlobalStates.sidebarRightOpen) content.close();
+                }
+            }
 
-			NotificationCenterContent {
-				id: content
-				anchors.fill: parent
+            NotificationCenterContent {
+                id: content
+                anchors.fill: parent
 
-				onClosed: {
-					GlobalStates.sidebarRightOpen = false;
-					panelLoader.active = false;
-				}
-			}
-		}
-	}
+                onClosed: {
+                    GlobalStates.sidebarRightOpen = false;
+                    panelLoader.active = false;
+                }
+            }
+        }
+    }
 
-	function toggleOpen() {
-		GlobalStates.sidebarRightOpen = !GlobalStates.sidebarRightOpen;
-	}
+    function toggleOpen() {
+        GlobalStates.sidebarRightOpen = !GlobalStates.sidebarRightOpen;
+    }
 
-	IpcHandler {
-		target: "sidebarRight"
+    IpcHandler {
+        target: "sidebarRight"
 
-		function toggle() {
-			root.toggleOpen();
-		}
-	}
+        function toggle() {
+            root.toggleOpen();
+        }
+    }
 
-	GlobalShortcut {
-		name: "sidebarRightToggle"
-		description: "Toggles notification center on press"
+    GlobalShortcut {
+        name: "sidebarRightToggle"
+        description: "Toggles notification center on press"
 
-		onPressed: root.toggleOpen()
-	}
+        onPressed: root.toggleOpen();
+    }
 }

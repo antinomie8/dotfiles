@@ -7,7 +7,7 @@ import QtQuick
 import Quickshell
 
 AndroidQuickToggleButton {
-	id: root
+    id: root
 
-	toggleModel: ColorPickerToggle {}
+    toggleModel: ColorPickerToggle {}
 }

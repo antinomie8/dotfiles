@@ -1,9 +1,9 @@
 import QtQuick
 
 Rectangle {
-	property double diameter
+    property double diameter
 
-	implicitWidth: diameter
-	implicitHeight: diameter
-	radius: diameter / 2
+    implicitWidth: diameter
+    implicitHeight: diameter
+    radius: diameter / 2
 }

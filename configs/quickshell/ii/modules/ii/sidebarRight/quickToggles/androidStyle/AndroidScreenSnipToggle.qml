@@ -8,5 +8,5 @@ import Quickshell
 import Quickshell.Hyprland
 
 AndroidQuickToggleButton {
-	toggleModel: ScreenSnipToggle {}
+    toggleModel: ScreenSnipToggle {}
 }

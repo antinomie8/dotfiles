@@ -7,6 +7,7 @@ import Quickshell
 import Quickshell.Io
 import qs.services
 
+
 AndroidQuickToggleButton {
-	toggleModel: MusicRecognitionToggle {}
+    toggleModel: MusicRecognitionToggle {}
 }

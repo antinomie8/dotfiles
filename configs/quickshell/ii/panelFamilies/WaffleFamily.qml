@@ -23,54 +23,22 @@ import qs.modules.ii.overlay
 import qs.modules.ii.wallpaperSelector
 
 Scope {
-	PanelLoader {
-		component: WaffleActionCenter {}
-	}
-	PanelLoader {
-		component: WaffleBar {}
-	}
-	PanelLoader {
-		component: WaffleBackground {}
-	}
-	PanelLoader {
-		component: WaffleLock {}
-	}
-	PanelLoader {
-		component: WaffleNotificationCenter {}
-	}
-	PanelLoader {
-		component: WaffleNotificationPopup {}
-	}
-	PanelLoader {
-		component: WaffleOSD {}
-	}
-	// PanelLoader { component: WaffleOverlay {} }
-	PanelLoader {
-		component: WafflePolkit {}
-	}
-	PanelLoader {
-		component: WScreenSnip {}
-	}
-	PanelLoader {
-		component: WaffleStartMenu {}
-	}
-	PanelLoader {
-		component: WaffleSessionScreen {}
-	}
-	PanelLoader {
-		component: WaffleTaskView {}
-	}
+    PanelLoader { component: WaffleActionCenter {} }
+    PanelLoader { component: WaffleBar {} }
+    PanelLoader { component: WaffleBackground {} }
+    PanelLoader { component: WaffleLock {} }
+    PanelLoader { component: WaffleNotificationCenter {} }
+    PanelLoader { component: WaffleNotificationPopup {} }
+    PanelLoader { component: WaffleOSD {} }
+    // PanelLoader { component: WaffleOverlay {} }
+    PanelLoader { component: WafflePolkit {} }
+    PanelLoader { component: WScreenSnip {} }
+    PanelLoader { component: WaffleStartMenu {} }
+    PanelLoader { component: WaffleSessionScreen {} }
+    PanelLoader { component: WaffleTaskView {} }
 
-	PanelLoader {
-		component: Cheatsheet {}
-	}
-	PanelLoader {
-		component: OnScreenKeyboard {}
-	}
-	PanelLoader {
-		component: Overlay {}
-	}
-	PanelLoader {
-		component: WallpaperSelector {}
-	}
+    PanelLoader { component: Cheatsheet {} }
+    PanelLoader { component: OnScreenKeyboard {} }
+    PanelLoader { component: Overlay {} }
+    PanelLoader { component: WallpaperSelector {} }
 }

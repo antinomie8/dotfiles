@@ -6,5 +6,6 @@ import QtQuick
 import Quickshell
 
 AndroidQuickToggleButton {
-	toggleModel: NightLightToggle {}
+    toggleModel: NightLightToggle {}
 }
+

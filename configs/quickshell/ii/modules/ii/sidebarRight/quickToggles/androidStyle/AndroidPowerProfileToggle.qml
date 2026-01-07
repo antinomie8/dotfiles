@@ -8,5 +8,5 @@ import Quickshell
 import Quickshell.Services.UPower
 
 AndroidQuickToggleButton {
-	toggleModel: PowerProfilesToggle {}
+    toggleModel: PowerProfilesToggle {}
 }

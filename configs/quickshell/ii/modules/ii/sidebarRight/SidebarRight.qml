@@ -8,104 +8,104 @@ import Quickshell.Wayland
 import Quickshell.Hyprland
 
 Scope {
-	id: root
-	property int sidebarWidth: Appearance.sizes.sidebarWidth
+    id: root
+    property int sidebarWidth: Appearance.sizes.sidebarWidth
 
-	PanelWindow {
-		id: panelWindow
-		visible: GlobalStates.sidebarRightOpen
+    PanelWindow {
+        id: panelWindow
+        visible: GlobalStates.sidebarRightOpen
 
-		function hide() {
-			GlobalStates.sidebarRightOpen = false;
-		}
+        function hide() {
+            GlobalStates.sidebarRightOpen = false;
+        }
 
-		exclusiveZone: 0
-		implicitWidth: sidebarWidth
-		WlrLayershell.namespace: "quickshell:sidebarRight"
-		// Hyprland 0.49: Focus is always exclusive and setting this breaks mouse focus grab
-		// WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
-		color: "transparent"
+        exclusiveZone: 0
+        implicitWidth: sidebarWidth
+        WlrLayershell.namespace: "quickshell:sidebarRight"
+        // Hyprland 0.49: Focus is always exclusive and setting this breaks mouse focus grab
+        // WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+        color: "transparent"
 
-		anchors {
-			top: true
-			right: true
-			bottom: true
-		}
+        anchors {
+            top: true
+            right: true
+            bottom: true
+        }
 
-		onVisibleChanged: {
-			if (visible) {
-				GlobalFocusGrab.addDismissable(panelWindow);
-			} else {
-				GlobalFocusGrab.removeDismissable(panelWindow);
-			}
-		}
-		Connections {
-			target: GlobalFocusGrab
-			function onDismissed() {
-				panelWindow.hide();
-			}
-		}
+        onVisibleChanged: {
+            if (visible) {
+                GlobalFocusGrab.addDismissable(panelWindow);
+            } else {
+                GlobalFocusGrab.removeDismissable(panelWindow);
+            }
+        }
+        Connections {
+            target: GlobalFocusGrab
+            function onDismissed() {
+                panelWindow.hide();
+            }
+        }
 
-		Loader {
-			id: sidebarContentLoader
-			active: GlobalStates.sidebarRightOpen || Config?.options.sidebar.keepRightSidebarLoaded
-			anchors {
-				fill: parent
-				margins: Appearance.sizes.hyprlandGapsOut
-				leftMargin: Appearance.sizes.elevationMargin
-			}
-			width: sidebarWidth - Appearance.sizes.hyprlandGapsOut - Appearance.sizes.elevationMargin
-			height: parent.height - Appearance.sizes.hyprlandGapsOut * 2
+        Loader {
+            id: sidebarContentLoader
+            active: GlobalStates.sidebarRightOpen || Config?.options.sidebar.keepRightSidebarLoaded
+            anchors {
+                fill: parent
+                margins: Appearance.sizes.hyprlandGapsOut
+                leftMargin: Appearance.sizes.elevationMargin
+            }
+            width: sidebarWidth - Appearance.sizes.hyprlandGapsOut - Appearance.sizes.elevationMargin
+            height: parent.height - Appearance.sizes.hyprlandGapsOut * 2
 
-			focus: GlobalStates.sidebarRightOpen
-			Keys.onPressed: event => {
-				if (event.key === Qt.Key_Escape) {
-					panelWindow.hide();
-				}
-			}
+            focus: GlobalStates.sidebarRightOpen
+            Keys.onPressed: event => {
+                if (event.key === Qt.Key_Escape) {
+                    panelWindow.hide();
+                }
+            }
 
-			sourceComponent: SidebarRightContent {}
-		}
-	}
+            sourceComponent: SidebarRightContent {}
+        }
+    }
 
-	IpcHandler {
-		target: "sidebarRight"
+    IpcHandler {
+        target: "sidebarRight"
 
-		function toggle(): void {
-			GlobalStates.sidebarRightOpen = !GlobalStates.sidebarRightOpen;
-		}
+        function toggle(): void {
+            GlobalStates.sidebarRightOpen = !GlobalStates.sidebarRightOpen;
+        }
 
-		function close(): void {
-			GlobalStates.sidebarRightOpen = false;
-		}
+        function close(): void {
+            GlobalStates.sidebarRightOpen = false;
+        }
 
-		function open(): void {
-			GlobalStates.sidebarRightOpen = true;
-		}
-	}
+        function open(): void {
+            GlobalStates.sidebarRightOpen = true;
+        }
+    }
 
-	GlobalShortcut {
-		name: "sidebarRightToggle"
-		description: "Toggles right sidebar on press"
+    GlobalShortcut {
+        name: "sidebarRightToggle"
+        description: "Toggles right sidebar on press"
 
-		onPressed: {
-			GlobalStates.sidebarRightOpen = !GlobalStates.sidebarRightOpen;
-		}
-	}
-	GlobalShortcut {
-		name: "sidebarRightOpen"
-		description: "Opens right sidebar on press"
+        onPressed: {
+            GlobalStates.sidebarRightOpen = !GlobalStates.sidebarRightOpen;
+        }
+    }
+    GlobalShortcut {
+        name: "sidebarRightOpen"
+        description: "Opens right sidebar on press"
 
-		onPressed: {
-			GlobalStates.sidebarRightOpen = true;
-		}
-	}
-	GlobalShortcut {
-		name: "sidebarRightClose"
-		description: "Closes right sidebar on press"
+        onPressed: {
+            GlobalStates.sidebarRightOpen = true;
+        }
+    }
+    GlobalShortcut {
+        name: "sidebarRightClose"
+        description: "Closes right sidebar on press"
 
-		onPressed: {
-			GlobalStates.sidebarRightOpen = false;
-		}
-	}
+        onPressed: {
+            GlobalStates.sidebarRightOpen = false;
+        }
+    }
 }

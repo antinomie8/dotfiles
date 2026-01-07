@@ -8,8 +8,8 @@ import Quickshell
 import Quickshell.Wayland
 
 FullscreenPolkitWindow {
-	id: root
-	contentComponent: Component {
-		WPolkitContent {}
-	}
+    id: root
+    contentComponent: Component {
+        WPolkitContent {}
+    }
 }

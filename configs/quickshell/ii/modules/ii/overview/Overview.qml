@@ -12,241 +12,209 @@ import Quickshell.Wayland
 import Quickshell.Hyprland
 
 Scope {
-	id: overviewScope
-	property bool dontAutoCancelSearch: false
-	Variants {
-		id: overviewVariants
-		model: Quickshell.screens
-		PanelWindow {
-			id: root
-			required property var modelData
-			property string searchingText: ""
-			readonly property HyprlandMonitor monitor: Hyprland.monitorFor(root.screen)
-			property bool monitorIsFocused: (Hyprland.focusedMonitor?.id == monitor?.id)
-			screen: modelData
-			visible: GlobalStates.overviewOpen
+    id: overviewScope
+    property bool dontAutoCancelSearch: false
 
-			WlrLayershell.namespace: "quickshell:overview"
-			WlrLayershell.layer: WlrLayer.Overlay
-			// WlrLayershell.keyboardFocus: GlobalStates.overviewOpen ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
-			color: "transparent"
+    PanelWindow {
+        id: panelWindow
+        property string searchingText: ""
+        readonly property HyprlandMonitor monitor: Hyprland.monitorFor(panelWindow.screen)
+        property bool monitorIsFocused: (Hyprland.focusedMonitor?.id == monitor?.id)
+        visible: GlobalStates.overviewOpen
 
-			mask: Region {
-				item: GlobalStates.overviewOpen ? columnLayout : null
-			}
+        WlrLayershell.namespace: "quickshell:overview"
+        WlrLayershell.layer: WlrLayer.Top
+        // WlrLayershell.keyboardFocus: GlobalStates.overviewOpen ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
+        color: "transparent"
 
-			anchors {
-				top: true
-				bottom: true
-				left: true
-				right: true
-			}
+        mask: Region {
+            item: GlobalStates.overviewOpen ? columnLayout : null
+        }
 
-			HyprlandFocusGrab {
-				id: grab
-				windows: [root]
-				property bool canBeActive: root.monitorIsFocused
-				active: false
-				onCleared: () => {
-					if (!active)
-						GlobalStates.overviewOpen = false;
-				}
-			}
+        anchors {
+            top: true
+            bottom: true
+            left: true
+            right: true
+        }
 
-			Connections {
-				target: GlobalStates
-				function onOverviewOpenChanged() {
-					if (!GlobalStates.overviewOpen) {
-						searchWidget.disableExpandAnimation();
-						overviewScope.dontAutoCancelSearch = false;
-					} else {
-						if (!overviewScope.dontAutoCancelSearch) {
-							searchWidget.cancelSearch();
-						}
-						delayedGrabTimer.start();
-					}
-				}
-			}
+        Connections {
+            target: GlobalStates
+            function onOverviewOpenChanged() {
+                if (!GlobalStates.overviewOpen) {
+                    searchWidget.disableExpandAnimation();
+                    overviewScope.dontAutoCancelSearch = false;
+                    GlobalFocusGrab.dismiss();
+                } else {
+                    if (!overviewScope.dontAutoCancelSearch) {
+                        searchWidget.cancelSearch();
+                    }
+                    GlobalFocusGrab.addDismissable(panelWindow);
+                }
+            }
+        }
 
-			Timer {
-				id: delayedGrabTimer
-				interval: Config.options.hacks.arbitraryRaceConditionDelay
-				repeat: false
-				onTriggered: {
-					if (!grab.canBeActive)
-						return;
-					grab.active = GlobalStates.overviewOpen;
-				}
-			}
+        Connections {
+            target: GlobalFocusGrab
+            function onDismissed() {
+                GlobalStates.overviewOpen = false;
+            }
+        }
+        implicitWidth: columnLayout.implicitWidth
+        implicitHeight: columnLayout.implicitHeight
 
-			implicitWidth: columnLayout.implicitWidth
-			implicitHeight: columnLayout.implicitHeight
+        function setSearchingText(text) {
+            searchWidget.setSearchingText(text);
+            searchWidget.focusFirstItem();
+        }
 
-			function setSearchingText(text) {
-				searchWidget.setSearchingText(text);
-				searchWidget.focusFirstItem();
-			}
+        Column {
+            id: columnLayout
+            visible: GlobalStates.overviewOpen
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                top: parent.top
+            }
+            spacing: -8
 
-			Column {
-				id: columnLayout
-				visible: GlobalStates.overviewOpen
-				anchors {
-					horizontalCenter: parent.horizontalCenter
-					top: parent.top
-				}
-				spacing: -8
+            Keys.onPressed: event => {
+                if (event.key === Qt.Key_Escape) {
+                    GlobalStates.overviewOpen = false;
+                } else if (event.key === Qt.Key_Left) {
+                    if (!panelWindow.searchingText)
+                        Hyprland.dispatch("workspace r-1");
+                } else if (event.key === Qt.Key_Right) {
+                    if (!panelWindow.searchingText)
+                        Hyprland.dispatch("workspace r+1");
+                }
+            }
 
-				Keys.onPressed: event => {
-					if (event.key === Qt.Key_Escape) {
-						GlobalStates.overviewOpen = false;
-					} else if (event.key === Qt.Key_Left) {
-						if (!root.searchingText)
-							Hyprland.dispatch("workspace r-1");
-					} else if (event.key === Qt.Key_Right) {
-						if (!root.searchingText)
-							Hyprland.dispatch("workspace r+1");
-					}
-				}
+            SearchWidget {
+                id: searchWidget
+                anchors.horizontalCenter: parent.horizontalCenter
+                Synchronizer on searchingText {
+                    property alias source: panelWindow.searchingText
+                }
+            }
 
-				SearchWidget {
-					id: searchWidget
-					anchors.horizontalCenter: parent.horizontalCenter
-					Synchronizer on searchingText {
-						property alias source: root.searchingText
-					}
-				}
+            Loader {
+                id: overviewLoader
+                anchors.horizontalCenter: parent.horizontalCenter
+                active: GlobalStates.overviewOpen && (Config?.options.overview.enable ?? true)
+                sourceComponent: OverviewWidget {
+                    screen: panelWindow.screen
+                    visible: (panelWindow.searchingText == "")
+                }
+            }
+        }
+    }
 
-				Loader {
-					id: overviewLoader
-					anchors.horizontalCenter: parent.horizontalCenter
-					active: GlobalStates.overviewOpen && (Config?.options.overview.enable ?? true)
-					sourceComponent: OverviewWidget {
-						panelWindow: root
-						visible: (root.searchingText == "")
-					}
-				}
-			}
-		}
-	}
+    function toggleClipboard() {
+        if (GlobalStates.overviewOpen && overviewScope.dontAutoCancelSearch) {
+            GlobalStates.overviewOpen = false;
+            return;
+        }
+        overviewScope.dontAutoCancelSearch = true;
+        panelWindow.setSearchingText(Config.options.search.prefix.clipboard);
+        GlobalStates.overviewOpen = true;
+    }
 
-	function toggleClipboard() {
-		if (GlobalStates.overviewOpen && overviewScope.dontAutoCancelSearch) {
-			GlobalStates.overviewOpen = false;
-			return;
-		}
-		for (let i = 0; i < overviewVariants.instances.length; i++) {
-			let panelWindow = overviewVariants.instances[i];
-			if (panelWindow.modelData.name == Hyprland.focusedMonitor.name) {
-				overviewScope.dontAutoCancelSearch = true;
-				panelWindow.setSearchingText(Config.options.search.prefix.clipboard);
-				GlobalStates.overviewOpen = true;
-				return;
-			}
-		}
-	}
+    function toggleEmojis() {
+        if (GlobalStates.overviewOpen && overviewScope.dontAutoCancelSearch) {
+            GlobalStates.overviewOpen = false;
+            return;
+        }
+        overviewScope.dontAutoCancelSearch = true;
+        panelWindow.setSearchingText(Config.options.search.prefix.emojis);
+        GlobalStates.overviewOpen = true;
+    }
 
-	function toggleEmojis() {
-		if (GlobalStates.overviewOpen && overviewScope.dontAutoCancelSearch) {
-			GlobalStates.overviewOpen = false;
-			return;
-		}
-		for (let i = 0; i < overviewVariants.instances.length; i++) {
-			let panelWindow = overviewVariants.instances[i];
-			if (panelWindow.modelData.name == Hyprland.focusedMonitor.name) {
-				overviewScope.dontAutoCancelSearch = true;
-				panelWindow.setSearchingText(Config.options.search.prefix.emojis);
-				GlobalStates.overviewOpen = true;
-				return;
-			}
-		}
-	}
+    IpcHandler {
+        target: "search"
 
-	IpcHandler {
-		target: "search"
+        function toggle() {
+            GlobalStates.overviewOpen = !GlobalStates.overviewOpen;
+        }
+        function workspacesToggle() {
+            GlobalStates.overviewOpen = !GlobalStates.overviewOpen;
+        }
+        function close() {
+            GlobalStates.overviewOpen = false;
+        }
+        function open() {
+            GlobalStates.overviewOpen = true;
+        }
+        function toggleReleaseInterrupt() {
+            GlobalStates.superReleaseMightTrigger = false;
+        }
+        function clipboardToggle() {
+            overviewScope.toggleClipboard();
+        }
+    }
 
-		function toggle() {
-			GlobalStates.overviewOpen = !GlobalStates.overviewOpen;
-		}
-		function workspacesToggle() {
-			GlobalStates.overviewOpen = !GlobalStates.overviewOpen;
-		}
-		function close() {
-			GlobalStates.overviewOpen = false;
-		}
-		function open() {
-			GlobalStates.overviewOpen = true;
-		}
-		function toggleReleaseInterrupt() {
-			GlobalStates.superReleaseMightTrigger = false;
-		}
-		function clipboardToggle() {
-			overviewScope.toggleClipboard();
-		}
-	}
+    GlobalShortcut {
+        name: "searchToggle"
+        description: "Toggles search on press"
 
-	GlobalShortcut {
-		name: "searchToggle"
-		description: "Toggles search on press"
+        onPressed: {
+            GlobalStates.overviewOpen = !GlobalStates.overviewOpen;
+        }
+    }
+    GlobalShortcut {
+        name: "overviewWorkspacesClose"
+        description: "Closes overview on press"
 
-		onPressed: {
-			GlobalStates.overviewOpen = !GlobalStates.overviewOpen;
-		}
-	}
-	GlobalShortcut {
-		name: "overviewWorkspacesClose"
-		description: "Closes overview on press"
+        onPressed: {
+            GlobalStates.overviewOpen = false;
+        }
+    }
+    GlobalShortcut {
+        name: "overviewWorkspacesToggle"
+        description: "Toggles overview on press"
 
-		onPressed: {
-			GlobalStates.overviewOpen = false;
-		}
-	}
-	GlobalShortcut {
-		name: "overviewWorkspacesToggle"
-		description: "Toggles overview on press"
+        onPressed: {
+            GlobalStates.overviewOpen = !GlobalStates.overviewOpen;
+        }
+    }
+    GlobalShortcut {
+        name: "searchToggleRelease"
+        description: "Toggles search on release"
 
-		onPressed: {
-			GlobalStates.overviewOpen = !GlobalStates.overviewOpen;
-		}
-	}
-	GlobalShortcut {
-		name: "searchToggleRelease"
-		description: "Toggles search on release"
+        onPressed: {
+            GlobalStates.superReleaseMightTrigger = true;
+        }
 
-		onPressed: {
-			GlobalStates.superReleaseMightTrigger = true;
-		}
+        onReleased: {
+            if (!GlobalStates.superReleaseMightTrigger) {
+                GlobalStates.superReleaseMightTrigger = true;
+                return;
+            }
+            GlobalStates.overviewOpen = !GlobalStates.overviewOpen;
+        }
+    }
+    GlobalShortcut {
+        name: "searchToggleReleaseInterrupt"
+        description: "Interrupts possibility of search being toggled on release. " + "This is necessary because GlobalShortcut.onReleased in quickshell triggers whether or not you press something else while holding the key. " + "To make sure this works consistently, use binditn = MODKEYS, catchall in an automatically triggered submap that includes everything."
 
-		onReleased: {
-			if (!GlobalStates.superReleaseMightTrigger) {
-				GlobalStates.superReleaseMightTrigger = true;
-				return;
-			}
-			GlobalStates.overviewOpen = !GlobalStates.overviewOpen;
-		}
-	}
-	GlobalShortcut {
-		name: "searchToggleReleaseInterrupt"
-		description: "Interrupts possibility of search being toggled on release. " + "This is necessary because GlobalShortcut.onReleased in quickshell triggers whether or not you press something else while holding the key. " + "To make sure this works consistently, use binditn = MODKEYS, catchall in an automatically triggered submap that includes everything."
+        onPressed: {
+            GlobalStates.superReleaseMightTrigger = false;
+        }
+    }
+    GlobalShortcut {
+        name: "overviewClipboardToggle"
+        description: "Toggle clipboard query on overview widget"
 
-		onPressed: {
-			GlobalStates.superReleaseMightTrigger = false;
-		}
-	}
-	GlobalShortcut {
-		name: "overviewClipboardToggle"
-		description: "Toggle clipboard query on overview widget"
+        onPressed: {
+            overviewScope.toggleClipboard();
+        }
+    }
 
-		onPressed: {
-			overviewScope.toggleClipboard();
-		}
-	}
+    GlobalShortcut {
+        name: "overviewEmojiToggle"
+        description: "Toggle emoji query on overview widget"
 
-	GlobalShortcut {
-		name: "overviewEmojiToggle"
-		description: "Toggle emoji query on overview widget"
-
-		onPressed: {
-			overviewScope.toggleEmojis();
-		}
-	}
+        onPressed: {
+            overviewScope.toggleEmojis();
+        }
+    }
 }

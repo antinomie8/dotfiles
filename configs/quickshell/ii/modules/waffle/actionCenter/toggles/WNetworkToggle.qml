@@ -8,7 +8,9 @@ import qs.modules.waffle.looks
 import qs.modules.waffle.actionCenter
 
 ActionCenterToggle {
-	id: root
+    id: root
 
-	name: Network.ethernet ? Translation.tr("Network") : Network.networkName
+    name: Network.ethernet ? Translation.tr("Network") : Network.networkName
+
+
 }

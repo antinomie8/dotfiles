@@ -15,35 +15,14 @@ import qs.modules.ii.overlay.resources
 import qs.modules.ii.overlay.notes
 
 DelegateChooser {
-	id: root
-	role: "identifier"
+    id: root
+    role: "identifier"
 
-	DelegateChoice {
-		roleValue: "crosshair"
-		Crosshair {}
-	}
-	DelegateChoice {
-		roleValue: "floatingImage"
-		FloatingImage {}
-	}
-	DelegateChoice {
-		roleValue: "fpsLimiter"
-		FpsLimiter {}
-	}
-	DelegateChoice {
-		roleValue: "recorder"
-		Recorder {}
-	}
-	DelegateChoice {
-		roleValue: "resources"
-		Resources {}
-	}
-	DelegateChoice {
-		roleValue: "notes"
-		Notes {}
-	}
-	DelegateChoice {
-		roleValue: "volumeMixer"
-		VolumeMixer {}
-	}
+    DelegateChoice { roleValue: "crosshair"; Crosshair {} }
+    DelegateChoice { roleValue: "floatingImage"; FloatingImage {} }
+    DelegateChoice { roleValue: "fpsLimiter"; FpsLimiter {} }
+    DelegateChoice { roleValue: "recorder"; Recorder {} }
+    DelegateChoice { roleValue: "resources"; Resources {} }
+    DelegateChoice { roleValue: "notes"; Notes {} }
+    DelegateChoice { roleValue: "volumeMixer"; VolumeMixer {} }
 }
