@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
-filename="$1:e"
-nasm -f elf64 -o "$filename.o" "$1"
-if [[ -f "$filename.o" ]]; then
-	ld -o "$filename.exe" "$filename.o"
-	rm -f "$filename.o"
+filename=${1:r}
+nasm -f elf64 -o $filename.o $1
+if [[ -f $filename.o ]]; then
+	ld -o $filename.out $filename.o
+	# rm -f $filename.o
 fi

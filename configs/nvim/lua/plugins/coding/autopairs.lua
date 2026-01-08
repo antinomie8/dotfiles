@@ -49,7 +49,7 @@ return {
 			end
 
 			local markdown = {}
-			markdown.in_text = not_in_node("math", "raw_span", "raw_blck", "string", "code", "comment")
+			markdown.in_text = not_in_node("latex_block", "code_span", "fenced_code_block", "ERROR")
 
 			return {
 				filetype = {

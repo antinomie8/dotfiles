@@ -28,8 +28,7 @@ configs=("bat" "btop" "browser" "clangd" "eza" "fastfetch" "formatters" "git" "h
 	"mutt" "ncdu" "npm" "nvim" "oly" "quickshell" "texmf" "thundery" "tmux" "wget" "yazi"
 	"zathura" "zsh" "fzf.conf" "mimeapps.list" "ripgrep.conf" "shellcheckrc" "user-dirs.dirs"
 	"xdg-desktop-portal" "xdg-desktop-portal-termfilechooser")
-scripts=("assemble" "compile_sfml" "fix_corrupt_history" "fzf_preview_wrapper" "git_dotfiles"
-	"rgb" "zoxide-rename")
+scripts=("assemble" "fzf_preview_wrapper" "git_dotfiles" "rgb" "zoxide-rename")
 
 # overwrite configs in the dotfiles repo
 for config in ${configs[@]}; do

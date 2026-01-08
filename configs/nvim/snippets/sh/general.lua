@@ -41,6 +41,18 @@ return {
 	),
 	s(
 		{
+			trig = "elif ",
+			dscr = "conditional statement",
+			snippetType = "autosnippet",
+			condition = not_in_string_comment * check_not_expanded(";%s*then$"),
+		},
+		fmt("elif <>; then\n\t<>", {
+			i(1),
+			d(2, get_visual),
+		})
+	),
+	s(
+		{
 			trig = "for ",
 			dscr = "for loop",
 			snippetType = "autosnippet",
@@ -130,6 +142,19 @@ return {
 		},
 		{
 			t("if [[ "),
+			i(1),
+			t(" ]]"),
+		}
+	),
+	s(
+		{
+			trig = "elif [",
+			dscr = "test condition",
+			snippetType = "autosnippet",
+			condition = not_in_string_comment,
+		},
+		{
+			t("elif [[ "),
 			i(1),
 			t(" ]]"),
 		}

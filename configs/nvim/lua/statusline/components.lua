@@ -219,7 +219,9 @@ components.Debugger = {
 }
 
 components.Diagnostics = {
-	condition = conditions.has_diagnostics,
+	condition = function()
+		return conditions.has_diagnostics() and vim.diagnostic.is_enabled()
+	end,
 
 	init = function(self)
 		self.errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })

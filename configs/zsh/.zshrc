@@ -17,7 +17,7 @@ antidote load $ZDOTDIR/plugins
 
 
 eval "$(dircolors "$ZDOTDIR/dircolors")" # colorize completion menu entries
-export LS_COLORS=$LS_COLORS":.*=38;2;114;113;105:" # dotfiles in gray
+export LS_COLORS="$LS_COLORS.*=38;2;114;113;105:" # dotfiles in gray
 
 # completions
 zstyle ':completion:*'                 use-cache on
@@ -78,6 +78,9 @@ setopt interactive_comments # enable comments in interactive shells
 
 autoload -Uz zargs
 
+# autocorrect
+autoload -U colors && colors
+SPROMPT="Correct $fg[red]%R$reset_color to $fg[green]%r$reset_color? [Yes, No, Abort, Edit]: "
 
 # history
 HISTSIZE=10000
@@ -129,17 +132,14 @@ autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey "^x^e" edit-command-line
 
-
 # title
 autoload -Uz add-zsh-hook
-
 function _precmd_title() {
   print -Pn "\e]0; %~\a"
 }
 function _preexec_title() {
   print -Pn "\e]0; $2\a"
 }
-
 add-zsh-hook precmd _precmd_title
 add-zsh-hook preexec _preexec_title
 
@@ -150,13 +150,17 @@ eval "$(zoxide init zsh --cmd cd)"
 [[ -f "$ZDOTDIR/p10k.zsh" ]] && source "$ZDOTDIR/p10k.zsh"
 eval "$(atuin init zsh)"
 _zsh_autosuggest_strategy_atuin() {
-	# silence errors, since we don't want to spam the terminal prompt while typing.
-	suggestion=$(ATUIN_QUERY="$1" atuin search --cmd-only --limit 1 --search-mode prefix --exit 0 --cwd "$PWD" 2>/dev/null)
-	# last_command=$(fc -ln -1)
-	# if [[ $last_command = "$suggestion" ]]; then
-	# 	suggestion=$(ATUIN_QUERY="$1" atuin search --cmd-only --limit 1 --offset 1 --search-mode prefix --exit 0 --cwd "$PWD" 2>/dev/null)
-	# fi
+	local results=(${(f)"$(ATUIN_QUERY="$1" atuin search --cmd-only --limit 5 --search-mode prefix --exit 0 --cwd "$PWD" 2>/dev/null)"})
+	local last_command="${history[$(((HISTCMD-1)))]}"
+	for result in "${results[@]}"; do
+			if [[ $result != "$last_command" ]]; then
+			suggestion="$result"
+			return
+		fi
+	done
+	suggestion="${results[1]}"
 }
+
 
 # config files
 source "$ZDOTDIR/keybinds.zsh"
