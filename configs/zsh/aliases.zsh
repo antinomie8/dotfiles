@@ -1,19 +1,18 @@
-# suffix aliases
-alias -s c='nvim'
-alias -s cpp='nvim'
-alias -s tex='nvim'
-alias -s asm='nvim'
-alias -s typ='nvim'
-alias -s pdf='zathura'
-alias -s json='view_json'
-alias -s jsonc='view_json'
-
 # global aliases
 alias -g C='| wc -l'
 alias -g NUL='>/dev/null 2>&1'
+alias -g gp="| rg"
+
+# suffix aliases
+alias -s {c,cpp,asm,typ,tex}='nvim'
+alias -s {jpeg,jpg,JPEG,JPG,png,gif,xpm}='imv'
+alias -s {avi,AVI,Avi,divx,DivX,mkv,mpg,mpeg,wmv,WMV,mov,rm,flv,ogm,ogv,mp4}='mpv'
+alias -s {json,jsonc}='view_json'
+alias -s pdf='zathura'
 
 # zmv
 autoload -Uz zmv
+alias zmv='zmv -w'
 alias zcp='zmv -C' # Copy with patterns
 alias zln='zmv -L' # Link with patterns
 
@@ -22,22 +21,24 @@ alias _='sudo'
 alias q='exit'
 alias -- +x='chmod u+x'
 alias -- -x='chmod u+x'
-dots='..'
-back='../'
-for i in {1..7}; do
-	alias $dots="cd $back"
-	dots="$dots."
-	back="$back../"
-done
-
 alias path='echo -e ${PATH//:/\\n}' # human-readable path
 alias uncompress='tar -xvzf'
+function {
+	local dots='..'
+	local back='../'
+	local i
+	for i in {1..7}; do
+		alias $dots="cd $back"
+		dots="$dots."
+		back="$back../"
+	done
+}
 
 # CLI tools default options
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 alias fzf='fzf --preview="~/.local/bin/fzf_preview_wrapper {}"'
-alias run='runapp --dir "$(pwd)"'
+alias run='runapp --dir "$(pwd)" --'
 
 # programs
 alias top='btop'

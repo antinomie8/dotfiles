@@ -63,20 +63,25 @@ compinit -d $ZSH_COMPDUMP
 
 
 # options
-setopt extendedglob         # extend glob patterns
-setopt dot_glob             # let globs match dotfiles
-setopt globdots             # show dotfiles on tab completion
-setopt autocd               # cd in a directory by typing its name
-setopt auto_pushd           # automatically push the last directory on the directory stack
-setopt cdable_vars          # cd to a directory by typing its path relative to $HOME
-setopt pushd_silent         # do not print the directory stack after pushd or popd
-setopt correct              # correction for invalid command names
-setopt rcquotes             # escape single quotes with '' instead of '\'' in singly quoted strings
-setopt c_bases              # use 0x for displaying hexadecimal numbers
-setopt octal_zeroes         # use 0 for displaying octal numbers
-setopt interactive_comments # enable comments in interactive shells
+setopt EXTENDEDGLOB         # extend glob patterns
+setopt DOT_GLOB             # let globs match dotfiles
+setopt GLOBDOTS             # show dotfiles on tab completion
+setopt AUTOCD               # cd in a directory by typing its name
+setopt AUTO_PUSHD           # automatically push the last directory on the directory stack
+setopt CDABLE_VARS          # cd to a directory by typing its path relative to $HOME
+setopt PUSHD_SILENT         # do not print the directory stack after pushd or popd
+setopt CORRECT              # correction for invalid command names
+setopt RCQUOTES             # escape single quotes with '' instead of '\'' in singly quoted strings
+setopt C_BASES              # use 0x for displaying hexadecimal numbers
+setopt OCTAL_ZEROES         # use 0 for displaying octal numbers
+setopt INTERACTIVE_COMMENTS # enable comments in interactive shells
+setopt EXTENDED_HISTORY     # save timestamp and command execution duration to history
+setopt INC_APPEND_HISTORY   # write directly to the history file
+setopt COMPLETE_IN_WORD     # complete missing letters before cursor with <tab>
 
-autoload -Uz zargs
+autoload -Uz zargs          # zargs [options] -- PATTERN -- COMMAND --
+autoload -U regexp-replace  # regexp-replace VARNAME REGEXP REPLACE
+zmodload zsh/mapfile        # $mapfile[path/to/file] contains path/to/file's contents
 
 # autocorrect
 autoload -U colors && colors
@@ -100,26 +105,26 @@ KEYTIMEOUT=1 # time in ms to wait for key sequences
 zle_highlight=(region:bg="#223249" fg=15) # visual mode highlight color
 
 function zle-keymap-select() {
-	local _shape=6
+	local shape=6
 	case "${KEYMAP}" in
 		vicmd)
 			case "${REGION_ACTIVE}" in
-				1) _shape=2 ;; # visual mode: block
-				2) _shape=2 ;; # V-line mode: block
-				*) _shape=2 ;; # normal mode: block
+				1) shape=2 ;; # visual mode: block
+				2) shape=2 ;; # V-line mode: block
+				*) shape=2 ;; # normal mode: block
 			esac
 			;;
 		viins|main)
 			if [[ "${ZLE_STATE}" == *overwrite* ]]; then
-				_shape=4 # replace mode: underline
+				shape=4 # replace mode: underline
 			else
-				_shape=6 # insert mode: beam
+				shape=6 # insert mode: beam
 			fi
 			;;
-		viopp) _shape=0 ;; # operator pending mode: blinking block
-		visual) _shape=2 ;; # visual mode: block
+		viopp) shape=0 ;; # operator pending mode: blinking block
+		visual) shape=2 ;; # visual mode: block
 	esac
-	printf $'\e[%d q' ${_shape}
+	printf $'\e[%d q' ${shape}
 }
 zle -N zle-keymap-select
 

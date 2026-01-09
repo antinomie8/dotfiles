@@ -88,7 +88,7 @@ function gacp() {
 function clone() {
 	[[ $# == 0 ]] && { echo "clone: missing operand"; return 1 }
 	[[ ! "$1" =~ ^https?:// ]] && 1="https://github.com/$1" # default domain
-	dir="${2:-$HOME/Téléchargements/git/${1:t}}"
+	local dir="${2:-$HOME/Téléchargements/git/${1:t}}"
 	[[ "$2" == . || -d "$dir" ]] && dir+="/${1:t}"
 	[[ -z "$2" && "$dir" =~ ^(.*)/([^/]+)\.git$ ]] && dir="${match[1]}/${match[2]}" # strip trailing .git, if any
 	git clone "$1" "$dir" && cd "$dir"
@@ -139,7 +139,7 @@ function pdfconvert() {
 	[[ $# ==  0 ]] && echo "pdfconvert: expected filename"
 	[[ $# -ne 1 ]] && return 1
 	while (($#)); do
-		local input=$1 
+		local input=$1
 		local ext=${1:e}
 		pandoc --from $ext --to pdf $1 --output "${1:r}.pdf"
 		shift

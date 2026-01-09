@@ -24,6 +24,7 @@ done
 
 # util function for getting user input
 function get_answer() {
+	local answer
 	read -r answer
 	case "$answer" in
 	[yY][eE][sS] | [yY])

@@ -133,6 +133,17 @@ rules = [
 ]
 
 [icon]
+prepend_dirs = [
+	{ name = "Mathématiques", text = "󰩦" },
+	{ name = "Informatique", text = "" },
+	{ name = "Notes", text = "󰺿" },
+	{ name = "Téléchargements", text = "" },
+	{ name = "Médias", text = "󰸌" },
+	{ name = "Images", text = "" },
+	{ name = "Photos", text = "" },
+	{ name = "Vidéos", text = "" },
+	{ name = "Musique", text = "" },
+]
 append_exts = [
 	{ name = "asy", text = "󰒕", fg = "#ff0000" },
 ]

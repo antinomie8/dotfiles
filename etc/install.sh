@@ -19,15 +19,16 @@ function copy_item {
 		return 1
 	fi
 	if [[ "$2" == "$HOME"* || ${2:0} == '~' ]]; then
-		sudo=""
+		local sudo=""
 	else
-		sudo="sudo"
+		local sudo="sudo"
 	fi
 	[[ -d "$2" ]] || $sudo mkdir -p "$2" 2>/dev/null
 	if [[ ! -f "$2/$1" && ! -d "$2/$1" ]]; then
 		$sudo cp -r "$1" "$2/" 2>/dev/null || echo -e "${ERROR} ${WHITE}You need to manually move ${SUCCESS}$1${WHITE} to ${SUCCESS}$2${COLOR_RESET}"
 	elif ! diff --brief -r "$1" "$2/$1" >/dev/null 2>&1; then
 		echo -en "${INFO}Would you like to delete your current ${SUCCESS}$1${INFO} to replace it with the one in this repo ? (y/n) ${COLOR_RESET}"
+		local answer
 		read -r answer
 		case "$answer" in
 		[yY][eE][sS] | [yY])
