@@ -248,9 +248,9 @@ fi
 						first=false
 					fi
 					printf "\e[3A" # move the cursor up three lines
-					echo -e "\033[2K\r  ${BLUE}- 3 :${WHITE} skip this step and keep your current ${GREEN}$item${WHITE} config ?"
-					echo -e "\033[2K\r  ${BLUE}- 2 :${WHITE} delete your current ${GREEN}$item${WHITE} config and replace it"
 					echo -e "\033[2K\r  ${BLUE}- 1 :${WHITE} create a backup of your current ${GREEN}$item${WHITE} config before replacing it"
+					echo -e "\033[2K\r  ${BLUE}- 2 :${WHITE} delete your current ${GREEN}$item${WHITE} config and replace it"
+					echo -e "\033[2K\r  ${BLUE}- 3 :${WHITE} skip this step and keep your current ${GREEN}$item${WHITE} config ?"
 					echo -en "\e[29C" # move cursor after the prompt
 					read -r answer
 					printf "\e[A" # move the cursor up one line
