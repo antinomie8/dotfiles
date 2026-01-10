@@ -172,16 +172,16 @@ fi
 printf '\n'
 
 # check wether the default shell is zsh or not
-if [[ ! "$SHELL" =~ /zsh$ ]]; then
-	if [[ -f /bin/zsh ]]; then
+if [[ ! "$SHELL" = *zsh ]]; then
+	if program zsh; then
 		echo -en "${BLUE}Do you want to make zsh your default shell ? (y/n) ${COLOR_RESET}"
 		if get_answer; then
-			chsh --shell /bin/zsh
+			chsh --shell "$(which zsh)"
 		fi
 	else
 		echo -e "${WHITE}Install zsh and make it your default shell :"
 		echo -e "${GREEN}> ${BLUE}chsh $USER"
-		echo -e "${GREEN}> ${BLUE}/usr/bin/zsh${COLOR_RESET}"
+		echo -e "${GREEN}> ${BLUE}\$(which zsh)${COLOR_RESET}"
 	fi
 	printf '\n'
 fi
