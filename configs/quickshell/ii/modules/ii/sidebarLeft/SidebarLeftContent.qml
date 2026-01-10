@@ -16,7 +16,7 @@ Item {
     property bool translatorEnabled: Config.options.sidebar.translator.enable
     property var tabButtonList: [
         ...(root.aiChatEnabled ? [{"icon": "neurology", "name": Translation.tr("Intelligence")}] : []),
-        ...(root.translatorEnabled ? [{"icon": "translate", "name": Translation.tr("Translator")}] : [])
+        ...(root.translatorEnabled ? [{"icon": "translate", "name": Translation.tr("Translator")}] : []),
     ]
     property int tabCount: swipeView.count
 
@@ -45,6 +45,7 @@ Item {
         spacing: sidebarPadding
 
         Toolbar {
+            visible: tabButtonList.length > 0
             Layout.alignment: Qt.AlignHCenter
             enableShadow: false
             ToolbarTabBar {
@@ -80,8 +81,9 @@ Item {
                 }
 
                 contentChildren: [
-                    ...((root.aiChatEnabled || (!root.translatorEnabled)) ? [aiChat.createObject()] : []),
-                    ...(root.translatorEnabled ? [translator.createObject()] : [])
+                    ...(root.aiChatEnabled ? [aiChat.createObject()] : []),
+                    ...(root.translatorEnabled ? [translator.createObject()] : []),
+                    ...((root.tabButtonList.length === 0) ? [placeholder.createObject()] : []),
                 ]
             }
         }
@@ -93,6 +95,16 @@ Item {
         Component {
             id: translator
             Translator {}
+        }
+        Component {
+            id: placeholder
+            Item {
+                StyledText {
+                    anchors.centerIn: parent
+                    text: root.animeCloset ? Translation.tr("Nothing") : Translation.tr("Enjoy your empty sidebar...")
+                    color: Appearance.colors.colSubtext
+                }
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ Item {
     Layout.fillHeight: true
     Layout.topMargin: Appearance.sizes.hyprlandGapsOut // why does this work
     implicitWidth: listView.implicitWidth
-    
+
     StyledListView {
         id: listView
         spacing: 2
@@ -61,7 +61,7 @@ Item {
             target: root
             function onLastHoveredButtonChanged() {
                 previewPopup.allPreviewsReady = false; // Reset readiness when the hovered button changes
-            } 
+            }
         }
         function updatePreviewReadiness() {
             for(var i = 0; i < previewRowLayout.children.length; i++) {
@@ -133,7 +133,7 @@ Item {
                     animation: Appearance.animation.elementMoveFast.numberAnimation.createObject(this)
                 }
                 clip: true
-                color: Appearance.colors.colSurfaceContainer
+                color: Appearance.m3colors.m3surfaceContainer
                 radius: Appearance.rounding.normal
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: Appearance.sizes.elevationMargin

@@ -1,6 +1,5 @@
 vim.filetype.add({
 	extension = {
-		muttrc = "neomuttrc",
 		tex = "tex",
 		tsqx = "tsqx",
 		eml = "mail",
@@ -10,7 +9,7 @@ vim.filetype.add({
 		["dircolors"] = "dircolors",
 	},
 	pattern = {
-		["${HOME}/.config/mutt/.+"] = "neomuttrc",
+		["${HOME}/.config/neomutt/.+"] = "neomuttrc",
 		["${HOME}/.config/kitty/.*.conf"] = "kitty",
 		["${HOME}/.config/kitty/.*.conf.bak"] = "kitty",
 	},

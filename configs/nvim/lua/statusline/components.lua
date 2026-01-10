@@ -106,8 +106,8 @@ local FileName = {
 		if filename == "" then
 			return "[No Name]"
 		end
-		if not conditions.width_percent_below(#filename, 0.30) then
-			filename = vim.fn.pathshorten(filename, 3)
+		if not conditions.width_percent_below(#filename, 0.60) then
+			filename = vim.fn.pathshorten(filename, 5)
 		end
 		return filename
 	end,
@@ -289,6 +289,7 @@ local extension_filetypes = {
 	"git",
 	"lazy",
 	"man",
+	"mail",
 	"neo-tree",
 	"notmuch-threads",
 	"qf",
@@ -316,6 +317,14 @@ components.ExtensionA = {
 			["fugitive"] = function() return " " .. (vim.b.gitsigns_status_dict and vim.b.gitsigns_status_dict.head or " ") end,
 			["git"] = function() return " " .. (vim.b.gitsigns_status_dict and vim.b.gitsigns_status_dict.head or " ") end,
 			["lazy"] = "Lazy",
+			["mail"] = function()
+				local from = vim.b.From
+				if from then
+					return from:match("^([^<]*) <")
+				else
+					return "Mail"
+				end
+			end,
 			["man"] = "MAN",
 			["neo-tree"] = function() return vim.fn.fnamemodify(vim.fn.getcwd(), ":~") end,
 			["notmuch-threads"] = "Mail",
@@ -380,14 +389,31 @@ components.ExtensionB = {
 
 components.ExtensionC = {
 	condition = function() return vim.tbl_contains(extension_filetypes, vim.bo.filetype) end,
-	{
-		provider = function()
-			if vim.bo.filetype == "lazy" then
+	init = function(self)
+		self.ft = vim.bo.filetype
+		self.filetype_data = {
+			["lazy"] = function()
 				if pcall(require("lazy.status").has_updates) then
 					return require("lazy.status").updates()
 				end
-			elseif vim.bo.filetype == "man" then
-				return "󱚊"
+			end,
+			["mail"] = function()
+				local subject = vim.b.Subject
+				if subject then
+					local winwidth = (vim.o.laststatus == 3) and vim.o.columns or vim.api.nvim_win_get_width(0)
+					local len_max = math.floor(winwidth * 0.60)
+					return subject:sub(1, len_max)
+				end
+			end,
+			["man"] = "󱚊",
+		}
+	end,
+	{
+		provider = function(self)
+			if type(self.filetype_data[self.ft]) == "function" then
+				return self.filetype_data[self.ft]()
+			else
+				return self.filetype_data[self.ft]
 			end
 		end,
 	},
@@ -409,6 +435,14 @@ components.ExtensionY = {
 			["dapui_breakpoints"] = "",
 			["DiffviewFiles"] = "󰊢",
 			["lazy"] = "󰒲",
+			["mail"] = function()
+				local date = vim.b.Date
+				if date then
+					return date:match("^(.*%d%d%d%d) %d%d:%d%d:%d%d")
+				else
+					return components.Ruler.provider
+				end
+			end,
 			["neo-tree"] = "󰙅",
 			["notmuch-threads"] = function() return "󰇯 " .. vim.api.nvim_buf_line_count(0) - 1 end,
 			["TelescopePrompt"] = "󰭎",

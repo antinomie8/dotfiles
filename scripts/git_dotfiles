@@ -25,7 +25,7 @@ function copy {
 # list of configs and scripts to copy
 configs=("bat" "btop" "browser" "clangd" "eza" "fastfetch" "formatters" "git" "hypr"
 	"hyprland-preview-share-picker" "illogical-impulse" "kitty" "kmonad" "lazygit" "mpv"
-	"mutt" "ncdu" "npm" "nvim" "oly" "quickshell" "texmf" "thundery" "tmux" "wget" "yazi"
+	"neomutt" "ncdu" "npm" "nvim" "oly" "quickshell" "texmf" "thundery" "tmux" "wget" "yazi"
 	"zathura" "zsh" "fzf.conf" "mimeapps.list" "ripgrep.conf" "shellcheckrc" "user-dirs.dirs"
 	"xdg-desktop-portal" "xdg-desktop-portal-termfilechooser")
 scripts=("assemble" "fzf_preview_wrapper" "git_dotfiles" "rgb" "zoxide-rename")
@@ -44,11 +44,11 @@ copy "$HOME/.local/share/typst/packages/local/oly" etc
 fd . etc/oly -tf -e 'pdf' -x rm {}
 
 # remove chosen files and directories
-find configs/mutt/accounts -regex "\S*@\S*\.\S*" -type f -delete
+find configs/neomutt/accounts -regex "\S*@\S*\.\S*" -type f -delete
 # obfuscate email adresses
-[[ -f configs/mutt/muttrc ]] && {
-	sed -i 's:\(source .*/\)\S*@\S*\(<enter>;<check-stats>. "switch to \)\S*@\S*\("\):\1example@mail.com\2example@mail.com\3:' configs/mutt/muttrc
-	sed -i 's:\(source .*/\)\S*@\S*\( # primary account\):\1example@mail.com\2:' configs/mutt/muttrc
+[[ -f configs/neomutt/neomuttrc ]] && {
+	sed -i 's:\(source .*/\)\S*@\S*\(<enter>;<check-stats>. "switch to \)\S*@\S*\("\):\2example@mail.com\2example@mail.com\3:' configs/neomutt/neomuttrc
+	sed -i 's:\(source .*/\)\S*@\S*\( # primary account\):\1example@mail.com\2:' configs/neomutt/neomuttrc
 }
 # obfuscate API keys
 sed -i 's:\(export.*API_KEY=\).*:\1"ooops not supposed to show that":' configs/zsh/.zshenv
