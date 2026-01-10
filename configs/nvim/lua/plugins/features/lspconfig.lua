@@ -34,7 +34,11 @@ return {
 			})
 
 			local lspconfigs = {
-				asm_lsp = {},
+				asm_lsp = {
+					on_attach = function(_, bufnr)
+						vim.diagnostic.enable(false, { bufnr = bufnr })
+					end,
+				},
 
 				asy_ls = {
 					cmd = { "asy", "-lsp" },

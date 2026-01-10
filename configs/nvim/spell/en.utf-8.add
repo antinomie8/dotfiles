@@ -180,3 +180,5 @@ MacLaurin
 params
 <C-a>
 <C-g>
+endianness
+cross-platform

@@ -2,6 +2,6 @@
 filename=${1:r}
 nasm -f elf64 -o $filename.o $1
 if [[ -f $filename.o ]]; then
-	ld -o $filename.out $filename.o
+	ld $filename.o -o $filename.out
 	rm -f $filename.o
 fi

@@ -49,6 +49,9 @@ return {
 		},
 	},
 	opts = {
+		default_format_opts = {
+			lsp_format = "fallback",
+		},
 		formatters_by_ft = {
 			asy = { "clang_format", "asy" },
 			cpp = { "clang_format" },
