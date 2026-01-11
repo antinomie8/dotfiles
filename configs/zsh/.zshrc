@@ -153,7 +153,7 @@ add-zsh-hook preexec _preexec_title
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh --cmd cd)"
 [[ -f "$ZDOTDIR/p10k.zsh" ]] && source "$ZDOTDIR/p10k.zsh"
-eval "$(atuin init zsh)"
+eval "$(atuin init zsh --disable-up-arrow)"
 _zsh_autosuggest_strategy_atuin() {
 	local results=(${(f)"$(ATUIN_QUERY="$1" atuin search --cmd-only --limit 5 --search-mode prefix --exit 0 --cwd "$PWD" 2>/dev/null)"})
 	local last_command="${history[$(((HISTCMD-1)))]}"

@@ -46,6 +46,8 @@ alias fetch='fastfetch'
 alias lg='lazygit'
 alias py='python3'
 alias m='nvim -c Inbox'
+alias copy='wl-copy'
+alias paste='wl-paste'
 
 # eza
 alias ls='eza --icons=always --group-directories-first --no-quotes'

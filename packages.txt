@@ -29,6 +29,14 @@ tldr
 ncdu
 man-db
 
+# utils
+7zip
+ffmpeg
+imagemagick
+poppler
+resvg
+socat
+
 # git
 git
 git-delta

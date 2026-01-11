@@ -111,7 +111,7 @@ local FileName = {
 		end
 		return filename
 	end,
-	hl = { fg = utils.get_highlight("Directory").fg },
+	hl = { fg = "fg" },
 }
 
 local FileIcon = {

@@ -106,8 +106,8 @@ if program pacman; then
 	# install required packages
 	if program yay; then
 		package_manager="yay"
-		packages+=("abook" "cppman" "ttf-juliamono" "runapp")              # misc
-		packages+=("codelldb-bin" "texlab" "tex-fmt" "asm-lsp" "typstyle") # Neovim
+		packages+=("abook" "cppman" "ttf-juliamono" "runapp" "xdg-desktop-portal-termfilechooser-hunkyburrito-git") # misc
+		packages+=("codelldb-bin" "texlab" "tex-fmt" "asm-lsp" "typstyle")                                          # Neovim
 		packages+=("neovim-nightly-bin" "yazi-nightly-bin")
 	else
 		package_manager="sudo pacman"
