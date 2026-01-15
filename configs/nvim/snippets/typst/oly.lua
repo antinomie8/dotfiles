@@ -149,6 +149,18 @@ return {
 			}
 		)
 	),
+	s({ trig = "!N", dscr = "notation", snippetType = "autosnippet", cond = line_begin, hidden = true },
+		fmt(
+			[[
+				#notation[
+					<>
+				]
+			]],
+			{
+				i(1),
+			}
+		)
+	),
 	s({ trig = "!S", dscr = "solution", snippetType = "autosnippet", cond = line_begin, hidden = true },
 		fmt(
 			[[

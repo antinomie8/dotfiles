@@ -167,7 +167,9 @@
     it
   }
   if (maketitle and type(document_title) == str) {
+    v(1em)
     title()
+    v(1em)
   }
 
   body

@@ -36,6 +36,7 @@ imagemagick
 poppler
 resvg
 socat
+udiskie
 
 # git
 git

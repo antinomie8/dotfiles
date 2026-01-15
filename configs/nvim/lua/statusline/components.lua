@@ -106,8 +106,10 @@ local FileName = {
 		if filename == "" then
 			return "[No Name]"
 		end
-		if not conditions.width_percent_below(#filename, 0.60) then
-			filename = vim.fn.pathshorten(filename, 5)
+		local shorten_length = 5
+		while not conditions.width_percent_below(#filename, 0.60) and shorten_length >= 2 do
+			filename = vim.fn.pathshorten(filename, shorten_length)
+			shorten_length = shorten_length - 1
 		end
 		return filename
 	end,

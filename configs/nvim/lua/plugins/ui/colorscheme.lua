@@ -96,6 +96,8 @@ return {
 					MarkdownQuote = { fg = palette.oniViolet },
 					MarkdownTable = { fg = "#54546d" },
 
+					RenderMarkdownBullet = { link = "function" },
+
 					TypstConcealDelims = { link = "Operator" },
 					TypstConcealSymbol = { link = "Operator" },
 					TypstConcealScript = { link = "Conceal" },

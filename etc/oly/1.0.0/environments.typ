@@ -210,6 +210,7 @@
 #let solution = thmproof("solution", get_env_name("solution"))
 
 #let definition = thm_plain("definition").with(numbering: thm_numbering)
+#let notation = thm_plain("notation").with(numbering: thm_numbering)
 #let lemma = thm_plain("lemma", style: "italic").with(numbering: thm_numbering)
 #let conjecture = thm_plain("conjecture", style: "italic").with(numbering: thm_numbering)
 #let remark = thm_plain("remark", box: true, body-color: rgb("#f6f8f9")).with(
@@ -240,6 +241,7 @@
 #let example = thm_box("example", ..colors.env.examples).with(numbering: thm_numbering)
 
 #let _definition = thm_plain("definition").with(numbering: none)
+#let _notation = thm_plain("notation").with(numbering: none)
 #let _lemma = thm_plain("lemma", style: "italic").with(numbering: none)
 #let _conjecture = thm_plain("conjecture", style: "italic").with(numbering: none)
 #let _remark = thm_plain("remark", box: true, body-color: rgb("#f6f8f9")).with(numbering: none)

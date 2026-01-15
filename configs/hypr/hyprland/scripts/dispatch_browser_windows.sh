@@ -9,23 +9,23 @@ browser_name="Mozilla Firefox"
 
 ############################################
 
-get_window_address_and_move_to_workspace() {
+function get_matching_window_addresses_and_move_them_to_workspace() {
 	local title_match=$1
 	local workspace_name=$2
 
 	# Retrieve the window address using the passed title pattern
 	for address in $(hyprctl clients -j | jq -r --arg title "$title_match" --arg browser "$browser_name" \
 		'.[] | select(.title | contains($title) and contains($browser)) | .address'); do
-		move_window_to_workspace "$workspace_name" "$address"
+		move_window_to_workspace "$address" "$workspace_name"
 	done
 }
 
-move_window_to_workspace() {
-	local workspace_name=$1
-	local window_address=$2
+function move_window_to_workspace() {
+	local window_address=$1
+	local workspace_name=$2
 
 	# Get the current workspace name where the window address is
-	current_workspace=$(hyprctl clients -j | jq -r --arg address "$window_address" '.[] | select(.address == $address) | .workspace.name')
+	local current_workspace=$(hyprctl clients -j | jq -r --arg address "$window_address" '.[] | select(.address == $address) | .workspace.name')
 
 	# Check if window is not at desired workspace
 	if [[ "$current_workspace" != "$workspace_name" ]]; then
@@ -35,15 +35,12 @@ move_window_to_workspace() {
 }
 
 # Start reading events from the Hyprland socket
-handle() {
-	case $1 in
-	windowtitle*)
-		echo "Detected A Window Title Change"
+function handle() {
+	if [[ $1 = windowtitle* ]]; then
 		for title in "${!workspaces[@]}"; do
-			get_window_address_and_move_to_workspace "$title" "${workspaces[$title]}"
+			get_matching_window_addresses_and_move_them_to_workspace "$title" "${workspaces[$title]}"
 		done
-		;;
-	esac
+	fi
 }
 
 socat -U - UNIX-CONNECT:"$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" | while read -r line; do
