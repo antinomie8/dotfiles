@@ -1,0 +1,15 @@
+#compdef transfer
+
+_transfer() {
+  local -a args
+  local service="email"
+
+  args=(
+    '*'{-t,--to}'[recipient email/contact]:recipient:_email_addresses -n $service'
+    '*:file:_files'
+  )
+
+  _arguments -s $args
+}
+
+_transfer "$@"
