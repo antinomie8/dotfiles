@@ -1,5 +1,5 @@
 # terminal emulator specific settings
-[[ "$TERM" == "xterm-kitty" && -f "$ZDOTDIR/kitty.zsh" ]] && source "$ZDOTDIR/kitty.zsh"
+[[ "$TERM" == "xterm-kitty" && -f "$ZDOTDIR/misc/kitty.zsh" ]] && source "$ZDOTDIR/misc/kitty.zsh"
 
 # source Powerlevel10k's instant prompt
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
@@ -13,11 +13,11 @@ if [[ ! -d $ANTIDOTE_HOME ]]; then
   git clone --depth=1 https://github.com/mattmc3/antidote $ANTIDOTE_HOME
 fi
 source $ANTIDOTE_HOME/antidote.zsh
-antidote load $ZDOTDIR/plugins
+antidote load $ZDOTDIR/plugins/plugins
 
 
-eval "$(dircolors "$ZDOTDIR/dircolors")" # colorize completion menu entries
-export LS_COLORS="$LS_COLORS.*=38;2;114;113;105:" # dotfiles in gray
+eval "$(dircolors "$ZDOTDIR/misc/dircolors")" # colorize completion menu entries
+LS_COLORS="=(../)#.[^.]*=38;2;114;113;105:$LS_COLORS" # colorize dotfiles in gray
 
 # completions
 zstyle ':completion:*'                 use-cache on
@@ -29,7 +29,7 @@ zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w 
 zstyle ':completion:*:git-checkout:*'  sort false
 zstyle ':completion:*:git-rebase:*'    sort false
 zstyle ':completion:*:descriptions'    format '[%d]'
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*'                 list-colors ${(s.:.)LS_COLORS}
 
 # preview
 zstyle ':fzf-tab:*:*'                         fzf-flags   '--style=default' '--no-scrollbar' '--info=right'
@@ -80,7 +80,8 @@ setopt INC_APPEND_HISTORY   # write directly to the history file
 setopt COMPLETE_IN_WORD     # complete missing letters before cursor with <tab>
 
 autoload -Uz zargs          # zargs [options] -- PATTERN -- COMMAND --
-autoload -U regexp-replace  # regexp-replace VARNAME REGEXP REPLACE
+autoload -Uz regexp-replace # regexp-replace VARNAME REGEXP REPLACE
+autoload -Uz zcalc          # Zsh calculator
 zmodload zsh/mapfile        # $mapfile[path/to/file] contains path/to/file's contents
 
 # autocorrect
@@ -152,22 +153,11 @@ add-zsh-hook preexec _preexec_title
 # setup programs
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh --cmd cd)"
-[[ -f "$ZDOTDIR/p10k.zsh" ]] && source "$ZDOTDIR/p10k.zsh"
-eval "$(atuin init zsh --disable-up-arrow)"
-_zsh_autosuggest_strategy_atuin() {
-	local results=(${(f)"$(ATUIN_QUERY="$1" atuin search --cmd-only --limit 5 --search-mode prefix --exit 0 --cwd "$PWD" 2>/dev/null)"})
-	local last_command="${history[$(((HISTCMD-1)))]}"
-	for result in "${results[@]}"; do
-			if [[ $result != "$last_command" ]]; then
-			suggestion="$result"
-			return
-		fi
-	done
-	suggestion="${results[1]}"
-}
-
+source "$ZDOTDIR/plugins/p10k.zsh"
+source "$ZDOTDIR/plugins/atuin.zsh"
 
 # config files
-source "$ZDOTDIR/keybinds.zsh"
-source "$ZDOTDIR/functions.zsh"
-source "$ZDOTDIR/aliases.zsh"
+source "$ZDOTDIR/config/keybinds.zsh"
+source "$ZDOTDIR/config/functions.zsh"
+source "$ZDOTDIR/config/aliases.zsh"
+autoload -Uz $ZDOTDIR/functions/*(:t)

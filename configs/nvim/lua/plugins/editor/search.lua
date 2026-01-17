@@ -34,6 +34,7 @@ return {
 			})
 		end,
 		opts = {
+			nearest_float_when = "never",
 			override_lens = function(render, posList, nearest, idx, relIdx)
 				local sfw = vim.v.searchforward == 1
 				local indicator, text, chunks
@@ -70,13 +71,13 @@ return {
 	{
 		"haya14busa/vim-asterisk",
 		keys = {
-			{ "*",  "<Plug>(asterisk-z*)zz<Cmd>lua require('hlslens').start()<CR>" },
-			{ "#",  "<Plug>(asterisk-z#)zz<Cmd>lua require('hlslens').start()<CR>" },
+			{ "*", "<Plug>(asterisk-z*)zz<Cmd>lua require('hlslens').start()<CR>" },
+			{ "#", "<Plug>(asterisk-z#)zz<Cmd>lua require('hlslens').start()<CR>" },
 			{ "g*", "<Plug>(asterisk-gz*)zz<Cmd>lua require('hlslens').start()<CR>" },
 			{ "g#", "<Plug>(asterisk-gz#)zz<Cmd>lua require('hlslens').start()<CR>" },
 
-			{ "*",  "<Plug>(asterisk-z*)zz<Cmd>lua require('hlslens').start()<CR>" },
-			{ "#",  "<Plug>(asterisk-z#)zz<Cmd>lua require('hlslens').start()<CR>" },
+			{ "*", "<Plug>(asterisk-z*)zz<Cmd>lua require('hlslens').start()<CR>" },
+			{ "#", "<Plug>(asterisk-z#)zz<Cmd>lua require('hlslens').start()<CR>" },
 			{ "g*", "<Plug>(asterisk-gz*)zz<Cmd>lua require('hlslens').start()<CR>" },
 			{ "g#", "<Plug>(asterisk-gz#)zz<Cmd>lua require('hlslens').start()<CR>" },
 		},

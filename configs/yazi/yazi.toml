@@ -34,6 +34,9 @@ prepend_fetchers = [
 	{ id = "git", name = "*", run = "git" },
 	{ id = "git", name = "*/", run = "git" },
 ]
+prepend_previewers = [
+	{ mime = "message/*", run = "code" },
+]
 append_previewers = [
 	{ url = "*", run = 'piper -- hexyl --border=none --terminal-width=$w "$1"' },
 ]

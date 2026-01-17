@@ -1,7 +1,7 @@
 # global aliases
 alias -g C='| wc -l'
 alias -g NUL='>/dev/null 2>&1'
-alias -g gp="| rg"
+alias -g gr="| rg"
 
 # suffix aliases
 alias -s {c,cpp,asm,typ,tex}='nvim'
@@ -23,6 +23,7 @@ alias -- +x='chmod u+x'
 alias -- -x='chmod u+x'
 alias path='echo -e ${PATH//:/\\n}' # human-readable path
 alias uncompress='tar -xvzf'
+alias soft-reboot='systemctl soft-reboot'
 function {
 	local dots='..'
 	local back='../'

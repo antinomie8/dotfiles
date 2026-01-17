@@ -1,0 +1,45 @@
+function get_answer() {
+	local answer
+	read -r answer
+	case $answer in
+	[yY][eE][sS] | [yY])
+		return 0
+		;;
+	*)
+		return 1
+		;;
+	esac
+}
+
+local args=()
+local attachments=()
+local to=()
+while (($#)); do
+	if [[ -f $1 ]]; then
+		args+=("-a")
+		args+=("$1")
+		attachments+=("$1")
+	elif [[ $1 = "--to" || $1 = "-t" ]]; then
+		shift
+		if [[ $# > 0 ]]; then
+			to+=$1
+		else
+			echo "transfer: expected address after -t flag !"
+		fi
+	else
+		echo "transfer: $1 is not a regular file !"
+		return 1
+	fi
+	shift
+done
+if [[ ${#to} = 0 ]]; then
+	echo "" | mail $args[@]
+else
+	echo -en \
+		"Will send \e[38;5;46m${(j[\e[0m, \e[38;5;46m])attachments}$reset_color to \e[38;5;39m${(j[\e[0m, \e[38;5;39m])to}$reset_color. Confirm ? "
+	if get_answer; then
+		for recipient in $to; do
+			echo "" | mail $args[@] $recipient
+		done
+	fi
+fi

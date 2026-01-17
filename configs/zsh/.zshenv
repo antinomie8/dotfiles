@@ -32,6 +32,10 @@ path=(
 	$path
 	/usr/local/texlive/2024/bin/x86_64-linux
 )
+fpath=(
+	$ZDOTDIR/functions
+	$fpath
+)
 
 # Ensure path arrays do not contain duplicates.
 typeset -gU path fpath

@@ -9,6 +9,7 @@ vim.filetype.add({
 		["dircolors"] = "dircolors",
 	},
 	pattern = {
+		["${ZDOTDIR}/functions/.+"] = "zsh",
 		["${HOME}/.config/neomutt/.+"] = "neomuttrc",
 		["${HOME}/.config/kitty/.*.conf"] = "kitty",
 		["${HOME}/.config/kitty/.*.conf.bak"] = "kitty",
