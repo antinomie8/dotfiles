@@ -114,7 +114,7 @@ return {
 					"build/_deps",
 					"CMakeFiles",
 				}
-				local cmd = { "fd", "--hidden", "--no-ignore", "--type", "x" }
+				local cmd = { "fd", "--no-ignore", "--type", "x" }
 				for _, pattern in pairs(exclude) do
 					table.insert(cmd, "--exclude")
 					table.insert(cmd, pattern)
@@ -151,20 +151,15 @@ return {
 			nargs = "*",
 		})
 
-		-- C++
-		dap.adapters.cpp = {
-			type = "server",
-			port = "${port}",
-			executable = {
-				command = "/usr/bin/codelldb",
-				args = { "--port", "${port}" },
-			},
+		dap.adapters.codelldb = {
+			type = "executable",
+			command = "codelldb",
 		}
 
 		dap.configurations.cpp = {
 			{
 				name = "Launch file",
-				type = "cpp",
+				type = "codelldb",
 				request = "launch",
 				program = function()
 					if vim.b.use_default_executable_path then
@@ -184,6 +179,9 @@ return {
 				end,
 			},
 		}
+
+		dap.configurations.c = dap.configurations.cpp
+		dap.configurations.rust = dap.configurations.cpp
 
 		-- automatically add a breakpoint at the beginning of main function
 		dap.listeners.before.event_initialized["auto-main-breakpoint"] = function()

@@ -1,10 +1,12 @@
 function kitty_set_spacing() {
-	[[ -z "$NVIM" && -z "$TMUX" && -n "$KITTY_LISTEN_ON" ]] &&
-		kitty @ --to $KITTY_LISTEN_ON set-spacing padding=20 margin=0
+	if [[ -z "$NVIM" && -z "$TMUX" && -n "$KITTY_LISTEN_ON" ]]; then
+		kitty @ --to $KITTY_LISTEN_ON set-spacing padding=20
+	fi
 }
 function kitty_remove_spacing() {
-	[[ -z "$NVIM" && -z "$TMUX" && -n "$KITTY_LISTEN_ON" ]] &&
-		kitty @ --to $KITTY_LISTEN_ON set-spacing padding=0 margin=0
+	if [[ -z "$NVIM" && -z "$TMUX" && -n "$KITTY_LISTEN_ON" ]]; then
+		kitty @ --to $KITTY_LISTEN_ON set-spacing padding=0
+	fi
 }
 
 kitty_set_spacing

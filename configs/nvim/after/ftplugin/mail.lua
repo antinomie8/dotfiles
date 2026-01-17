@@ -1,1 +1,1 @@
-vim.opt.titlestring = " %t"
+vim.opt_local.titlestring = " %t"

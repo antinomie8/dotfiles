@@ -87,17 +87,24 @@ return {
 		vim.api.nvim_create_user_command("Make", function(params)
 			-- set the makeprg to CMake if CMakeLists.txt is found
 			if vim.uv.fs_access("CMakeLists.txt", "R") then
-				vim.o.makeprg = "cmake --build build"
+				vim.opt_local.makeprg = "cmake --build build"
 			end
 			-- Insert args at the '$*' in the makeprg
 			local cmd, num_subs = vim.o.makeprg:gsub("%$%*", params.args)
 			if num_subs == 0 then
 				cmd = cmd .. " " .. params.args
 			end
+			print(cmd)
 			local task = require("overseer").new_task({
-				cmd = vim.fn.expandcmd(cmd),
+				cmd = vim.fn.expandcmd(cmd):gsub("'''", "'\\''"),
 				components = {
-					{ "on_output_quickfix", open = not params.bang, open_height = 8 },
+					{
+						"on_output_quickfix",
+						open = not params.bang,
+						close = not params.bang,
+						set_diagnostics = true,
+						open_height = 8,
+					},
 					"unique",
 					"default",
 				},

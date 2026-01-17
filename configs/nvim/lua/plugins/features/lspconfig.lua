@@ -35,9 +35,7 @@ return {
 
 			local lspconfigs = {
 				asm_lsp = {
-					on_attach = function(_, bufnr)
-						vim.diagnostic.enable(false, { bufnr = bufnr })
-					end,
+					on_attach = function(_, bufnr) vim.diagnostic.enable(false, { bufnr = bufnr }) end,
 				},
 
 				asy_ls = {
@@ -140,6 +138,8 @@ return {
 				},
 
 				pyright = {},
+
+				rust_analyzer = {},
 
 				tinymist = {
 					on_init = function() vim.api.nvim_set_hl(0, "@lsp.type.comment.typst", { fg = "none", bg = "none" }) end,
@@ -297,32 +297,32 @@ return {
 			},
 		},
 	},
-	{
-		"kosayoda/nvim-lightbulb",
-		event = "LspAttach",
-		opts = {
-			priority = 5, -- Priority of the lightbulb for all handlers except float.
-			hide_in_unfocused_buffer = true,
-			validate_config = "never",
-			code_lenses = true,
-			sign = { enabled = true, text = " ", lens_text = " " },
-			virtual_text = { enabled = false, text = " ", lens_text = " ", pos = "eol" },
-			float = {
-				enabled = false,
-				text = " ",
-				lens_text = " ",
-				win_opts = { focusable = false },
-			},
-			status_text = { enabled = true, text = " ", lens_text = " ", text_unavailable = "" },
-			number = { enabled = false },
-			line = { enabled = false },
-			autocmd = { enabled = true },
-			filter = function(client_name, code_action)
-				local ignored_kinds = {
-					["lua_ls"] = { "refactor.rewrite" },
-				}
-				return not vim.tbl_contains(ignored_kinds[client_name] or {}, code_action.kind)
-			end,
-		},
-	},
+	-- {
+	-- 	"kosayoda/nvim-lightbulb",
+	-- 	event = "LspAttach",
+	-- 	opts = {
+	-- 		priority = 5, -- Priority of the lightbulb for all handlers except float.
+	-- 		hide_in_unfocused_buffer = true,
+	-- 		validate_config = "never",
+	-- 		code_lenses = true,
+	-- 		sign = { enabled = true, text = " ", lens_text = " " },
+	-- 		virtual_text = { enabled = false, text = " ", lens_text = " ", pos = "eol" },
+	-- 		float = {
+	-- 			enabled = false,
+	-- 			text = " ",
+	-- 			lens_text = " ",
+	-- 			win_opts = { focusable = false },
+	-- 		},
+	-- 		status_text = { enabled = true, text = " ", lens_text = " ", text_unavailable = "" },
+	-- 		number = { enabled = false },
+	-- 		line = { enabled = false },
+	-- 		autocmd = { enabled = true },
+	-- 		filter = function(client_name, code_action)
+	-- 			local ignored_kinds = {
+	-- 				["lua_ls"] = { "refactor.rewrite" },
+	-- 			}
+	-- 			return not vim.tbl_contains(ignored_kinds[client_name] or {}, code_action.kind)
+	-- 		end,
+	-- 	},
+	-- },
 }

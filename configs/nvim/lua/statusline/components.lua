@@ -2,6 +2,20 @@ local components = {}
 
 local conditions = require("heirline.conditions")
 local utils = require("heirline.utils")
+utils["truncate"] = function(str, thresh, is_winbar)
+	local winwidth
+	if vim.o.laststatus == 3 and not is_winbar then
+		winwidth = vim.o.columns
+	else
+		winwidth = vim.api.nvim_win_get_width(0)
+	end
+	local len_max = math.floor(winwidth * thresh)
+	if #str <= len_max then
+		return str
+	else
+		return str:sub(1, len_max - 1) .. "…"
+	end
+end
 
 components.Space = { provider = " " }
 
@@ -359,9 +373,10 @@ components.ExtensionB = {
 			["git"] = git_root,
 			["qf"] = function()
 				if is_loclist() then
-					return vim.fn.getloclist(0, { title = 0 }).title
+					return utils.truncate(vim.fn.getloclist(0, { title = 0 }).title, 0.60)
+				else
+					return utils.truncate(vim.fn.getqflist({ title = 0 }).title, 0.60)
 				end
-				return vim.fn.getqflist({ title = 0 }).title
 			end,
 		}
 	end,
@@ -402,9 +417,7 @@ components.ExtensionC = {
 			["mail"] = function()
 				local subject = vim.b.Subject
 				if subject then
-					local winwidth = (vim.o.laststatus == 3) and vim.o.columns or vim.api.nvim_win_get_width(0)
-					local len_max = math.floor(winwidth * 0.60)
-					return subject:sub(1, len_max)
+					return utils.truncate(subject, 0.60)
 				end
 			end,
 			["man"] = "󱚊",

@@ -15,6 +15,10 @@ bindkey " " magic-space
 bindkey -a -r ':'                 # disable vicmd mode
 bindkey "^?" backward-delete-char # fix backspace in insert mode
 
+# Alt-Enter: Execute what's been typed even if it's malformed.
+bindkey '^[^J' accept-line
+bindkey '^[^M' accept-line
+
 # plugins
 bindkey "\ee" autosuggest-accept
 

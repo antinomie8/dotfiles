@@ -1,21 +1,3 @@
-vim.api.nvim_create_user_command("FormatDisable", function(args)
-	if args.bang then
-		-- FormatDisable! will disable formatting for all buffers
-		vim.g.disable_autoformat = true
-	else
-		vim.b.disable_autoformat = true
-	end
-end, {
-	desc = "Disable autoformat-on-save",
-	bang = true,
-})
-vim.api.nvim_create_user_command("FormatEnable", function()
-	vim.b.disable_autoformat = false
-	vim.g.disable_autoformat = false
-end, {
-	desc = "Re-enable autoformat-on-save",
-})
-
 local function find_config_file(...)
 	local arg = { ... }
 	local function default()
@@ -48,13 +30,30 @@ return {
 			desc = "Format file or range (in visual mode)",
 		},
 	},
+	init = function()
+		vim.api.nvim_create_user_command("FormatDisable", function(args)
+			if args.bang then
+				-- FormatDisable! will disable formatting for all buffers
+				vim.g.disable_autoformat = true
+			else
+				vim.b.disable_autoformat = true
+			end
+		end, {
+			desc = "Disable autoformat-on-save",
+			bang = true,
+		})
+		vim.api.nvim_create_user_command("FormatEnable", function()
+			vim.b.disable_autoformat = false
+			vim.g.disable_autoformat = false
+		end, {
+			desc = "Re-enable autoformat-on-save",
+		})
+	end,
 	opts = {
-		default_format_opts = {
-			lsp_format = "fallback",
-		},
 		formatters_by_ft = {
 			asy = { "clang_format", "asy" },
 			cpp = { "clang_format" },
+			rust = { "rustfmt" },
 			bash = { "shfmt" },
 			sh = { "shfmt" },
 			css = { "prettier" },
@@ -70,6 +69,10 @@ return {
 				command = "clang-format",
 				args = function() return "--style=file:" .. find_config_file(".clang-format") end,
 			},
+			rustfmt = {
+				command = "rustfmt",
+				args = function() return { "--config-path", find_config_file("rustfmt.toml", ".rustfmt.toml") } end,
+			},
 			tex_fmt = {
 				command = "tex-fmt",
 				args = function()
@@ -82,12 +85,7 @@ return {
 			},
 			stylua = {
 				command = "stylua",
-				prepend_args = function()
-					return {
-						"--config-path",
-						find_config_file(".stylua.toml", "stylua.toml"),
-					}
-				end,
+				prepend_args = function() return { "--config-path", find_config_file("stylua.toml", ".stylua.toml") } end,
 			},
 			prettier = {
 				command = "prettier",
@@ -98,6 +96,9 @@ return {
 				prepend_args = { "--line-width", "100" },
 			},
 		},
+		default_format_opts = {
+			lsp_format = "fallback",
+		},
 		format_on_save = function(bufnr)
 			if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
 				return
@@ -106,6 +107,7 @@ return {
 			local disabled_paths = {
 				"^" .. vim.fn.stdpath("config") .. "/lua/config/options.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/plugins/coding/autopairs.lua$",
+				"^" .. vim.fn.stdpath("config") .. "/lua/plugins/ui/colorscheme.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/static/.*.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/statusline/components.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/after/ftplugin/typst/typst.lua$",
@@ -119,7 +121,7 @@ return {
 				end
 			end
 
-			return { timeout_ms = 700, lsp_format = "fallback" }
+			return { timeout_ms = 700 }
 		end,
 	},
 }

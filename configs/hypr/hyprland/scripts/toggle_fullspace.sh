@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 WS=$(hyprctl activeworkspace -j | jq '.id')
 STATE_FILE="${TMPDIR:-/tmp}/hyprland.toggle_fullspace"

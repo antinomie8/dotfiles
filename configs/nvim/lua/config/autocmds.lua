@@ -187,7 +187,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 vim.api.nvim_create_autocmd("VimLeave", {
 	callback = function()
 		if not vim.env.NVIM and not vim.env.TMUX and not vim.env.YAZI_LEVEL and vim.env.KITTY_LISTEN_ON then
-			vim.system({ "kitty", "@", "--to", vim.env.KITTY_LISTEN_ON, "set-spacing", "padding=20", "margin=0" })
+			vim.system({ "kitty", "@", "--to", vim.env.KITTY_LISTEN_ON, "set-spacing", "padding=20" })
 		end
 	end,
 })

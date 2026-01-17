@@ -1,0 +1,145 @@
+{
+    "allow_postpone": false,
+    "long_break_duration": 60,
+    "long_break_interval": 75,
+    "long_breaks": [
+        {
+            "name": "Get up from this chair you idiot"
+        },
+        {
+            "name": "Take this as an opportunity to reflect on your sins."
+        }
+    ],
+    "meta": {
+        "config_version": "6.0.4"
+    },
+    "persist_state": false,
+    "plugins": [
+        {
+            "enabled": true,
+            "id": "donotdisturb",
+            "settings": {
+                "skip_break_windows": "",
+                "take_break_windows": "",
+                "unfullscreen": true,
+                "while_on_battery": false
+            },
+            "version": "0.0.2"
+        },
+        {
+            "enabled": true,
+            "id": "notification",
+            "version": "0.0.1"
+        },
+        {
+            "enabled": false,
+            "id": "audiblealert",
+            "settings": {
+                "post_break_alert": true,
+                "pre_break_alert": true,
+                "volume": 100
+            },
+            "version": "0.0.4"
+        },
+        {
+            "enabled": false,
+            "id": "trayicon",
+            "settings": {
+                "allow_disabling": true,
+                "disable_options": [
+                    {
+                        "time": 30,
+                        "unit": "minute"
+                    },
+                    {
+                        "time": 1,
+                        "unit": "hour"
+                    },
+                    {
+                        "time": 2,
+                        "unit": "hour"
+                    },
+                    {
+                        "time": 3,
+                        "unit": "hour"
+                    }
+                ],
+                "show_long_time_in_tray": false,
+                "show_time_in_tray": false
+            },
+            "version": "0.0.3"
+        },
+        {
+            "enabled": true,
+            "id": "smartpause",
+            "settings": {
+                "idle_time": 5,
+                "postpone_if_active": false
+            },
+            "version": "0.0.3"
+        },
+        {
+            "enabled": true,
+            "id": "screensaver",
+            "settings": {
+                "command": "",
+                "min_seconds": 3
+            },
+            "version": "0.0.2"
+        },
+        {
+            "enabled": false,
+            "id": "healthstats",
+            "settings": {
+                "statistics_reset_cron": "0 0 * * *"
+            },
+            "version": "0.0.3"
+        },
+        {
+            "enabled": true,
+            "id": "mediacontrol",
+            "version": "0.0.1"
+        },
+        {
+            "enabled": true,
+            "id": "limitconsecutiveskipping",
+            "settings": {
+                "number_of_allowed_skips_in_a_row": 0
+            },
+            "version": "0.0.1"
+        }
+    ],
+    "postpone_duration": 5,
+    "postpone_unit": "minutes",
+    "pre_break_warning_time": 10,
+    "random_order": true,
+    "short_break_duration": 20,
+    "short_break_interval": 15,
+    "short_breaks": [
+        {
+            "name": "Go to the IMO you bastard"
+        },
+        {
+            "name": "Do math instead of whatever the hell you might be doing"
+        },
+        {
+            "name": "Stop harming your eyes, you eyesight won't magically improve"
+        },
+        {
+            "name": "Wasting days means wasting your life"
+        },
+        {
+            "name": "Sit straight, drink water and stop looking right in front of you"
+        },
+        {
+            "name": "Take a break from whatever you might be doing to reflect on the vacuity of your existence."
+        },
+        {
+            "name": "Do you think you will regret that next week, or next year ?"
+        }
+    ],
+    "shortcut_disable_time": 2,
+    "shortcut_postpone": 65,
+    "shortcut_skip": 9,
+    "strict_break": false
+}

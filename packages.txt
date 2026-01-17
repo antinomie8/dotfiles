@@ -57,7 +57,7 @@ clang
 cmake
 typst
 asymptote
-rust
+rustup
 python
 lua
 nasm
@@ -72,6 +72,7 @@ bash-language-server
 shellcheck
 shfmt
 prettier
+rust-analyzer
 
 # WM
 uwsm

@@ -1,6 +1,6 @@
 -- Switch to header files using gf
 vim.opt_local.suffixesadd:append({ ".h", ".hpp", ".cppm" })
-vim.opt.path:append({ "include" })
+vim.opt_local.path:append({ "include" })
 
 -- debugging
 vim.b.codelldb_stdio_redirection = nil
