@@ -6,3 +6,7 @@ git clone https://github.com/anonymousgrasshopper/dotfiles ~/.config/dotfiles &&
 | ---- | ---- |
 | `man oec` gives an error | `sudo localectl set-locale LANG=en_US.UTF-8` |
 | modify sudo prompt | `sudo visudo` and add line `Defaults passprompt=" Password for %u: "` |
+
+### Things to do
+- `build-fzf-tab-module`
+- `rustup default stable`

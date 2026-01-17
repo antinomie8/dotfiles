@@ -24,11 +24,11 @@ function copy {
 
 # list of configs and scripts to copy
 configs=("bat" "btop" "browser" "clangd" "eza" "fastfetch" "formatters" "git" "hypr"
-	"hyprland-preview-share-picker" "illogical-impulse" "imv" "kitty" "kmonad" "lazygit"
-	"mpv" "neomutt" "ncdu" "npm" "nvim" "oly" "quickshell" "texmf" "thundery" "tmux" "udiskie"
-	"wget" "yazi" "zathura" "zsh" "fzf.conf" "mimeapps.list" "ripgrep.conf" " safeeyes"
-	"shellcheckrc" "user-dirs.dirs" "xdg-desktop-portal" "xdg-desktop-portal-termfilechooser")
-# mozilla msmtp notmuch imapnotify himalaya gh aerc atuin
+	"hyprland-preview-share-picker" "illogical-impulse" "imv" "kitty" "lazygit" "mpv"
+	"neomutt" "ncdu" "npm" "nvim" "oly" "quickshell" "texmf" "thundery" "tmux" "udiskie"
+	"wget" "xdg-desktop-portal" "xdg-desktop-portal-termfilechooser" "yazi" "zathura" "zsh"
+	"fzf.conf" "kmonad.kbd" "mimeapps.list" "ripgrep.conf" " safeeyes" "shellcheckrc" "user-dirs.dirs")
+# mozilla msmtp notmuch goimapnotify himalaya mirador aerc
 scripts=("assemble" "fzf_preview_wrapper" "git_dotfiles" "rgb" "zoxide-rename")
 
 # overwrite configs in the dotfiles repo

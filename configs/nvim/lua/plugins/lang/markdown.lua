@@ -20,14 +20,14 @@ end
 return {
 	{
 		"MeanderingProgrammer/render-markdown.nvim",
-		ft = { "markdown", "mail" },
+		ft = { "markdown" },
 		cmd = "RenderMarkdown",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter",
 			-- nvim-tree/nvim-web-devicons
 		},
 		opts = {
-			file_types = { "markdown", "mail" },
+			file_types = { "markdown" },
 			render_modes = { "n", "c", "t" },
 			completions = { blink = { enabled = true } },
 			anti_conceal = { enabled = false },
@@ -66,47 +66,22 @@ return {
 			callout = {
 				note = { raw = "[!NOTE]", rendered = "󰋽 Note", highlight = "MarkdownInfo", category = "github" },
 				tip = { raw = "[!TIP]", rendered = "󰌶 Tip", highlight = "MarkdownSuccess", category = "github" },
-				important = {
-					raw = "[!IMPORTANT]",
-					rendered = "󰅾 Important",
-					highlight = "MarkdownHint",
-					category = "github",
-				},
+				important = { raw = "[!IMPORTANT]", rendered = "󰅾 Important", highlight = "MarkdownHint", category = "github" },
 				warning = { raw = "[!WARNING]", rendered = "󰀪 Warning", highlight = "MarkdownWarn", category = "github" },
 				caution = { raw = "[!CAUTION]", rendered = "󰳦 Caution", highlight = "MarkdownError", category = "github" },
-				abstract = {
-					raw = "[!ABSTRACT]",
-					rendered = "󰨸 Abstract",
-					highlight = "MarkdownInfo",
-					category = "obsidian",
-				},
+				abstract = { raw = "[!ABSTRACT]", rendered = "󰨸 Abstract", highlight = "MarkdownInfo", category = "obsidian" },
 				summary = { raw = "[!SUMMARY]", rendered = "󰨸 Summary", highlight = "MarkdownInfo", category = "obsidian" },
 				tldr = { raw = "[!TLDR]", rendered = "󰨸 Tldr", highlight = "MarkdownInfo", category = "obsidian" },
 				info = { raw = "[!INFO]", rendered = "󰋽 Info", highlight = "MarkdownInfo", category = "obsidian" },
 				todo = { raw = "[!TODO]", rendered = "󰗡 Todo", highlight = "MarkdownInfo", category = "obsidian" },
 				hint = { raw = "[!HINT]", rendered = "󰌶 Hint", highlight = "MarkdownSuccess", category = "obsidian" },
-				success = {
-					raw = "[!SUCCESS]",
-					rendered = "󰄬 Success",
-					highlight = "MarkdownSuccess",
-					category = "obsidian",
-				},
+				success = { raw = "[!SUCCESS]", rendered = "󰄬 Success", highlight = "MarkdownSuccess", category = "obsidian" },
 				check = { raw = "[!CHECK]", rendered = "󰄬 Check", highlight = "MarkdownSuccess", category = "obsidian" },
 				done = { raw = "[!DONE]", rendered = "󰄬 Done", highlight = "MarkdownSuccess", category = "obsidian" },
-				question = {
-					raw = "[!QUESTION]",
-					rendered = "󰘥 Question",
-					highlight = "MarkdownWarn",
-					category = "obsidian",
-				},
+				question = { raw = "[!QUESTION]", rendered = "󰘥 Question", highlight = "MarkdownWarn", category = "obsidian" },
 				help = { raw = "[!HELP]", rendered = "󰘥 Help", highlight = "MarkdownWarn", category = "obsidian" },
 				faq = { raw = "[!FAQ]", rendered = "󰘥 Faq", highlight = "MarkdownWarn", category = "obsidian" },
-				attention = {
-					raw = "[!ATTENTION]",
-					rendered = "󰀪 Attention",
-					highlight = "MarkdownWarn",
-					category = "obsidian",
-				},
+				attention = { raw = "[!ATTENTION]", rendered = "󰀪 Attention", highlight = "MarkdownWarn", category = "obsidian" },
 				failure = { raw = "[!FAILURE]", rendered = "󰅖 Failure", highlight = "MarkdownError", category = "obsidian" },
 				fail = { raw = "[!FAIL]", rendered = "󰅖 Fail", highlight = "MarkdownError", category = "obsidian" },
 				missing = { raw = "[!MISSING]", rendered = "󰅖 Missing", highlight = "MarkdownError", category = "obsidian" },
@@ -196,7 +171,7 @@ return {
 			},
 			open_notes_in = "current", -- current, vsplit or hsplit
 			ui = {
-				enable = false, -- set to false to disable all additional syntax features
+				enable = false,       -- set to false to disable all additional syntax features
 			},
 			attachments = {
 				img_folder = "assets/imgs",

@@ -25,7 +25,7 @@ function bak() {
 	mv "$1" "$1.bak"
 }
 function weather {
-  curl "http://wttr.in/$1"
+  curl --silent "http://wttr.in/$1" | head -n -2
 }
 
 # cd
