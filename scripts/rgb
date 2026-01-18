@@ -14,11 +14,11 @@ local function rgb(hex)
 end
 
 for _, hex_code in ipairs(arg) do
-	if #hex_code == 6 then
-		print("#" .. rgb(hex_code))
-	elseif #hex_code ~= 7 then
-		print(ERROR .. hex_code .. " is not a valid hex code !")
-	else
+	if #hex_code == 7 then
 		print(rgb(hex_code))
+	elseif #hex_code == 6 then
+		print(rgb("#" .. hex_code))
+	else
+		print(ERROR .. hex_code .. " is not a valid hex code !")
 	end
 end

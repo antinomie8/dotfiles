@@ -24,28 +24,3 @@
 		visibility: hidden !important;
 	}
 }
-
-/* dark mode for pdf.js */
-:root:not([darkpdf]) #sidebarContainer > #sidebarContent > #thumbnailView {
-	--sidebaritem-bg-color: #1f1f28;
-}
-
-:root:not([darkpdf])
-	#viewerContainer
-	> #viewer
-	> .page
-	> .canvasWrapper
-	> canvas {
-	filter: grayscale(100%) invert(90%);
-}
-
-:root:not([darkpdf])
-	#sidebarContainer
-	> #sidebarContent
-	> #thumbnailView
-	.thumbnailImage {
-	filter: grayscale(100%) invert(90%);
-	box-shadow:
-		0 0 0 1px hsla(0, 0%, 100%, 0.5),
-		0 2px 8px hsla(0, 0%, 100%, 0.3) !important;
-}

@@ -28,6 +28,7 @@ unzip
 tldr
 ncdu
 man-db
+at
 
 # utils
 7zip

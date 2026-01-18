@@ -74,7 +74,6 @@ setopt CORRECT              # correction for invalid command names
 setopt RCQUOTES             # escape single quotes with '' instead of '\'' in singly quoted strings
 setopt C_BASES              # use 0x for displaying hexadecimal numbers
 setopt OCTAL_ZEROES         # use 0 for displaying octal numbers
-setopt INTERACTIVE_COMMENTS # enable comments in interactive shells
 setopt EXTENDED_HISTORY     # save timestamp and command execution duration to history
 setopt INC_APPEND_HISTORY   # write directly to the history file
 setopt COMPLETE_IN_WORD     # complete missing letters before cursor with <tab>

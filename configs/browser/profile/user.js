@@ -3,4 +3,9 @@ user_pref("devtools.chrome.enabled", true);                                     
 user_pref("devtools.debugger.remote-enabled", true);                                        // allow remote control
 user_pref("extension.pocket.enabled", false);                                               // disable Pocket
 user_pref("extensions.webextensions.addons-restricted-domains@mozilla.com.disabled", true); // allow addons to run in restricted domains
-user_prefl("widget.use-xdg-desktop-portal.file-picker", 1)                                  // use xdg-desktop-portal-termfilechooser
+user_pref("widget.use-xdg-desktop-portal.file-picker", 1);                                 // use xdg-desktop-portal-termfilechooser
+
+// dark mode for pdf.js
+user_pref("pdfjs.forcePageColors", true);
+user_pref("pdfjs.pageColorsBackground", "#1f1f28");
+user_pref("pdfjs.pageColorsForeground", "#b8b4d0");
