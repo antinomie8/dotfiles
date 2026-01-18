@@ -1,1 +1,1 @@
-vim.opt_local.spellcapcheck = ""
+vim.bo.spellcapcheck = ""

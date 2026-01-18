@@ -1,7 +1,7 @@
 -- options
-vim.opt_local.commentstring = "// %s"
-vim.opt_local.makeprg = "asy %"
-vim.opt_local.errorformat = "%f: %l.%c: %m"
+vim.bo.commentstring = "// %s"
+vim.bo.makeprg = "asy %"
+vim.bo.errorformat = "%f: %l.%c: %m"
 
 vim.b.output_format = "pdf"
 

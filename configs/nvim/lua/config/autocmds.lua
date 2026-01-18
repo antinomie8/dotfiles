@@ -168,6 +168,21 @@ vim.api.nvim_create_autocmd("OptionSet", {
 	end,
 })
 
+-- change titlestring when reading email
+vim.api.nvim_create_autocmd("FileType", {
+	callback = function(event)
+		local mail_ft = { "notmuch-threads", "mail" }
+		local ft_ignore = { "notify" }
+		if vim.tbl_contains(ft_ignore, vim.bo[event.buf].filetype) then
+			return
+		elseif vim.tbl_contains(mail_ft, vim.bo[event.buf].filetype) then
+			vim.opt_local.titlestring = " %t"
+		else
+			vim.opt_local.titlestring = " %t"
+		end
+	end,
+})
+
 -- get rid of empty buffers on startup
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()

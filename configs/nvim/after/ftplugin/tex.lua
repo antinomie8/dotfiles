@@ -95,7 +95,7 @@ end
 if vim.env.OLY and not vim.b[buf].oly_highlight then
 	vim.b[buf].oly_highlight = true
 
-	vim.opt_local.autochdir = true
+	vim.opt.autochdir = true
 
 	highlight_metadata(0, -1)
 	highlight_hrule(0, -1)

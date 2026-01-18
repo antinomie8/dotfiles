@@ -1,6 +1,6 @@
 return {
-	"anonymousgrasshopper/notmuch.nvim",
-	branch = "feat/buffer-local-variables",
+	"yousefakbar/notmuch.nvim",
+	branch = "refactor/thread-json-parsing",
 	cmd = { "Notmuch", "NmSearch", "Inbox", "ComposeMail" },
 	init = function()
 		vim.api.nvim_create_user_command("Inbox", function(arg)

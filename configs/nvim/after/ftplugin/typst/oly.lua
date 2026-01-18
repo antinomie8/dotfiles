@@ -93,10 +93,10 @@ local function highlight_hrule(first, last)
 end
 
 if vim.env.OLY and not vim.b[buf].oly_highlight then
-	vim.opt_local.autochdir = true
-
 	vim.b[buf].oly_highlight = true
 	vim.b[buf].typst_root = vim.fn.expand("%:p:h") .. "/preview.typ"
+
+	vim.opt.autochdir = true
 
 	highlight_metadata(0, -1)
 	highlight_hrule(0, -1)

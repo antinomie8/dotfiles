@@ -1,12 +1,10 @@
-###################################################################################
-# This is oly's configuration file.                                               #
-# Please edit the following values.                                               #
-#                                                                                 #
-# A list of all possible configuration options and their defaults can be found at #
-# https://github.com/anonymousgrasshopper/oly/blob/main/src/config.cpp#L77-#L137  #
-###################################################################################
+################################################################################
+# This is oly's configuration file.                                            #
+# Please edit the following values.                                            #
+# You must at least set author, base_path and pdf_viewer.                      #
+################################################################################
 
-# The author's name in the preview and generated pdf
+# the author's name in the preview and generated pdf
 author: Antoine Saez Dumas
 
 # The base path where solutions are stored
@@ -16,12 +14,19 @@ base_path: ~/Mathématiques/Solutions
 # must be one of latex or typst (default latex)
 lang: typst
 
-# you can set a different language to use with
-# the tex and typst preamble files
+# language setting passed to the typst preview and preamble files.
+# must be a two or three letters language code
 language: fr
 
-# The pdf viewer used for 'oly gen'
+# the text editor to use
+# autodected from $EDITOR and $VISUAL, fallback to vim
+# editor: vim
+
+# the pdf viewer used for 'oly gen'
 pdf_viewer: zathura
+
+# wether to open the generated pdf with pdf_viewer when running 'oly gen'
+preview: true
 
 # wether to confirm deletion or not in 'oly rm'
 confirm: true
@@ -48,7 +53,28 @@ contest_format:
   Envoi Combi: "../POFM/2025-2026/Envois/4. Combinatoire/${source}"
   Pot Pourri: "../POFM/2025-2026/Envois/5. Pot-Pourri/${source}"
 
+# where to output the generated pdf
+# defaults to ${XDG_CACHE_HOME:-~/.cache}/oly/${source}
+# output_directory: ${PWD}/oly
+
+# where temporary files are written
+# defaults to ${TMPDIR:-/tmp}/oly
+# OLY_TMPDIR: /tmp/oly
+
 # added right after \documentclass in the preview file
+# meant to specify which latex packages to use
 packages: '\usepackage[french]{antoine}
 
 \usepackage[sexy,diagrams]{evan}'
+
+# You can also override preamble, contents, and metadata.
+# preamble is what gets put in the preview file
+# contents is the content that is already written in the file
+# metadata is the metadata you get prompted for in 'oly add'
+# For example, you can use the following
+# metadata: "\
+# source: ${source}\n\
+# topic:  ${topic}\n\
+# tags:   []\n\
+# url:    \n\
+# "

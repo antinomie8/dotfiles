@@ -101,8 +101,9 @@ return {
 					{
 						"on_output_quickfix",
 						open = not params.bang,
-						close = not params.bang,
+						close = true,
 						set_diagnostics = true,
+						errorformat = vim.bo.errorformat,
 						open_height = 8,
 					},
 					"unique",
