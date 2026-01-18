@@ -44,7 +44,7 @@ SELECT command FROM (
 	SELECT * FROM history WHERE command LIKE '$input' ORDER BY timestamp DESC LIMIT 1
 )
 LIMIT 1
-")
+" 2>/dev/null)
 
 	typeset -g suggestion=$reply
 }

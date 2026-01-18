@@ -1,6 +1,7 @@
 [user]
-	email = antoine.s.27182@gmail.com
-	name = anonymousgrasshopper
+	email = antoine.saezdumas.git@gmail.com
+	name = Antoine Saez Dumas
+	signingKey = 55C35976D13FAB78
 
 [credential "https://github.com"]
 	helper =
@@ -15,6 +16,9 @@
 
 [init]
 	defaultBranch = main
+
+[commit]
+	gpgSign = true
 
 [merge]
 	conflictstyle = zdiff3
