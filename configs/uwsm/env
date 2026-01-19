@@ -1,0 +1,5 @@
+# Changes require a restart to take effect.
+
+source $HOME/.config/zsh/.zshenv
+
+# vim: ft=sh

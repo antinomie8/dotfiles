@@ -22,6 +22,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CmdlineLeave" }, {
 			"DiffviewFiles",
 			"dropbar_menu",
 			"neo-tree",
+			"notmuch-threads",
 			"noice",
 			"trouble",
 			"undotree",
@@ -35,7 +36,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CmdlineLeave" }, {
 	end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "alpha", "undotree" },
+	pattern = { "alpha", "undotree", "notmuch-threads" },
 	callback = function() vim.cmd("hi Cursor blend=100") end,
 })
 vim.api.nvim_create_autocmd("InsertEnter", {

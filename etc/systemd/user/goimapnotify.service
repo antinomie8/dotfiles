@@ -1,0 +1,15 @@
+[Unit]
+Description=Sync and index mail on IMAP mailbox change
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=1d
+StartLimitBurst=5
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/goimapnotify
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=default.target

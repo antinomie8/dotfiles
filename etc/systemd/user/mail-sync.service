@@ -1,0 +1,16 @@
+[Unit]
+Description=Syncs and indexes email on startup
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=1d
+StartLimitBurst=5
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/mbsync -a
+ExecStartPost=/usr/bin/notmuch new
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=default.target

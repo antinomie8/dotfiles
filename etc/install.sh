@@ -49,7 +49,7 @@ function program {
 program pacman && copy_item pacman.conf /etc
 program pacman && copy_item paccache.timer /etc/systemd/system
 program hyprland && copy_item icons/Bibata ~/.local/share/icons
-program typst && copy_item oly ~/.local/share/typst/packages/local
+program typst && copy_item oly_typst_package ~/.local/share/typst/packages/local
 program firefox && copy_item autoconfig.js /usr/lib/firefox/defaults/pref
 program firefox && copy_item firefox.cfg /usr/lib/firefox
 program yazi && copy_item desktop/yazi.desktop ~/.local/share/applications
@@ -59,6 +59,15 @@ program neomutt && copy_item icons/hicolor/325x325/apps/neomutt.png ~/.local/sha
 program nvim && copy_item desktop/mail.desktop ~/.local/share/applications
 program nvim && copy_item icons/hicolor/scalable/apps/mail.svg ~/.local/share/icons/hicolor/scalable/apps
 [[ -n "$CPLUS_INCLUDE_PATH" ]] && copy_item dbg.hpp "$CPLUS_INCLUDE_PATH"
+if program systemctl; then
+	for file in systemd/user/*; do
+		if [[ ! -f "$file" ]]; then
+			copy_item "$file" ~/.config/systemd/user
+			echo "enabling $(basename "$file") systemd user unit"
+			systemctl --user enable "$file"
+		fi
+	done
+fi
 
 # Windows and WSL specific files
 if [[ -n "$WSLENV" ]]; then
