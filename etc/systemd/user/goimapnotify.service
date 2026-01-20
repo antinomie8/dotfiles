@@ -1,5 +1,5 @@
 [Unit]
-Description=Sync and index mail on IMAP mailbox change
+Description=Sync and index email on IMAP mailbox change
 After=network-online.target
 Wants=network-online.target
 StartLimitIntervalSec=1d

@@ -13,7 +13,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 cd "$SCRIPT_DIR" || exit
 
 # $1: file to copy relative to $SCRIPT_DIR, $2: destination
-function copy_item {
+function copy_item() {
 	if ! [[ -e "$1" ]]; then
 		echo -e "${WARNING} $1 not found"
 		return 1
@@ -23,10 +23,12 @@ function copy_item {
 	else
 		local sudo="sudo"
 	fi
+	local target_loc="$2/$(basename "$1")"
+
 	[[ -d "$2" ]] || $sudo mkdir -p "$2" 2>/dev/null
-	if [[ ! -f "$2/$1" && ! -d "$2/$1" ]]; then
+	if [[ ! -e $target_loc ]]; then
 		$sudo cp -r "$1" "$2/" 2>/dev/null || echo -e "${ERROR} ${WHITE}You need to manually move ${SUCCESS}$1${WHITE} to ${SUCCESS}$2${COLOR_RESET}"
-	elif ! diff --brief -r "$1" "$2/$1" >/dev/null 2>&1; then
+	elif ! diff --brief -r --exclude='*.pdf' "$1" "$target_loc" >/dev/null 2>&1; then
 		echo -en "${INFO}Would you like to delete your current ${SUCCESS}$1${INFO} to replace it with the one in this repo ? (y/n) ${COLOR_RESET}"
 		local answer
 		read -r answer
@@ -38,18 +40,20 @@ function copy_item {
 	fi
 }
 
-# place system-wide configuration files
-function program {
+# util function for checking if a program is in $PATH
+function program() {
 	if type "$1" >/dev/null 2>&1; then
 		return 0
 	else
 		return 1
 	fi
 }
+
+# place system-wide configuration files
 program pacman && copy_item pacman.conf /etc
 program pacman && copy_item paccache.timer /etc/systemd/system
 program hyprland && copy_item icons/Bibata ~/.local/share/icons
-program typst && copy_item oly_typst_package ~/.local/share/typst/packages/local
+program typst && copy_item oly ~/.local/share/typst/packages/local
 program firefox && copy_item autoconfig.js /usr/lib/firefox/defaults/pref
 program firefox && copy_item firefox.cfg /usr/lib/firefox
 program yazi && copy_item desktop/yazi.desktop ~/.local/share/applications
@@ -65,6 +69,8 @@ if program systemctl; then
 			copy_item "$file" ~/.config/systemd/user
 			echo "enabling $(basename "$file") systemd user unit"
 			systemctl --user enable "$file"
+		else
+			copy_item "$file" ~/.config/systemd/user
 		fi
 	done
 fi
