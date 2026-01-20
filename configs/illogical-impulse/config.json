@@ -58,7 +58,7 @@
         "network": "kcmshell6 kcm_networkmanagement",
         "networkEthernet": "kcmshell6 kcm_networkmanagement",
         "taskManager": "plasma-systemmonitor --page-name Processes",
-        "terminal": "kitty -1",
+        "terminal": "kitty",
         "update": "kitty -1 --hold=yes fish -i -c 'pkexec pacman -Syu'",
         "volumeMixer": "~/.config/hypr/hyprland/scripts/launch_first_available.sh \"pavucontrol-qt\" \"pavucontrol\""
     },
@@ -271,7 +271,7 @@
         },
         "night": {
             "automatic": false,
-            "colorTemperature": 5261,
+            "colorTemperature": 3152,
             "from": "19:00",
             "to": "06:30"
         }
