@@ -29,7 +29,7 @@ function copy_item() {
 	if [[ ! -e $target_loc ]]; then
 		$sudo cp -r "$1" "$2/" 2>/dev/null || echo -e "${ERROR} ${WHITE}You need to manually move ${SUCCESS}$1${WHITE} to ${SUCCESS}$2${COLOR_RESET}"
 	elif ! diff --brief -r --exclude='*.pdf' "$1" "$target_loc" >/dev/null 2>&1; then
-		echo -en "${INFO}Would you like to delete your current ${SUCCESS}$1${INFO} to replace it with the one in this repo ? (y/n) ${COLOR_RESET}"
+		echo -en "${INFO}Would you like to delete your current ${SUCCESS}$(basename $1)${INFO} to replace it with the one in this repo ? (y/n) ${COLOR_RESET}"
 		local answer
 		read -r answer
 		case "$answer" in
@@ -62,6 +62,7 @@ program neomutt && copy_item desktop/neomutt.desktop ~/.local/share/applications
 program neomutt && copy_item icons/hicolor/325x325/apps/neomutt.png ~/.local/share/icons/hicolor/325x325/apps
 program nvim && copy_item desktop/mail.desktop ~/.local/share/applications
 program nvim && copy_item icons/hicolor/scalable/apps/mail.svg ~/.local/share/icons/hicolor/scalable/apps
+program spotify && copy_item desktop/spotify.desktop ~/.local/share/applications
 [[ -n "$CPLUS_INCLUDE_PATH" ]] && copy_item dbg.hpp "$CPLUS_INCLUDE_PATH"
 if program systemctl; then
 	for file in systemd/user/*; do
