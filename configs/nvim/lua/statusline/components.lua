@@ -334,7 +334,7 @@ components.ExtensionA = {
 			["git"] = function() return " " .. (vim.b.gitsigns_status_dict and vim.b.gitsigns_status_dict.head or " ") end,
 			["lazy"] = "Lazy",
 			["mail"] = function()
-				local from = vim.b.notmuch_thread.authors
+				local from = vim.b.notmuch_thread and vim.b.notmuch_thread.authors or nil
 				if from and #from > 0 then
 					local senders = ""
 					for _, sender in ipairs(from) do
@@ -420,7 +420,7 @@ components.ExtensionC = {
 				end
 			end,
 			["mail"] = function()
-				local subject = vim.b.notmuch_thread.subject
+				local subject = vim.b.notmuch_thread and vim.b.notmuch_thread.subject or nil
 				if subject then
 					return utils.truncate(subject, 0.60)
 				end
@@ -456,7 +456,7 @@ components.ExtensionY = {
 			["DiffviewFiles"] = "󰊢",
 			["lazy"] = "󰒲",
 			["mail"] = function()
-				local date = vim.b.notmuch_thread.date_relative
+				local date = vim.b.notmuch_thread and vim.b.notmuch_thread.date_relative or nil
 				if date then
 					-- return date:match("^(.*%d%d%d%d) %d%d:%d%d:%d%d")
 					return date
