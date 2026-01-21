@@ -3,7 +3,8 @@ user_pref("devtools.chrome.enabled", true);                                     
 user_pref("devtools.debugger.remote-enabled", true);                                        // allow remote control
 user_pref("extension.pocket.enabled", false);                                               // disable Pocket
 user_pref("extensions.webextensions.addons-restricted-domains@mozilla.com.disabled", true); // allow addons to run in restricted domains
-user_pref("widget.use-xdg-desktop-portal.file-picker", 1);                                 // use xdg-desktop-portal-termfilechooser
+user_pref("widget.use-xdg-desktop-portal.file-picker", 1);                                  // use xdg-desktop-portal-termfilechooser
+user_pref("browser.sessionstore.max_windows_undo", 15);                                     // how many closed windows to remember
 
 // dark mode for pdf.js
 user_pref("pdfjs.forcePageColors", true);

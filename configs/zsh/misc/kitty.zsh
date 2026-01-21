@@ -16,11 +16,11 @@ function nvim() {
 	command nvim "$@"
 	kitty_set_spacing
 }
-function tmux() {
-	kitty_remove_spacing
-	command tmux "$@"
-	kitty_set_spacing
-}
+# function sudoedit() {
+# 	kitty_remove_spacing
+# 	command sudoedit "$@"
+# 	kitty_set_spacing
+# }
 function yazi() {
 	kitty_remove_spacing
 	command yazi "$@"
@@ -59,5 +59,10 @@ function aerc() {
 function cxxmatrix() {
 	kitty_remove_spacing
 	command cxxmatrix "$@"
+	kitty_set_spacing
+}
+function tmux() {
+	kitty_remove_spacing
+	command tmux "$@"
 	kitty_set_spacing
 }

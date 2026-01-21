@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # colors
 ERROR='\e[38;5;196m'

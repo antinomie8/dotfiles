@@ -1,8 +1,10 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 # colors
 ERROR='\e[38;5;196m'
 WARNING='\e[38;5;226m'
+BLUE='\e[38;5;39m'
+GREEN='\e[38;5;46m'
 COLOR_RESET='\e[0m'
 
 # clone the repo if it is not in ~/.config ans cd into it
@@ -12,14 +14,15 @@ cd ~/.config/dotfiles || {
 	exit
 }
 
-# $1: file to copy relative to ~/.config/dotfiles, $2: destination
-function copy {
-	[[ -e "$1" ]] || {
+# $1: file to copy (relative to ~/.config/dotfiles)
+# $2: destination  (relative to ~/.config/dotfiles)
+function copy() {
+	[[ -e $1 ]] || {
 		echo -e "${WARNING} $1 not found${COLOR_RESET}"
 		return 1
 	}
-	[[ -d "$1" ]] && rsync -a --delete "$1/" "$2/$(basename "$1")/"
-	[[ -f "$1" ]] && rsync -a --delete "$1" "$2/$(basename "$1")"
+	[[ -d $1 ]] && rsync -a --delete "$1/" $2/$(basename $1)/
+	[[ -f $1 ]] && rsync -a --delete $1 $2/$(basename $1)
 }
 
 # list of configs and scripts to copy
@@ -27,30 +30,30 @@ configs=("bat" "btop" "browser" "clangd" "eza" "fastfetch" "formatters" "git" "h
 	"hyprland-preview-share-picker" "illogical-impulse" "imv" "kitty" "lazygit" "mpv"
 	"neomutt" "ncdu" "npm" "nvim" "oly" "quickshell" "texmf" "thundery" "tmux" "udiskie" "uwsm"
 	"wget" "xdg-desktop-portal" "xdg-desktop-portal-termfilechooser" "yazi" "zathura" "zsh"
-	"fzf.conf" "kmonad.kbd" "mimeapps.list" "ripgrep.conf" " safeeyes" "shellcheckrc" "user-dirs.dirs")
+	"fzf.conf" "kmonad.kbd" "mimeapps.list" "ripgrep.conf" "safeeyes" "shellcheckrc" "user-dirs.dirs")
 # mozilla msmtp notmuch goimapnotify himalaya mirador aerc
 scripts=("assemble" "fzf_preview_wrapper" "git_dotfiles" "rgb" "zoxide-rename")
 systemd_user_units=("mail-sync.service" "goimapnotify.service")
 
 # overwrite configs in the dotfiles repo
 for config in ${configs[@]}; do
-	copy "$HOME/.config/$config" configs
+	copy $HOME/.config/$config configs
 done
 # overwrite scripts in the dotfiles repo
-for systemd_user_unit in ${scripts[@]}; do
-	copy "$HOME/.local/bin/$systemd_user_unit" scripts
+for script in ${scripts[@]}; do
+	copy $HOME/.local/bin/$script scripts
 done
 # overwrite systemd user units in the dotfiles repo
 for systemd_user_unit in ${systemd_user_units[@]}; do
-	copy "$HOME/.config/systemd/user/$systemd_user_unit" etc/systemd/user
+	copy $HOME/.config/systemd/user/$systemd_user_unit etc/systemd/user
 done
 # others
-copy "$CPLUS_INCLUDE_PATH/dbg.hpp" etc
-copy "$HOME/.local/share/typst/packages/local/oly" etc
-fd . etc/oly -tf -e 'pdf' -x rm {}
+copy $CPLUS_INCLUDE_PATH/dbg.hpp etc
+copy $HOME/.local/share/typst/packages/local/oly etc
 
 # remove chosen files and directories
-find configs/neomutt/accounts -regex "\S*@\S*\.\S*" -type f -delete
+fd . etc/oly -tf -e 'pdf' -x rm {}
+find configs/neomutt/accounts -regex '\S*@\S*\.\S*' -type f -delete
 # obfuscate email adresses
 [[ -f configs/neomutt/neomuttrc ]] && {
 	sed -i 's:\(source .*/\)\S*@\S*\(<enter>;<check-stats>. "switch to \)\S*@\S*\("\):\2example@mail.com\2example@mail.com\3:' configs/neomutt/neomuttrc
@@ -59,14 +62,28 @@ find configs/neomutt/accounts -regex "\S*@\S*\.\S*" -type f -delete
 # obfuscate API keys
 sed -i 's:\(export.*API_KEY=\).*:\1"ooops not supposed to show that":' configs/zsh/.zshenv
 
+# cleanup
+for file in configs/*; do
+	if [[ ! $configs[(Ie)$file] ]]; then
+		echo "${WARNING}${GREEN}$file${BLUE} is in configs/ directory. Remove it ? ${COLOR_RESET}"
+		read -r answer
+		read -r answer
+		case $answer in
+		[yY][eE][sS] | [yY])
+			rm -r configs/$file
+			;;
+		esac
+	fi
+done
+
 # add everything to the index
 git add .
 
 # commit if args are passed to the scripts
 if [[ $# == 2 ]]; then
-	git commit -m"$1" -m"$2"
+	git commit -m $1 -m $2
 	git push
 elif [[ $# == 1 ]]; then
-	git commit -m"$1"
+	git commit -m $1
 	git push
 fi
