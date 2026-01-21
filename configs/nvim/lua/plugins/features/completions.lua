@@ -210,6 +210,9 @@ return {
 						active = {
 							virt_text = { { "  ", "Comment" } },
 						},
+						passive = {
+							virt_text = {},
+						},
 					},
 				},
 				ft_func = require("luasnip.extras.filetype_functions").from_cursor,
