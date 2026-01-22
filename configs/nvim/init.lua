@@ -27,8 +27,8 @@ require("lazy").setup({
 	readme = { root = vim.fn.stdpath("state") .. "docs/readme" },
 	spec = {
 		{ import = "plugins.coding" },
+		{ import = "plugins.core" },
 		{ import = "plugins.editor" },
-		{ import = "plugins.features" },
 		{ import = "plugins.lang" },
 		{ import = "plugins.ui" },
 		{ import = "plugins.util" },

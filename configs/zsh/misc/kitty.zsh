@@ -16,23 +16,25 @@ function nvim() {
 	command nvim "$@"
 	kitty_set_spacing
 }
-# function sudoedit() {
-# 	kitty_remove_spacing
-# 	command sudoedit "$@"
-# 	kitty_set_spacing
-# }
 function yazi() {
 	kitty_remove_spacing
 	command yazi "$@"
 	kitty_set_spacing
 }
 function lazygit() {
-	kitty_remove_spacing
-	command lazygit "$@"
-	kitty_set_spacing
+	local repo
+	if repo=$(git rev-parse --show-toplevel 2>/dev/null); then
+		print -Pn "\e]0; $(basename $repo)\a"
+		kitty_remove_spacing
+		command lazygit "$@"
+		kitty_set_spacing
+	else
+		echo "Error: must be run inside a git repository"
+	fi
 }
 function btop() {
 	kitty_remove_spacing
+	print -Pn "\e]0; top\a"
 	command btop "$@"
 	kitty_set_spacing
 }

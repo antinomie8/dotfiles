@@ -12,7 +12,7 @@ vim.api.nvim_create_autocmd("WinEnter", {
 })
 
 -- hide the cursor in chosen filetypes
-vim.api.nvim_create_autocmd({ "BufEnter", "CmdlineLeave" }, {
+vim.api.nvim_create_autocmd({ "BufEnter", "FileType", "CmdlineLeave" }, {
 	callback = function(event)
 		local enable = {
 			"aerial",
@@ -21,9 +21,9 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CmdlineLeave" }, {
 			"diff",
 			"DiffviewFiles",
 			"dropbar_menu",
+			"gitgraph",
 			"neo-tree",
 			"notmuch-threads",
-			"noice",
 			"trouble",
 			"undotree",
 			"yazi",
@@ -34,10 +34,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CmdlineLeave" }, {
 			vim.cmd("hi Cursor blend=0")
 		end
 	end,
-})
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "alpha", "undotree", "notmuch-threads" },
-	callback = function() vim.cmd("hi Cursor blend=100") end,
 })
 vim.api.nvim_create_autocmd("InsertEnter", {
 	callback = function() vim.cmd("hi Cursor blend=0") end,
@@ -169,17 +165,19 @@ vim.api.nvim_create_autocmd("OptionSet", {
 	end,
 })
 
--- change titlestring when reading email
+-- change titlestring
 vim.api.nvim_create_autocmd("FileType", {
 	callback = function(event)
-		local mail_ft = { "notmuch-threads", "mail" }
-		local ft_ignore = { "notify" }
+		local ft_icon = {
+			["man"] = "󱚊",
+			["mail"] = "",
+			["notmuch-threads"] = "",
+		}
+		local ft_ignore = { "noice", "notify", "blink-cmp-menu" }
 		if vim.tbl_contains(ft_ignore, vim.bo[event.buf].filetype) then
 			return
-		elseif vim.tbl_contains(mail_ft, vim.bo[event.buf].filetype) then
-			vim.opt_local.titlestring = " %t"
 		else
-			vim.opt_local.titlestring = " %t"
+			vim.opt_local.titlestring = (ft_icon[vim.bo[event.buf].filetype] or "") .. " %t"
 		end
 	end,
 })

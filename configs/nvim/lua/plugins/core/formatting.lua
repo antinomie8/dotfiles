@@ -1,5 +1,4 @@
-local function find_config_file(...)
-	local arg = { ... }
+local function find_config_file(dirname, filenames)
 	local function default()
 		local config_file = arg[1]
 		if config_file:sub(1, 1) == "." then
@@ -7,10 +6,10 @@ local function find_config_file(...)
 		end
 		return (vim.env.XDG_CONFIG_HOME or (vim.env.HOME .. "/.config")) .. "/formatters/" .. config_file
 	end
-	return vim.fs.find(arg, {
+	return vim.fs.find(filenames, {
 		type = "file",
 		upward = true,
-		path = vim.fs.dirname(vim.api.nvim_buf_get_name(0)),
+		path = dirname,
 	})[1] or default()
 end
 
@@ -61,32 +60,54 @@ return {
 			js = { "prettier" },
 			tex = { "tex", "tex_fmt" },
 			typst = { "typstyle" },
-			lua = { "stylua", lsp_format = "prefer" },
+			lua = function(bufnr)
+				if #vim.fs.find({ "stylua.toml", ".stylua.toml" }, {
+						type = "file",
+						upward = true,
+						path = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)),
+					}) > 0 then
+					return { "stylua" }
+				else
+					return { lsp_format = "prefer" }
+				end
+			end,
 
 			["*"] = { "trim_whitespace", "trim_newlines" },
 		},
 		formatters = {
 			clang_format = {
 				command = "clang-format",
-				args = function() return "--style=file:" .. find_config_file(".clang-format") end,
+				args = function(_, ctx)
+					return "--style=file:" .. find_config_file(ctx.dirname, ".clang-format")
+				end,
 			},
 			rustfmt = {
 				command = "rustfmt",
-				args = function() return { "--config-path", find_config_file("rustfmt.toml", ".rustfmt.toml") } end,
+				args = function(_, ctx)
+					return {
+						"--config-path",
+						find_config_file(ctx.dirname, { "rustfmt.toml", ".rustfmt.toml" }),
+					}
+				end,
 			},
 			tex_fmt = {
 				command = "tex-fmt",
-				args = function()
+				args = function(_, ctx)
 					return {
 						"--config",
-						find_config_file("tex-fmt.toml"),
+						find_config_file(ctx.dirname, "tex-fmt.toml"),
 						"--stdin",
 					}
 				end,
 			},
 			stylua = {
 				command = "stylua",
-				prepend_args = function() return { "--config-path", find_config_file("stylua.toml", ".stylua.toml") } end,
+				prepend_args = function(_, ctx)
+					return {
+						"--config-path",
+						find_config_file(ctx.dirname, { "stylua.toml", ".stylua.toml" }),
+					}
+				end,
 			},
 			prettier = {
 				command = "prettier",

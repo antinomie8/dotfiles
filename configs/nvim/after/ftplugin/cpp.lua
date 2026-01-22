@@ -82,7 +82,7 @@ vim.keymap.set("n", "<localleader>dbg", function()
 			-- 	vim.notify(obj.stderr, (obj.code == 0) and vim.log.levels.WARN or vim.log.levels.ERROR, { title = "Compiler", icon = "" })
 		end
 		if obj.code == 0 then
-			vim.notify("Compilation completed", vim.log.levels.INFO, { title = "Debugging", icon = "" })
+			vim.notify("Compilation completed", vim.log.levels.INFO, { title = "Compiler", icon = "" })
 			vim.b[buf].compilation_completed = true
 			vim.b[buf].use_default_executable_path = true
 			if vim.b[buf].stdio_completed then
@@ -121,7 +121,7 @@ vim.keymap.set("n", "<localleader>rm", function()
 				vim.notify(
 					("Failed to remove %s: %s"):format(filename, err),
 					vim.log.levels.ERROR,
-					{ title = "Debugging", icon = "" }
+					{ title = "Debugger", icon = "" }
 				)
 			end
 		end

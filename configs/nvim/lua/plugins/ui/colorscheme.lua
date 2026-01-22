@@ -41,7 +41,7 @@ return {
 	priority = 1000,
 	config = function()
 		require("kanagawa").setup({
-			compile = true,
+			compile = false,
 			overrides = function(colors)
 				local theme = colors.theme
 				local palette = colors.palette
@@ -80,6 +80,8 @@ return {
 
 					Text = { fg = palette.fujiWhite },
 
+					diffDelete = { link = "Comment" },
+
 					-- plugins
 					markdownH1 = { fg = palette.peachRed },
 					markdownH2 = { fg = palette.surimiOrange },
@@ -92,9 +94,9 @@ return {
 					MarkdownSuccess = { fg = palette.springGreen },
 					MarkdownWarn = { fg = palette.roninYellow },
 					MarkdownError = { fg = palette.samuraiRed },
-					MarkdownHint = { fg = "#6a9589" },
+					MarkdownHint = { fg = palette.waveAqua1 },
 					MarkdownQuote = { fg = palette.oniViolet },
-					MarkdownTable = { fg = "#54546d" },
+					MarkdownTable = { fg = palette.sumiInk6 },
 
 					RenderMarkdownBullet = { link = "function" },
 
@@ -104,6 +106,21 @@ return {
 					TypstConcealSurround = { link = "Delimiter" },
 					TypstConcealSet = { link = "Constant" },
 					TypstConcealLetters = { link = "Special" },
+
+					GitGraphHash = { link = "diffAdded" },
+					GitGraphTimestamp = { link = "Comment" },
+					GitGraphAuthor = { link = "Title" },
+					GitGraphBranchName = { link = "diffChanged" },
+					GitGraphBranchTag = { link = "DiagnosticHint" },
+					GitGraphBranchMsg = { link = "Normal" },
+
+					GitGraphBranch1 = { fg = palette.oniViolet },
+					GitGraphBranch2 = { fg = palette.crystalBlue },
+					GitGraphBranch3 = { fg = palette.springBlue },
+					GitGraphBranch4 = { fg = palette.lightBlue },
+					GitGraphBranch5 = { fg = palette.waveAqua2 },
+
+					DiffViewFolderSign = { link = "Directory" },
 
 					IlluminatedWordText = { bold = true },
 					IlluminatedWordRead = { bold = true },

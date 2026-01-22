@@ -113,7 +113,7 @@ return {
 		},
 	},
 	{
-		"sindrets/diffview.nvim",
+		"anonymousgrasshopper/diffview.nvim",
 		cmd = {
 			"DiffviewOpen",
 			"DiffviewToggleFiles",
@@ -138,14 +138,31 @@ return {
 				signs = {
 					fold_closed = "",
 					fold_open = "",
-					done = " ",
+					done = "",
 				},
+				status_icons = {
+					["M"] = "", -- modified
+					["T"] = "T", -- type
+					["A"] = "", -- added
+					["D"] = "󱟃", -- deleted
+					["R"] = "", -- renamed
+					["C"] = "", -- copied
+					["U"] = "", -- updated but unmerged
+					["X"] = "X", --
+					["B"] = "B", --
+					["?"] = "", -- untracked
+					["!"] = "", -- ignored
+				},
+
 				hooks = {
 					diff_buf_read = function(_, _)
 						vim.cmd("hi Cursor blend=100")
 						vim.opt_local.relativenumber = false
 					end,
-					view_opened = function(_) vim.opt_local.sidescrolloff = 0 end,
+					view_opened = function(_)
+						vim.opt_local.sidescrolloff = 0
+						vim.opt_local.laststatus = 3
+					end,
 				},
 				keymaps = {
 					disable_defaults = true,
@@ -277,12 +294,66 @@ return {
 						{ "n", "q", actions.close, { desc = "Close help menu" } },
 					},
 				},
-				hooks = {
-					view_opened = function()
-						vim.opt_local.laststatus = 3
-					end,
-				},
 			}
 		end,
+	},
+	{
+		"isakbm/gitgraph.nvim",
+		keys = {
+			{
+				"<leader>gl",
+				function()
+					require("gitgraph").draw({}, { all = true, max_count = 1000 })
+				end,
+				desc = "Draw git history graph",
+			},
+		},
+		opts = {
+			git_cmd = "git",
+			symbols = {
+				merge_commit = "",
+				commit = "",
+				merge_commit_end = "",
+				commit_end = "",
+
+				-- Advanced symbols
+				GVER = "",
+				GHOR = "",
+				GCLD = "",
+				GCRD = "╭",
+				GCLU = "",
+				GCRU = "",
+				GLRU = "",
+				GLRD = "",
+				GLUD = "",
+				GRUD = "",
+				GFORKU = "",
+				GFORKD = "",
+				GRUDCD = "",
+				GRUDCU = "",
+				GLUDCD = "",
+				GLUDCU = "",
+				GLRDCL = "",
+				GLRDCR = "",
+				GLRUCL = "",
+				GLRUCR = "",
+			},
+			format = {
+				timestamp = "%H:%M:%S %d-%m-%Y",
+				fields = { "hash", "timestamp", "author", "branch_name", "tag" },
+			},
+			hooks = {
+				-- Check diff of a commit
+				on_select_commit = function(commit)
+					vim.notify("DiffviewOpen " .. commit.hash .. "^!")
+					vim.cmd(":DiffviewOpen " .. commit.hash .. "^!")
+				end,
+				-- Check diff from commit a -> commit b
+				on_select_range_commit = function(from, to)
+					vim.notify("DiffviewOpen " .. from.hash .. "~1.." .. to.hash)
+					vim.cmd(":DiffviewOpen " .. from.hash .. "~1.." .. to.hash)
+				end,
+			},
+		},
 	},
 }

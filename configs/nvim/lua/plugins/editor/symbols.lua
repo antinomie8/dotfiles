@@ -18,7 +18,7 @@ return {
 			"AerialNavClose",
 		},
 		opts = function()
-			local icons = require("config.icons").symbols
+			local icons = require("static.icons").symbols
 			icons.lua = { Package = icons.Control }
 
 			local opts = {
@@ -96,7 +96,7 @@ return {
 				},
 				icons = {
 					kinds = {
-						symbols = require("config.icons").symbols,
+						symbols = require("static.icons").symbols,
 					},
 					ui = {
 						menu = {

@@ -61,7 +61,6 @@ def draw_tab(
         draw_right_sep()
     else:
         draw_left_sep()
-        screen.draw(' ')
         draw_title(draw_data, screen, tab, index, max_tab_length)
         extra = screen.cursor.x - before - max_tab_length
         screen.cursor.fg = as_rgb(draw_data.active_fg.rgb)
@@ -71,7 +70,6 @@ def draw_tab(
         elif extra == -1:
             screen.cursor.x -= 2
             screen.draw('…')
-        screen.draw(' ')
         draw_right_sep()
 
     return screen.cursor.x
