@@ -9,6 +9,7 @@ git clone https://github.com/anonymousgrasshopper/dotfiles ~/.config/dotfiles &&
 
 ### Things to do after installing
 - `rustup default stable`
+- `go telemetry off`
 <!-- - `build-fzf-tab-module` # does not respect LS_COLORS -->
 #### Systemd
 - `exec-once = systemctl --user enable --now hypridle.service`

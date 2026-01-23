@@ -23,12 +23,6 @@
 [merge]
 	conflictstyle = zdiff3
 
-[core]
-	pager = delta
-
-[interactive]
-	diffFilter = delta --color-only
-
 [color]
 	ui = auto
 
@@ -42,6 +36,7 @@
 	r = reset
 	cp = cherry-pick
 	gr = grep -Ii
+	wl = worktree list
 
 	# tweak defaults
 	diff = diff --word-diff
@@ -49,6 +44,7 @@
 	grep = grep -Ii
 	bra = branch -ra
 	ai = add --interactive
+
 	# grep on filename
 	f = "!git ls-files | grep -i"
 
@@ -132,13 +128,11 @@
 
 	# list all aliases
 	la = "!git config -l | grep alias | cut -c 7-"
-	# convoluted aliases
+
 	# grep from root folder
 	gra = "!f() { A=$(pwd) && TOPLEVEL=$(git rev-parse --show-toplevel) && cd $TOPLEVEL && git grep --full-name -In $1 | xargs -I{} echo $TOPLEVEL/{} && cd $A; }; f"
 	# rename branch tree to done-
 	done = "!f() { git branch | grep "$1" | cut -c 3- | grep -v done | xargs -I{} git branch -m {} done-{}; }; f"
-
-	wl = worktree list
 	# undo from here http://megakemp.com/2016/08/25/git-undo/
 	undo = "!f() { git reset --hard $(git rev-parse --abbrev-ref HEAD)@{${1-1}}; }; f"
 
@@ -146,6 +140,18 @@
 	insteadOf = gh:
 [url "https://codeberg.org/"]
 	insteadOf = cb:
+
+[difftool "nvim_difftool"]
+	cmd = nvim -c \"packadd nvim.difftool\" -c \"DiffTool $LOCAL $REMOTE\"
+
+[diff]
+	tool = nvim_difftool
+
+[core]
+	pager = delta
+
+[interactive]
+	diffFilter = delta --color-only
 
 [delta]
 	features = theme
