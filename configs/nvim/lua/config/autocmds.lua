@@ -14,7 +14,7 @@ vim.api.nvim_create_autocmd("WinEnter", {
 -- hide the cursor in chosen filetypes
 vim.api.nvim_create_autocmd({ "BufEnter", "FileType", "CmdlineLeave" }, {
 	callback = function(event)
-		local enable = {
+		local cursor_hidden = {
 			"aerial",
 			"alpha",
 			"dap-float",
@@ -28,7 +28,10 @@ vim.api.nvim_create_autocmd({ "BufEnter", "FileType", "CmdlineLeave" }, {
 			"undotree",
 			"yazi",
 		}
-		if vim.tbl_contains(enable, vim.bo[event.buf].filetype) then
+		local ft_ignore = { "noice", "notify", "blink-cmp-menu" }
+		if vim.tbl_contains(ft_ignore, vim.bo[event.buf].filetype) then
+			return
+		elseif vim.tbl_contains(cursor_hidden, vim.bo[event.buf].filetype) then
 			vim.cmd("hi Cursor blend=100")
 		else
 			vim.cmd("hi Cursor blend=0")
@@ -48,7 +51,10 @@ vim.api.nvim_create_autocmd("CmdlineEnter", {
 
 -- toggle some options in terminals and darken their background
 vim.api.nvim_create_autocmd("TermOpen", {
-	callback = function()
+	callback = function(event)
+		if vim.api.nvim_buf_get_name(event.buf):match("yazi$") then
+			return
+		end
 		vim.opt_local.winhighlight = "Normal:TerminalBackground"
 		vim.cmd("startinsert")
 	end,

@@ -41,6 +41,7 @@ return {
 				"cpp",
 				"hyprlang",
 				"kitty",
+				"latex",
 				"lua",
 				"markdown",
 				"markdown_inline",

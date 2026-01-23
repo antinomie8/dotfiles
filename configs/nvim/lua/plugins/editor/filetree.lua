@@ -8,10 +8,9 @@ return {
 		"Neotree",
 	},
 	-- dependencies:
+	-- 	MunifTanjim/nui.nvim
 	-- 	nvim-lua/plenary.nvim
 	-- 	nvim-tree/nvim-web-devicons
-	-- 	MunifTanjim/nui.nvim
-	-- 	3rd/image.nvim
 	init = function()
 		vim.api.nvim_create_autocmd("BufEnter", {
 			group = vim.api.nvim_create_augroup("Neotree_start_directory", { clear = true }),
@@ -30,16 +29,6 @@ return {
 		})
 	end,
 	opts = function()
-		local function on_move(data) Snacks.rename.on_rename_file(data.source, data.destination) end
-
-		vim.api.nvim_create_autocmd("FileType", {
-			pattern = "neo-tree",
-			callback = function()
-				vim.keymap.set("n", "J", "5j", { desc = "Scroll 5 lines down", buffer = true })
-				vim.keymap.set("n", "K", "5k", { desc = "Scroll 5 lines down", buffer = true })
-			end,
-		})
-
 		return {
 			close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
 			popup_border_style = "rounded",
@@ -212,9 +201,9 @@ return {
 						"*.log",
 					},
 					always_show = { ".zshrc", ".zshenv" }, -- remains visible even if other settings would normally hide it
-					always_show_by_pattern = {}, -- uses glob style patterns
-					never_show = {}, -- remains hidden even if visible is toggled to true, this overrides always_show
-					never_show_by_pattern = { -- uses glob style patterns
+					always_show_by_pattern = {},      -- uses glob style patterns
+					never_show = {},                  -- remains hidden even if visible is toggled to true, this overrides always_show
+					never_show_by_pattern = {         -- uses glob style patterns
 						".git",
 						"*.aux",
 						"*.fls",
@@ -225,13 +214,13 @@ return {
 					},
 				},
 				follow_current_file = {
-					enabled = false, -- This will find and focus the file in the active buffer every time
+					enabled = false,                  -- This will find and focus the file in the active buffer every time
 					-- the current file is changed while the tree is open.
-					leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+					leave_dirs_open = false,          -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
 				},
-				group_empty_dirs = false, -- when true, empty folders will be grouped together
+				group_empty_dirs = false,           -- when true, empty folders will be grouped together
 				hijack_netrw_behavior = "open_current", -- netrw disabled, opening a directory opens neo-tree
-				use_libuv_file_watcher = false, -- This will use the OS level file watchers to detect changes
+				use_libuv_file_watcher = false,     -- This will use the OS level file watchers to detect changes
 				-- instead of relying on nvim autocmd events.
 				window = {
 					mappings = {
@@ -393,10 +382,12 @@ return {
 				{
 					event = "neo_tree_buffer_enter",
 					handler = function()
+						vim.keymap.set("n", "J", "5j", { desc = "Scroll 5 lines down", buffer = true })
+						vim.keymap.set("n", "K", "5k", { desc = "Scroll 5 lines down", buffer = true })
+
 						vim.wo.fillchars = "vert: ,horizup:─,horizdown:─,vertleft:│,vertright:│,verthoriz:┬"
 						vim.opt_local.sidescrolloff = 0
 						vim.wo.winhighlight = "Normal:NormalDark"
-						vim.cmd("hi Cursor blend=100")
 					end,
 				},
 				{
@@ -411,8 +402,6 @@ return {
 						end
 					end,
 				},
-				{ event = "file_moved", handler = on_move },
-				{ event = "file_renamed", handler = on_move },
 				{
 					event = "file_moved",
 					handler = function(_) vim.cmd("hi Cursor blend=100") end,
@@ -424,6 +413,14 @@ return {
 				{
 					event = "file_renamed",
 					handler = function(_) vim.cmd("hi Cursor blend=100") end,
+				},
+				{
+					event = "file_moved",
+					handler = function(data) Snacks.rename.on_rename_file(data.source, data.destination) end,
+				},
+				{
+					event = "file_renamed",
+					handler = function(data) Snacks.rename.on_rename_file(data.source, data.destination) end,
 				},
 				-- {
 				--	 event = "file_open_requested",

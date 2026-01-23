@@ -85,31 +85,62 @@ return {
 
 				lua_ls = {
 					on_init = function(client)
-						if client.workspace_folders then
-							local path = client.workspace_folders[1].name
-							if
-								not (vim.fn.getcwd():match("nvim"))
-								and (vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc"))
-							then
-								return
-							end
+						local config = "nvim"
+						local path = client.workspace_folders and client.workspace_folders[1].name or vim.api.nvim_buf_get_name(0)
+						if
+							#vim.fs.find({ ".luarc.json", ".luarc.jsonc" }, {
+								type = "file",
+								upward = true,
+								path = path,
+							}) > 0
+						then
+							return
 						end
 
-						client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
-							runtime = {
-								-- Tell the language server which version of Lua you"re using
-								version = "LuaJIT",
-							},
-							-- Make the server aware of Neovim runtime files
-							workspace = {
-								checkThirdParty = false,
-								library = {
-									vim.env.VIMRUNTIME,
-									"${3rd}/luv/library",
-									-- "${3rd}/busted/library",
+						if path:match("^" .. vim.env.HOME .. "/.config/yazi") then
+							config = "yazi"
+						end
+
+						local configs = {
+							nvim = {
+								runtime = {
+									-- Tell the language server which version of Lua you're using
+									version = "LuaJIT",
+									-- Tell the language server how to find Lua modules same way as Neovim
+									-- (see `:h lua-module-load`)
+									path = {
+										"lua/?.lua",
+										"lua/?/init.lua",
+									},
+								},
+								-- Make the server aware of Neovim runtime files
+								workspace = {
+									checkThirdParty = false,
+									library = {
+										vim.env.VIMRUNTIME,
+										"${3rd}/luv/library",
+										-- "${3rd}/busted/library",
+									},
 								},
 							},
-						})
+							yazi = {
+								runtime = {
+									-- Tell the language server which version of Lua you're using
+									version = "Lua 5.4",
+									-- Tell the language server how to find Lua modules
+									path = {
+										"plugins/?.yazi/main.lua",
+									},
+								},
+								workspace = {
+									library = {
+										"~/.config/yazi/plugins/types.yazi/",
+									},
+								},
+							},
+						}
+
+						client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, configs[config])
 					end,
 					settings = {
 						Lua = {
@@ -265,8 +296,8 @@ return {
 	{
 		"rachartier/tiny-code-action.nvim",
 		-- dependencies:
-		--  nvim-telescope/telescope.nvim
 		--  nvim-lua/plenary.nvim
+		--  folke/snacks.nvim
 		keys = {
 			{
 				"<leader>ca",
@@ -277,7 +308,7 @@ return {
 		},
 		opts = {
 			backend = "delta",
-			picker = "telescope",
+			picker = "snacks",
 			backend_opts = {
 				delta = {
 					header_lines_to_remove = 5,
