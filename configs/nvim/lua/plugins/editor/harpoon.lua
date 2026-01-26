@@ -1,18 +1,21 @@
-local function toggle_telescope(harpoon_files)
-	local conf = require("telescope.config").values
-	local file_paths = {}
-	for _, item in ipairs(harpoon_files.items) do
-		table.insert(file_paths, item.value)
+local function toggle_picker(harpoon_files)
+	local items = {}
+	for i, harpoon_item in ipairs(harpoon_files.items) do
+		local path = harpoon_item.value
+		local item = {
+			idx = i,
+			text = path,
+			file = path,
+			name = path,
+		}
+		table.insert(items, item)
 	end
 
-	require("telescope.pickers").new({}, {
-		prompt_title = "Harpoon",
-		finder = require("telescope.finders").new_table({
-			results = file_paths,
-		}),
-		previewer = conf.file_previewer({}),
-		sorter = conf.generic_sorter({}),
-	}):find()
+	require("snacks").picker({
+		title = "Harpoon",
+		source = "harpoon",
+		items = items,
+	})
 end
 
 return {
@@ -28,7 +31,7 @@ return {
 		},
 		{
 			"<M-h>",
-			function() toggle_telescope(require("harpoon"):list()) end,
+			function() toggle_picker(require("harpoon"):list()) end,
 			desc = "Toggle Harpoon ui",
 		},
 

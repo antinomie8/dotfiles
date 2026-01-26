@@ -46,8 +46,8 @@ return {
 		dashboard.section.buttons.val = {
 			dashboard.button("n", "   New File", "<Cmd>ene<CR>"),
 			dashboard.button("e", "   Toggle file explorer", "<Cmd>Neotree toggle<CR>"),
-			dashboard.button("f", "󰱼   Find File", "<Cmd>Telescope find_files<CR>"),
-			dashboard.button("g", "   Find Word", "<Cmd>Telescope live_grep<CR>"),
+			dashboard.button("f", "󰱼   Find File", "<Cmd>lua require('snacks.picker').files()<CR>"),
+			dashboard.button("g", "   Grep", "<Cmd>lua require('snacks.picker').grep()<CR>"),
 			dashboard.button("r", "󰁯   Restore Session For Current Directory", "<Cmd>AutoSession restore<CR>"),
 			dashboard.button("q", "   Quit Neovim", "<Cmd>qa<CR>"),
 		}

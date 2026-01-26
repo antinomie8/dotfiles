@@ -14,9 +14,6 @@ return {
 		{
 			"anonymousgrasshopper/nvim-notify",
 			opts = function()
-				if package.loaded["telescope"] then
-					require("telescope").load_extension("notify")
-				end
 				return {
 					timeout = 3000,
 					on_open = function(win) vim.api.nvim_win_set_config(win, { zindex = 100 }) end,
@@ -89,18 +86,7 @@ return {
 				filter = {
 					event = "notify",
 					kind = "info",
-					find = "^$",
-				},
-				opts = { skip = true },
-			},
-			{
-				filter = {
-					event = "notify",
-					kind = "warn",
-					cond = function(message)
-						return message.opts.title ==
-							"telescope.nvim" --[[ and message.content():match("Nothing currently selected") ]]
-					end,
+					find = "^%s*$",
 				},
 				opts = { skip = true },
 			},
@@ -109,6 +95,14 @@ return {
 					event = "notify",
 					kind = "info",
 					find = "^tabout%.nvim: No parser found for filetype",
+				},
+				opts = { skip = true },
+			},
+			{
+				filter = {
+					event = "notify",
+					kind = "warn",
+					find = "^Heads up! This layout changed the list order,\nso `up` goes down and `down` goes up.",
 				},
 				opts = { skip = true },
 			},

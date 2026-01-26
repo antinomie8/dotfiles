@@ -100,15 +100,8 @@ return {
 			close_dap_float()
 		end
 
-		local telescope_find_executable = function()
-			local pickers = require("telescope.pickers")
-			local finders = require("telescope.finders")
-			local conf = require("telescope.config").values
-			local actions = require("telescope.actions")
-			local action_state = require("telescope.actions.state")
-
+		local select_executable = function()
 			return coroutine.create(function(coro)
-				local opts = require("telescope.themes").get_dropdown({})
 				local exclude = {
 					".git/*",
 					"build/_deps",
@@ -119,20 +112,17 @@ return {
 					table.insert(cmd, "--exclude")
 					table.insert(cmd, pattern)
 				end
-				pickers
-					.new(opts, {
-						prompt_title = "Path to executable",
-						finder = finders.new_oneshot_job(cmd, {}),
-						sorter = conf.generic_sorter(opts),
-						attach_mappings = function(buffer_number)
-							actions.select_default:replace(function()
-								actions.close(buffer_number)
-								coroutine.resume(coro, action_state.get_selected_entry()[1])
-							end)
-							return true
-						end,
-					})
-					:find()
+				local obj = vim.system(cmd):wait()
+				if obj.code == 0 then
+					vim.ui.select(
+						vim.split(obj.stdout, "\n", { trimempty = true }),
+						{ prompt_title = "Path to executable" },
+						function(choice) coroutine.resume(coro, choice) end
+					)
+				else
+					vim.notify(obj.stderr, vim.log.levels.ERROR, { "Debugger", "" })
+					coroutine.resume(coro, nil)
+				end
 			end)
 		end
 
@@ -145,7 +135,7 @@ return {
 					type = dap_config[1].type,
 					request = "launch",
 					name = "Launch file with custom arguments (adhoc)",
-					program = telescope_find_executable(),
+					program = select_executable(),
 					args = args,
 				})
 				vim.notify(vim.inspect(args))
@@ -172,7 +162,7 @@ return {
 					if vim.b.use_default_executable_path then
 						return vim.fn.expand("%:r")
 					end
-					return telescope_find_executable()
+					return select_executable()
 					-- return vim.fn.input("Path to executable: ", vim.fn.expand("%:r"), "file")
 				end,
 				cwd = "${workspaceFolder}",

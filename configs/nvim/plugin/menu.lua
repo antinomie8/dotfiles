@@ -4,7 +4,7 @@ vim.cmd([[
 	anoremenu PopUp.Inspect     <Cmd>Inspect<CR>
 	amenu     PopUp.-1-         <NOP>
 	anoremenu PopUp.Definition  <Cmd>lua vim.lsp.buf.definition()<CR>
-	anoremenu PopUp.References  <Cmd>Telescope lsp_references<CR>
+	anoremenu PopUp.References  <Cmd>lua require("snacks.picker").lsp_references()<CR>
 	nnoremenu PopUp.Back        <C-t>
 ]])
 

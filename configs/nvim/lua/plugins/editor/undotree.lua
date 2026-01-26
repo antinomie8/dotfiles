@@ -24,7 +24,7 @@ return {
 		vim.g.undotree_HighlightSyntaxChange = "diffChanged"
 		vim.g.undotree_CustomUndotreeCmd = "vertical 32 new"
 		vim.g.undotree_CustomDiffpanelCmd = "belowright 12 new"
-		vim.g.undotree_DisabledFiletypes = { "TelescopePrompt" }
+		vim.g.undotree_DisabledFiletypes = { "snacks_picker_input" }
 		vim.g.undotree_CustomMap = function()
 			vim.keymap.set("n", "J", "<Plug>UndotreePreviousState", { buffer = true })
 			vim.keymap.set("n", "K", "<Plug>UndotreeNextState", { buffer = true })

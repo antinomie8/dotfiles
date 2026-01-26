@@ -41,7 +41,7 @@ return {
 	priority = 1000,
 	config = function()
 		require("kanagawa").setup({
-			compile = false,
+			compile = true,
 			overrides = function(colors)
 				local theme = colors.theme
 				local palette = colors.palette
@@ -68,7 +68,7 @@ return {
 					StatusLineSeparatorGrey = { fg = palette.sumiInk6, bg = palette.sumiInk4 },
 
 					Search = { fg = palette.oldWhite, bg = palette.waveBlue2 },
-					Folded = { fg = palette.springViolet1, bg = palette.sumiInk3 },
+					Folded = { fg = palette.springViolet1 },
 					WinSeparator = { fg = palette.sumiInk6 },
 					PanelHeading = { fg = palette.autumnYellow, bg = palette.sumiInk4 },
 
@@ -79,7 +79,6 @@ return {
 					IndentScope = { fg = palette.springViolet2 },
 
 					Text = { fg = palette.fujiWhite },
-
 					diffDelete = { link = "Comment" },
 
 					-- plugins
@@ -137,7 +136,7 @@ return {
 
 					BlinkCmpKindText = { link = "String" },
 
-					TelescopePromptPrefix = { fg = palette.autumnYellow, bg = palette.sumiInk3 },
+					SnacksPickerPrompt = { fg = palette.autumnYellow, bg = palette.sumiInk3 },
 
 					LightBulbSign = { fg = palette.oldWhite },
 

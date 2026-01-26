@@ -152,7 +152,7 @@ return {
 			wiki_link_func = "use_alias_only",
 			disable_frontmatter = true,
 			picker = {
-				name = "telescope.nvim",
+				name = "snacks.nvim",
 				note_mappings = {
 					-- Create a new note from your query.
 					new = "<C-x>",
