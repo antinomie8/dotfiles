@@ -11,7 +11,6 @@ return {
 		{
 			trig = "autocmd ",
 			dscr = "Neovim autocmd",
-			snippetType = "autosnippet",
 			condition = not_in_string_comment * line_begin,
 		},
 		fmt(
@@ -33,6 +32,24 @@ return {
 					{ t("") },
 				}),
 				d(3, get_visual),
+			}
+		)
+	),
+	s(
+		{
+			trig = "usercmd ",
+			dscr = "Neovim user command",
+			condition = not_in_string_comment * line_begin,
+		},
+		fmt(
+			[[
+				vim.api.nvim_create_user_command("<>", function(arg)
+					<>
+				end, {})
+			]],
+			{
+				i(1),
+				d(2, get_visual),
 			}
 		)
 	),
@@ -82,7 +99,7 @@ return {
 	),
 	s(
 		{
-			trig = "<[cC][mM][dD]>",
+			trig = "<c[mM][dD]>",
 			dscr = "Neovim keymap command",
 			wordTrig = false,
 			regTrig = true,
@@ -91,6 +108,7 @@ return {
 		{
 			t("<Cmd>"),
 			d(1, get_visual),
+			t("<CR>"),
 		}
 	),
 	s(

@@ -54,7 +54,7 @@ return {
 			return {
 				filetype = {
 					nft = {
-						"TelescopePrompt",
+						"snacks_picker_input",
 						"grug-far",
 					},
 				},
@@ -79,11 +79,24 @@ return {
 								local line, col, ft = obj.line, obj.col, fn.get_ft()
 								local function table_convert(arg) return type(arg) == "table" and arg or { arg } end
 								local conds = {
+									-- if the two characters before the cursor are paired, don't remove them
 									{
 										key = "<bs>",
 										ft = "*",
-										text = { '""', "()", "[]", "{}", "''", "<>", "$$", "**", "~~", "``" , "\\(\\)", "\\[\\]" },
-									}, -- if the two characters before the cursor are paired, don't remove them
+										pred = function()
+											local pairs = { '""', "()", "[]", "{}", "''", "<>", "$$", "**", "~~", "``" , "\\(\\)", "\\[\\]" }
+											local buffer_text = line:sub(col - 2, col - 1)
+											local next_char = line:sub(col, col) or ""
+											for _, pair in ipairs(pairs) do
+												-- sometimes ((|)) is sent as (()|), refusing to delete on backspace, so add extra condition
+												-- it's needed anyways when pair:sub(1, 1) == pair:sub(2, 2)
+												if buffer_text == pair and next_char ~= pair:sub(2, 2) then
+													return false
+												end
+											end
+											return true
+										end
+									},
 									-- snippets
 									{ key = "*", ft = { "markdown", "tex" }, text = "\\left" },
 									{ key = "[", ft = { "bash", "zsh", "sh" }, text = { "if ", "while " } }, -- use sh in case ft is wrong
@@ -113,6 +126,9 @@ return {
 														return false
 													end
 												end
+											end
+											if cond.pred and not cond.pred() then
+												return false
 											end
 										end
 									end
@@ -146,6 +162,7 @@ return {
 				{ "[=[",   "]=]",   ft = { "lua" }, newline = true },
 				{ "[==[",  "]==]",  ft = { "lua" }, newline = true },
 				{ "[===[", "]===]", ft = { "lua" }, newline = true },
+				{ "<Cmd>", "<CR>", ft = { "lua" } },
 				-- LaTeX
 				{ "\\[", "\\]", ft = { "tex" }, disable_end = true, newline = true },
 				{ "\\(", "\\)", ft = { "tex" }, disable_end = true, newline = true },

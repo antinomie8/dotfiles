@@ -140,6 +140,8 @@
 	insteadOf = gh:
 [url "https://codeberg.org/"]
 	insteadOf = cb:
+[url "https://github.com/anonymousgrasshopper/"]
+	insteadOf = me:
 
 [difftool "nvim_difftool"]
 	cmd = nvim -c \"packadd nvim.difftool\" -c \"DiffTool $LOCAL $REMOTE\"

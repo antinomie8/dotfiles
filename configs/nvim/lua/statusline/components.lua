@@ -116,6 +116,9 @@ local FileNameBlock = {
 
 local FileName = {
 	provider = function(self)
+		if vim.bo.buftype == "terminal" then
+			return vim.b.term_title
+		end
 		local filename = vim.fn.fnamemodify(self.filename, ":~")
 		if filename == "" then
 			return "[No Name]"
@@ -310,7 +313,7 @@ local extension_filetypes = {
 	"notmuch-threads",
 	"qf",
 	"toggleterm",
-	"TelescopePrompt",
+	"snacks_picker_input",
 	"yazi",
 	"undotree",
 }
@@ -351,7 +354,7 @@ components.ExtensionA = {
 			["neo-tree"] = function() return vim.fn.fnamemodify(vim.fn.getcwd(), ":~") end,
 			["notmuch-threads"] = "Mail",
 			["qf"] = function() return is_loclist() and "Location List" or "Quickfix List" end,
-			["TelescopePrompt"] = "Telescope",
+			["snacks_picker_input"] = "picker",
 			["toggleterm"] = function() return "Terminal #" .. vim.b.toggle_number end,
 			["yazi"] = "Yazi",
 			["undotree"] = "Undotree",
@@ -467,7 +470,7 @@ components.ExtensionY = {
 			end,
 			["neo-tree"] = "󰙅",
 			["notmuch-threads"] = function() return "󰇯 " .. vim.api.nvim_buf_line_count(0) - 1 end,
-			["TelescopePrompt"] = "󰭎",
+			["snacks_picker_input"] = "󰭎",
 			["toggleterm"] = " ",
 			["undotree"] = "󱁊",
 			["yazi"] = "󰇥",

@@ -301,7 +301,7 @@ return {
 		"isakbm/gitgraph.nvim",
 		keys = {
 			{
-				"<leader>gl",
+				"<leader>gg",
 				function()
 					require("gitgraph").draw({}, { all = true, max_count = 1000 })
 				end,

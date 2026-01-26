@@ -160,7 +160,11 @@ return {
 						score_offset = -10,
 						opts = {},
 					},
-					buffer = {},
+					buffer = {
+						opts = {
+							enable_in_ex_commands = false, -- prevents substitution previews
+						},
+					},
 					path = {
 						opts = {
 							get_cwd = function(_)
@@ -238,30 +242,28 @@ return {
 				if require("luasnip").expand_or_locally_jumpable() then
 					require("luasnip").expand_or_jump()
 				end
-			end, { silent = true })
+			end)
 			vim.keymap.set({ "i", "s" }, "<M-k>", function()
 				if require("luasnip").locally_jumpable(-1) then
 					require("luasnip").jump(-1)
 				end
-			end, { silent = true })
+			end)
 
 			vim.keymap.set({ "i", "s" }, "<M-n>", function()
 				if require("luasnip").choice_active() then
 					require("luasnip").change_choice(1)
 				end
-			end, { silent = true })
+			end)
 			vim.keymap.set({ "i", "s" }, "<M-N>", function()
 				if require("luasnip").choice_active() then
 					require("luasnip").change_choice(-1)
 				end
-			end, { silent = true })
+			end)
 
-			vim.keymap.set(
-				"n",
-				"<Leader><leader>s",
-				"<Cmd>lua require('luasnip.loaders.from_lua').load({paths = '~/.config/nvim/snippets'})<CR>",
-				{ desc = "Reload snippets" }
-			)
+			vim.api.nvim_create_user_command("LuasnipReload", function()
+				require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets" })
+			end, { desc = "Reload LuaSnip snippets" })
+			vim.keymap.set("n", "<localleader>rs", "<Cmd>LuasnipReload<CR>", { desc = "Reload Snippets" })
 		end,
 	},
 }

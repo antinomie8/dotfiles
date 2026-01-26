@@ -27,7 +27,7 @@ run = 'shell --block -- neomutt -a "$@"'
 
 [[mgr.prepend_keymap]]
 on   = "f"
-run  = "plugin jump-to-char"
+run  = "plugin jump-to-char -- --smartcase"
 desc = "Jump to char"
 
 [[mgr.prepend_keymap]]

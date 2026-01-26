@@ -11,7 +11,7 @@ return {
 				sort_by = "insert_after_current",
 				right_mouse_command = "vert sbuffer %d",
 				middle_mouse_command = "horiz sbuffer %d",
-				close_command = function(bufnum) Snacks.bufdelete(bufnum) end,
+				close_command = function(bufnum) require("snacks").bufdelete(bufnum) end,
 				show_close_icon = true,
 				move_wraps_at_ends = true,
 				always_show_bufferline = false,

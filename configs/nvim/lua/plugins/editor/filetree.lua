@@ -191,7 +191,7 @@ return {
 					end,
 				},
 				filtered_items = {
-					visible = false, -- when true, they will just be displayed differently than normal items
+					visible = false, -- wether to show dotfiles by default
 					hide_dotfiles = true,
 					hide_gitignored = true,
 					hide_by_name = {
@@ -416,11 +416,11 @@ return {
 				},
 				{
 					event = "file_moved",
-					handler = function(data) Snacks.rename.on_rename_file(data.source, data.destination) end,
+					handler = function(data) require("snacks.rename").on_rename_file(data.source, data.destination) end,
 				},
 				{
 					event = "file_renamed",
-					handler = function(data) Snacks.rename.on_rename_file(data.source, data.destination) end,
+					handler = function(data) require("snacks.rename").on_rename_file(data.source, data.destination) end,
 				},
 				-- {
 				--	 event = "file_open_requested",

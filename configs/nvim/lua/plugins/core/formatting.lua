@@ -1,6 +1,6 @@
 local function find_config_file(dirname, filenames)
 	local function default()
-		local config_file = arg[1]
+		local config_file = type(filenames) == "table" and filenames[1] or filenames
 		if config_file:sub(1, 1) == "." then
 			config_file = config_file:sub(2)
 		end
@@ -127,12 +127,12 @@ return {
 			end
 
 			local disabled_paths = {
+				"^" .. vim.fn.stdpath("config") .. "/after/ftplugin/typst/typst.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/config/options.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/plugins/coding/autopairs.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/plugins/ui/colorscheme.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/static/.*.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/statusline/components.lua$",
-				"^" .. vim.fn.stdpath("config") .. "/after/ftplugin/typst/typst.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/snippets/.*%.lua$",
 
 				"^" .. (vim.env.TEXMFHOME or vim.env.HOME) .. "/tex/latex.*%.tex$",

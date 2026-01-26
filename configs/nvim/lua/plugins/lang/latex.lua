@@ -1,6 +1,7 @@
 return {
 	"lervag/vimtex",
-	config = function()
+	lazy = false,
+	init = function()
 		vim.g.vimtex_view_method = "zathura"
 		vim.g.vimtex_syntax_conceal_disable = false
 		vim.g.vimtex_format_enabled = 1

@@ -13,7 +13,13 @@ return {
 		dependencies = {
 			{
 				"rachartier/tiny-inline-diagnostic.nvim",
-				opts = {},
+				opts = {
+					options = {
+						format = function(diagnostic)
+							return diagnostic.message
+						end,
+					},
+				},
 			},
 		},
 		config = function()
@@ -236,6 +242,10 @@ return {
 				vim.lsp.enable(server)
 			end
 
+			vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
+			vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, { desc = "Signature help" })
+			-- vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
+
 			vim.api.nvim_create_autocmd("LspAttach", {
 				callback = function(args)
 					local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -247,14 +257,6 @@ return {
 					vim.lsp.document_color.enable(false, args.buf)
 				end,
 			})
-
-			vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
-			vim.keymap.set("n", "<leader>doc", vim.lsp.buf.hover, { desc = "Hover documentation" })
-			vim.keymap.set("n", "<leader>def", vim.lsp.buf.definition, { desc = "Go to definition" })
-			vim.keymap.set("n", "<leader>dec", vim.lsp.buf.declaration, { desc = "Go to declaration" })
-			vim.keymap.set("n", "<leader>ref", vim.lsp.buf.references, { desc = "References" })
-			vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, { desc = "Signature help" })
-			-- vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
 		end,
 	},
 	{
@@ -315,9 +317,9 @@ return {
 				},
 			},
 			signs = {
-				quickfix = { "", { link = "DiagnosticWarning" } },
-				others = { "", { link = "DiagnosticWarning" } },
-				refactor = { "", { link = "DiagnosticInfo" } },
+				["quickfix"] = { "", { link = "DiagnosticWarning" } },
+				["others"] = { "", { link = "DiagnosticWarning" } },
+				["refactor"] = { "", { link = "DiagnosticInfo" } },
 				["refactor.move"] = { "󰪹", { link = "DiagnosticInfo" } },
 				["refactor.extract"] = { "", { link = "DiagnosticError" } },
 				["source.organizeImports"] = { "", { link = "DiagnosticWarning" } },
