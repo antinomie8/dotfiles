@@ -8,19 +8,19 @@ require("smart-enter"):setup({ open_multi = true })
 require("folder-rules"):setup()
 
 th.git = th.git or {}
-th.git.added_sign = ""
-th.git.modified_sign = ""
-th.git.deleted_sign = "󱟃"
-th.git.updated_sign = ""
-th.git.untracked_sign = ""
-th.git.ignored_sign = ""
+th.git.added_sign = " "
+th.git.modified_sign = " "
+th.git.deleted_sign = "󱟃 "
+th.git.updated_sign = " "
+th.git.untracked_sign = " "
+th.git.ignored_sign = " "
 th.git.added = ui.Style():fg("#76946a")
 th.git.modified = ui.Style():fg("#dca561")
 th.git.deleted = ui.Style():fg("#c34043")
 th.git.updated = ui.Style():fg("#5fd700")
 th.git.untracked = ui.Style():fg("#957fb8")
 th.git.ignored = ui.Style():fg("#727169")
-require("git"):setup()
+require("git"):setup({ order = 1500 })
 
 -- statusline components
 function Status:mode()
@@ -225,4 +225,30 @@ function Linemode:owner()
 	local user = ya.user_name and ya.user_name(self._file.cha.uid) or self._file.cha.uid
 	local group = ya.group_name and ya.group_name(self._file.cha.gid) or self._file.cha.gid
 	return ui.Span(string.format("%s:%s", user, group)):style(th.linemode)
+end
+
+function Entity:found()
+	if not self._file.is_hovered then
+		return ""
+	end
+
+	local found = self._file:found()
+	if not found then
+		return ""
+	elseif found[1] >= 99 then
+		return ""
+	end
+
+	local s = string.format("[%d/%s]", found[1] + 1, found[2] >= 100 and "99+" or found[2])
+	return ui.Line({ "  ", ui.Span(s):style(th.mgr.find_position) }):style(th.linemode)
+end
+
+-- don't color the icon the same color as the current line
+function Entity:icon()
+	local icon = self._file:icon()
+	if not icon then
+		return ""
+	else
+		return ui.Line(icon.text .. " "):style(icon.style)
+	end
 end

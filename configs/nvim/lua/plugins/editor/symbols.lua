@@ -57,7 +57,7 @@ return {
 					whitespace = "	",
 				},
 				ignore = {
-					filetypes = { "alpha", "neo-tree", "CompetiTest", "toggleterm", "undotree" },
+					filetypes = { "dashboard", "neo-tree", "CompetiTest", "toggleterm", "undotree" },
 				},
 			}
 			return opts

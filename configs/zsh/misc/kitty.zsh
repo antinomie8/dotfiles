@@ -11,6 +11,12 @@ function kitty_remove_spacing() {
 
 kitty_set_spacing
 
+function zshexit() {
+	if [[ -n "$YAZI_ID" ]]; then
+		kitty_remove_spacing
+	fi
+}
+
 function nvim() {
 	kitty_remove_spacing
 	command nvim "$@"

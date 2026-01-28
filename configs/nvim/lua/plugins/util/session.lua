@@ -17,8 +17,6 @@ return {
 		args_allow_single_directory = true, -- Follow normal session save/load logic if launched with a single directory as the only argument
 		args_allow_files_auto_save = true, -- Allow saving a session when launched with a file argument (or multiple files/dirs)
 
-
-		bypass_save_filetypes = { "alpha" },
 		close_filetypes_on_save = { "checkhealth", "neotree" },
 		pre_restore_cmds = {
 			function()

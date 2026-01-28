@@ -4,11 +4,6 @@ rev = "de33976"
 hash = "3996fc74044bc44144b323686f887e1"
 
 [[plugin.deps]]
-use = "yazi-rs/plugins:git"
-rev = "de33976"
-hash = "36a484acf6a0a0219c543ccb4cee218f"
-
-[[plugin.deps]]
 use = "yazi-rs/plugins:mount"
 rev = "de33976"
 hash = "e2d4bfccf31e5ab05f46fee4797c5215"
@@ -37,6 +32,11 @@ hash = "e954f3d314ba732336592101bb47dd03"
 use = "yazi-rs/plugins:smart-enter"
 rev = "de33976"
 hash = "56fdabc96fc1f4d53c96eb884b02a5be"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:diff"
+rev = "e07bf41"
+hash = "2f08b8249b57737e7257298a3b2a2edc"
 
 [flavor]
 deps = []

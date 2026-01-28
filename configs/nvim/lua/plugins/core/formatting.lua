@@ -72,7 +72,8 @@ return {
 				end
 			end,
 
-			["*"] = { "trim_whitespace", "trim_newlines" },
+			["*"] = { "trim_newlines" },
+			["_"] = { "trim_whitespace" },
 		},
 		formatters = {
 			clang_format = {
@@ -131,6 +132,7 @@ return {
 				"^" .. vim.fn.stdpath("config") .. "/lua/config/options.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/plugins/coding/autopairs.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/plugins/ui/colorscheme.lua$",
+				"^" .. vim.fn.stdpath("config") .. "/lua/plugins/ui/dashboard.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/static/.*.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/statusline/components.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/snippets/.*%.lua$",

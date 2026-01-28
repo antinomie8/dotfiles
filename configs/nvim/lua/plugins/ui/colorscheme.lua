@@ -1,17 +1,19 @@
 local vim_enter_early_redraw = function()
 	-- Skip if we already entered vim
-	if vim.v.vim_did_enter == 1 then
-		return
-	end
+	if vim.v.vim_did_enter == 1 then return end
 
 	local buf = vim.api.nvim_get_current_buf()
 
-	-- Try to guess the filetype (may change later on during Neovim startup)
+	-- Try to guess the filetype (may change later during Neovim startup)
 	local ft = vim.filetype.match({ buf = buf })
 
 	if ft then
 		-- Add treesitter highlights and fallback to syntax
 		local lang = vim.treesitter.language.get_lang(ft)
+
+		-- VimTeX's ftplugin gets broken otherwise
+		local exclude = { "latex", "tex" }
+		if vim.tbl_contains(exclude, lang) then return end
 
 		-- find filetype icon and color
 		local icon, color
@@ -50,6 +52,8 @@ return {
 					-- syntax highlighting
 					Boolean = { bold = false },
 					DiagnosticUnnecessary = { force = true },
+					["@markup.math.typst"] = { link = "Special" },
+					["MailURL"] = { link = "@string.special.url" },
 
 					-- user interface
 					NormalFloat = { bg = "none" },
@@ -72,13 +76,15 @@ return {
 					WinSeparator = { fg = palette.sumiInk6 },
 					PanelHeading = { fg = palette.autumnYellow, bg = palette.sumiInk4 },
 
+					LspReferenceText = { link = "bold" },
+					LspReferenceWrite = { link = "LspReferenceText" },
+
 					NormalDark = { bg = palette.sumiInk1 },
 					TerminalBackground = { bg = palette.sumiInk0 },
-
 					Indent = { fg = palette.sumiInk6 },
 					IndentScope = { fg = palette.springViolet2 },
-
 					Text = { fg = palette.fujiWhite },
+					Transparent = { blend = 100 },
 					diffDelete = { link = "Comment" },
 
 					-- plugins
@@ -121,10 +127,6 @@ return {
 
 					DiffViewFolderSign = { link = "Directory" },
 
-					IlluminatedWordText = { bold = true },
-					IlluminatedWordRead = { bold = true },
-					IlluminatedWordWrite = { bold = true },
-
 					HlSearchLens = { fg = palette.fujiGray, bg = "none" },
 					HlSearchLensNear = { fg = palette.oldWhite, bg = palette.waveBlue2 },
 					HlSearchLensNearReverted = { fg = palette.waveBlue2, bg = "none" },
@@ -134,17 +136,13 @@ return {
 					NeoTreeDotfile = { fg = palette.sumiInk6 },
 					NeoTreeHiddenByName = { fg = palette.sumiInk6 },
 
-					BlinkCmpKindText = { link = "String" },
-
 					SnacksPickerPrompt = { fg = palette.autumnYellow, bg = palette.sumiInk3 },
+					SnacksDashboardKey = { link = "Keyword" },
+					SnacksDashboardIcon = { link = "Type" },
 
-					LightBulbSign = { fg = palette.oldWhite },
-
+					WhichKeyIconGrey = { fg = palette.sumiInk6 },
+					BlinkCmpKindText = { link = "String" },
 					LazyNormal = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m3 },
-
-					-- syntax highlighting
-					["@markup.math.typst"] = { link = "Special" },
-					["MailURL"] = { link = "@string.special.url" },
 				}
 			end,
 			colors = {
@@ -158,6 +156,7 @@ return {
 				},
 			},
 		})
+
 		vim.cmd("colorscheme kanagawa-wave")
 		vim_enter_early_redraw()
 	end,

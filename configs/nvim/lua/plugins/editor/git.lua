@@ -130,6 +130,7 @@ return {
 			require("diffview.ui.panel").Panel.default_config_float.border = "rounded"
 
 			return {
+				enhanced_diff_hl = true,
 				default_args = { DiffviewFileHistory = { "%" } },
 				icons = {
 					folder_closed = "",

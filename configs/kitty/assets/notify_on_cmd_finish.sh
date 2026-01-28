@@ -1,0 +1,10 @@
+#!/bin/sh
+
+status="$1"
+command="$2"
+if [ "$status" = 0 ]; then
+	icon=~/.config/kitty/assets/checkmark.svg
+else
+	icon=~/.config/kitty/assets/crossmark.svg
+fi
+notify-send --icon="$icon" "$command" "command $command finished with status $status"

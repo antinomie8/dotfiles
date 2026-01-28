@@ -8,7 +8,7 @@ local WINDOWS = ya.target_family() == "windows"
 ---@enum CODES
 local CODES = {
 	excluded = 100, -- ignored directory
-	ignored = 6, -- ignored file
+	ignored = 6,   -- ignored file
 	untracked = 5,
 	modified = 4,
 	added = 3,
@@ -192,10 +192,10 @@ local function setup(st, opts)
 
 		if not code or signs[code] == "" then
 			return ""
-		elseif self._file.is_hovered then
-			return ui.Line { " ", signs[code] }
+			-- elseif self._file.is_hovered then
+			-- 	return ui.Line { " ", signs[code] }
 		else
-			return ui.Line { " ", ui.Span(signs[code]):style(styles[code]) }
+			return ui.Line({ " ", ui.Span(signs[code]):style(styles[code]) })
 		end
 	end, opts.order)
 end
@@ -217,7 +217,8 @@ local function fetch(_, job)
 	-- stylua: ignore
 	local output, err = Command("git")
 		:cwd(tostring(cwd))
-		:arg({ "--no-optional-locks", "-c", "core.quotePath=", "status", "--porcelain", "-unormal", "--no-renames", "--ignored=matching" })
+		:arg({ "--no-optional-locks", "-c", "core.quotePath=", "status", "--porcelain", "-unormal", "--no-renames",
+			"--ignored=matching" })
 		:arg(paths)
 		:stdout(Command.PIPED)
 		:output()

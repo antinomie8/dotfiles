@@ -67,21 +67,7 @@ return {
 		-- misc
 		{ "<leader>Z", function() require("snacks.picker").zoxide() end, desc = "Zoxide" },
 	},
-	init = function()
-		---@diagnostic disable-next-line: duplicate-set-field
-		vim.ui.select = function(...)
-			require("snacks.picker.select").select(...)
-		end
-
-		vim.api.nvim_create_user_command("Nerdy", function()
-			require("snacks.picker").icons()
-		end, {})
-	end,
-	priority = 1000,
 	opts = {
-		bigfile = {},
-		bufdelete = {},
-		rename = {},
 		picker = {
 			prompt = "❯ ", -- 
 			sources = {
@@ -119,7 +105,7 @@ return {
 				-- default sort is by score, text length and index
 				fields = { "score:desc", "#text", "idx" },
 			},
-			ui_select = false, -- replace `vim.ui.select` with the snacks picker
+			ui_select = true, -- replace `vim.ui.select` with the snacks picker
 			---@class snacks.picker.formatters.Config
 			formatters = {
 				text = {
@@ -369,16 +355,5 @@ return {
 				kinds = require("static.icons"),
 			},
 		},
-		image = {
-			-- icons = {
-			-- 	math = "",
-			-- 	chart = "",
-			-- 	image = "",
-			-- },
-			math = {
-				enabled = false,
-			},
-		},
-		-- scroll = {}, -- BUG: flickers on tabs
 	},
 }

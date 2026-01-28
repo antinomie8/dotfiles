@@ -83,7 +83,6 @@ keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr =
 keymap.set({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 
 -- yanking and pasting
-keymap.set("n", "<localleader>p", '"_diwP', { desc = "replace word under cursor" })
 keymap.set("x", "<leader>r", '"_dP')
 keymap.set("n", "<leader>P", "i<C-R><C-P>+<ESC>", { desc = 'Paste "+ content before cursor' })
 keymap.set({ "n", "v" }, "<C-M-y>", "<Cmd>%y+<CR>", { desc = "Yank buffer content into the + register" })
