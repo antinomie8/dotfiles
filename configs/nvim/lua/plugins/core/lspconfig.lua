@@ -152,9 +152,8 @@ return {
 						Lua = {
 							format = {
 								defaultConfig = {
-									continuation_indent_size = "1",
+									continuation_indent = "5", -- modifying this will break ../../conform/formatters/lua_align.lua
 									quote_style = "double",
-									continuation_indent = "2", -- match indentwidth
 									max_line_length = "120",
 									table_separator_style = "comma",
 									trailing_table_separator = "smart",
@@ -168,6 +167,7 @@ return {
 									align_continuous_similar_call_args = "false",
 									align_continuous_inline_comment = "true",
 									align_chain_expr = "none",
+									space_before_inline_comment = "keep",
 								},
 							},
 						},

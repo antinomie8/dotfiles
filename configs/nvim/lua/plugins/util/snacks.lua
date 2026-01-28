@@ -3,7 +3,7 @@ return {
 	lazy = false,
 	priority = 1000,
 	keys = {
-		{ "<localleader>.", function() require("snacks.scratch")() end, desc = "Toggle Scratch Buffer" },
+		{ "<localleader>.", function() require("snacks.scratch")() end,        desc = "Toggle Scratch Buffer" },
 		{ "<localleader>%", function() require("snacks.scratch").select() end, desc = "Select Scratch Buffer" },
 	},
 	init = function()

@@ -25,9 +25,6 @@ rec_switch = function()
 	)
 end
 
--- contains the snippet's regex first capture group. Useful if snippet nodes need to access it.
-local SNIP_CAPTURES_1
-
 return {
 	s(
 		{
@@ -37,10 +34,10 @@ return {
 			condition = not_in_string_comment * check_not_expanded("%(.*%)$"),
 		},
 		fmt("if <>) {\n\t<>\n}<>", {
-				c(1, {
-					{ t("("), i(1) },
-					{ t("constexpr ("), i(1) },
-				}),
+			c(1, {
+				{ t("("), i(1) },
+				{ t("constexpr ("), i(1) },
+			}),
 			d(2, get_visual),
 			i(0),
 		})

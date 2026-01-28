@@ -106,5 +106,5 @@ return {
 			d(2, rec_item, {}),
 			t({ "", "\\end{enumerate}" }),
 		}
-	)
+	),
 }

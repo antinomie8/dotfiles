@@ -23,11 +23,10 @@ local vim_enter_early_redraw = function()
 		vim.api.nvim_set_hl(0, "StatusLineIconColor", { fg = color or "#6d8086" })
 
 		-- setup mock statusline
-		vim.opt.statusline =
-			"%#StatusLineBlue# NORMAL %#StatusLineSeparatorBlue#%#StatusLineSeparatorGrey#"
-			.. "%* %F %#StatusLineIconColor#" .. (icon or " ")
-			.. "%=%#StatusLineSeparatorGrey#%#StatusLineGrey# %p%%  %l:%c "
-			.. '%#StatusLineSeparatorBlue#%#StatusLineBlue#  %{strftime("%H:%M")} '
+		vim.opt.statusline = "%#StatusLineBlue# NORMAL %#StatusLineSeparatorBlue#%#StatusLineSeparatorGrey#"
+		                     .. "%* %F %#StatusLineIconColor#" .. (icon or " ")
+		                     .. "%=%#StatusLineSeparatorGrey#%#StatusLineGrey# %p%%  %l:%c "
+		                     .. '%#StatusLineSeparatorBlue#%#StatusLineBlue#  %{strftime("%H:%M")} '
 
 		if not (lang and pcall(vim.treesitter.start, buf, lang)) then
 			vim.bo[buf].syntax = ft
@@ -140,8 +139,11 @@ return {
 					SnacksDashboardKey = { link = "Keyword" },
 					SnacksDashboardIcon = { link = "Type" },
 
-					WhichKeyIconGrey = { fg = palette.sumiInk6 },
 					BlinkCmpKindText = { link = "String" },
+					BlinkCmpLabelDescription = { link = "Conceal" },
+					BlinkCmpLabelDetail = { link = "Conceal" },
+
+					WhichKeyIconGrey = { fg = palette.sumiInk6 },
 					LazyNormal = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m3 },
 				}
 			end,

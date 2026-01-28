@@ -184,7 +184,7 @@ components.FileNameBlock = utils.insert(
 components.Macro = {
 	condition = function() return vim.fn.reg_recording() ~= "" and vim.o.cmdheight == 0 end,
 	provider = function() return " " .. vim.fn.reg_recording() .. "  " end,
-	hl = { fg = "orange"},
+	hl = { fg = "orange" },
 	update = {
 		"RecordingEnter",
 		"RecordingLeave",
@@ -281,10 +281,10 @@ components.Ruler = {
 
 components.Time = {
 	static = {
-		clocks = { "󱑋 ", "󱑌 ", "󱑍 ", "󱑎 ", "󱑏 ", "󱑐 ", "󱑑 ", "󱑒 ", "󱑓 ", "󱑔 ", "󱑕 ", "󱑖 " }
+		clocks = { "󱑋 ", "󱑌 ", "󱑍 ", "󱑎 ", "󱑏 ", "󱑐 ", "󱑑 ", "󱑒 ", "󱑓 ", "󱑔 ", "󱑕 ", "󱑖 " },
 	},
 	provider = function(self)
-		local date =  os.date("%R")
+		local date = os.date("%R")
 		local hour = tonumber(tostring(date):sub(1, 2))
 		local icon = self.clocks[hour % 12 + 1]
 		return icon .. date
@@ -333,8 +333,14 @@ components.ExtensionA = {
 			["dapui_watches"] = "Watches",
 			["dapui_console"] = "Console",
 			["dapui_breakpoints"] = "Breakpoints",
-			["DiffviewFiles"] = function() return " " .. (vim.b.gitsigns_status_dict and vim.b.gitsigns_status_dict.head or git_head()) end,
-			["fugitive"] = function() return " " .. (vim.b.gitsigns_status_dict and vim.b.gitsigns_status_dict.head or git_head()) end,
+			["DiffviewFiles"] = function()
+				return " " ..
+					(vim.b.gitsigns_status_dict and vim.b.gitsigns_status_dict.head or git_head())
+			end,
+			["fugitive"] = function()
+				return " " ..
+					(vim.b.gitsigns_status_dict and vim.b.gitsigns_status_dict.head or git_head())
+			end,
 			["git"] = function() return " " .. (vim.b.gitsigns_status_dict and vim.b.gitsigns_status_dict.head or git_head()) end,
 			["lazy"] = "Lazy",
 			["mail"] = function()
@@ -344,7 +350,7 @@ components.ExtensionA = {
 					for _, sender in ipairs(from) do
 						senders = senders .. (sender:match("^([^<]*) <") or sender) .. ", "
 					end
-					senders = senders:sub(1, #senders -2)
+					senders = senders:sub(1, #senders - 2)
 					return utils.truncate(senders, 0.20)
 				else
 					return "Mail"
@@ -426,7 +432,7 @@ components.ExtensionC = {
 			["mail"] = function()
 				local subject = vim.b.notmuch_thread and vim.b.notmuch_thread.subject or nil
 				if subject then
-					return utils.truncate(subject, 0.60)
+					return utils.truncate(subject, 0.80)
 				end
 			end,
 			["man"] = "󱚊",
@@ -441,7 +447,7 @@ components.ExtensionC = {
 			end
 		end,
 	},
-	components.Space,
+	{ provider = "%<" }, -- this means that the statusline is cut here when there's not enough space
 }
 
 components.ExtensionY = {
@@ -462,7 +468,6 @@ components.ExtensionY = {
 			["mail"] = function()
 				local date = vim.b.notmuch_thread and vim.b.notmuch_thread.date_relative or nil
 				if date then
-					-- return date:match("^(.*%d%d%d%d) %d%d:%d%d:%d%d")
 					return date
 				else
 					return components.Ruler.provider

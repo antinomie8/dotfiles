@@ -1,6 +1,7 @@
 return {
-	"anonymousgrasshopper/notmuch.nvim",
-	branch = "refactor/lua-rewrite",
+	"yousefakbar/notmuch.nvim",
+	-- branch = "refactor/lua-rewrite",
+	branch = "refactor/thread-json-parsing",
 	cmd = { "Notmuch", "NmSearch", "Inbox", "ComposeMail" },
 	opts = {
 		maildir_sync_cmd = "mbsync -a",

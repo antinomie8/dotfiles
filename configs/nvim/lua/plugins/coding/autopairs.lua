@@ -5,7 +5,7 @@ return {
 		branch = "v0.6",
 		opts = function()
 			local in_node = function(...)
-				local nodes = {...}
+				local nodes = { ... }
 				return function(fn, obj, pair)
 					if not obj then return true end
 					if obj.key == vim.api.nvim_replace_termcodes(pair.pair, true, false, true) then
@@ -16,7 +16,7 @@ return {
 				end
 			end
 			local not_in_node = function(...)
-				local nodes = {...}
+				local nodes = { ... }
 				return function(fn, obj, pair)
 					if not obj then return false end
 					if obj.key == vim.api.nvim_replace_termcodes(pair.pair, true, false, true) then
@@ -84,7 +84,7 @@ return {
 										key = "<bs>",
 										ft = "*",
 										pred = function()
-											local pairs = { '""', "()", "[]", "{}", "''", "<>", "$$", "**", "~~", "``" , "\\(\\)", "\\[\\]" }
+											local pairs = { '""', "()", "[]", "{}", "''", "<>", "$$", "**", "~~", "``", "\\(\\)", "\\[\\]" }
 											local buffer_text = line:sub(col - 2, col - 1)
 											local next_char = line:sub(col, col) or ""
 											for _, pair in ipairs(pairs) do
@@ -95,7 +95,7 @@ return {
 												end
 											end
 											return true
-										end
+										end,
 									},
 									-- snippets
 									{ key = "*", ft = { "markdown", "tex" }, text = "\\left" },
@@ -106,9 +106,9 @@ return {
 									local key = #cond.key == 1 and cond.key or vim.api.nvim_replace_termcodes(cond.key, true, false, true)
 									if key == "*" or key == obj.key then
 										if
-											vim.tbl_contains(table_convert(cond.ft), function(v)
-												return v == "*" or v == ft
-											end, { predicate = true })
+												vim.tbl_contains(table_convert(cond.ft), function(v)
+													return v == "*" or v == ft
+												end, { predicate = true })
 										then
 											if cond.text then
 												for _, text in ipairs(table_convert(cond.text)) do
@@ -143,42 +143,46 @@ return {
 					{ '"', '"', suround = false },
 					{ "'", "'", suround = false },
 				},
-				{ "<", ">", cond = function(_, obj)
-					if not obj then return false end
-					local line, col = obj.line, obj.col
-					if obj.key == vim.api.nvim_replace_termcodes("<bs>", true, true, true) then
-						return line:sub(col - 1, col + 1) == "<>" -- do not remove brackets unless they're next to each other
-					elseif obj.key == "<" then -- do not pair if not next to an identifier
-						return line:sub(col - 1, col):match("%w")
+				{
+					"<",
+					">",
+					cond = function(_, obj)
+						if not obj then return false end
+						local line, col = obj.line, obj.col
+						if obj.key == vim.api.nvim_replace_termcodes("<bs>", true, true, true) then
+							return line:sub(col - 1, col + 1) == "<>" -- do not remove brackets unless they're next to each other
+						elseif obj.key == "<" then -- do not pair if not next to an identifier
+							return line:sub(col - 1, col):match("%w")
+						end
+						return true
 					end
-					return true
-				end },
+				},
 				-- comments
-				{ "/*",    "*/",    ft = { "c", "cpp", "css", "go" }, newline = true, space = true },
+				{ "/*", "*/", ft = { "c", "cpp", "css", "go" }, newline = true, space = true },
 				-- shell
 				{ "[[", "]]", ft = { "bash", "zsh", "sh", "markdown" } },
 				-- lua
-				{ "[[",   "]]",     ft = { "lua" }, newline = true },
-				{ "[=[",   "]=]",   ft = { "lua" }, newline = true },
-				{ "[==[",  "]==]",  ft = { "lua" }, newline = true },
+				{ "[[", "]]", ft = { "lua" }, newline = true },
+				{ "[=[", "]=]", ft = { "lua" }, newline = true },
+				{ "[==[", "]==]", ft = { "lua" }, newline = true },
 				{ "[===[", "]===]", ft = { "lua" }, newline = true },
 				{ "<Cmd>", "<CR>", ft = { "lua" } },
 				-- LaTeX
 				{ "\\[", "\\]", ft = { "tex" }, disable_end = true, newline = true },
 				{ "\\(", "\\)", ft = { "tex" }, disable_end = true, newline = true },
 				-- typst
-				{ "$", "$",     ft = { "typst" }, cond = typst.in_text, space = true, newline = true },
+				{ "$", "$", ft = { "typst" }, cond = typst.in_text, space = true, newline = true },
 				{ "```", "```", ft = { "typst" }, cond = typst.in_text, space = true, newline = true },
-				{ "`", "`",     ft = { "typst" }, cond = typst.in_text, space = true },
-				{ "/*", "*/",   ft = { "typst" }, cond = typst.in_text, newline = true },
-				{ "_", "_",     ft = { "typst" }, cond = typst.in_text },
-				{ "*", "*",     ft = { "typst" }, cond = function(fn, obj, pair) return typst.in_text(fn, obj, pair) and true end },
+				{ "`", "`", ft = { "typst" }, cond = typst.in_text, space = true },
+				{ "/*", "*/", ft = { "typst" }, cond = typst.in_text, newline = true },
+				{ "_", "_", ft = { "typst" }, cond = typst.in_text },
+				{ "*", "*", ft = { "typst" }, cond = function(fn, obj, pair) return typst.in_text(fn, obj, pair) and true end },
 				--markdown
-				{ "$", "$",     ft = { "markdown" }, cond = markdown.in_text },
-				{ "$$", "$$",   ft = { "markdown" }, cond = markdown.in_text, newline = true },
-				{ "*", "*",     ft = { "markdown" }, cond = markdown.in_text },
-				{ "**", "**",   ft = { "markdown" }, cond = markdown.in_text },
-				{ "~~", "~~",   ft = { "markdown" }, cond = markdown.in_text },
+				{ "$", "$", ft = { "markdown" }, cond = markdown.in_text },
+				{ "$$", "$$", ft = { "markdown" }, cond = markdown.in_text, newline = true },
+				{ "*", "*", ft = { "markdown" }, cond = markdown.in_text },
+				{ "**", "**", ft = { "markdown" }, cond = markdown.in_text },
+				{ "~~", "~~", ft = { "markdown" }, cond = markdown.in_text },
 				{ "```", "```", ft = { "markdown" }, cond = markdown.in_text, newline = true },
 			}
 		end,

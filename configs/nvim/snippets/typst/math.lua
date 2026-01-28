@@ -1,6 +1,5 @@
 local ls = require("snippets.luasnip")
-local s, t, i, d, f, fmt, make_cond =
-      ls.s, ls.t, ls.i, ls.d, ls.f, ls.fmt, ls.make_cond
+local s, t, i, d, f, fmt = ls.s, ls.t, ls.i, ls.d, ls.f, ls.fmt
 local helpers = require("snippets.helpers")
 local get_visual = helpers.get_visual
 

@@ -61,14 +61,16 @@ return {
 			tex = { "tex", "tex_fmt" },
 			typst = { "typstyle" },
 			lua = function(bufnr)
-				if #vim.fs.find({ "stylua.toml", ".stylua.toml" }, {
-						type = "file",
-						upward = true,
-						path = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)),
-					}) > 0 then
+				if
+						#vim.fs.find({ "stylua.toml", ".stylua.toml" }, {
+							type = "file",
+							upward = true,
+							path = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)),
+						}) > 0
+				then
 					return { "stylua" }
 				else
-					return { lsp_format = "prefer" }
+					return { "lua_align", lsp_format = "first" }
 				end
 			end,
 
@@ -128,14 +130,10 @@ return {
 			end
 
 			local disabled_paths = {
-				"^" .. vim.fn.stdpath("config") .. "/after/ftplugin/typst/typst.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/config/options.lua$",
-				"^" .. vim.fn.stdpath("config") .. "/lua/plugins/coding/autopairs.lua$",
-				"^" .. vim.fn.stdpath("config") .. "/lua/plugins/ui/colorscheme.lua$",
+				"^" .. vim.fn.stdpath("config") .. "/lua/plugins/coding/dial.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/plugins/ui/dashboard.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/static/.*.lua$",
-				"^" .. vim.fn.stdpath("config") .. "/lua/statusline/components.lua$",
-				"^" .. vim.fn.stdpath("config") .. "/snippets/.*%.lua$",
 
 				"^" .. (vim.env.TEXMFHOME or vim.env.HOME) .. "/tex/latex.*%.tex$",
 			}
