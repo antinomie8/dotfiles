@@ -67,7 +67,9 @@ return {
 			dscr = "function",
 			wordTrig = true,
 			snippetType = "autosnippet",
-			condition = (line_begin + line_match("^local function")) * not_in_string_comment * check_not_expanded("%(.*%)$"),
+			condition = (line_begin + line_match("^local function")) *
+				not_in_string_comment *
+				check_not_expanded("%(.*%)$"),
 		},
 		fmt(
 			[[

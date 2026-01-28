@@ -93,7 +93,7 @@ return {
 			snippetType = "autosnippet",
 			condition = not_in_string_comment,
 		},
-			t({ "protected:", "\t" })
+		t({ "protected:", "\t" })
 	),
 	s(
 		{
@@ -103,7 +103,7 @@ return {
 			snippetType = "autosnippet",
 			condition = not_in_string_comment,
 		},
-			t({ "private:", "\t" })
+		t({ "private:", "\t" })
 	),
 	s(
 		{

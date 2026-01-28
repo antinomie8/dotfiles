@@ -4,8 +4,8 @@ local s, t, i, d, f, fmt, make_cond =
 local helpers = require("snippets.helpers")
 local get_visual = helpers.get_visual
 local check_not_expanded = helpers.check_not_expanded
-local md  = {
-	in_math = function() return vim.tbl_contains(vim.treesitter.get_captures_at_cursor(), "markup.math") end
+local md = {
+	in_math = function() return vim.tbl_contains(vim.treesitter.get_captures_at_cursor(), "markup.math") end,
 }
 
 local check_floor_not_expanded = make_cond(function() return check_not_expanded("\\rfloo") end)
@@ -147,7 +147,7 @@ return {
 			dscr = "cubic root",
 			wordTrig = false,
 			snippetType = "autosnippet",
-			condition = md.in_math
+			condition = md.in_math,
 		},
 		fmt(
 			"\\sqrt[3]{<>}",
@@ -331,7 +331,7 @@ return {
 				elseif arg[1][1]:sub(1, 2) == "\\l" then
 					return "\\r" .. arg[1][1]:sub("3", "-1")
 				else
-					return arg[1][1]:sub(1,1)
+					return arg[1][1]:sub(1, 1)
 				end
 			end, 1),
 		}

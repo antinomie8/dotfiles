@@ -13,11 +13,11 @@ return {
 			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = tex.in_math * tex.in_document * -- we actually have to use in_math instead
-			make_cond(function()                            -- of in_text because the dollar sign negates it
-				local col = vim.api.nvim_win_get_cursor(0)[2]
-				local line = vim.api.nvim_get_current_line()
-				return (col == 0) or line:sub(col, col) ~= "\\"
-			end),
+				make_cond(function()                      -- of in_text because the dollar sign negates it
+					local col = vim.api.nvim_win_get_cursor(0)[2]
+					local line = vim.api.nvim_get_current_line()
+					return (col == 0) or line:sub(col, col) ~= "\\"
+				end),
 		},
 		{
 			t("\\("),
@@ -33,10 +33,10 @@ return {
 			snippetType = "autosnippet",
 			condition = tex.in_text * tex.in_document *
 				make_cond(function()
-				local col = vim.api.nvim_win_get_cursor(0)[2]
-				local line = vim.api.nvim_get_current_line()
-				return (col == 0) or line:sub(col, col) ~= "\\"
-			end),
+					local col = vim.api.nvim_win_get_cursor(0)[2]
+					local line = vim.api.nvim_get_current_line()
+					return (col == 0) or line:sub(col, col) ~= "\\"
+				end),
 		},
 		{
 			t("\\["),
@@ -315,7 +315,7 @@ return {
 				elseif arg[1][1]:sub(1, 2) == "\\l" then
 					return "\\r" .. arg[1][1]:sub("3", "-1")
 				else
-					return arg[1][1]:sub(1,1)
+					return arg[1][1]:sub(1, 1)
 				end
 			end, 1),
 		}

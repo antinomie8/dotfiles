@@ -24,7 +24,8 @@ return {
 			trig = "inc ",
 			dscr = "include preprocessor directive",
 			snippetType = "autosnippet",
-			condition = line_begin, not_in_string_comment,
+			condition = line_begin,
+			not_in_string_comment,
 		},
 		{
 			c(1, {

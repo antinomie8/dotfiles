@@ -16,20 +16,20 @@ return {
 				local anchor = lines[i]
 				local eq_pos = anchor:find("=")
 
-				if eq_pos and eq_pos >= 30 and anchor:match("^%s*local ") then
-					local indent = anchor:match("^(%s*)")
-
-					for k = i + 1, block_end do
-						local stripped = lines[k]:gsub("^%s*", "      ")
-						lines[k] = indent .. stripped
+				if eq_pos and eq_pos == #anchor then
+					local indent, align_spaces
+					if eq_pos == #anchor then
+						indent = anchor:match("^%s*")
+						local keyword = anchor:match("^%S*", #indent)
+						align_spaces = string.rep(" ", #keyword + 1)
+					else
+						indent = anchor:match("^(%s*)")
+						align_spaces = string.rep(" ", eq_pos + 1 - #indent)
 					end
-				elseif eq_pos then
-					local indent = anchor:match("^(%s*)")
-					local align_spaces = string.rep(" ", eq_pos + 1 - #indent)
 
 					for k = i + 1, block_end do
-						local stripped = lines[k]:gsub("^%s*\t\t ", "")
-						lines[k] = indent .. align_spaces .. stripped
+						local stripped = lines[k]:gsub("^(%s*)\t\t ", "%1" .. indent .. align_spaces)
+						lines[k] = stripped
 					end
 				else
 					for k = i + 1, block_end do

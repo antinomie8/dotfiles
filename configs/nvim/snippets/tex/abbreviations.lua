@@ -13,8 +13,8 @@ return {
 		{
 			c(1, {
 				{ t("Supposons par l'absurde "), i(1) },
-				{ t("Assume for the sake of contradiction "), i(1)  },
-			})
+				{ t("Assume for the sake of contradiction "), i(1) },
+			}),
 		}
 	),
 	s(
@@ -26,9 +26,9 @@ return {
 		},
 		{
 			c(1, {
-				{ t("Supposons sans perte de généralité que "), i(1)  },
-				{ t("Without loss of generality, "), i(1)  },
-			})
+				{ t("Supposons sans perte de généralité que "), i(1) },
+				{ t("Without loss of generality, "), i(1) },
+			}),
 		}
 	),
 	s(
@@ -40,9 +40,9 @@ return {
 		},
 		{
 			c(1, {
-				{ t("sans perte de généralité "), i(1)  },
-				{ t("without loss of generality "), i(1)  },
-			})
+				{ t("sans perte de généralité "), i(1) },
+				{ t("without loss of generality "), i(1) },
+			}),
 		}
 	),
 	s(
@@ -53,7 +53,7 @@ return {
 			condition = tex.in_text * tex.in_document * tex.not_in_cmd,
 		},
 		{
-			t("à partir d'un certain rang ")
+			t("à partir d'un certain rang "),
 		}
 	),
 	s(
@@ -75,9 +75,9 @@ return {
 		},
 		{
 			c(1, {
-				{ t("par rapport à "), i(1)  },
-				{ t("with respect to "), i(1)  },
-			})
+				{ t("par rapport à "), i(1) },
+				{ t("with respect to "), i(1) },
+			}),
 		}
 	),
 }

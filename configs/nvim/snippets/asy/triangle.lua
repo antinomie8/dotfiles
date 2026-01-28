@@ -1,6 +1,5 @@
 local ls = require("snippets.luasnip")
-local s, t, i  = ls.s, ls.t, ls.i
-local helpers = require("snippets.helpers")
+local s, t, i = ls.s, ls.t, ls.i
 
 return {
 	s(
@@ -26,7 +25,7 @@ return {
 				[[dot("$A$", A, dir(A));]],
 				[[dot("$B$", B, dir(B));]],
 				[[dot("$C$", C, dir(C));]],
-			})
+			}),
 		}
 	),
 	s(
@@ -51,7 +50,7 @@ return {
 				"",
 				[[dot("$H$", H, dir(H));]],
 				"",
-			})
+			}),
 		}
 	),
 	s(
@@ -64,7 +63,7 @@ return {
 				[[circle Omega = circumcircle(A, B, C);]],
 				[[draw(Omega);]],
 				"",
-			})
+			}),
 		}
 	),
 	s(
@@ -77,7 +76,7 @@ return {
 				[[circle omega = incircle(A, B, C);]],
 				[[draw(omega);]],
 				"",
-			})
+			}),
 		}
 	),
 }
