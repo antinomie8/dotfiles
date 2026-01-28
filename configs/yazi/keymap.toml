@@ -22,6 +22,16 @@ on   = "K"
 run  = "arrow -5"
 
 [[mgr.prepend_keymap]]
+on   = [ "m", "t" ]
+run  = "linemode mime"
+desc = "Linemode: mime type"
+
+[[mgr.prepend_keymap]]
+on   = "<C-Enter>"
+run = "shell %s --confirm"
+desc = "Execute"
+
+[[mgr.prepend_keymap]]
 on   = "<C-y>"
 run  = 'shell -- wl-copy < %s'
 desc = "Copy to system clipboard"

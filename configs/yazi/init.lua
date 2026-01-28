@@ -187,6 +187,10 @@ function Tabs.height() return 0 end -- hide tab bar
 -- change linemode style
 th.linemode = ui.Style():fg("#54546d")
 
+function Linemode:mime()
+	return ui.Span(self._file:mime() or ""):style(th.linemode)
+end
+
 function Linemode:size()
 	local size = self._file:size()
 	if size then
@@ -219,7 +223,9 @@ function Linemode:mtime()
 	end
 end
 
-function Linemode:permissions() return ui.Span(self._file.cha:perm() or ""):style(th.linemode) end
+function Linemode:permissions()
+	return ui.Span(self._file.cha:perm() or ""):style(th.linemode)
+end
 
 function Linemode:owner()
 	local user = ya.user_name and ya.user_name(self._file.cha.uid) or self._file.cha.uid

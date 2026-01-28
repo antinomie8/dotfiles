@@ -40,6 +40,7 @@ alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 alias fzf='fzf --preview="~/.local/bin/fzf_preview_wrapper {}"'
 alias run='runapp --dir "$(pwd)" --'
+alias mime='file --mime-type --brief'
 
 # programs
 alias top='btop'
