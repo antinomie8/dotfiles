@@ -3,7 +3,8 @@ local M = {}
 function M.git_root()
 	if vim.b.git_root then return vim.b.git_root end
 	local git_root_cmd = vim.system({ "git", "-C", vim.fn.getcwd(), "rev-parse", "--show-toplevel" }):wait()
-	vim.b.git_root = (git_root_cmd.code == 0) and vim.fn.fnamemodify(vim.trim(git_root_cmd.stdout), ":t") or git_root_cmd.stderr:sub(1, 20)
+	vim.b.git_root = (git_root_cmd.code == 0) and vim.fn.fnamemodify(vim.trim(git_root_cmd.stdout), ":t") or
+	                 git_root_cmd.stderr:sub(1, 20)
 	return vim.b.git_root
 end
 

@@ -62,11 +62,11 @@ return {
 			typst = { "typstyle" },
 			lua = function(bufnr)
 				if
-						#vim.fs.find({ "stylua.toml", ".stylua.toml" }, {
-							type = "file",
-							upward = true,
-							path = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)),
-						}) > 0
+					#vim.fs.find({ "stylua.toml", ".stylua.toml" }, {
+						type = "file",
+						upward = true,
+						path = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)),
+					}) > 0
 				then
 					return { "stylua" }
 				else
@@ -134,6 +134,7 @@ return {
 				"^" .. vim.fn.stdpath("config") .. "/lua/plugins/coding/dial.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/plugins/ui/dashboard.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/static/.*.lua$",
+				"^" .. vim.fn.stdpath("config") .. "/plugin/icons.lua$",
 
 				"^" .. (vim.env.TEXMFHOME or vim.env.HOME) .. "/tex/latex.*%.tex$",
 			}

@@ -106,9 +106,9 @@ return {
 									local key = #cond.key == 1 and cond.key or vim.api.nvim_replace_termcodes(cond.key, true, false, true)
 									if key == "*" or key == obj.key then
 										if
-												vim.tbl_contains(table_convert(cond.ft), function(v)
-													return v == "*" or v == ft
-												end, { predicate = true })
+											vim.tbl_contains(table_convert(cond.ft), function(v)
+												return v == "*" or v == ft
+											end, { predicate = true })
 										then
 											if cond.text then
 												for _, text in ipairs(table_convert(cond.text)) do
@@ -151,11 +151,11 @@ return {
 						local line, col = obj.line, obj.col
 						if obj.key == vim.api.nvim_replace_termcodes("<bs>", true, true, true) then
 							return line:sub(col - 1, col + 1) == "<>" -- do not remove brackets unless they're next to each other
-						elseif obj.key == "<" then -- do not pair if not next to an identifier
+						elseif obj.key == "<" then                  -- do not pair if not next to an identifier
 							return line:sub(col - 1, col):match("%w")
 						end
 						return true
-					end
+					end,
 				},
 				-- comments
 				{ "/*", "*/", ft = { "c", "cpp", "css", "go" }, newline = true, space = true },

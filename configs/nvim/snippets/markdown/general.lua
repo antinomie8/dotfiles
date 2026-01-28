@@ -20,9 +20,9 @@ return {
 	),
 	s(
 		{
-		trig = "cbl",
-		dscr = "Code block",
-		snippetType = "autosnippet",
+			trig = "cbl",
+			dscr = "Code block",
+			snippetType = "autosnippet",
 		},
 		{
 			t("```"),

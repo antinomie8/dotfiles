@@ -68,8 +68,8 @@ return {
 			wordTrig = true,
 			snippetType = "autosnippet",
 			condition = (line_begin + line_match("^local function")) *
-				not_in_string_comment *
-				check_not_expanded("%(.*%)$"),
+			            not_in_string_comment *
+			            check_not_expanded("%(.*%)$"),
 		},
 		fmt(
 			[[
@@ -92,8 +92,8 @@ return {
 			wordTrig = true,
 			snippetType = "autosnippet",
 			condition = not_in_string_comment *
-				check_not_expanded("%(.*%)$") *
-				line_not_match("^%s*function$"),
+			            check_not_expanded("%(.*%)$") *
+			            line_not_match("^%s*function$"),
 		},
 		fmt(
 			[[

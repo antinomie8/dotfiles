@@ -72,6 +72,7 @@
   "vim-matchup": { "branch": "master", "commit": "0fb1e6b7cea34e931a2af50b8ad565c5c4fd8f4d" },
   "vim-repeat": { "branch": "master", "commit": "65846025c15494983dafe5e3b46c8f88ab2e9635" },
   "vimtex": { "branch": "master", "commit": "f707368022cdb851716be0d2970b90599c84a6a6" },
+  "visual-whitespace.nvim": { "branch": "main", "commit": "2eefcbcbe294ea6610868755db7ddb8f92f68a1c" },
   "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" },
   "yanky.nvim": { "branch": "main", "commit": "04fc42b94305d94948c9c197f679336668af3292" },
   "yazi.nvim": { "branch": "main", "commit": "9bbe1b18a6ee24d791ae9937e64c8526b80e8ffa" }

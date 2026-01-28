@@ -21,6 +21,8 @@ vim.api.nvim_create_user_command("BatchFormat", function(arg)
 		string.format("fd -e %s . %s", ft, vim.fn.shellescape(dir))
 	)
 
+	require("lazy").load({ plugins = "nvim-lspconfig" })
+
 	for _, file in ipairs(files) do
 		vim.cmd.edit(file)
 
