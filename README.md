@@ -12,5 +12,6 @@ git clone https://github.com/anonymousgrasshopper/dotfiles ~/.config/dotfiles &&
 - `go telemetry off`
 <!-- - `build-fzf-tab-module` # does not respect LS_COLORS -->
 #### Systemd
-- `exec-once = systemctl --user enable --now hypridle.service`
-- `exec-once = systemctl --user enable --now hyprpolkitagent.service`
+- `systemctl --user enable --now hypridle.service`
+- `systemctl --user enable --now hyprpolkitagent.service`
+- `systemctl --user enable --now hyprsunset.service`
