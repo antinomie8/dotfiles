@@ -84,6 +84,7 @@ return {
 					IndentScope = { fg = palette.springViolet2 },
 					Text = { fg = palette.fujiWhite },
 					Transparent = { blend = 100 },
+					None = { fg = "none", bg = "none" },
 					diffDelete = { link = "Comment" },
 
 					-- plugins
