@@ -244,7 +244,7 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
--- remove terminal padding on leave
+-- reset terminal padding on leave
 vim.api.nvim_create_autocmd("VimLeave", {
 	callback = function()
 		if not vim.env.NVIM and not vim.env.TMUX and not vim.env.YAZI_ID and vim.env.KITTY_LISTEN_ON then

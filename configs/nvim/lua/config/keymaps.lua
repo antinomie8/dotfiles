@@ -59,8 +59,8 @@ keymap.set("v", ">", ">gv")
 keymap.set("v", "<", "<gv")
 
 -- command line keymaps
-keymap.set("c", "<M-a>", "<C-e>", { desc = "Go to end" })
 keymap.set("c", "<M-i>", "<C-b>", { desc = "Go to beginning" })
+keymap.set("c", "<M-a>", "<C-e>", { desc = "Go to end" })
 keymap.set("c", "<M-f>", "<S-Right>", { desc = "Forward word" })
 keymap.set("c", "<M-b>", "<S-Left>", { desc = "Backward word" })
 keymap.set("c", "<M-v>", function()
@@ -71,6 +71,12 @@ keymap.set("c", "<M-v>", function()
 		vim.api.nvim_feedkeys("lua " .. str, "c", false)
 	end
 end, { desc = "Inspect" })
+
+-- indert mode keymaps
+keymap.set("i", "<M-i>", "<C-o>^", { desc = "Got to beginning" })
+keymap.set("i", "<M-a>", "<C-o>$", { desc = "Go to end" })
+keymap.set("i", "<M-f>", "<C-o>E", { desc = "Forward word" })
+keymap.set("i", "<M-b>", "<C-o>B", { desc = "Backward word" })
 
 -- toggle options
 keymap.set("n", "<leader>os", "<Cmd>set spell!<CR>", { desc = "Toggle spell checking" })
