@@ -1,5 +1,17 @@
 return {
 	{
+		"gbprod/substitute.nvim",
+		keys = {
+			{ "g,", function() require("substitute").operator() end, noremap = true },
+			{ "g,,", function() require("substitute").operator({ motion = "iw" }) end, noremap = true },
+			{ "g,;", function() require("substitute").line() end, noremap = true },
+			{ "g,", function() require("substitute").visual() end, mode = "x", noremap = true },
+		},
+		opts = {
+			on_substitute = function() require("yanky.integration").substitute() end,
+		},
+	},
+	{
 		"MagicDuck/grug-far.nvim",
 		cmd = { "GrugFar" },
 		keys = {

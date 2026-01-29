@@ -64,7 +64,7 @@ vim.api.nvim_create_autocmd("FileType", {
 -- darken terminal background and begin in insert mode
 vim.api.nvim_create_autocmd("TermOpen", {
 	callback = function(event)
-		if vim.api.nvim_buf_get_name(event.buf):match("yazi$") then
+		if not vim.api.nvim_buf_get_name(event.buf):match("zsh$") then
 			return
 		end
 		vim.opt_local.winhighlight = "Normal:TerminalBackground"
