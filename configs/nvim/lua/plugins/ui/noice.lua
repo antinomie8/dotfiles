@@ -15,7 +15,10 @@ return {
 			"anonymousgrasshopper/nvim-notify",
 			opts = {
 				timeout = 3000,
-				on_open = function(win) vim.api.nvim_win_set_config(win, { zindex = 100 }) end,
+				on_open = function(win)
+					vim.api.nvim_win_set_config(win, { zindex = 100 })
+					vim.wo[win].winfixbuf = true
+				end,
 			},
 		},
 	},
