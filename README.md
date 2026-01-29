@@ -10,6 +10,9 @@ git clone https://github.com/anonymousgrasshopper/dotfiles ~/.config/dotfiles &&
 ### Things to do after installing
 - `rustup default stable`
 - `go telemetry off`
+- [get a plymouth theme](https://github.com/adi1090x/plymouth-themes)
+- change `configs/hypr/hypridle.conf` keyboard device if necessary
+
 <!-- - `build-fzf-tab-module` # does not respect LS_COLORS -->
 #### Systemd
 - `systemctl --user enable --now hypridle.service`
