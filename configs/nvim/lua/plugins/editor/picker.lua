@@ -35,7 +35,6 @@ return {
 		-- { "<leader>sr", function() require("snacks.picker").registers() end, desc = "Registers" },
 		{ "<leader>s/", function() require("snacks.picker").search_history() end, desc = "Search History" },
 		{ "<leader>sa", function() require("snacks.picker").autocmds() end, desc = "Autocmds" },
-		{ "<leader>sb", function() require("snacks.picker").lines() end, desc = "Buffer Lines" },
 		{ "<leader>sc", function() require("snacks.picker").command_history() end, desc = "Command History" },
 		{ "<leader>sC", function() require("snacks.picker").commands() end, desc = "Commands" },
 		{ "<leader>sd", function() require("snacks.picker").diagnostics() end, desc = "Diagnostics" },
@@ -57,9 +56,9 @@ return {
 		-- LSP
 		{ "grd", function() require("snacks.picker").lsp_definitions() end, desc = "Goto Definition" },
 		{ "grD", function() require("snacks.picker").lsp_declarations() end, desc = "Goto Declaration" },
-		{ "grr", function() require("snacks.picker").lsp_references() end, nowait = true, desc = "References" },
 		{ "gri", function() require("snacks.picker").lsp_implementations() end, desc = "Goto Implementation" },
 		{ "grt", function() require("snacks.picker").lsp_type_definitions() end, desc = "Goto Type Definition" },
+		{ "grr", function() require("snacks.picker").lsp_references() end, nowait = true, desc = "References" },
 		{ "grc", function() require("snacks.picker").lsp_incoming_calls() end, desc = "Incoming Calls" },
 		{ "gro", function() require("snacks.picker").lsp_outgoing_calls() end, desc = "Outgoing Calls" },
 		{ "<leader>ss", function() require("snacks.picker").lsp_symbols() end, desc = "LSP Symbols" },

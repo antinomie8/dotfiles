@@ -265,12 +265,8 @@ return {
 			{ "gpd", function() require("goto-preview").goto_preview_definition() end, desc = "Preview definition" },
 			{ "gpc", function() require("goto-preview").goto_preview_declaration() end, desc = "Preview declaration" },
 			{ "gpi", function() require("goto-preview").goto_preview_implementation() end, desc = "Preview implementation" },
+			{ "gpt", function() require("goto-preview").goto_preview_type_definition() end, desc = "Preview type definition" },
 			{ "gpr", function() require("goto-preview").goto_preview_references() end, desc = "Preview references" },
-			{
-				"gpt",
-				function() require("goto-preview").goto_preview_type_definition() end,
-				desc = "Preview type definition",
-			},
 			{ "gpx", function() require("goto-preview").close_all_win() end, desc = "Close all previews" },
 			{
 				"gpX",

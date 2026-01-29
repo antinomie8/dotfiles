@@ -148,7 +148,6 @@ return {
 			-- { "<leader>sr", desc = "Registers", icon = { icon = "󰠷 ", color = "cyan" } },
 			{ "<leader>s/", desc = "Search History", icon = { icon = "󱎸 ", color = "white" } },
 			{ "<leader>sa", desc = "Autocmds", icon = { icon = " ", color = "azure" } },
-			{ "<leader>sb", desc = "Buffer Lines", icon = { icon = " ", color = "cyan" } },
 			{ "<leader>sc", desc = "Command History", icon = { icon = " ", color = "blue" } },
 			{ "<leader>sC", desc = "Commands", icon = { icon = " ", color = "grey" } },
 			{ "<leader>sd", desc = "Diagnostics", icon = { icon = " ", color = "red" } },
@@ -170,15 +169,24 @@ return {
 			-- LSP
 			{ "grd", desc = "Goto Definition", icon = { icon = " ", color = "azure" } },
 			{ "grD", desc = "Goto Declaration", icon = { icon = " ", color = "azure" } },
-			{ "grr", nowait = true, desc = "References", icon = { icon = "󰕡 ", color = "yellow" } },
 			{ "gri", desc = "Goto Implementation", icon = { icon = " ", color = "cyan" } },
 			{ "grt", desc = "Goto Type Definition", icon = { icon = " ", color = "yellow" } },
+			{ "grr", desc = "References", icon = { icon = "󰕡 ", color = "yellow" } },
 			{ "grc", desc = "Incoming Calls", icon = { icon = "󱆓 ", color = "orange" } },
 			{ "gro", desc = "Outgoing Calls", icon = { icon = "󱆙 ", color = "orange" } },
 			{ "<leader>ss", desc = "LSP Symbols", icon = { icon = " ", color = "orange" } },
 			{ "<leader>sS", desc = "LSP Workspace Symbols", icon = { icon = " ", color = "orange" } },
 			-- misc
 			{ "<leader>Z", desc = "Zoxide", icon = { icon = " ", color = "purple" } },
+
+			-- LSP preview
+			{ "gpd", desc = "Preview definition", icon = { icon = " ", color = "azure" } },
+			{ "gpc", desc = "Preview declaration", icon = { icon = " ", color = "azure" } },
+			{ "gpi", desc = "Preview implementation", icon = { icon = " ", color = "cyan" } },
+			{ "gpt", desc = "Preview type definition", icon = { icon = " ", color = "yellow" } },
+			{ "gpr", desc = "Preview references", icon = { icon = "󰕡 ", color = "yellow" } },
+			{ "gpx", desc = "Close all previews", icon = { icon = "󱎘 ", color = "red" } },
+			{ "gpX", desc = "Close other previews", icon = { icon = " ", color = "red" } },
 		},
 	},
 }

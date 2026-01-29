@@ -3,7 +3,7 @@ return {
 	event = "VeryLazy",
 	keys = {
 		{
-			"<A-x>",
+			"<M-x>",
 			"<Cmd>Noice dismiss<CR>",
 			mode = { "n", "i", "c", "v" },
 			desc = "Dismiss all notifications",
@@ -13,12 +13,10 @@ return {
 		-- MunifTanjim/nui.nvim
 		{
 			"anonymousgrasshopper/nvim-notify",
-			opts = function()
-				return {
-					timeout = 3000,
-					on_open = function(win) vim.api.nvim_win_set_config(win, { zindex = 100 }) end,
-				}
-			end,
+			opts = {
+				timeout = 3000,
+				on_open = function(win) vim.api.nvim_win_set_config(win, { zindex = 100 }) end,
+			},
 		},
 	},
 	opts = {

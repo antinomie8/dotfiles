@@ -20,48 +20,13 @@ keymap.set("n", "<leader>tp", "<Cmd>tabprevious<CR>", { desc = "Previous Tab" })
 keymap.set("n", "<leader>tf", "<Cmd>tabfirst<CR>", { desc = "First Tab" })
 keymap.set("n", "<leader>tl", "<Cmd>tablast<CR>", { desc = "Last Tab" })
 
--- windows
-keymap.set("n", "<leader>ww", "<C-W>p", { desc = "Other Window", remap = true })
-keymap.set("n", "<leader>wd", "<C-W>c", { desc = "Delete Window", remap = true })
-keymap.set("n", "<leader>w-", "<C-W>s", { desc = "Split Window Below", remap = true })
-keymap.set("n", "<leader>w|", "<C-W>v", { desc = "Split Window Right", remap = true })
-keymap.set("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
-keymap.set("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
-
--- Terminal Mappings
-keymap.set("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
-keymap.set("t", "<C-h>", "<Cmd>wincmd h<CR>", { desc = "Go to Left Window" })
-keymap.set("t", "<C-j>", "<Cmd>wincmd j<CR>", { desc = "Go to Lower Window" })
-keymap.set("t", "<C-k>", "<Cmd>wincmd k<CR>", { desc = "Go to Upper Window" })
-keymap.set("t", "<C-l>", "<Cmd>wincmd l<CR>", { desc = "Go to Right Window" })
-keymap.set("t", "<C-/>", "<Cmd>close<CR>", { desc = "Hide Terminal" })
-keymap.set("t", "<c-_>", "<Cmd>close<CR>", { desc = "which_key_ignore" })
-
--- Move to window using the <ctrl> hjkl keys
-keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window", remap = true })
-keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to Lower Window", remap = true })
-keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to Upper Window", remap = true })
-keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to Right Window", remap = true })
-
--- Resize window using <ctrl> arrow keys
-keymap.set("n", "<C-Up>", "<Cmd>resize +2<CR>", { desc = "Increase Window Height" })
-keymap.set("n", "<C-Down>", "<Cmd>resize -2<CR>", { desc = "Decrease Window Height" })
-keymap.set("n", "<C-Left>", "<Cmd>vertical resize -2<CR>", { desc = "Decrease Window Width" })
-keymap.set("n", "<C-Right>", "<Cmd>vertical resize +2<CR>", { desc = "Increase Window Width" })
-
 -- Move Lines
-keymap.set("n", "<M-j>", "<Cmd>m .+1<CR>==", { desc = "Move Down" })
-keymap.set("n", "<M-k>", "<Cmd>m .-2<CR>==", { desc = "Move Up" })
-keymap.set("i", "<M-j>", "<esc><Cmd>m .+1<CR>==gi", { desc = "Move Down" })
-keymap.set("i", "<M-k>", "<esc><Cmd>m .-2<CR>==gi", { desc = "Move Up" })
-keymap.set("v", "<M-j>", "<Cmd>m '+1<CR>gv=gv", { desc = "Move Down" })
-keymap.set("v", "<M-k>", "<Cmd>m '<-2<CR>gv=gv", { desc = "Move Up" })
-
--- window management
-keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
-keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
-keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
-keymap.set("n", "<leader>sx", "<Cmd>close<CR>", { desc = "Close current split" })
+keymap.set("n", "<C-M-j>", "<Cmd>m .+1<CR>==", { desc = "Move Down" })
+keymap.set("n", "<C-M-k>", "<Cmd>m .-2<CR>==", { desc = "Move Up" })
+keymap.set("i", "<C-M-j>", "<esc><Cmd>m .+1<CR>==gi", { desc = "Move Down" })
+keymap.set("i", "<C-M-k>", "<esc><Cmd>m .-2<CR>==gi", { desc = "Move Up" })
+keymap.set("v", "<C-M-j>", "<Cmd>m '+1<CR>gv=gv", { desc = "Move Down" })
+keymap.set("v", "<C-M-k>", "<Cmd>m '<-2<CR>gv=gv", { desc = "Move Up" })
 
 -- diagnostics
 local diagnostic_jump = function(count, severity)
@@ -83,11 +48,10 @@ keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr =
 keymap.set({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 
 -- yanking and pasting
-keymap.set("x", "<leader>r", '"_dP')
 keymap.set("n", "<leader>P", "i<C-R><C-P>+<ESC>", { desc = 'Paste "+ content before cursor' })
-keymap.set({ "n", "v" }, "<C-M-y>", "<Cmd>%y+<CR>", { desc = "Yank buffer content into the + register" })
-keymap.set("v", "<C-z>", '"+y', { desc = 'Yank selected text into "+' })
-keymap.set("n", "<leader>cwd", '<Cmd>let @+=expand("%")<CR>', { desc = 'Copy absolute path to the "+' })
+keymap.set({ "n", "v" }, "<C-M-y>", "<Cmd>%y+<CR>", { desc = "Yank buffer content to the system clipboard" })
+keymap.set("v", "<C-z>", '"+y', { desc = "Yank selected text into the system cliboard" })
+keymap.set("n", "<leader>cwd", '<Cmd>let @+=expand("%")<CR>', { desc = "Copy absolute path to the system clipboard" })
 
 -- indenting
 keymap.set({ "n", "v" }, "<leader>i", "=G", { desc = "Indent file" })

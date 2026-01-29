@@ -59,11 +59,11 @@ return {
 					},
 				},
 				space2 = { enable = true }, -- symmetric space in pairs
-				close = { enable = true }, -- use <A-)> to close open pairs
+				close = { enable = true }, -- use <M-)> to close open pairs
 				fastwarp = {
 					multi = true,
 					{},
-					{ faster = true, map = "<A-e>", cmap = "<A-e>" },
+					{ faster = true, map = "<M-e>", cmap = "<M-e>" },
 				},
 				extensions = {
 					utf8 = false, -- see https://github.com/altermo/ultimate-autopair.nvim/issues/74
