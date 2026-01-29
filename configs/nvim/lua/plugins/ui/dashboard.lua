@@ -1,5 +1,5 @@
 return {
-	"anonymousgrasshopper/snacks.nvim",
+	"folke/snacks.nvim",
 	opts = {
 		dashboard = {
 			width = 60,

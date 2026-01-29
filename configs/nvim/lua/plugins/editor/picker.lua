@@ -1,5 +1,5 @@
 return {
-	"anonymousgrasshopper/snacks.nvim",
+	"folke/snacks.nvim",
 	keys = {
 		-- Quick access
 		{ "<leader><space>", function() require("snacks.picker").smart() end, desc = "Smart Find Files" },

@@ -1,5 +1,5 @@
 return {
-	"anonymousgrasshopper/snacks.nvim",
+	"folke/snacks.nvim",
 	lazy = false,
 	priority = 1000,
 	keys = {

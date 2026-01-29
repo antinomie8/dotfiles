@@ -1,7 +1,7 @@
 return {
 	"gbprod/yanky.nvim",
 	dependencies = {
-		"anonymousgrasshopper/snacks.nvim",
+		"folke/snacks.nvim",
 	},
 	keys = {
 		{ "<leader>p", function() require("snacks.picker").yanky() end, mode = { "n", "x" }, desc = "Open Yank History" },
