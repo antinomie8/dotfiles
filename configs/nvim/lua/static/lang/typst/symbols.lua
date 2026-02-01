@@ -6,6 +6,10 @@ return {
 	["space"]                     = { cchar = "space", hl = "Comment" },
 	["quad"]                      = { cchar = "quad", hl = "Comment" },
 
+	["iff"]                       = { cchar = "⟺", hl = "TypstConcealSymbol" },
+	["pm"]                        = { cchar = "±", hl = "TypstConcealSymbol" },
+	["mp"]                        = { cchar = "∓", hl = "TypstConcealSymbol" },
+
 	["AA"]                        = { cchar = "𝔸", hl = "TypstConcealSet" },
 	["Alpha"]                     = { cchar = "Α", hl = "TypstConcealSet" },
 	["BB"]                        = { cchar = "𝔹", hl = "TypstConcealSet" },

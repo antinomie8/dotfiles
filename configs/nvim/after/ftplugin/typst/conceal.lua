@@ -6,8 +6,8 @@ local function char_at(row, col)
 	return line:sub(col + 1, col + 1)
 end
 
-local function conceal_char_at(row, col, ns, chars)
-	if char_at(row, col) ~= chars then return end
+local function conceal_char_at(row, col, ns, char)
+	if char_at(row, col) ~= char then return end
 
 	vim.api.nvim_buf_set_extmark(buf, ns, row, col, {
 		end_row = row,
@@ -18,8 +18,6 @@ local function conceal_char_at(row, col, ns, chars)
 	})
 end
 
-local has_ancestor = require("utils.treesitter").has_ancestor
-
 -- conceal delimiters
 local ns_delims = vim.api.nvim_create_namespace("typst_delims")
 
@@ -28,6 +26,19 @@ local nodes = {
 	emph = { symbol = "_", node = "emph" },
 	strong = { symbol = "*", node = "strong" },
 }
+for capture, opts in pairs(nodes) do
+	local ok, query = pcall(
+		vim.treesitter.query.parse,
+		"typst",
+		string.format("((%s) @%s)", opts.node, capture, capture)
+	)
+	if not ok then
+		vim.notify("Typst conceal: failed to compile query", vim.log.levels.ERROR)
+		return
+	end
+
+	nodes[capture].query = query
+end
 
 local function conceal_delims(first, last)
 	vim.api.nvim_buf_clear_namespace(buf, ns_delims, first, last)
@@ -39,18 +50,8 @@ local function conceal_delims(first, last)
 	local root = tree:root()
 
 	for capture, opts in pairs(nodes) do
-		local ok, query = pcall(
-			vim.treesitter.query.parse,
-			"typst",
-			string.format("((%s) @%s)", opts.node, capture, capture)
-		)
-		if not ok then
-			vim.notify("Typst conceal: failed to compile query", vim.log.levels.ERROR)
-			return
-		end
-
-		for id, node in query:iter_captures(root, buf, first, last) do
-			if query.captures[id] == capture then
+		for id, node in opts.query:iter_captures(root, buf, first, last) do
+			if opts.query.captures[id] == capture then
 				local srow, scol, erow, ecol = node:range()
 				conceal_char_at(srow, scol, ns_delims, opts.symbol)
 				conceal_char_at(erow, ecol - 1, ns_delims, opts.symbol)
@@ -137,13 +138,11 @@ local queries = {
 			(
 				(field) @symbol
 				(#not-has-ancestor? @symbol field )
-				(#not-has-ancestor? @symbol attach)
 			)
 			(
 				(ident) @symbol
 				(#has-ancestor? @symbol math )
 				(#not-has-ancestor? @symbol field)
-				(#not-has-ancestor? @symbol attach)
 			)
 			(
 				attach . (ident) @symbol
@@ -187,16 +186,6 @@ local function math_conceal(first, last)
 
 	vim.api.nvim_buf_clear_namespace(buf, ns_math, first, last)
 
-	-- symbols
-	for _, node, metadata in queries.symbols:iter_captures(root, buf, first, last) do
-		local sr, sc, er, ec = node:range()
-		local text = vim.treesitter.get_node_text(node, 0, { metadata = metadata })
-		local repl = symbols[text]
-		if repl then
-			conceal_at_positions(buf, sr, sc, er, ec, repl.cchar, repl.hl)
-		end
-	end
-
 	-- subscripts and superscripts
 	local function conceal_script(node, map)
 		if not node then return "" end
@@ -239,30 +228,36 @@ local function math_conceal(first, last)
 			concealed = concealed .. (map["("] or "(")
 			concealed = concealed .. conceal_script(node:named_child(1), map)
 			concealed = concealed .. (map[")"] or ")")
-		elseif node:child_count() then
+		elseif node:child_count() > 0 then
 			for child in node:iter_children() do
 				concealed = concealed .. conceal_script(child, map)
 			end
 		else
 			local text = vim.treesitter.get_node_text(node, 0, {})
-			for i = 1, #text + 1 do
-				concealed = concealed .. (map[text:sub(i, i)] or text:sub(i, i))
+			if not (text == "(" or text == ")") then
+				for i = 1, #text do
+					concealed = concealed .. (map[text:sub(i, i)] or text:sub(i, i))
+				end
 			end
 		end
 		return concealed
 	end
 
 	for _, node in queries.scripts.subscripts:iter_captures(root, buf, first, last) do
-		if not has_ancestor(node:parent():parent(), "attach") then
-			local sr, sc = node:range()
+		local sr, sc, er, ec = node:range()
+		if
+			#vim.api.nvim_buf_get_extmarks(buf, ns_math, { sr, sc }, { er, ec }, { overlap = true }) <= 1
+		then
 			conceal_char_at(sr, sc - 1, ns_math, "_")
 			conceal_node_recursively(node, subscripts, conceal_script, "TypstConcealScript")
 		end
 	end
 
 	for _, node in queries.scripts.superscripts:iter_captures(root, buf, first, last) do
-		if not has_ancestor(node:parent():parent(), "attach") then
-			local sr, sc = node:range()
+		local sr, sc, er, ec = node:range()
+		if
+			#vim.api.nvim_buf_get_extmarks(buf, ns_math, { sr, sc }, { er, ec }, { overlap = true }) <= 1
+		then
 			conceal_char_at(sr, sc - 1, ns_math, "^")
 			conceal_node_recursively(node, superscripts, conceal_script, "TypstConcealScript")
 		end
@@ -307,6 +302,18 @@ local function math_conceal(first, last)
 				end
 				conceal_node_recursively(node, repl, conceal_text, "TypstConcealLetters")
 			end
+		end
+	end
+
+	-- symbols
+	for _, node, metadata in queries.symbols:iter_captures(root, buf, first, last) do
+		local sr, sc, er, ec = node:range()
+		local text = vim.treesitter.get_node_text(node, 0, { metadata = metadata })
+		local repl = symbols[text]
+		if repl and
+			#vim.api.nvim_buf_get_extmarks(buf, ns_math, { sr, sc }, { er, ec }, { overlap = true }) <= 1
+		then
+			conceal_at_positions(buf, sr, sc, er, ec, repl.cchar, repl.hl)
 		end
 	end
 end
