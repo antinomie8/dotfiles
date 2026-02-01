@@ -17,7 +17,7 @@ antidote load $ZDOTDIR/plugins/plugins
 
 
 eval "$(dircolors "$ZDOTDIR/misc/dircolors")" # colorize completion menu entries
-LS_COLORS="=(../)#.[^.]*=38;2;114;113;105:$LS_COLORS" # colorize dotfiles in gray
+LS_COLORS="=*/.[^/]#=38;2;114;113;105:=.[^/]#=38;2;114;113;105:$LS_COLORS" # colorize dotfiles in gray
 
 # completions
 zstyle ':completion:*'                 use-cache on
