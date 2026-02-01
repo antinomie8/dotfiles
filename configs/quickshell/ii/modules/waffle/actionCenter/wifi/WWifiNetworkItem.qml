@@ -40,7 +40,7 @@ ExpandableChoiceButton {
                     visible: root?.wifiNetwork?.isSecure ?? false
                     icon: "lock-closed"
                     filled: true
-                    implicitSize: 14           
+                    implicitSize: 14
                 }
             }
         }
@@ -61,6 +61,7 @@ ExpandableChoiceButton {
                 elide: Text.ElideRight
                 font.pixelSize: Looks.font.pixelSize.large
                 text: root.wifiNetwork?.ssid ?? Translation.tr("Unknown")
+                textFormat: Text.PlainText
             }
             WText { // Status
                 id: statusText
