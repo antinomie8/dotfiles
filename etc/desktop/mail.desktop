@@ -10,5 +10,5 @@ Categories=Office;Network;Email;ConsoleOnly
 Type=Application
 Icon=mail
 Terminal=true
-Exec=nvim -c "lua require('notmuch.send').compose(string.sub( %u, 8, -1))"
+Exec=mailto %u
 MimeType=x-scheme-handler/mailto

@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+url=$1
+
+# remove 'mailto:' (8 chars)
+if [[ $url = mailto:* ]]; then
+	url=${url:7}
+fi
+
+nvim -c "lua require('notmuch.send').compose('$url')"

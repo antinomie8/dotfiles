@@ -32,8 +32,9 @@ configs=("bat" "btop" "browser" "clangd" "eza" "fastfetch" "formatters" "git" "h
 	"wget" "xdg-desktop-portal" "xdg-desktop-portal-termfilechooser" "yazi" "zathura" "zsh"
 	"fzf.conf" "kmonad.kbd" "mimeapps.list" "ripgrep.conf" "safeeyes" "shellcheckrc" "user-dirs.dirs")
 # mozilla msmtp notmuch goimapnotify himalaya mirador aerc
-scripts=("assemble" "fzf_preview_wrapper" "git_dotfiles" "rgb" "zoxide-rename")
+scripts=("assemble" "fzf_preview_wrapper" "git_dotfiles" "mailto" "rgb" "zoxide-rename")
 systemd_user_units=("mail-sync.service" "goimapnotify.service")
+desktop_entries=("mail" "neomutt" "spotify" "yazi")
 
 # overwrite configs in the dotfiles repo
 for config in ${configs[@]}; do
@@ -46,6 +47,10 @@ done
 # overwrite systemd user units in the dotfiles repo
 for systemd_user_unit in ${systemd_user_units[@]}; do
 	copy $HOME/.config/systemd/user/$systemd_user_unit etc/systemd/user
+done
+# overwrite desktop files in the dotfiles repo
+for desktop_file in ${desktop_entries[@]}; do
+	copy $HOME/.local/share/applications/$desktop_file.desktop etc/desktop
 done
 # others
 copy $CPLUS_INCLUDE_PATH/dbg.hpp etc
