@@ -33,7 +33,7 @@ while (($#)); do
 	shift
 done
 if [[ ${#to} = 0 ]]; then
-	echo "" | mail $args[@]
+	echo "" | mail $args[@] me
 else
 	echo -en \
 		"Will send \e[38;5;46m${(j[\e[0m, \e[38;5;46m])attachments}$reset_color to \e[38;5;39m${(j[\e[0m, \e[38;5;39m])to}$reset_color. Confirm ? "
