@@ -33,7 +33,7 @@ local vim_enter_early_redraw = function()
 		end
 
 		-- Trigger early redraw
-		vim.cmd([[redraw]])
+		vim.cmd.redraw()
 	end
 end
 

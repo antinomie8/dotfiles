@@ -95,13 +95,13 @@ opt.title          = true
 opt.titlestring    = " %t"
 
 -- diffs
-opt.diffopt        = "internal,filler,closeoff,indent-heuristic,inline:char,linematch:40,iwhiteall"
+opt.diffopt:append("iwhiteall")
 
 -- mouse
 opt.mouse          = "nvi"
 
 -- miscellaneous
-opt.guicursor      = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,a:Cursor/lCursor"
+opt.guicursor:append("a:Cursor/lCursor")
 opt.backspace      = "indent,eol,start"
 opt.wildmode       = "longest:full,full"
 opt.shortmess      = "tToOcCFI"

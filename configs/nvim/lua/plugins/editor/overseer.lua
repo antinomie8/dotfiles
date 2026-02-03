@@ -103,7 +103,7 @@ return {
 						open = not params.bang,
 						close = true,
 						set_diagnostics = true,
-						errorformat = vim.bo.errorformat,
+						errorformat = #vim.bo.errorformat > 0 and vim.bo.errorformat or vim.o.errorformat,
 						open_height = 8,
 					},
 					"unique",

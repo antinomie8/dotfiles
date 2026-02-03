@@ -5,7 +5,7 @@ vim.bo.errorformat = "%f: %l.%c: %m"
 
 vim.b.output_format = "pdf"
 
--- use c treesitter highlighting with custom queries
+-- use C treesitter highlighting with custom queries
 local query_path = vim.fn.stdpath("config") .. "/queries/asy/highlights.scm"
 if vim.fn.filereadable(query_path) ~= 1 then return end
 local query_text = table.concat(vim.fn.readfile(query_path), "\n")
