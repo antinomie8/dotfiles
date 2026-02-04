@@ -10,17 +10,9 @@
 # disable automatic paging
 --paging=never
 
-# enable mouse scrolling support in `bat` when running inside tmux. This might disable text selection, unless you press shift.
---pager="less --RAW-CONTROL-CHARS --quit-if-one-screen --mouse"
-
 # enable this to use italic text on the terminal.
-#--italic-text=always
+--italic-text=always
 
 # syntax mappings: map a certain filename pattern to a language.
---map-syntax "*.rasi:CSS"
---map-syntax "clang-format:YAML"
---map-syntax "*zsh*:Bourne Again Shell (bash)"
---map-syntax ".zcompdump:Bourne Again Shell (bash)"
---map-syntax "config:Bourne Again Shell (bash)"
---map-syntax "*.conf:Bourne Again Shell (bash)"
+--map-syntax "*.conf:ini"
 --map-syntax "*justfile:Makefile"

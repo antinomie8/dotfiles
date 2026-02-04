@@ -7,4 +7,4 @@ if [ "$status" = 0 ]; then
 else
 	icon=~/.config/kitty/assets/icons/crossmark.svg
 fi
-notify-send --icon="$icon" "$command" "command $command finished with status $status"
+notify-send --app-name "kitty" --icon="$icon" "$command" "command $command finished with status $status"
