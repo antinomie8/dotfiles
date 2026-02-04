@@ -58,7 +58,7 @@ Item {
         NotificationStatusButton {
             enabled: false
             Layout.fillWidth: true
-            buttonText: Translation.tr("%1 notifications").arg(Notifications.list.length)
+            buttonText: Notifications.list.length == 1 ? Translation.tr("1 notification") : Translation.tr("%1 notifications").arg(Notifications.list.length)
         }
         NotificationStatusButton {
             Layout.fillWidth: false
