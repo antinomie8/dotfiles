@@ -39,6 +39,7 @@
   }
   math.lr[$⟦ lhs ; rhs ⟧$]
 }
+#let card = math.abs
 #let proj(point) = {
   math.attach([$=$], t: [$#point$])
 }

@@ -38,7 +38,7 @@ local function open(path)
 	end
 end
 
-vim.api.nvim_buf_create_user_command(0, "OpenPdf", open, {})
+vim.api.nvim_buf_create_user_command(0, "OpenPdf", function() open() end, {})
 vim.keymap.set("n", "<localleader>o", "<Cmd>OpenPdf<CR>", { desc = "Open pdf", buffer = true })
 
 -- compile and open

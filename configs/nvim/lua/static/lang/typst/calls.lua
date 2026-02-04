@@ -1,13 +1,15 @@
 return {
 	["sqrt"]      = { left = "√",     right = ""  },
-	["dbbracket"] = { left = "⟦",     right = "⟧" },
 	["abs"]       = { left = "|",     right = "|" },
 	["norm"]      = { left = "‖",     right = "‖" },
 	["floor"]     = { left = "⌊",     right = "⌋" },
 	["ceil"]      = { left = "⌈",     right = "⌉" },
 	["round"]     = { left = "⌊",     right = "⌉" },
-	["pmod"]      = { left = "(mod ", right = ")" },
 	["hat"]       = { left = "∠(",    right = ")" },
+
+	["pmod"]      = { left = "(mod ", right = ")" },
+	["dbbracket"] = { left = "⟦",     right = "⟧" },
+	["card"]      = { left = "|",     right = "|" },
 
 	-- Mathematical Calligraphic (aka cal)
 	cal = {
