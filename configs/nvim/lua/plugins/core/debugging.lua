@@ -138,7 +138,6 @@ return {
 					program = select_executable(),
 					args = args,
 				})
-				vim.notify(vim.inspect(args))
 			else
 				vim.notify("Configuration for language '" .. vim.bo.filetype .. "' not found",
 					vim.log.levels.ERROR, { title = "Debugger", icon = "" })

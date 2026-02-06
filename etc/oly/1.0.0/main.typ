@@ -62,6 +62,11 @@
   text(size: 1.4em, $square$)
 }
 
+#let oly(name, ..arg) = {
+  let text = arg.at(0, default: name)
+  link("oly://gen?name=" + name, text)
+}
+
 // main setup
 #let setup(
   document_title: none,

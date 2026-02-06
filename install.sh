@@ -306,10 +306,16 @@ fi
 				[[ -d build ]] || mkdir build
 				cmake -DCMAKE_BUILD_TYPE=Release -B build
 				cmake --build build
+
 				sudo cp build/bin/oly /usr/local/bin/oly
 				cp -r assets/typst ~/.local/share/
 				[[ -d /usr/local/share/zsh/site-functions ]] || sudo mkdir -p /usr/local/share/zsh/site-functions/
 				sudo cp assets/extras/_oly /usr/local/share/zsh/site-functions/
+
+				copy assets/typst/oly-scheme-handler/oly-handler ~/.local/bin/
+				copy assets/typst/oly-scheme-handler/oly.desktop ~/.local/share/applications/
+				xdg-mime default oly.desktop x-scheme-handler/oly
+
 				rm -rf "${TMPDIR:-/tmp}"/oly_build
 				printf '\n'
 				cd "$SCRIPT_DIR" || exit

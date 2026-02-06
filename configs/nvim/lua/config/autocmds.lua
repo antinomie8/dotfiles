@@ -86,6 +86,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 -- close some filetypes with <q>
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = {
+		"aerial",
 		"checkhealth",
 		"dap-float",
 		"diff",

@@ -157,6 +157,20 @@ return {
 	),
 	s(
 		{
+			trig = "⁽",
+			dscr = "superscipt parenthesis",
+			wordTrig = false,
+			snippetType = "autosnippet",
+			condition = typst.in_math,
+		},
+		{
+			t("^("),
+			i(0),
+			t(")"),
+		}
+	),
+	s(
+		{
 			trig = "all",
 			dscr = "universal quantifier",
 			snippetType = "autosnippet",
