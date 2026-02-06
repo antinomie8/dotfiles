@@ -63,9 +63,7 @@ contest_format:
 
 # added right after \documentclass in the preview file
 # meant to specify which latex packages to use
-packages: '\usepackage[french]{antoine}
-
-\usepackage[sexy,diagrams]{evan}'
+packages: '\usepackage[french]{antoine}'
 
 # You can also override preamble, contents, and metadata.
 # preamble is what gets put in the preview file

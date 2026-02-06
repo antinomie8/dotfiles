@@ -28,7 +28,7 @@ function copy() {
 # list of configs and scripts to copy
 configs=("bat" "btop" "browser" "clangd" "eza" "fastfetch" "formatters" "git" "hypr"
 	"hyprland-preview-share-picker" "illogical-impulse" "imv" "kitty" "lazygit" "mpv"
-	"neomutt" "ncdu" "npm" "nvim" "oly" "quickshell" "texmf" "thundery" "tmux" "udiskie" "uwsm"
+	"neomutt" "ncdu" "npm" "nvim" "oly" "quickshell" "thundery" "tmux" "udiskie" "uwsm"
 	"wget" "xdg-desktop-portal" "xdg-desktop-portal-termfilechooser" "yazi" "zathura" "zsh"
 	"fzf.conf" "kmonad.kbd" "mimeapps.list" "ripgrep.conf" "safeeyes" "shellcheckrc" "user-dirs.dirs")
 # mozilla msmtp notmuch goimapnotify himalaya mirador aerc
@@ -55,6 +55,7 @@ done
 # others
 copy $CPLUS_INCLUDE_PATH/dbg.hpp etc
 copy $HOME/.local/share/typst/packages/local/oly etc
+copy $HOME/.local/share/texmf etc
 
 # remove chosen files and directories
 fd . etc/oly -tf -e 'pdf' -x rm {}

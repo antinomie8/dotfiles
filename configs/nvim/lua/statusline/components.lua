@@ -2,7 +2,7 @@ local components = {}
 
 local conditions = require("heirline.conditions")
 local utils = require("heirline.utils")
-utils["truncate"] = function(str, thresh, is_winbar)
+utils.truncate = function(str, thresh, is_winbar)
 	local winwidth
 	if vim.o.laststatus == 3 and not is_winbar then
 		winwidth = vim.o.columns
