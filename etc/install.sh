@@ -77,6 +77,11 @@ if program systemctl; then
 	done
 fi
 
+if [[ ! -f ~/.local/bin/blackscreen ]]; then
+	g++ -std=c++20 -o blackscreen blackscreen.cpp $(pkg-config --cflags --libs sfml-window sfml-graphics)
+	mv blackscreen ~/.local/bin/
+fi
+
 # Windows and WSL specific files
 if [[ -n "$WSLENV" ]]; then
 	# get the Windows username
