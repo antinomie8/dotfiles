@@ -281,7 +281,7 @@ components.Ruler = {
 
 components.Time = {
 	static = {
-		clocks = { "󱑋 ", "󱑌 ", "󱑍 ", "󱑎 ", "󱑏 ", "󱑐 ", "󱑑 ", "󱑒 ", "󱑓 ", "󱑔 ", "󱑕 ", "󱑖 " },
+		clocks = { "󱑖 ", "󱑋 ", "󱑌 ", "󱑍 ", "󱑎 ", "󱑏 ", "󱑐 ", "󱑑 ", "󱑒 ", "󱑓 ", "󱑔 ", "󱑕 " },
 	},
 	provider = function(self)
 		local date = os.date("%R")

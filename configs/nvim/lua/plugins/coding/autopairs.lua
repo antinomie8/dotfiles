@@ -150,8 +150,9 @@ return {
 						if not obj then return false end
 						local line, col = obj.line, obj.col
 						if obj.key == vim.api.nvim_replace_termcodes("<bs>", true, true, true) then
-							return line:sub(col - 1, col + 1) == "<>" -- do not remove brackets unless they're next to each other
-						elseif obj.key == "<" then                  -- do not pair if not next to an identifier
+							-- for some reason the <> is sometimes preceded by another char
+							return line:sub(col - 1, col + 1):match("<>$") -- do not remove brackets unless they're next to each other
+						elseif obj.key == "<" then -- do not pair if not next to text ( e.g. 'std::cout <|', but 'std::vector<|>' )
 							return line:sub(col - 1, col):match("%w")
 						end
 						return true
