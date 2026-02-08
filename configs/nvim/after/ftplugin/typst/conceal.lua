@@ -228,6 +228,16 @@ local function math_conceal(first, last)
 			concealed = concealed .. (map["("] or "(")
 			concealed = concealed .. conceal_script(node:named_child(1), map)
 			concealed = concealed .. (map[")"] or ")")
+		elseif node:type() == "shorthand" then
+			local text = vim.treesitter.get_node_text(node, 0, {})
+			local repl = map[text]
+			if repl then
+				return repl
+			else
+				for i = 1, #text + 1 do
+					concealed = concealed .. (map[text:sub(i, i)] or text:sub(i, i))
+				end
+			end
 		elseif node:child_count() > 0 then
 			for child in node:iter_children() do
 				concealed = concealed .. conceal_script(child, map)
