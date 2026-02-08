@@ -2,7 +2,26 @@
 #include <cstdlib>
 #include <iostream>
 
-int main() {
+static bool is_inhibited() {
+	return std::getenv("IDLE_INHIBITED") != nullptr;
+}
+
+static void reexec_with_inhibit(char* argv[]) {
+	setenv("IDLE_INHIBITED", "1", 1);
+
+	execlp("systemd-inhibit", "systemd-inhibit", "--what=idle", "--mode=block",
+	       "--who=blackscreen", "--why=Fullscreen black screen", argv[0], nullptr);
+
+	perror("execlp(systemd-inhibit)");
+	std::exit(1);
+}
+
+int main(int argc, char* argv[]) {
+	// Ensure idle inhibition
+	if (!is_inhibited()) {
+		reexec_with_inhibit(argv);
+	}
+
 	if (std::system("brightnessctl -sd asus::kbd_backlight set 0 >/dev/null") != 0) {
 		std::cerr << "Failed to disable keyboard brightness\n";
 	}

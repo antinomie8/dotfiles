@@ -18,6 +18,7 @@ alias zln='zmv -L' # Link with patterns
 
 # shortcuts
 alias _='sudo'
+alias __='sudoedit'
 alias q='exit'
 alias -- +x='chmod u+x'
 alias -- -x='chmod u+x'

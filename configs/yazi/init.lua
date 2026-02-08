@@ -98,7 +98,7 @@ function Status:perm()
 		elseif c == "x" or c == "s" or c == "S" or c == "t" or c == "T" then
 			style = th.status.perm_exec
 		end
-		spans[i + 4] = ui.Span(c):style(style)
+		spans[#spans + 1] = ui.Span(c):style(style)
 	end
 	return ui.Line(spans)
 end
