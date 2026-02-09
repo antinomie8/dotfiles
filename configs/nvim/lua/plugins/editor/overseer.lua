@@ -18,6 +18,9 @@ return {
 		"Make",
 		"CMake",
 	},
+	keys = {
+		{ "<leader>R", "<Cmd>OverseerRun<CR>", desc = "Task template" },
+	},
 	opts = {
 		dap = false,
 		task_list = {
@@ -52,22 +55,13 @@ return {
 		overseer.setup(opts)
 
 		vim.api.nvim_create_user_command("Grep", function(params)
-			local args = vim.fn.expandcmd(params.args)
 			-- Insert args at the '$*' in the grepprg
-			local cmd, num_subs = vim.o.grepprg:gsub("%$%*", args)
+			local cmd, num_subs = vim.o.grepprg:gsub("%$%*", params.args)
 			if num_subs == 0 then
-				cmd = cmd .. " " .. args
+				cmd = cmd .. " " .. params.args
 			end
-			local cwd
-			local has_oil, oil = pcall(require, "oil")
-			if has_oil then
-				cwd = oil.get_current_dir()
-			end
-
 			local task = overseer.new_task({
-				cmd = cmd,
-				cwd = cwd,
-				name = "grep " .. args,
+				cmd = vim.fn.expandcmd(cmd),
 				components = {
 					{
 						"on_output_quickfix",
@@ -77,12 +71,12 @@ return {
 						items_only = true,
 					},
 					-- We don't care to keep this around as long as most tasks
-					{ "on_complete_dispose", timeout = 30, require_view = {} },
+					{ "on_complete_dispose", timeout = 30 },
 					"default",
 				},
 			})
 			task:start()
-		end, { nargs = "*", bang = true, bar = true, complete = "file" })
+		end, { nargs = "*", bang = true, complete = "file" })
 
 		vim.api.nvim_create_user_command("Make", function(params)
 			-- set the makeprg to CMake if CMakeLists.txt is found in a parent directory
@@ -100,7 +94,6 @@ return {
 			if num_subs == 0 then
 				cmd = cmd .. " " .. params.args
 			end
-			print(cmd)
 			local task = require("overseer").new_task({
 				cmd = vim.fn.expandcmd(cmd):gsub("'''", "'\\''"),
 				components = {

@@ -113,6 +113,8 @@ return {
 				icon = { icon = "󰊢 ", color = "red" },
 				cond = vim.bo.filetype == "lazy",
 			},
+			{ "<leader>R", icon = { icon = " ", hl = "DevIconJustfile" } },
+
 
 			-- picker
 			{ "<leader><space>", desc = "Smart Find Files", icon = { icon = "󰈞 ", color = "white" } },

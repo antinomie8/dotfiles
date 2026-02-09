@@ -42,10 +42,9 @@ return {
 		{ "<leader>ds", function() require("dap.ui.widgets").centered_float(require("dap.ui.widgets").scopes) end },
 		{ "<leader>dR", function() require("dap").restart() end, desc = "Restart", silent = false },
 		{ "<leader>de", function() require("dapui").eval() end, desc = "Eval line", silent = false },
-		{ "<leader>dl", function() require("dap").run_last() end, desc = "Run last", silent = false },
 		{ "<leader>dT", function() require("dap").terminate() end, desc = "Terminate" },
 
-		{ "<leader>R", ":RunWithArgs ", desc = "Run an executable in the debugger " },
+		{ "<leader>dd", ":RunWithArgs ", desc = "Run an executable in the debugger " },
 	},
 
 	config = function()
