@@ -75,6 +75,7 @@ local functions = require("static.lang.typst.calls")
 local subscripts = require("static.lang.typst.subscripts")
 local superscripts = require("static.lang.typst.superscripts")
 local symbols = require("static.lang.typst.symbols")
+local shorthands = require("static.lang.typst.shorthands")
 
 -- returns a list of {row=, col=, ch=} for each character in the buffer span
 local function get_char_positions_in_range(bufnr, sr, sc, er, ec)
@@ -136,17 +137,17 @@ local queries = {
 		"typst",
 		[[
 			(
-				(field) @symbol
-				(#not-has-ancestor? @symbol field )
+				(field) @sym
+				(#not-has-ancestor? @sym field )
 			)
 			(
-				(ident) @symbol
-				(#has-ancestor? @symbol math )
-				(#not-has-ancestor? @symbol field)
+				(ident) @sym
+				(#has-ancestor? @sym math )
+				(#not-has-ancestor? @sym field)
 			)
 			(
-				attach . (ident) @symbol
-				(#not-has-ancestor? @symbol field)
+				attach . (ident) @sym
+				(#not-has-ancestor? @sym field)
 			)
 		]]
 	),
@@ -169,15 +170,32 @@ local queries = {
 		[[
 			(
 				(call)
-				@function
-				(#has-ancestor? @function math)
-				(#not-has-ancestor? @function attach)
+				@func
+				(#has-ancestor? @func math)
+				(#not-has-ancestor? @func attach)
+			)
+		]]
+	),
+	shorthands = vim.treesitter.query.parse(
+		"typst",
+		[[
+			(
+				(shorthand)
+				@shorthand
+				(#has-ancestor? @shorthand math)
+				(#not-has-ancestor? @shorthand attach)
+			)
+			(
+				(symbol) ; for ||
+				@shorthand
+				(#has-ancestor? @shorthand math)
+				(#not-has-ancestor? @shorthand attach)
 			)
 		]]
 	),
 }
 
-local function math_conceal(first, last)
+local function conceal_math(first, last)
 	local ok, parser = pcall(vim.treesitter.get_parser, buf, "typst")
 	if not ok or not parser then return end
 	local tree = parser:parse()[1]
@@ -234,8 +252,13 @@ local function math_conceal(first, last)
 			if repl then
 				return repl
 			else
-				for i = 1, #text + 1 do
-					concealed = concealed .. (map[text:sub(i, i)] or text:sub(i, i))
+				local repl = shorthands[text]
+				if repl then
+					return repl
+				else
+					for i = 1, #text + 1 do
+						concealed = concealed .. (map[text:sub(i, i)] or text:sub(i, i))
+					end
 				end
 			end
 		elseif node:child_count() > 0 then
@@ -326,10 +349,20 @@ local function math_conceal(first, last)
 			conceal_at_positions(buf, sr, sc, er, ec, repl.cchar, repl.hl)
 		end
 	end
+
+	-- shorthands
+	for _, node, metadata in queries.shorthands:iter_captures(root, buf, first, last) do
+		local sr, sc, er, ec = node:range()
+		local text = vim.treesitter.get_node_text(node, 0, { metadata = metadata })
+		local repl = shorthands[text]
+		if repl then
+			conceal_at_positions(buf, sr, sc, er, ec, repl, "@operator.typst")
+		end
+	end
 end
 
 vim.api.nvim_buf_attach(buf, false, {
-	on_lines = function(_, _, _, first, last) math_conceal(first, last) end,
+	on_lines = function(_, _, _, first, last) conceal_math(first, last) end,
 })
 
-math_conceal(0, -1)
+conceal_math(0, -1)

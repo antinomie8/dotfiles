@@ -3,8 +3,10 @@ return {
 	["dots"]                      = { cchar = "…", hl = "TypstConcealSymbol" },
 	["dots.c"]                    = { cchar = "⋯", hl = "TypstConcealSymbol" },
 	["tilde"]                     = { cchar = "∼", hl = "TypstConcealSymbol" },
+	["limits"]                    = { cchar = "",  hl = "TypstConcealSymbol" },
 	["space"]                     = { cchar = "space", hl = "Comment" },
 	["quad"]                      = { cchar = "quad", hl = "Comment" },
+	["mod"]                       = { cchar = "mod", hl = "Delimiter" },
 
 	["iff"]                       = { cchar = "⟺", hl = "TypstConcealSymbol" },
 	["pm"]                        = { cchar = "±", hl = "TypstConcealSymbol" },
