@@ -23,7 +23,7 @@ edit = [
 	{ run = "$EDITOR %s",  block = true, desc = "Edit" },
 	{ run = "sudoedit %s", block = true, desc = "Sudo Edit" },
 ]
-execute = [ { run = "shell 'bash /path/to/script' --confirm", desc = "Execute" } ]
+execute = [ { run = "%s", desc = "Execute" } ]
 play = [ { run = "xdg-open %s", orphan = true, desc = "Play" } ]
 open = [ { run = "xdg-open %s", orphan = true, desc = "Open" } ]
 add_sub = [ { run  = ''' printf "sub-add '%%s'\n" %s1 | socat - /tmp/mpv.sock ''', desc = "Add subtitles to mpv" } ]
