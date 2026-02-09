@@ -50,17 +50,31 @@
   inset: 6pt,
   text(x),
 )
-#let vocab(x) = text(weight: "bold", fill: rgb("#0000ff"), x)
-#let bf(x) = $bold(upright(#x))$
-#let scr(it) = text(
-  features: ("ss01",),
-  $cal(it)$,
+#let hrule = box(
+  width: 100%,
+  align(center)[#line(length: 100%, stroke: 0.6pt)],
 )
-#let hrule = box(width: 100%, align(center)[#line(length: 100%, stroke: 0.6pt)])
 #let Box = {
   h(1fr)
   text(size: 1.4em, $square$)
 }
+#let vocab(x) = text(weight: "bold", fill: rgb("#0000ff"), x)
+#let bf(x) = $bold(upright(#x))$
+#let cal(it) = math.class("normal", context {
+  show math.equation: set text(
+    font: ("Garamond-Math", "New Computer Modern Math"),
+    stylistic-set: 3,
+  )
+  let scaling = 100% * (1em.to-absolute() / text.size)
+  let wrapper = if scaling < 60% {
+    math.sscript
+  } else if scaling < 100% {
+    math.script
+  } else {
+    it => it
+  }
+  box(text(top-edge: "bounds", $wrapper(math.cal(it))$))
+})
 
 #let oly(name, ..arg) = {
   let text = arg.at(0, default: name)
