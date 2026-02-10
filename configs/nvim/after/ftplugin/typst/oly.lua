@@ -96,7 +96,7 @@ if vim.env.OLY and not vim.b[buf].oly_highlight then
 	vim.b[buf].oly_highlight = true
 	vim.b[buf].typst_root = vim.fn.expand("%:p:h") .. "/preview.typ"
 
-	vim.opt.autochdir = true
+	vim.cmd.cd(vim.fn.expand("%:p:h"))
 
 	highlight_metadata(0, -1)
 	highlight_hrule(0, -1)

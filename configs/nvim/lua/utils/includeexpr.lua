@@ -1,11 +1,11 @@
 local M = {}
 
-function M.systemd(expr)
+function M.systemd(module)
 	-- trim whitespace
-	expr = expr:gsub("^%s+", ""):gsub("%s+$", "")
+	module = module:gsub("^%s+", ""):gsub("%s+$", "")
 
 	-- drop everything before the first '='
-	expr = expr:gsub("^.-=", "")
+	module = module:gsub("^.-=", "")
 
 	local spec = {
 		["%%"] = "%",
@@ -21,10 +21,33 @@ function M.systemd(expr)
 	}
 
 	for k, v in pairs(spec) do
-		expr = expr:gsub("%%" .. k, v)
+		module = module:gsub("%%" .. k, v)
 	end
 
-	return expr
+	return module
+end
+
+function M.typst(_)
+	local line = vim.api.nvim_get_current_line()
+
+	-- package import: #import "@repo/name:version"
+	local repo, name, version = line:match('#import%s+"@([^/]+)/([^:]+):([^"]+)"')
+
+	if repo and name and version then
+		local data_home = vim.env.XDG_DATA_HOME
+		                  or (vim.env.HOME and vim.fs.joinpath(vim.env.HOME, ".local", "share"))
+		                  or ""
+
+		return vim.fs.joinpath(
+			data_home,
+			"typst",
+			"packages",
+			repo,
+			name,
+			version,
+			"typst.toml"
+		)
+	end
 end
 
 return M
