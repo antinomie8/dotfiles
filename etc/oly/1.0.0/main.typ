@@ -15,6 +15,7 @@
 }
 
 // symbols
+#let prod = sym.product
 #let iff = sym.arrow.l.r.double.long
 #let pm = sym.plus.minus
 #let mp = sym.minus.plus

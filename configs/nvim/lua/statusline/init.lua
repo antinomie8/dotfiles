@@ -49,13 +49,8 @@ local Align = { provider = "%=" }
 local SectionX = {
 	hl = { bg = "bg", fg = "fg" },
 	components.Macro,
-	components.Space,
 	components.Debugger,
-	components.Space,
-	components.Space,
 	components.Overseer,
-	components.Space,
-	components.Space,
 	components.Diagnostics,
 }
 

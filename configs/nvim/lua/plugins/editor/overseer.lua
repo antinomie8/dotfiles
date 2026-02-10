@@ -20,6 +20,7 @@ return {
 	},
 	keys = {
 		{ "<leader>R", "<Cmd>OverseerRun<CR>", desc = "Task template" },
+		{ "<leader>oo", "<Cmd>OverseerOpen<CR>", desc = "Open Overseer tasks" },
 	},
 	opts = {
 		dap = false,

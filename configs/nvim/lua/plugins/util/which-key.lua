@@ -53,6 +53,8 @@ return {
 		icons = {
 			rules = { -- uppercase letters are not allowed in the pattern
 				{ plugin = "yazi.nvim", icon = "󰇥 ", color = "yellow" },
+				{ plugin = "overseer.nvim", icon = " ", color = "green" },
+				{ plugin = "snacks.nvim", icon = " ", color = "blue" },
 				{ pattern = "error", icon = "󰅚 ", color = "red" },
 				{ pattern = "warning", icon = "󰀪 ", color = "orange" },
 				{ pattern = "documentation", icon = " ", color = "white" },
@@ -85,7 +87,6 @@ return {
 				{ pattern = "highlight", icon = " ", color = "orange" },
 				{ pattern = "substitute", icon = " ", color = "orange" },
 				{ pattern = "replace", icon = " ", color = "orange" },
-				{ plugin = "snacks.nvim", icon = " ", color = "blue" },
 			},
 		},
 		spec = {

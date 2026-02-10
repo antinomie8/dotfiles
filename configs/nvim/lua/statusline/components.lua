@@ -124,7 +124,7 @@ local FileName = {
 			return "[No Name]"
 		end
 		local shorten_length = 5
-		while not conditions.width_percent_below(#filename, 0.60) and shorten_length >= 2 do
+		while not conditions.width_percent_below(#filename, 0.60 - 10 / vim.o.columns) and shorten_length >= 2 do
 			filename = vim.fn.pathshorten(filename, shorten_length)
 			shorten_length = shorten_length - 1
 		end
@@ -173,22 +173,35 @@ local FileFlags = {
 
 components.FileNameBlock = utils.insert(
 	FileNameBlock,
+	{ provider = "%<" }, -- this means that the statusline is cut here when there's not enough space
 	FileName,
 	components.Space,
 	FileIcon,
 	components.Space,
 	FileFlags,
-	{ provider = "%<" } -- this means that the statusline is cut here when there's not enough space
+	components.Space
 )
 
 components.Macro = {
 	condition = function() return vim.fn.reg_recording() ~= "" and vim.o.cmdheight == 0 end,
-	provider = function() return " " .. vim.fn.reg_recording() .. "  " end,
+	provider = function() return " " .. vim.fn.reg_recording() .. " " end,
 	hl = { fg = "orange" },
 	update = {
 		"RecordingEnter",
 		"RecordingLeave",
 	},
+}
+
+components.Debugger = {
+	condition = function()
+		if package.loaded.dap then
+			local session = require("dap").session()
+			return session ~= nil
+		end
+		return false
+	end,
+	provider = function() return "  " .. require("dap").status() .. " " end,
+	hl = "Debug",
 }
 
 local function OverseerTasksForStatus(status)
@@ -218,23 +231,11 @@ components.Overseer = {
 		},
 	},
 
+	components.Space,
 	OverseerTasksForStatus("CANCELED"),
 	OverseerTasksForStatus("RUNNING"),
 	OverseerTasksForStatus("SUCCESS"),
 	OverseerTasksForStatus("FAILURE"),
-}
-
-components.Debugger = {
-	condition = function()
-		if package.loaded.dap then
-			local session = require("dap").session()
-			return session ~= nil
-		end
-		return false
-	end,
-	provider = function() return " " .. require("dap").status() end,
-	hl = "Debug",
-	-- see Click-it! section for clickable actions
 }
 
 components.Diagnostics = {
@@ -256,6 +257,7 @@ components.Diagnostics = {
 
 	update = { "DiagnosticChanged", "BufEnter" },
 
+	components.Space,
 	{
 		provider = function(self) return self.errors > 0 and (self.error_icon .. " " .. self.errors .. " ") end,
 		hl = "DiagnosticSignError",
