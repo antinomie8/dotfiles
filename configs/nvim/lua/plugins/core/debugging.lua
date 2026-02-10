@@ -16,7 +16,7 @@ return {
 			},
 		},
 	},
-	cmd = { "DapContinue", "DapToggleBreakpoint" },
+	cmd = { "DapContinue", "DapToggleBreakpoint", "RunWithArgs" },
 	keys = {
 		{ "<leader>dc", function() require("dap").continue() end, desc = "Continue" },
 		{ "<leader>dp", function() require("dap").pause() end, desc = "Pause" },
@@ -65,11 +65,10 @@ return {
 		dap.listeners.before.attach.dapui_config = function() dapui.open() end
 		dap.listeners.before.launch.dapui_config = function() dapui.open() end
 		dap.listeners.before.event_terminated.dapui_config = function() dapui.close() end
-		dap.listeners.before.event_exited.dapui_config = function() dapui.close() end
 		dapui.setup()
 
 		-- keymaps
-		local debugging_keymaps = {
+		local keymaps_debug = {
 			["b"] = { function() dap.toggle_breakpoint() end, "Debug mode: toggle breakpoint" },
 			["i"] = {
 				function()
@@ -85,17 +84,36 @@ return {
 			["L"] = { function() require("dap").step_into() end, "Debug mode: step into" },
 			["G"] = { function() require("dap").run_to_cursor() end, "Debug mode: run to cursor" },
 			["q"] = { function() require("dap").terminate() end, "Debug mode: terminate" },
-			["C"] = { close_dap_float, "Remove DAP floating windows" },
+			["C"] = { close_dap_float, "Debug mode: Remove debugger floating windows" },
 		}
-		dap.listeners.after.event_initialized.me = function()
-			for key, callback in pairs(debugging_keymaps) do
+		local keymap_restore = {}
+		dap.listeners.after.event_initialized.keymaps = function()
+			local keymaps = vim.api.nvim_get_keymap("n")
+			for _, keymap in ipairs(keymaps) do
+				if keymaps_debug[keymap.lhs] then
+					table.insert(keymap_restore, keymap)
+				end
+			end
+			for key, callback in pairs(keymaps_debug) do
 				vim.keymap.set("n", key, callback[1], { desc = callback[2] })
 			end
 		end
-		dap.listeners.after.event_exited.me = function()
-			for key, _ in pairs(debugging_keymaps) do
+		dap.listeners.after.event_terminated.keymaps = function()
+			for key, _ in pairs(keymaps_debug) do
 				vim.keymap.del("n", key)
 			end
+			for _, keymap in pairs(keymap_restore) do
+				vim.keymap.set(
+					keymap.mode,
+					keymap.lhs,
+					keymap.rhs or keymap.callback,
+					{
+						silent = keymap.silent == 1,
+						desc = keymap.desc,
+					}
+				)
+			end
+			keymap_restore = {}
 			close_dap_float()
 		end
 
@@ -179,7 +197,7 @@ return {
 		dap.configurations.rust = dap.configurations.cpp
 
 		-- automatically add a breakpoint at the beginning of main function
-		dap.listeners.before.event_initialized["auto-main-breakpoint"] = function()
+		dap.listeners.before.event_initialized.auto_breakpoint = function()
 			local pattern
 			if vim.tbl_contains({ "c", "cpp" }, vim.bo.filetype) then
 				if vim.api.nvim_buf_get_name(0):match("Codeforces") then
