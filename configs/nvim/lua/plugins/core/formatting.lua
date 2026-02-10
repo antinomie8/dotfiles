@@ -62,11 +62,10 @@ return {
 			typst = { "typstyle" },
 			lua = function(bufnr)
 				if
-					#vim.fs.find({ "stylua.toml", ".stylua.toml" }, {
-						type = "file",
-						upward = true,
-						path = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)),
-					}) > 0
+					vim.fs.root(
+						vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)),
+						{ "stylua.toml", ".stylua.toml" }
+					)
 				then
 					return { "stylua" }
 				else

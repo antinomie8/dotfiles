@@ -83,10 +83,11 @@ return {
 			-- set the makeprg to CMake if CMakeLists.txt is found in a parent directory
 			local cmakelists = vim.fs.find("CMakeLists.txt", {
 				type = "file",
+				limit = math.huge,
 				upward = true,
-			})[1]
+			})
 			if cmakelists then
-				vim.cmd.cd(vim.fs.dirname(cmakelists))
+				vim.cmd.cd(vim.fs.dirname(cmakelists[#cmakelists]))
 				vim.opt_local.makeprg = "cmake --build build"
 			end
 
