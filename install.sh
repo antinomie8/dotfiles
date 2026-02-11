@@ -122,7 +122,7 @@ if program pacman; then
 				packages+=("texlive" "texlive-langfrench")
 			fi
 		fi
-		$package_manager -S --needed "${packages[@]}"
+		$package_manager -S --needed --noconfirm "${packages[@]}"
 	else
 		echo -e "${GREEN}Make sure the following packages are installed :${COLOR_RESET}"
 		echo -e "${WHITE}${packages[*]}${COLOR_RESET}"
@@ -317,6 +317,11 @@ if [[ ! -d ~/.local/share/gnupg ]]; then
 	mkdir -p ~/.local/share/gnupg
 	chmod 700 ~/.local/share/gnupg
 	gpg --list-keys
+fi
+
+# create python history dir
+if [[ -n "$PYTHON_HISTORY" && ! -d "$PYTHON_HISTORY" ]]; then
+	mkdir "$(dirname "$PYTHON_HISTORY")"
 fi
 
 # run etc/install.sh
