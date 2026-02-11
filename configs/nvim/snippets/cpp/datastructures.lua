@@ -114,10 +114,10 @@ return {
 		},
 		{
 			t("vector<int> "),
-			i(1, "name"),
+			i(1),
 			t("("),
-			i(2, "size"),
-			t(")"),
+			i(2),
+			t(");"),
 		}
 	),
 	s(
@@ -129,10 +129,10 @@ return {
 		},
 		{
 			t("vector<pair<int, int>> "),
-			i(1, "name"),
+			i(1),
 			t("("),
-			i(2, "size"),
-			t(")"),
+			i(2),
+			t(");"),
 		}
 	),
 	s(
