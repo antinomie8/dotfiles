@@ -206,14 +206,14 @@
     },
     "cheatsheet": {
         "fontSize": {
-            "comment": 14,
-            "key": 14
+            "comment": 15,
+            "key": 15
         },
         "splitButtons": true,
         "superKey": "",
         "useFnSymbol": false,
         "useMacSymbol": true,
-        "useMouseSymbol": false
+        "useMouseSymbol": true
     },
     "conflictKiller": {
         "autoKillNotificationDaemons": false,
@@ -489,6 +489,7 @@
     "updates": {
         "adviseUpdateThreshold": 75,
         "checkInterval": 120,
+        "enableCheck": true,
         "stronglyAdviseUpdateThreshold": 200
     },
     "waffles": {
