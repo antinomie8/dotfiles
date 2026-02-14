@@ -310,6 +310,7 @@ fi
 # rebuild bat cache
 if program bat && ! bat --list-themes | grep --silent "Kanagawa"; then
 	bat cache --build
+	echo
 fi
 
 # check gnupg directory exists and is properly configured
@@ -317,6 +318,7 @@ if [[ ! -d ~/.local/share/gnupg ]]; then
 	mkdir -p ~/.local/share/gnupg
 	chmod 700 ~/.local/share/gnupg
 	gpg --list-keys
+	echo
 fi
 
 # create python history dir
