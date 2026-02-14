@@ -10,18 +10,10 @@ set page-padding 5
 set font "JetBrains Mono 11"
 
 # mappings
-map d scroll half-up
+map u scroll half-up
 map d scroll half-down
-map K zoom in
-map J zoom out
-map D set "first-page-column 1:1"
-map <C-d> set "first-page-column 1:2"
+map D toggle_page_mode 2
 map i recolor
 map R reload
 map p print
 map <C-h> nohlsearch
-map [fullscreen] a adjust_window best-fit
-map [fullscreen] s adjust_window width
-map [fullscreen] f follow
-map [fullscreen] d toggle_page_mode 2
-map [fullscreen] <Tab> toggle_index
