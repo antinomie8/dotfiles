@@ -3,6 +3,7 @@ vim.filetype.add({
 		tex = "tex",
 		tsqx = "tsqx",
 		eml = "mail",
+		asy = "asymptote",
 	},
 	filename = {
 		["clang-format"] = "yaml",

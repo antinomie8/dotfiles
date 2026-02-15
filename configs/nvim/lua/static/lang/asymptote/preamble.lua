@@ -55,4 +55,4 @@ return [[
 	void fill(picture pic = currentpicture, conic g, pen p=defaultpen)
 		{ filldraw(pic, (path) g, p); }
 ]]
--- vim: ft=asy
+-- vim: ft=asymptote

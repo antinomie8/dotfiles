@@ -6,7 +6,7 @@ vim.bo.errorformat = "%f: %l.%c: %m"
 vim.b.output_format = "pdf"
 
 -- use C treesitter highlighting with custom queries
-local query_path = vim.fn.stdpath("config") .. "/queries/asy/highlights.scm"
+local query_path = vim.fn.stdpath("config") .. "/queries/asymptote/highlights.scm"
 if vim.fn.filereadable(query_path) ~= 1 then return end
 local query_text = table.concat(vim.fn.readfile(query_path), "\n")
 vim.treesitter.query.set("c", "highlights", query_text)
@@ -18,7 +18,7 @@ local function asy(args, bufnr, notify)
 	if notify == nil then notify = true end
 
 	local text = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-	local preamble = require("static.lang.asy.preamble")
+	local preamble = require("static.lang.asymptote.preamble")
 	local preamble_size = select(2, preamble:gsub("\n", ""))
 	local input = preamble .. table.concat(text, "\n")
 

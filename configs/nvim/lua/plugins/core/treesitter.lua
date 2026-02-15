@@ -29,9 +29,9 @@ return {
 				end,
 			})
 
-			vim.treesitter.language.register("c", "asy")
+			vim.treesitter.language.register("c", "asymptote")
 			vim.treesitter.query.add_predicate("in_asy?", function(_, _, source)
-				return vim.bo[source].filetype == "asy"
+				return vim.bo[source].filetype == "asymptote"
 			end)
 
 			require("nvim-treesitter").install({

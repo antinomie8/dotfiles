@@ -50,7 +50,7 @@ return {
 	end,
 	opts = {
 		formatters_by_ft = {
-			asy = { "clang_format", "asy" },
+			asymptote = { "clang_format", "asymptote" },
 			cpp = { "clang_format" },
 			rust = { "rustfmt" },
 			sh = { "shfmt" },
@@ -58,7 +58,7 @@ return {
 			bash = { "shfmt" },
 			css = { "prettier" },
 			js = { "prettier" },
-			tex = { "tex", "tex_fmt" },
+			tex = { "latex_math", "tex_fmt" },
 			typst = { "typstyle" },
 			lua = function(bufnr)
 				if
