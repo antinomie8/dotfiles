@@ -70,6 +70,31 @@ return {
 					enabled = false,
 				},
 			},
+			markdown = {
+				hover = {
+					["|(%S-)|"] = vim.cmd.help, -- vim help links
+					["%[.-%]%((%S-)%)"] = require("noice.util").open, -- markdown links
+					["%%(%S-) "] = require("utils.cppman").open,
+					["@c ([^ .]+)"] = require("utils.cppman").open,
+					["\\<a href=\"([^>]*)\">.-\\</a>"] = function(match)
+						local url = "https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/" .. match
+						vim.fn.jobstart({
+							"xdg-open",
+							url,
+						}, { detach = true })
+					end,
+				},
+				highlights = {
+					["\\<a href=\"[^>]*\">(.-)\\</a>"] = "@markup.link",
+					["|%S-|"] = "@markup.link",
+					["@%S+"] = "@keyword",
+					["@c [^ .]+"] = "@function",
+					["^%s*(Parameters:)"] = "Title",
+					["^%s*(Return:)"] = "Title",
+					["^%s*(See also:)"] = "Title",
+					["{%S-}"] = "@keyword",
+				},
+			},
 			views = {
 				cmdline_popup = {
 					border = {
