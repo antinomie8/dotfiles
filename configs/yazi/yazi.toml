@@ -7,7 +7,6 @@ sort_translit  = true
 show_hidden    = true
 show_symlink   = true
 scrollof       = 200
-title_format   = "󰇥 {cwd}"
 
 [preview]
 wrap           = "no"

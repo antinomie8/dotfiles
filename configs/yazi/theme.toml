@@ -134,6 +134,8 @@ rules = [
 
 [icon]
 prepend_dirs = [
+	{ name = ".config", text = "" },
+	{ name = "Documents", text = "" },
 	{ name = "Mathématiques", text = "󰩦" },
 	{ name = "Informatique", text = "" },
 	{ name = "Notes", text = "󰺿" },
@@ -143,6 +145,10 @@ prepend_dirs = [
 	{ name = "Photos", text = "" },
 	{ name = "Vidéos", text = "" },
 	{ name = "Musique", text = "" },
+]
+prepend_conds = [
+	{ if = "dir",  text = "" },
+	{ if = "exec", text = "", fg = "#4d5a5e" },
 ]
 append_exts = [
 	{ name = "asy", text = "󰒕", fg = "#ff0000" },

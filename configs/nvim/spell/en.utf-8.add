@@ -179,3 +179,5 @@ endianness
 cross-platform
 Fano
 Dobble
+plymouth
+Systemd
