@@ -24,3 +24,10 @@
 		visibility: hidden !important;
 	}
 }
+
+/* hide cp-algorithms donation banner */
+@-moz-document domain("cp-algorithms.com") {
+	#donation-banner {
+		display: none !important;
+	}
+}
