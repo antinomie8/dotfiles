@@ -145,6 +145,7 @@ prepend_dirs = [
 	{ name = "Photos", text = "" },
 	{ name = "Vidéos", text = "" },
 	{ name = "Musique", text = "" },
+	{ name = "Library", text = "" },
 ]
 prepend_conds = [
 	{ if = "dir",  text = "" },
