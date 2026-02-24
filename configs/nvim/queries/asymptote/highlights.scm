@@ -2,7 +2,7 @@
 
 ((type_identifier) @keyword.import
 	(#in_asy?)
-	(#any-of? @keyword.import "access" "from" "include" "import" ))
+	(#any-of? @keyword.import "access" "from" "import" ))
 
 
 ((identifier) @constant.builtin

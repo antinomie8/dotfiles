@@ -9,7 +9,7 @@ vim.b.output_format = "pdf"
 local query_path = vim.fn.stdpath("config") .. "/queries/asymptote/highlights.scm"
 if vim.fn.filereadable(query_path) ~= 1 then return end
 local query_text = table.concat(vim.fn.readfile(query_path), "\n")
-vim.treesitter.query.set("c", "highlights", query_text)
+vim.treesitter.query.set("cpp", "highlights", query_text)
 
 -- compile asy code
 local function asy(args, bufnr, notify)

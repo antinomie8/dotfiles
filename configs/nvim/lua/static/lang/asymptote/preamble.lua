@@ -54,5 +54,18 @@ return [[
 		{ filldraw(pic, (path) g, fillpen, drawpen); }
 	void fill(picture pic = currentpicture, conic g, pen p=defaultpen)
 		{ filldraw(pic, (path) g, p); }
+
+	// use default size of 5 for markrightangle
+	void markrightangle(picture pic = currentpicture, point A, point O,
+                      point B, real size = 5, pen p = currentpen,
+                      margin margin = NoMargin,
+                      filltype filltype = NoFill) {
+	  pair Ap = A, Bp = B, Op = O;
+		pair dir = Ap - Op;
+		real a1 = degrees(dir);
+		pair align = rotate(-a1) * dir(Op--Ap, Op--Bp);
+		perpendicularmark(pic = pic, z = O, align = align,
+		                  dir = dir, size = size, p = p,
+		                  margin = margin, filltype = filltype);
+	}
 ]]
--- vim: ft=asymptote

@@ -14,5 +14,6 @@ vim.filetype.add({
 		["${HOME}/.config/neomutt/.+"] = "neomuttrc",
 		["${HOME}/.config/kitty/.*.conf"] = "kitty",
 		["${HOME}/.config/kitty/.*.conf.bak"] = "kitty",
+		["${HOME}/.config/nvim/lua/static/lang/asymptote/preamble.lua"] = "asymptote",
 	},
 })
