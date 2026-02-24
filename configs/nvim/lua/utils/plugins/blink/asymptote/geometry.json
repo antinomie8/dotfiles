@@ -1,0 +1,3481 @@
+[
+  {
+    "kind": "variable",
+    "name": "epsgeo",
+    "type": "real",
+    "signature": "epsgeo",
+    "documentation": "Variable used in the approximate calculations."
+  },
+  {
+    "kind": "function",
+    "name": "addMargins",
+    "type": "void",
+    "signature": "addMargins(picture,real,real,real,real)",
+    "documentation": "Add margins to 'pic' with respect to the current bounding box of 'pic'. If 'rigid' is false, margins are added iff an infinite curve will be prolonged on the margin. If 'allObject' is false, fixed - size objects (such as labels and arrowheads) will be ignored."
+  },
+  {
+    "kind": "function",
+    "name": "binomial",
+    "type": "real",
+    "signature": "binomial(real,real)",
+    "documentation": "Return n!/((n - k)!*k!)"
+  },
+  {
+    "kind": "function",
+    "name": "rf",
+    "type": "real",
+    "signature": "rf(real,real,real)",
+    "documentation": "Computes Carlson's elliptic integral of the first kind. x, y, and z must be non negative, and at most one can be zero."
+  },
+  {
+    "kind": "function",
+    "name": "rd",
+    "type": "real",
+    "signature": "rd(real,real,real)",
+    "documentation": "Computes Carlson's elliptic integral of the second kind. x and y must be positive, and at most one can be zero. z must be non negative."
+  },
+  {
+    "kind": "function",
+    "name": "elle",
+    "type": "real",
+    "signature": "elle(real,real)",
+    "documentation": "Legendre elliptic integral of the 2nd kind, evaluated using Carlson's functions RD and RF. The argument ranges are -infinity < phi < +infinity, 0 <= k * sin(phi) <= 1."
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "pair[]",
+    "signature": "intersectionpoints(pair,pair,real,real,real,real,real,real)",
+    "documentation": "Intersection points with the line (AB) and the quadric curve a * x^2 + b * x * y + c * y^2 + d * x + f * y + g = 0 given in the default coordinate system"
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "pair[]",
+    "signature": "intersectionpoints(pair,pair,real[])",
+    "documentation": "Return the intersection points of the line AB with the conic whose an equation is equation[0] * x^2 + equation[1] * x * y + equation[2] * y^2 + equation[3] * x + equation[4] * y + equation[5] = 0"
+  },
+  {
+    "kind": "typedef",
+    "name": "",
+    "type": "",
+    "signature": "",
+    "documentation": "Function type to convert pair in an other coordinate system."
+  },
+  {
+    "kind": "typedef",
+    "name": "",
+    "type": "",
+    "signature": "",
+    "documentation": "Function type to calculate modulus of pair."
+  },
+  {
+    "kind": "typedef",
+    "name": "",
+    "type": "",
+    "signature": "",
+    "documentation": "Function type to calculate dot product."
+  },
+  {
+    "kind": "typedef",
+    "name": "",
+    "type": "",
+    "signature": "",
+    "documentation": "Function type to calculate the coordinates from the polar coordinates."
+  },
+  {
+    "kind": "struct",
+    "name": "coordsys",
+    "type": "",
+    "signature": "coordsys",
+    "documentation": "This structure represents a coordinate system in the plane.</documentation></asyxml>*/ /*<asyxml><method type = \"pair\" signature=\"relativetodefault(pair)\"><code></asyxml>*/ restricted convert relativetodefault = new pair(pair m){return m;};/*<asyxml></code><documentation>Convert a pair given relatively to this coordinate system to the pair relatively to the default coordinate system."
+  },
+  {
+    "kind": "method",
+    "name": "defaulttorelativet",
+    "type": "",
+    "signature": "defaulttorelativet(pair)",
+    "documentation": "Convert a pair given relatively to the default coordinate system to the pair relatively to this coordinate system."
+  },
+  {
+    "kind": "method",
+    "name": "dot",
+    "type": "",
+    "signature": "dot(pair,pair)",
+    "documentation": "Return the dot product of this coordinate system."
+  },
+  {
+    "kind": "method",
+    "name": "abs",
+    "type": "",
+    "signature": "abs(pair)",
+    "documentation": "Return the modulus of a pair in this coordinate system."
+  },
+  {
+    "kind": "method",
+    "name": "polar",
+    "type": "",
+    "signature": "polar(real,real)",
+    "documentation": "Polar coordinates routine of this coordinate system."
+  },
+  {
+    "kind": "property",
+    "name": "O,i,j",
+    "type": "",
+    "signature": "O,i,j",
+    "documentation": "Origin and units vector."
+  },
+  {
+    "kind": "method",
+    "name": "init",
+    "type": "",
+    "signature": "init(convert,convert,polar,dot)",
+    "documentation": "The default constructor of the coordinate system."
+  },
+  {
+    "kind": "function",
+    "name": "cartesiansystem",
+    "type": "coordsys",
+    "signature": "cartesiansystem(pair,pair,pair)",
+    "documentation": "Return the Cartesian coordinate system (O, i, j)."
+  },
+  {
+    "kind": "function",
+    "name": "show",
+    "type": "void",
+    "signature": "show(picture,Label,Label,Label,coordsys,pen,pen,pen,pen,pen)",
+    "documentation": "Draw the components (O, i, j, x - axis, y - axis) of 'R'."
+  },
+  {
+    "kind": "constant",
+    "name": "defaultcoordsys",
+    "type": "",
+    "signature": "defaultcoordsys",
+    "documentation": "One can always refer to the default coordinate system using this constant."
+  },
+  {
+    "kind": "variable",
+    "name": "currentcoordsys",
+    "type": "coordsys",
+    "signature": "currentcoordsys",
+    "documentation": "The coordinate system used by default."
+  },
+  {
+    "kind": "struct",
+    "name": "point",
+    "type": "",
+    "signature": "point",
+    "documentation": "This structure replaces the pair to embed its coordinate system. For example, if 'P = point(cartesiansystem((1, 2), i, j), (0, 0))', P is equal to the pair (1, 2).</documentation></asyxml>*/ /*<asyxml><property type = \"coordsys\" signature=\"coordsys\"><code></asyxml>*/ coordsys coordsys;/*<asyxml></code><documentation>The coordinate system of this point.</documentation></property><property type = \"pair\" signature=\"coordinates\"><code></asyxml>*/ restricted pair coordinates;/*<asyxml></code><documentation>The coordinates of this point relatively to the coordinate system 'coordsys'.</documentation></property><property type = \"real\" signature=\"x, y\"><code></asyxml>*/ restricted real x, y;/*<asyxml></code><documentation>The xpart and the ypart of 'coordinates'."
+  },
+  {
+    "kind": "method",
+    "name": "init",
+    "type": "",
+    "signature": "init(coordsys,pair)",
+    "documentation": "Used to cast mass<->point."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(coordsys,pair,real)",
+    "documentation": "Return the point which has the coodinates 'p' in the coordinate system 'R' and the mass 'm'."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(explicit pair,real)",
+    "documentation": "Return the point which has the coodinates 'p' in the current coordinate system and the mass 'm'."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(coordsys,explicit point,real)",
+    "documentation": "Return the point of 'R' which has the coordinates of 'M' and the mass 'm'. Do not confuse this routine with the further routine 'changecoordsys'."
+  },
+  {
+    "kind": "function",
+    "name": "changecoordsys",
+    "type": "point",
+    "signature": "changecoordsys(coordsys,point)",
+    "documentation": "Return the point 'M' in the coordinate system 'coordsys'. In other words, the returned point marks the same plot as 'M' does."
+  },
+  {
+    "kind": "function",
+    "name": "pair coordinates",
+    "type": "pair",
+    "signature": "pair coordinates(point)",
+    "documentation": "Return the coordinates of 'M' in its coordinate system."
+  },
+  {
+    "kind": "function",
+    "name": "bool samecoordsys",
+    "type": "bool",
+    "signature": "bool samecoordsys(bool...point[])",
+    "documentation": "Return true iff all the points have the same coordinate system. If 'warn' is true and the coordinate systems are different, a warning is sent."
+  },
+  {
+    "kind": "function",
+    "name": "standardizecoordsys",
+    "type": "point[]",
+    "signature": "standardizecoordsys(coordsys,bool...point[])",
+    "documentation": "Return the points with the same coordinate system 'R'. If 'warn' is true and the coordinate systems are different, a warning is sent."
+  },
+  {
+    "kind": "function",
+    "name": "locate",
+    "type": "pair",
+    "signature": "locate(point)",
+    "documentation": "Return the coordinates of 'P' in the default coordinate system."
+  },
+  {
+    "kind": "function",
+    "name": "locate",
+    "type": "point",
+    "signature": "locate(pair)",
+    "documentation": "Return the point in the current coordinate system 'currentcoordsys'."
+  },
+  {
+    "kind": "function",
+    "name": "dot",
+    "type": "void",
+    "signature": "dot(picture,Label,explicit point,align,string,pen)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "abs",
+    "type": "real",
+    "signature": "abs(coordsys,pair)",
+    "documentation": "Return the modulus |m| in the coordinate system 'R'."
+  },
+  {
+    "kind": "function",
+    "name": "abs",
+    "type": "real",
+    "signature": "abs(explicit point)",
+    "documentation": "Return the modulus |M| in its coordinate system."
+  },
+  {
+    "kind": "function",
+    "name": "length",
+    "type": "real",
+    "signature": "length(explicit point)",
+    "documentation": "Return the modulus |M| in its coordinate system (same as 'abs')."
+  },
+  {
+    "kind": "function",
+    "name": "conj",
+    "type": "point",
+    "signature": "conj(explicit point)",
+    "documentation": "Conjugate."
+  },
+  {
+    "kind": "function",
+    "name": "degrees",
+    "type": "real",
+    "signature": "degrees(explicit point,coordsys,bool)",
+    "documentation": "Return the angle of M (in degrees) relatively to 'R'."
+  },
+  {
+    "kind": "function",
+    "name": "angle",
+    "type": "real",
+    "signature": "angle(explicit point,coordsys,bool)",
+    "documentation": "Return the angle of M (in radians) relatively to 'R'."
+  },
+  {
+    "kind": "function",
+    "name": "finite",
+    "type": "bool",
+    "signature": "finite(explicit point)",
+    "documentation": "Avoid to compute 'finite((pair)(infinite_point))'."
+  },
+  {
+    "kind": "function",
+    "name": "dot",
+    "type": "real",
+    "signature": "dot(point,point)",
+    "documentation": "Return the dot product in the coordinate system of 'A'."
+  },
+  {
+    "kind": "function",
+    "name": "dot",
+    "type": "real",
+    "signature": "dot(point,explicit pair)",
+    "documentation": "Return the dot product in the default coordinate system. dot(explicit pair, point) is also defined."
+  },
+  {
+    "kind": "function",
+    "name": "rotateO",
+    "type": "transforms",
+    "signature": "rotateO(real)",
+    "documentation": "Rotation around the origin of the current coordinate system."
+  },
+  {
+    "kind": "function",
+    "name": "projection",
+    "type": "transform",
+    "signature": "projection(point,point)",
+    "documentation": "Return the orthogonal projection on the line (AB)."
+  },
+  {
+    "kind": "function",
+    "name": "projection",
+    "type": "transform",
+    "signature": "projection(point,point,point,point,bool)",
+    "documentation": "Return the (CD) parallel projection on (AB). If 'safe = true' and (AB)//(CD) return the identity. If 'safe = false' and (AB)//(CD) return an infinity scaling."
+  },
+  {
+    "kind": "function",
+    "name": "scale",
+    "type": "transform",
+    "signature": "scale(real,point)",
+    "documentation": "Homothety."
+  },
+  {
+    "kind": "function",
+    "name": "xscale",
+    "type": "transform",
+    "signature": "xscale(real,point)",
+    "documentation": "xscale from 'M' relatively to the x - axis of the coordinate system of 'M'."
+  },
+  {
+    "kind": "function",
+    "name": "yscale",
+    "type": "transform",
+    "signature": "yscale(real,point)",
+    "documentation": "yscale from 'M' relatively to the y - axis of the coordinate system of 'M'."
+  },
+  {
+    "kind": "function",
+    "name": "scale",
+    "type": "transform",
+    "signature": "scale(real,point,point,point,point,bool)",
+    "documentation": "<url href = \"http://fr.wikipedia.org/wiki/Affinit%C3%A9_%28math%C3%A9matiques%29\"/> (help me for English translation...) If 'safe = true' and (AB)//(CD) return the identity. If 'safe = false' and (AB)//(CD) return a infinity scaling."
+  },
+  {
+    "kind": "function",
+    "name": "scaleO",
+    "type": "transform",
+    "signature": "scaleO(real)",
+    "documentation": "Homothety from the origin of the current coordinate system."
+  },
+  {
+    "kind": "function",
+    "name": "xscaleO",
+    "type": "transform",
+    "signature": "xscaleO(real)",
+    "documentation": "xscale from the origin and relatively to the current coordinate system."
+  },
+  {
+    "kind": "function",
+    "name": "yscaleO",
+    "type": "transform",
+    "signature": "yscaleO(real)",
+    "documentation": "yscale from the origin and relatively to the current coordinate system."
+  },
+  {
+    "kind": "struct",
+    "name": "vector",
+    "type": "",
+    "signature": "vector",
+    "documentation": "Like a point but casting to pair, adding etc does not take account of the origin of the coordinate system.</documentation><property type = \"point\" signature=\"v\"><code></asyxml>*/ point v;/*<asyxml></code><documentation>Coordinates as a point (embed coordinate system and pair)."
+  },
+  {
+    "kind": "function",
+    "name": "vector",
+    "type": "vector",
+    "signature": "vector(coordsys, pair)",
+    "documentation": "Return the vector of 'R' which has the coordinates 'v'."
+  },
+  {
+    "kind": "function",
+    "name": "vector",
+    "type": "vector",
+    "signature": "vector(point)",
+    "documentation": "Return the vector OM, where O is the origin of the coordinate system of 'M'. Useful to write 'vector(P - M);' instead of '(vector)(P - M)'."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(explicit vector)",
+    "documentation": "Return the point M so that OM = u, where O is the origin of the coordinate system of 'u'."
+  },
+  {
+    "kind": "function",
+    "name": "locate",
+    "type": "pair",
+    "signature": "locate(explicit vector)",
+    "documentation": "Return the coordinates of 'v' in the default coordinate system (like casting vector to pair)."
+  },
+  {
+    "kind": "function",
+    "name": "show",
+    "type": "void",
+    "signature": "show(Label,pen,arrowbar)",
+    "documentation": "Draw the vector v (from the origin of its coordinate system)."
+  },
+  {
+    "kind": "function",
+    "name": "changecoordsys",
+    "type": "vector",
+    "signature": "changecoordsys(coordsys,vector)",
+    "documentation": "Return the vector 'v' relatively to coordinate system 'R'."
+  },
+  {
+    "kind": "function",
+    "name": "collinear",
+    "type": "bool",
+    "signature": "collinear(vector,vector)",
+    "documentation": "Return 'true' iff the vectors 'u' and 'v' are collinear."
+  },
+  {
+    "kind": "function",
+    "name": "unit",
+    "type": "vector",
+    "signature": "unit(point)",
+    "documentation": "Return the unit vector according to the modulus of its coordinate system."
+  },
+  {
+    "kind": "function",
+    "name": "unit",
+    "type": "vector",
+    "signature": "unit(vector)",
+    "documentation": "Return the unit vector according to the modulus of its coordinate system."
+  },
+  {
+    "kind": "function",
+    "name": "degrees",
+    "type": "real",
+    "signature": "degrees(vector,coordsys,bool)",
+    "documentation": "Return the angle of 'v' (in degrees) relatively to 'R'."
+  },
+  {
+    "kind": "function",
+    "name": "angle",
+    "type": "real",
+    "signature": "angle(vector,coordsys,bool)",
+    "documentation": "Return the angle of 'v' (in radians) relatively to 'R'."
+  },
+  {
+    "kind": "function",
+    "name": "conj",
+    "type": "vector",
+    "signature": "conj(explicit vector)",
+    "documentation": "Conjugate."
+  },
+  {
+    "kind": "function",
+    "name": "rotate",
+    "type": "transform",
+    "signature": "rotate(explicit vector)",
+    "documentation": "A rotation in the direction 'dir' limited to [-90, 90] This is useful for rotating text along a line in the direction dir. rotate(explicit point dir) is also defined."
+  },
+  {
+    "kind": "variable",
+    "name": "origin",
+    "type": "point",
+    "signature": "origin",
+    "documentation": "The origin of the current coordinate system."
+  },
+  {
+    "kind": "function",
+    "name": "origin",
+    "type": "point",
+    "signature": "origin(coordsys)",
+    "documentation": "Return the origin of the coordinate system 'R'."
+  },
+  {
+    "kind": "variable",
+    "name": "linemargin",
+    "type": "real",
+    "signature": "linemargin",
+    "documentation": "Margin used to draw lines."
+  },
+  {
+    "kind": "function",
+    "name": "linemargin",
+    "type": "real",
+    "signature": "linemargin()",
+    "documentation": "Return the margin used to draw lines."
+  },
+  {
+    "kind": "variable",
+    "name": "addpenline",
+    "type": "pen",
+    "signature": "addpenline",
+    "documentation": "Add this property to the drawing pen of \"finish\" lines."
+  },
+  {
+    "kind": "variable",
+    "name": "addpenarc",
+    "type": "pen",
+    "signature": "addpenarc",
+    "documentation": "Add this property to the drawing pen of arcs."
+  },
+  {
+    "kind": "variable",
+    "name": "defaultmassformat",
+    "type": "string",
+    "signature": "defaultmassformat",
+    "documentation": "Format used to construct the default label of masses."
+  },
+  {
+    "kind": "function",
+    "name": "sgnd",
+    "type": "int",
+    "signature": "sgnd(real)",
+    "documentation": "Return the -1 if x < 0, 1 if x >= 0."
+  },
+  {
+    "kind": "function",
+    "name": "defined",
+    "type": "bool",
+    "signature": "defined(pair)",
+    "documentation": "Return true iff the coordinates of 'P' are finite."
+  },
+  {
+    "kind": "function",
+    "name": "onpath",
+    "type": "bool",
+    "signature": "onpath(picture,path,point,pen)",
+    "documentation": "Return true iff 'M' is on the path drawn with the pen 'p' in 'pic'."
+  },
+  {
+    "kind": "function",
+    "name": "sameside",
+    "type": "bool",
+    "signature": "sameside(point,point,point)",
+    "documentation": "Return 'true' iff 'M' and 'N' are same side of the point 'O'."
+  },
+  {
+    "kind": "function",
+    "name": "between",
+    "type": "bool",
+    "signature": "between(point,point,point)",
+    "documentation": "Return 'true' iff 'O' is between 'M' and 'N'."
+  },
+  {
+    "kind": "function",
+    "name": "clipdraw",
+    "type": "void",
+    "signature": "clipdraw(picture,Label,path,align,pen,arrowbar,arrowbar,real,real,Label,marker)",
+    "documentation": "Draw the path 'g' on 'pic' clipped to the bounding box of 'pic'."
+  },
+  {
+    "kind": "function",
+    "name": "distance",
+    "type": "void",
+    "signature": "distance(picture pic,Label,point,point,bool,real,pen,pen,arrow)",
+    "documentation": "Draw arrow between A and B (from FAQ)."
+  },
+  {
+    "kind": "variable",
+    "name": "perpfactor",
+    "type": "real",
+    "signature": "perpfactor",
+    "documentation": "Factor for drawing perpendicular symbol."
+  },
+  {
+    "kind": "function",
+    "name": "perpendicularmark",
+    "type": "void",
+    "signature": "perpendicularmark(picture,point,explicit pair,explicit pair,real,pen,margin,filltype)",
+    "documentation": "Draw a perpendicular symbol at z aligned in the direction align relative to the path z--z + dir. dir(45 + n * 90), where n in N*, are common values for 'align'."
+  },
+  {
+    "kind": "function",
+    "name": "perpendicularmark",
+    "type": "void",
+    "signature": "perpendicularmark(picture,point,vector,vector,real,pen,margin,filltype)",
+    "documentation": "Draw a perpendicular symbol at z aligned in the direction align relative to the path z--z + dir. dir(45 + n * 90), where n in N, are common values for 'align'."
+  },
+  {
+    "kind": "function",
+    "name": "perpendicularmark",
+    "type": "void",
+    "signature": "perpendicularmark(picture,point,explicit pair,path,real,pen,margin,filltype)",
+    "documentation": "Draw a perpendicular symbol at z aligned in the direction align relative to the path z--z + dir(g, 0). dir(45 + n * 90), where n in N, are common values for 'align'."
+  },
+  {
+    "kind": "function",
+    "name": "perpendicularmark",
+    "type": "void",
+    "signature": "perpendicularmark(picture,point,vector,path,real,pen,margin,filltype)",
+    "documentation": "Draw a perpendicular symbol at z aligned in the direction align relative to the path z--z + dir(g, 0). dir(45 + n * 90), where n in N, are common values for 'align'."
+  },
+  {
+    "kind": "function",
+    "name": "markrightangle",
+    "type": "void",
+    "signature": "markrightangle(picture,point,point,point,real,pen,margin,filltype)",
+    "documentation": "Mark the angle AOB with a perpendicular symbol."
+  },
+  {
+    "kind": "function",
+    "name": "simeq",
+    "type": "bool",
+    "signature": "simeq(point,point,real)",
+    "documentation": "Return true iff abs(A - B) < fuzz. This routine is used internally to know if two points are equal, in particular by the operator == in 'point == point'."
+  },
+  {
+    "kind": "function",
+    "name": "attract",
+    "type": "pair",
+    "signature": "attract(pair,path,real)",
+    "documentation": "Return the nearest point (A PAIR) of 'm' which is on the path g. 'fuzz' is the argument 'fuzz' of 'intersect'."
+  },
+  {
+    "kind": "function",
+    "name": "attract",
+    "type": "point",
+    "signature": "attract(point,path,real)",
+    "documentation": "Return the nearest point (A POINT) of 'M' which is on the path g. 'fuzz' is the argument 'fuzz' of 'intersect'."
+  },
+  {
+    "kind": "function",
+    "name": "intersect",
+    "type": "real[]",
+    "signature": "intersect(path,explicit pair)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "intersect",
+    "type": "real[]",
+    "signature": "intersect(path,explicit point)",
+    "documentation": ""
+  },
+  {
+    "kind": "struct",
+    "name": "line",
+    "type": "",
+    "signature": "line",
+    "documentation": "This structure provides the objects line, semi - line and segment oriented from A to B. All the calculus with this structure will be as exact as Asymptote can do. For a full precision, you must not cast 'line' to 'path' excepted for drawing routines.</documentation></asyxml>*/ /*<asyxml><property type = \"point\" signature=\"A,B\"><code></asyxml>*/ restricted point A,B;/*<asyxml></code><documentation>Two line's points with same coordinate system.</documentation></property><property type = \"bool\" signature=\"extendA,extendB\"><code></asyxml>*/ bool extendA,extendB;/*<asyxml></code><documentation>If true,extend 'l' in direction of A (resp. B).</documentation></property><property type = \"vector\" signature=\"u,v\"><code></asyxml>*/ restricted vector u,v;/*<asyxml></code><documentation>u = unit(AB) = direction vector,v = normal vector.</documentation></property><property type = \"real\" signature=\"a,b,c\"><code></asyxml>*/ restricted real a,b,c;/*<asyxml></code><documentation>Coefficients of the equation ax + by + c = 0 in the coordinate system of 'A'.</documentation></property><property type = \"real\" signature=\"slope,origin\"><code></asyxml>*/ restricted real slope, origin;/*<asyxml></code><documentation>Slope and ordinate at the origin."
+  },
+  {
+    "kind": "method",
+    "name": "copy",
+    "type": "",
+    "signature": "copy()",
+    "documentation": "Copy a line in a new instance."
+  },
+  {
+    "kind": "method",
+    "name": "init",
+    "type": "",
+    "signature": "init(point,bool,point,bool)",
+    "documentation": "Initialize line. If 'extendA' is true, the \"line\" is infinite in the direction of A."
+  },
+  {
+    "kind": "function",
+    "name": "line",
+    "type": "line",
+    "signature": "line(point,bool,point,bool)",
+    "documentation": "Return the line passing through 'A' and 'B'. If 'extendA' is true, the \"line\" is infinite in the direction of A. A \"line\" can be half-line or segment."
+  },
+  {
+    "kind": "struct",
+    "name": "segment",
+    "type": "",
+    "signature": "segment",
+    "documentation": "<look href = \"struct line\"/>.</documentation></asyxml>*/ restricted point A, B;// Extremity. restricted vector u, v;// u = direction vector, v = normal vector. restricted real a, b, c;// Coefficients of the equation ax + by + c = 0 restricted real slope, origin; segment copy() { segment s = new segment; s.A = A; s.B = B; s.a = a; s.b = b; s.c = c; s.slope = slope; s.origin = origin; s.u = u; s.v = v; return s; } void init(point A, point B) { line l; l.init(A, B); this.A = l.A; this.B = l.B; this.a = l.a; this.b = l.b; this.c = l.c; this.slope = l.slope; this.origin = l.origin; this.u = l.u; this.v = l.v; } }/*<asyxml></struct></asyxml>*/ /*<asyxml><function type=\"segment\" signature=\"segment(point,point)\"><code></asyxml>*/ segment segment(point A, point B) {/*<asyxml></code><documentation>Return the segment whose the extremities are A and B."
+  },
+  {
+    "kind": "function",
+    "name": "length",
+    "type": "real",
+    "signature": "length(segment)",
+    "documentation": "Return the length of 's'."
+  },
+  {
+    "kind": "function",
+    "name": "sameside",
+    "type": "bool",
+    "signature": "sameside(point,point,line)",
+    "documentation": "Return 'true' iff 'M' and 'N' are same side of the line (or on the line) 'l'."
+  },
+  {
+    "kind": "function",
+    "name": "line",
+    "type": "line",
+    "signature": "line(segment)",
+    "documentation": "Return the line passing through 's.A' and 's.B'."
+  },
+  {
+    "kind": "function",
+    "name": "segment",
+    "type": "segment",
+    "signature": "segment(line)",
+    "documentation": "Return the segment whose extremities are 'l.A' and 'l.B'."
+  },
+  {
+    "kind": "function",
+    "name": "midpoint",
+    "type": "point",
+    "signature": "midpoint(segment)",
+    "documentation": "Return the midpoint of 's'."
+  },
+  {
+    "kind": "function",
+    "name": "write",
+    "type": "void",
+    "signature": "write(line)",
+    "documentation": "Write some informations about 'l'."
+  },
+  {
+    "kind": "function",
+    "name": "write",
+    "type": "void",
+    "signature": "write(explicit segment)",
+    "documentation": "Write some informations about 's'."
+  },
+  {
+    "kind": "function",
+    "name": "coordsys",
+    "type": "coordsys",
+    "signature": "coordsys(line)",
+    "documentation": "Return the coordinate system in which 'l' is defined."
+  },
+  {
+    "kind": "function",
+    "name": "reverse",
+    "type": "line",
+    "signature": "reverse(line)",
+    "documentation": "Permute the points 'A' and 'B' of 'l' and so its orientation."
+  },
+  {
+    "kind": "function",
+    "name": "extend",
+    "type": "line",
+    "signature": "extend(line)",
+    "documentation": "Return the infinite line passing through 'l.A' and 'l.B'."
+  },
+  {
+    "kind": "function",
+    "name": "complementary",
+    "type": "line",
+    "signature": "complementary(explicit line)",
+    "documentation": "Return the complementary of a half-line with respect of the full line 'l'."
+  },
+  {
+    "kind": "function",
+    "name": "complementary",
+    "type": "line[]",
+    "signature": "complementary(explicit segment)",
+    "documentation": "Return the two half-lines of origin 's.A' and 's.B' respectively."
+  },
+  {
+    "kind": "function",
+    "name": "Ox",
+    "type": "line",
+    "signature": "Ox(coordsys)",
+    "documentation": "Return the x-axis of 'R'."
+  },
+  {
+    "kind": "constant",
+    "name": "Ox",
+    "type": "",
+    "signature": "Ox",
+    "documentation": "the x-axis of the default coordinate system."
+  },
+  {
+    "kind": "function",
+    "name": "Oy",
+    "type": "line",
+    "signature": "Oy(coordsys)",
+    "documentation": "Return the y-axis of 'R'."
+  },
+  {
+    "kind": "constant",
+    "name": "Oy",
+    "type": "",
+    "signature": "Oy",
+    "documentation": "the y-axis of the default coordinate system."
+  },
+  {
+    "kind": "function",
+    "name": "line",
+    "type": "line",
+    "signature": "line(real,point)",
+    "documentation": "Return the line passing through 'A' with an angle (in the coordinate system of A) 'a' in degrees. line(point, real) is also defined."
+  },
+  {
+    "kind": "function",
+    "name": "line",
+    "type": "line",
+    "signature": "line(coordsys,real,real)",
+    "documentation": "Return the line defined by slope and y-intercept relative to 'R'."
+  },
+  {
+    "kind": "function",
+    "name": "line",
+    "type": "line",
+    "signature": "line(coordsys,real,real,real)",
+    "documentation": "Retrun the line defined by equation relative to 'R'."
+  },
+  {
+    "kind": "function",
+    "name": "vline",
+    "type": "line",
+    "signature": "vline(coordsys)",
+    "documentation": "Return a vertical line in 'R' passing through the origin of 'R'."
+  },
+  {
+    "kind": "constant",
+    "name": "vline",
+    "type": "",
+    "signature": "vline",
+    "documentation": "The vertical line in the current coordinate system passing through the origin of this system."
+  },
+  {
+    "kind": "function",
+    "name": "hline",
+    "type": "line",
+    "signature": "hline(coordsys)",
+    "documentation": "Return a horizontal line in 'R' passing through the origin of 'R'."
+  },
+  {
+    "kind": "constant",
+    "name": "hline",
+    "type": "",
+    "signature": "hline",
+    "documentation": "The horizontal line in the current coordinate system passing through the origin of this system."
+  },
+  {
+    "kind": "function",
+    "name": "changecoordsys",
+    "type": "line",
+    "signature": "changecoordsys(coordsys,line)",
+    "documentation": "Return the line 'l' in the coordinate system 'R'."
+  },
+  {
+    "kind": "function",
+    "name": "scale",
+    "type": "transform",
+    "signature": "scale(real,line,line,bool)",
+    "documentation": "Return the dilatation with respect to 'l1' in the direction of 'l2'."
+  },
+  {
+    "kind": "function",
+    "name": "reflect",
+    "type": "transform",
+    "signature": "reflect(line)",
+    "documentation": "Return the reflect about the line 'l'."
+  },
+  {
+    "kind": "function",
+    "name": "reflect",
+    "type": "transform",
+    "signature": "reflect(line,line)",
+    "documentation": "Return the reflect about the line 'l1' in the direction of 'l2'."
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(line,path)",
+    "documentation": "Return all points of intersection of the line 'l' with the path 'g'."
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoint",
+    "type": "point",
+    "signature": "intersectionpoint(line,line)",
+    "documentation": "Return the point of intersection of line 'l1' with 'l2'. If 'l1' and 'l2' have an infinity or none point of intersection, this routine return (infinity, infinity)."
+  },
+  {
+    "kind": "function",
+    "name": "parallel",
+    "type": "line",
+    "signature": "parallel(point,line)",
+    "documentation": "Return the line parallel to 'l' passing through 'M'."
+  },
+  {
+    "kind": "function",
+    "name": "parallel",
+    "type": "line",
+    "signature": "parallel(point,explicit vector)",
+    "documentation": "Return the line of direction 'dir' and passing through 'M'."
+  },
+  {
+    "kind": "function",
+    "name": "parallel",
+    "type": "line",
+    "signature": "parallel(point,explicit pair)",
+    "documentation": "Return the line of direction 'dir' and passing through 'M'."
+  },
+  {
+    "kind": "function",
+    "name": "parallel",
+    "type": "bool",
+    "signature": "parallel(line,line)",
+    "documentation": "Return 'true' if 'l1' and 'l2' are (strictly ?) parallel."
+  },
+  {
+    "kind": "function",
+    "name": "concurrent",
+    "type": "bool",
+    "signature": "concurrent(...line[])",
+    "documentation": "Returns true if all the lines 'l' are concurrent."
+  },
+  {
+    "kind": "function",
+    "name": "projection",
+    "type": "transform",
+    "signature": "projection(line)",
+    "documentation": "Return the orthogonal projection on 'l'."
+  },
+  {
+    "kind": "function",
+    "name": "projection",
+    "type": "transform",
+    "signature": "projection(line,line,bool)",
+    "documentation": "Return the projection on (AB) in parallel of (CD). If 'safe = true' and (l1)//(l2) return the identity. If 'safe = false' and (l1)//(l2) return a infinity scaling."
+  },
+  {
+    "kind": "function",
+    "name": "vprojection",
+    "type": "transform",
+    "signature": "vprojection(line,bool)",
+    "documentation": "Return the projection on 'l' in parallel of N--S. If 'safe' is 'true' the projected point keeps the same place if 'l' is vertical."
+  },
+  {
+    "kind": "function",
+    "name": "hprojection",
+    "type": "transform",
+    "signature": "hprojection(line,bool)",
+    "documentation": "Return the projection on 'l' in parallel of E--W. If 'safe' is 'true' the projected point keeps the same place if 'l' is horizontal."
+  },
+  {
+    "kind": "function",
+    "name": "perpendicular",
+    "type": "line",
+    "signature": "perpendicular(point,line)",
+    "documentation": "Return the perpendicular line of 'l' passing through 'M'."
+  },
+  {
+    "kind": "function",
+    "name": "perpendicular",
+    "type": "line",
+    "signature": "perpendicular(point,explicit vector)",
+    "documentation": "Return the line passing through 'M' whose normal is \\param{normal}."
+  },
+  {
+    "kind": "function",
+    "name": "perpendicular",
+    "type": "line",
+    "signature": "perpendicular(point,explicit pair)",
+    "documentation": "Return the line passing through 'M' whose normal is \\param{normal} (given in the currentcoordsys)."
+  },
+  {
+    "kind": "function",
+    "name": "perpendicular",
+    "type": "bool",
+    "signature": "perpendicular(line,line)",
+    "documentation": "Return 'true' if 'l1' and 'l2' are perpendicular."
+  },
+  {
+    "kind": "function",
+    "name": "angle",
+    "type": "real",
+    "signature": "angle(line,coordsys)",
+    "documentation": "Return the angle of the oriented line 'l', in radian, in the interval ]-pi, pi] and relatively to 'R'."
+  },
+  {
+    "kind": "function",
+    "name": "degrees",
+    "type": "real",
+    "signature": "degrees(line,coordsys,bool)",
+    "documentation": "Returns the angle of the oriented line 'l' in degrees, in the interval [0, 360[ and relatively to 'R'."
+  },
+  {
+    "kind": "function",
+    "name": "sharpangle",
+    "type": "real",
+    "signature": "sharpangle(line,line)",
+    "documentation": "Return the measure in radians of the sharp angle formed by 'l1' and 'l2'."
+  },
+  {
+    "kind": "function",
+    "name": "angle",
+    "type": "real",
+    "signature": "angle(line,line)",
+    "documentation": "Return the measure in radians of oriented angle (l1.u, l2.u)."
+  },
+  {
+    "kind": "function",
+    "name": "degrees",
+    "type": "real",
+    "signature": "degrees(line,line)",
+    "documentation": "Return the measure in degrees of the angle formed by the oriented lines 'l1' and 'l2'."
+  },
+  {
+    "kind": "function",
+    "name": "sharpdegrees",
+    "type": "real",
+    "signature": "sharpdegrees(line,line)",
+    "documentation": "Return the measure in degrees of the sharp angle formed by 'l1' and 'l2'."
+  },
+  {
+    "kind": "function",
+    "name": "bisector",
+    "type": "line",
+    "signature": "bisector(line,line,real,bool)",
+    "documentation": "Return the bisector of the angle formed by 'l1' and 'l2' rotated by the angle 'angle' (in degrees) around intersection point of 'l1' with 'l2'. If 'sharp' is true (the default), this routine returns the bisector of the sharp angle. Note that the returned line inherit of coordinate system of 'l1'."
+  },
+  {
+    "kind": "function",
+    "name": "sector",
+    "type": "line",
+    "signature": "sector(int,int,line,line,real,bool)",
+    "documentation": "Return the p-th nth-sector of the angle formed by the oriented line 'l1' and 'l2' rotated by the angle 'angle' (in degrees) around the intersection point of 'l1' with 'l2'. If 'sharp' is true (the default), this routine returns the bisector of the sharp angle. Note that the returned line inherit of coordinate system of 'l1'."
+  },
+  {
+    "kind": "function",
+    "name": "bisector",
+    "type": "line",
+    "signature": "bisector(point,point,point,point,real)",
+    "documentation": "Return the bisector of the angle formed by the lines (AB) and (CD). <look href = \"#bisector(line, line, real, bool)\"/>."
+  },
+  {
+    "kind": "function",
+    "name": "bisector",
+    "type": "line",
+    "signature": "bisector(segment,real)",
+    "documentation": "Return the bisector of the segment line 's' rotated by 'angle' (in degrees) around the midpoint of 's'."
+  },
+  {
+    "kind": "function",
+    "name": "bisector",
+    "type": "line",
+    "signature": "bisector(point,point,real)",
+    "documentation": "Return the bisector of the segment line [AB] rotated by 'angle' (in degrees) around the midpoint of [AB]."
+  },
+  {
+    "kind": "function",
+    "name": "distance",
+    "type": "real",
+    "signature": "distance(point,line)",
+    "documentation": "Return the distance from 'M' to 'l'. distance(line, point) is also defined."
+  },
+  {
+    "kind": "function",
+    "name": "draw",
+    "type": "void",
+    "signature": "draw(picture,Label,line,bool,bool,align,pen,arrowbar,Label,marker)",
+    "documentation": "Draw the line 'l' without altering the size of picture pic. The boolean parameters control the infinite section. The global variable 'linemargin' (default value is 0) allows to modify the bounding box in which the line must be drawn."
+  },
+  {
+    "kind": "function",
+    "name": "draw",
+    "type": "void",
+    "signature": "draw(picture,Label[], line[], align,pen[], arrowbar,Label,marker)",
+    "documentation": "Draw each lines with the corresponding pen."
+  },
+  {
+    "kind": "function",
+    "name": "draw",
+    "type": "void",
+    "signature": "draw(picture,Label[], line[], align,pen,arrowbar,Label,marker)",
+    "documentation": "Draw each lines with the same pen 'p'."
+  },
+  {
+    "kind": "function",
+    "name": "show",
+    "type": "void",
+    "signature": "show(picture,line,pen)",
+    "documentation": "Draw some informations of 'l'."
+  },
+  {
+    "kind": "function",
+    "name": "sameside",
+    "type": "point[]",
+    "signature": "sameside(point,line,line)",
+    "documentation": "Return two points on 'l1' and 'l2' respectively. The first point is from the same side of M relatively to 'l2', the second point is from the same side of M relatively to 'l1'."
+  },
+  {
+    "kind": "function",
+    "name": "markangle",
+    "type": "void",
+    "signature": "markangle(picture,Label,int,real,real,explicit line,explicit line,explicit pair,arrowbar,pen,filltype,margin,marker)",
+    "documentation": "Mark the angle (l1, l2) aligned in the direction 'align' relative to 'l1'. Commune values for 'align' are dir(real)."
+  },
+  {
+    "kind": "function",
+    "name": "markangle",
+    "type": "void",
+    "signature": "markangle(picture,Label,int,real,real,explicit line,explicit line,explicit vector,arrowbar,pen,filltype,margin,marker)",
+    "documentation": "Mark the angle (l1, l2) in the direction 'dir' given relatively to 'l1'."
+  },
+  {
+    "kind": "function",
+    "name": "markangle",
+    "type": "void",
+    "signature": "markangle(picture,Label,int,real,real,line,line,arrowbar,pen,filltype,margin,marker)",
+    "documentation": "Mark the oriented angle (l1, l2)."
+  },
+  {
+    "kind": "function",
+    "name": "perpendicularmark",
+    "type": "void",
+    "signature": "perpendicularmark(picture,line,line,real,pen,int,margin,filltype)",
+    "documentation": "Draw a right angle at the intersection point of lines and aligned in the 'quarter' nth quarter of circle formed by 'l1.u' and 'l2.u'."
+  },
+  {
+    "kind": "struct",
+    "name": "bqe",
+    "type": "",
+    "signature": "bqe",
+    "documentation": "Bivariate Quadratic Equation.</documentation></asyxml>*/ /*<asyxml><property type = \"real[]\" signature=\"a\"><code></asyxml>*/ real[] a;/*<asyxml></code><documentation>a[0] * x^2 + a[1] * x * y + a[2] * y^2 + a[3] * x + a[4] * y + a[5] = 0</documentation></property><property type = \"coordsys\" signature=\"coordsys\"><code></asyxml>*/ coordsys coordsys;/*<asyxml></code></property></asyxml>*/ }/*<asyxml></struct></asyxml>*/ /*<asyxml><function type=\"bqe\" signature=\"bqe(coordsys,real,real,real,real,real,real)\"><code></asyxml>*/ bqe bqe(coordsys R = currentcoordsys, real a, real b, real c, real d, real e, real f) {/*<asyxml></code><documentation>Return the bivariate quadratic equation a[0] * x^2 + a[1] * x * y + a[2] * y^2 + a[3] * x + a[4] * y + a[5] = 0 relatively to the coordinate system R."
+  },
+  {
+    "kind": "function",
+    "name": "changecoordsys",
+    "type": "bqe",
+    "signature": "changecoordsys(coordsys,bqe)",
+    "documentation": "Returns the bivariate quadratic equation relatively to 'R'."
+  },
+  {
+    "kind": "function",
+    "name": "bqe",
+    "type": "bqe",
+    "signature": "bqe(point,point,point,point,point)",
+    "documentation": "Return the bqe of conic passing through the five points (if possible)."
+  },
+  {
+    "kind": "function",
+    "name": "samecoordsys",
+    "type": "bool",
+    "signature": "samecoordsys(bool...bqe[])",
+    "documentation": "Return true if all the bivariate quadratic equations have the same coordinate system."
+  },
+  {
+    "kind": "function",
+    "name": "realquarticroots",
+    "type": "real[]",
+    "signature": "realquarticroots(real,real,real,real,real)",
+    "documentation": "Return the real roots of the quartic equation ax^4 + b^x3 + cx^2 + dx = 0."
+  },
+  {
+    "kind": "struct",
+    "name": "conic",
+    "type": "",
+    "signature": "conic",
+    "documentation": "</documentation><property type = \"real\" signature=\"e,p,h\"><code></asyxml>*/ real e, p, h;/*<asyxml></code><documentation>BE CAREFUL: h = distance(F, D) and p = h * e (http://en.wikipedia.org/wiki/Ellipse) While http://mathworld.wolfram.com/ takes p = distance(F,D).</documentation></property><property type = \"point\" signature=\"F\"><code></asyxml>*/ point F;/*<asyxml></code><documentation>Focus.</documentation></property><property type = \"line\" signature=\"D\"><code></asyxml>*/ line D;/*<asyxml></code><documentation>Directrix.</documentation></property><property type = \"line\" signature=\"l\"><code></asyxml>*/ line[] l;/*<asyxml></code><documentation>Case of degenerated conic (not yet implemented !)."
+  },
+  {
+    "kind": "struct",
+    "name": "circle",
+    "type": "",
+    "signature": "circle",
+    "documentation": "All the calculus with this structure will be as exact as Asymptote can do. For a full precision, you must not cast 'circle' to 'path' excepted for drawing routines.</documentation></asyxml>*/ /*<asyxml><property type = \"point\" signature=\"C\"><code></asyxml>*/ point C;/*<asyxml></code><documentation>Center</documentation></property><property><code></asyxml>*/ real r;/*<asyxml></code><documentation>Radius</documentation></property><property><code></asyxml>*/ line l;/*<asyxml></code><documentation>If the radius is infinite, this line is used instead of circle."
+  },
+  {
+    "kind": "struct",
+    "name": "ellipse",
+    "type": "",
+    "signature": "ellipse",
+    "documentation": "Look at <html><a href = \"http://mathworld.wolfram.com/Ellipse.html\">http://mathworld.wolfram.com/Ellipse.html</a></html></documentation></asyxml>*/ /*<asyxml><property type = \"point\" signature=\"F1,F2,C\"><code></asyxml>*/ restricted point F1,F2,C;/*<asyxml></code><documentation>Foci and center.</documentation></property><property type = \"real\" signature=\"a,b,c,e,p\"><code></asyxml>*/ restricted real a,b,c,e,p;/*<asyxml></code></property><property type = \"real\" signature=\"angle\"><code></asyxml>*/ restricted real angle;/*<asyxml></code><documentation>Value is degrees(F2 - F1).</documentation></property><property type = \"line\" signature=\"D1,D2\"><code></asyxml>*/ restricted line D1,D2;/*<asyxml></code><documentation>Directrices.</documentation></property><property type = \"line\" signature=\"l\"><code></asyxml>*/ line l;/*<asyxml></code><documentation>If one axis is infinite, this line is used instead of ellipse."
+  },
+  {
+    "kind": "method",
+    "name": "init",
+    "type": "",
+    "signature": "init(point,point,real)",
+    "documentation": "Ellipse given by foci and semimajor axis."
+  },
+  {
+    "kind": "struct",
+    "name": "parabola",
+    "type": "",
+    "signature": "parabola",
+    "documentation": "Look at <html><a href = \"http://mathworld.wolfram.com/Parabola.html\">http://mathworld.wolfram.com/Parabola.html</a></html></documentation><property type = \"point\" signature=\"F,V\"><code></asyxml>*/ restricted point F,V;/*<asyxml></code><documentation>Focus and vertex</documentation></property><property type = \"real\" signature=\"a,p,e = 1\"><code></asyxml>*/ restricted real a,p,e = 1;/*<asyxml></code></property><property type = \"real\" signature=\"angle\"><code></asyxml>*/ restricted real angle;/*<asyxml></code><documentation>Value is degrees(F - V).</documentation></property><property type = \"line\" signature=\"D\"><code></asyxml>*/ restricted line D;/*<asyxml></code><documentation>Directrix</documentation></property><property type = \"pair\" signature=\"bmin,bmax\"><code></asyxml>*/ pair bmin, bmax;/*<asyxml></code><documentation>The (left, bottom) and (right, top) coordinates of region bounding box for drawing the parabola. If unset the current picture bounding box is used instead."
+  },
+  {
+    "kind": "method",
+    "name": "init",
+    "type": "",
+    "signature": "init(point,line)",
+    "documentation": "Parabola given by focus and directrix."
+  },
+  {
+    "kind": "struct",
+    "name": "hyperbola",
+    "type": "",
+    "signature": "hyperbola",
+    "documentation": "<html>Look at <a href = \"http://mathworld.wolfram.com/Hyperbola.html\">http://mathworld.wolfram.com/Hyperbola.html</a></html></documentation><property type = \"point\" signature=\"F1,F2\"><code></asyxml>*/ restricted point F1,F2;/*<asyxml></code><documentation>Foci.</documentation></property><property type = \"point\" signature=\"C,V1,V2\"><code></asyxml>*/ restricted point C,V1,V2;/*<asyxml></code><documentation>Center and vertices.</documentation></property><property type = \"real\" signature=\"a,b,c,e,p\"><code></asyxml>*/ restricted real a,b,c,e,p;/*<asyxml></code><documentation></documentation></property><property type = \"real\" signature=\"angle\"><code></asyxml>*/ restricted real angle;/*<asyxml></code><documentation>Value is degrees(F2 - F1).</documentation></property><property type = \"line\" signature=\"D1,D2,A1,A2\"><code></asyxml>*/ restricted line D1,D2,A1,A2;/*<asyxml></code><documentation>Directrices and asymptotes.</documentation></property><property type = \"pair\" signature=\"bmin,bmax\"><code></asyxml>*/ pair bmin, bmax; /*<asyxml></code><documentation>The (left, bottom) and (right, top) coordinates of region bounding box for drawing the hyperbola. If unset the current picture bounding box is used instead."
+  },
+  {
+    "kind": "method",
+    "name": "init",
+    "type": "",
+    "signature": "init(point,point,real)",
+    "documentation": "Hyperbola given by foci and semimajor axis."
+  },
+  {
+    "kind": "variable",
+    "name": "conicnodesfactor",
+    "type": "int",
+    "signature": "conicnodesfactor",
+    "documentation": "Factor for the node number of all conics."
+  },
+  {
+    "kind": "variable",
+    "name": "circlenodesnumberfactor",
+    "type": "int",
+    "signature": "circlenodesnumberfactor",
+    "documentation": "Factor for the node number of circles."
+  },
+  {
+    "kind": "function",
+    "name": "circlenodesnumber",
+    "type": "int",
+    "signature": "circlenodesnumber(real)",
+    "documentation": "Return the number of nodes for drawing a circle of radius 'r'."
+  },
+  {
+    "kind": "function",
+    "name": "circlenodesnumber",
+    "type": "int",
+    "signature": "circlenodesnumber(real,real,real)",
+    "documentation": "Return the number of nodes to draw a circle arc."
+  },
+  {
+    "kind": "variable",
+    "name": "ellispenodesnumberfactor",
+    "type": "int",
+    "signature": "ellispenodesnumberfactor",
+    "documentation": "Factor for the node number of ellispe (non-circle)."
+  },
+  {
+    "kind": "function",
+    "name": "ellipsenodesnumber",
+    "type": "int",
+    "signature": "ellipsenodesnumber(real,real)",
+    "documentation": "Return the number of nodes to draw a ellipse of axis 'a' and 'b'."
+  },
+  {
+    "kind": "function",
+    "name": "ellipsenodesnumber",
+    "type": "int",
+    "signature": "ellipsenodesnumber(real,real,real)",
+    "documentation": "Return the number of nodes to draw an ellipse arc."
+  },
+  {
+    "kind": "variable",
+    "name": "parabolanodesnumberfactor",
+    "type": "int",
+    "signature": "parabolanodesnumberfactor",
+    "documentation": "Factor for the number of nodes of parabolas."
+  },
+  {
+    "kind": "function",
+    "name": "parabolanodesnumber",
+    "type": "int",
+    "signature": "parabolanodesnumber(parabola,real,real)",
+    "documentation": "Return the number of nodes for drawing a parabola."
+  },
+  {
+    "kind": "variable",
+    "name": "hyperbolanodesnumberfactor",
+    "type": "int",
+    "signature": "hyperbolanodesnumberfactor",
+    "documentation": "Factor for the number of nodes of hyperbolas."
+  },
+  {
+    "kind": "function",
+    "name": "hyperbolanodesnumber",
+    "type": "int",
+    "signature": "hyperbolanodesnumber(hyperbola,real,real)",
+    "documentation": "Return the number of nodes for drawing an hyperbola."
+  },
+  {
+    "kind": "function",
+    "name": "coordsys",
+    "type": "coordsys",
+    "signature": "coordsys(conic)",
+    "documentation": "Return the coordinate system of 'co'."
+  },
+  {
+    "kind": "function",
+    "name": "changecoordsys",
+    "type": "conic",
+    "signature": "changecoordsys(coordsys,conic)",
+    "documentation": "Change the coordinate system of 'co' to 'R'"
+  },
+  {
+    "kind": "typedef",
+    "name": "",
+    "type": "",
+    "signature": "",
+    "documentation": "Routine type used to draw conics from 'angle1' to 'angle2'"
+  },
+  {
+    "kind": "function",
+    "name": "arcfromfocus",
+    "type": "path",
+    "signature": "arcfromfocus(conic,real,real,int,bool)",
+    "documentation": "Return the path of the conic section 'co' from angle1 to angle2 in degrees, drawing in the given direction, with n nodes."
+  },
+  {
+    "kind": "variable",
+    "name": "currentpolarconicroutine",
+    "type": "polarconicroutine",
+    "signature": "currentpolarconicroutine",
+    "documentation": "Default routine used to cast conic section to path."
+  },
+  {
+    "kind": "function",
+    "name": "angpoint",
+    "type": "point",
+    "signature": "angpoint(conic,real)",
+    "documentation": "Return the point of 'co' whose the angular (in degrees) coordinate is 'angle' (mesured from the focus of 'co', relatively to its 'natural coordinate system')."
+  },
+  {
+    "kind": "function",
+    "name": "coordsys",
+    "type": "coordsys",
+    "signature": "coordsys(ellipse)",
+    "documentation": "Return the coordinate system of 'el'."
+  },
+  {
+    "kind": "function",
+    "name": "canonicalcartesiansystem",
+    "type": "coordsys",
+    "signature": "canonicalcartesiansystem(ellipse)",
+    "documentation": "Return the canonical cartesian system of the ellipse 'el'."
+  },
+  {
+    "kind": "function",
+    "name": "canonicalcartesiansystem",
+    "type": "coordsys",
+    "signature": "canonicalcartesiansystem(parabola)",
+    "documentation": "Return the canonical cartesian system of a parabola, so that Origin = vertex of 'p' and directrix: x = -a."
+  },
+  {
+    "kind": "function",
+    "name": "canonicalcartesiansystem",
+    "type": "coordsys",
+    "signature": "canonicalcartesiansystem(hyperbola)",
+    "documentation": "Return the canonical cartesian system of an hyperbola."
+  },
+  {
+    "kind": "function",
+    "name": "ellipse",
+    "type": "ellipse",
+    "signature": "ellipse(point,point,real)",
+    "documentation": "Return the ellipse whose the foci are 'F1' and 'F2' and the semimajor axis is 'a'."
+  },
+  {
+    "kind": "constant",
+    "name": "byfoci,byvertices",
+    "type": "",
+    "signature": "byfoci,byvertices",
+    "documentation": "Constants useful for the routine 'hyperbola(point P1, point P2, real ae, bool byfoci = byfoci)'"
+  },
+  {
+    "kind": "function",
+    "name": "hyperbola",
+    "type": "hyperbola",
+    "signature": "hyperbola(point,point,real,bool)",
+    "documentation": "if 'byfoci = true': return the hyperbola whose the foci are 'P1' and 'P2' and the semimajor axis is 'ae'. else return the hyperbola whose vertexes are 'P1' and 'P2' with eccentricity 'ae'."
+  },
+  {
+    "kind": "function",
+    "name": "ellipse",
+    "type": "ellipse",
+    "signature": "ellipse(point,point,point)",
+    "documentation": "Return the ellipse passing through 'M' whose the foci are 'F1' and 'F2'."
+  },
+  {
+    "kind": "function",
+    "name": "ellipse",
+    "type": "ellipse",
+    "signature": "ellipse(point,real,real,real)",
+    "documentation": "Return the ellipse centered at 'C' with semimajor axis 'a' along C--C + dir(angle), semiminor axis 'b' along the perpendicular."
+  },
+  {
+    "kind": "function",
+    "name": "ellipse",
+    "type": "ellipse",
+    "signature": "ellipse(bqe)",
+    "documentation": "Return the ellipse a[0] * x^2 + a[1] * xy + a[2] * y^2 + a[3] * x + a[4] * y + a[5] = 0 given in the coordinate system of 'bqe' with a[i] = bque.a[i]. <url href = \"http://mathworld.wolfram.com/QuadraticCurve.html\"/> <url href = \"http://mathworld.wolfram.com/Ellipse.html\"/>."
+  },
+  {
+    "kind": "function",
+    "name": "ellipse",
+    "type": "ellipse",
+    "signature": "ellipse(point,point,point,point,point)",
+    "documentation": "Return the ellipse passing through the five points (if possible)"
+  },
+  {
+    "kind": "function",
+    "name": "inside",
+    "type": "bool",
+    "signature": "inside(ellipse,point)",
+    "documentation": "Return 'true' iff 'M' is inside 'el'."
+  },
+  {
+    "kind": "function",
+    "name": "inside",
+    "type": "bool",
+    "signature": "inside(parabola,point)",
+    "documentation": "Return 'true' if 'M' is inside 'p'."
+  },
+  {
+    "kind": "function",
+    "name": "parabola",
+    "type": "parabola",
+    "signature": "parabola(point,line)",
+    "documentation": "Return the parabola whose focus is 'F' and directrix is 'l'."
+  },
+  {
+    "kind": "function",
+    "name": "parabola",
+    "type": "parabola",
+    "signature": "parabola(point,point)",
+    "documentation": "Return the parabola whose focus is 'F' and vertex is 'vertex'."
+  },
+  {
+    "kind": "function",
+    "name": "parabola",
+    "type": "parabola",
+    "signature": "parabola(point,real,real)",
+    "documentation": "Return the parabola whose focus is F, latus rectum is 4a and the angle of the axis of symmetry (in the coordinate system of F) is 'angle'."
+  },
+  {
+    "kind": "function",
+    "name": "isparabola",
+    "type": "bool",
+    "signature": "isparabola(bqe)",
+    "documentation": "Return true iff 'bqe' is the equation of a parabola."
+  },
+  {
+    "kind": "function",
+    "name": "parabola",
+    "type": "parabola",
+    "signature": "parabola(bqe)",
+    "documentation": "Return the parabola a[0]x^2 + a[1]xy + a[2]y^2 + a[3]x + a[4]y + a[5]] = 0 (a[n] means bqe.a[n]). <url href = \"http://mathworld.wolfram.com/QuadraticCurve.html\"/> <url href = \"http://mathworld.wolfram.com/Parabola.html\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "parabola",
+    "type": "parabola",
+    "signature": "parabola(point,point,point,line)",
+    "documentation": "Return the parabola passing through the three points with its directix parallel to the line 'l'."
+  },
+  {
+    "kind": "function",
+    "name": "parabola",
+    "type": "parabola",
+    "signature": "parabola(point,point,point,point,point)",
+    "documentation": "Return the parabola passing through the five points."
+  },
+  {
+    "kind": "function",
+    "name": "hyperbola",
+    "type": "hyperbola",
+    "signature": "hyperbola(point,point,point)",
+    "documentation": "Return the hyperbola passing through 'M' whose the foci are 'F1' and 'F2'."
+  },
+  {
+    "kind": "function",
+    "name": "hyperbola",
+    "type": "hyperbola",
+    "signature": "hyperbola(point,real,real,real)",
+    "documentation": "Return the hyperbola centered at 'C' with semimajor axis 'a' along C--C + dir(angle), semiminor axis 'b' along the perpendicular."
+  },
+  {
+    "kind": "function",
+    "name": "hyperbola",
+    "type": "hyperbola",
+    "signature": "hyperbola(bqe)",
+    "documentation": "Return the hyperbola a[0]x^2 + a[1]xy + a[2]y^2 + a[3]x + a[4]y + a[5]] = 0 (a[n] means bqe.a[n]). <url href = \"http://mathworld.wolfram.com/QuadraticCurve.html\"/> <url href = \"http://mathworld.wolfram.com/Hyperbola.html\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "hyperbola",
+    "type": "hyperbola",
+    "signature": "hyperbola(point,point,point,point,point)",
+    "documentation": "Return the hyperbola passing through the five points (if possible)."
+  },
+  {
+    "kind": "function",
+    "name": "conj",
+    "type": "hyperbola",
+    "signature": "conj(hyperbola)",
+    "documentation": "Conjugate."
+  },
+  {
+    "kind": "function",
+    "name": "circle",
+    "type": "circle",
+    "signature": "circle(explicit point,real)",
+    "documentation": "Circle given by center and radius."
+  },
+  {
+    "kind": "function",
+    "name": "circle",
+    "type": "circle",
+    "signature": "circle(point,point)",
+    "documentation": "Return the circle of diameter AB."
+  },
+  {
+    "kind": "function",
+    "name": "circle",
+    "type": "circle",
+    "signature": "circle(segment)",
+    "documentation": "Return the circle of diameter 's'."
+  },
+  {
+    "kind": "function",
+    "name": "circumcenter",
+    "type": "point",
+    "signature": "circumcenter(point,point,point)",
+    "documentation": "Return the circumcenter of triangle ABC."
+  },
+  {
+    "kind": "function",
+    "name": "circle",
+    "type": "circle",
+    "signature": "circle(point,point,point)",
+    "documentation": "Return the circumcircle of the triangle ABC."
+  },
+  {
+    "kind": "function",
+    "name": "circumcircle",
+    "type": "circle",
+    "signature": "circumcircle(point,point,point)",
+    "documentation": "Return the circumcircle of the triangle ABC."
+  },
+  {
+    "kind": "function",
+    "name": "arcfromcenter",
+    "type": "path",
+    "signature": "arcfromcenter(ellipse,real,real,int,bool)",
+    "documentation": "Return the path of the ellipse 'el' from angle1 to angle2 in degrees, drawing in the given direction, with n nodes. The angles are mesured relatively to the axis (C,x-axis) where C is the center of the ellipse."
+  },
+  {
+    "kind": "function",
+    "name": "arcfromcenter",
+    "type": "path",
+    "signature": "arcfromcenter(hyperbola,real,real,int,bool)",
+    "documentation": "Return the path of the hyperbola 'h' from angle1 to angle2 in degrees, drawing in the given direction, with n nodes. The angles are mesured relatively to the axis (C, x-axis) where C is the center of the hyperbola."
+  },
+  {
+    "kind": "function",
+    "name": "arcfromcenter",
+    "type": "path",
+    "signature": "arcfromcenter(explicit conic,real,real,int,bool)",
+    "documentation": "Use arcfromcenter(ellipse, ...) or arcfromcenter(hyperbola, ...) depending of the eccentricity of 'co'."
+  },
+  {
+    "kind": "constant",
+    "name": "fromCenter",
+    "type": "",
+    "signature": "fromCenter",
+    "documentation": ""
+  },
+  {
+    "kind": "constant",
+    "name": "fromFocus",
+    "type": "",
+    "signature": "fromFocus",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "equation",
+    "type": "bqe",
+    "signature": "equation(ellipse)",
+    "documentation": "Return the coefficients of the equation of the ellipse in its coordinate system: bqe.a[0] * x^2 + bqe.a[1] * x * y + bqe.a[2] * y^2 + bqe.a[3] * x + bqe.a[4] * y + bqe.a[5] = 0. One can change the coordinate system of 'bqe' using the routine 'changecoordsys'."
+  },
+  {
+    "kind": "function",
+    "name": "equation",
+    "type": "bqe",
+    "signature": "equation(parabola)",
+    "documentation": "Return the coefficients of the equation of the parabola in its coordinate system. bqe.a[0] * x^2 + bqe.a[1] * x * y + bqe.a[2] * y^2 + bqe.a[3] * x + bqe.a[4] * y + bqe.a[5] = 0 One can change the coordinate system of 'bqe' using the routine 'changecoordsys'."
+  },
+  {
+    "kind": "function",
+    "name": "equation",
+    "type": "bqe",
+    "signature": "equation(hyperbola)",
+    "documentation": "Return the coefficients of the equation of the hyperbola in its coordinate system. bqe.a[0] * x^2 + bqe.a[1] * x * y + bqe.a[2] * y^2 + bqe.a[3] * x + bqe.a[4] * y + bqe.a[5] = 0 One can change the coordinate system of 'bqe' using the routine 'changecoordsys'."
+  },
+  {
+    "kind": "function",
+    "name": "bangles",
+    "type": "real[]",
+    "signature": "bangles(picture,parabola)",
+    "documentation": "Return the array {ma, Ma} where 'ma' and 'Ma' are respectively the smaller and the larger angles for which the parabola 'p' is included in the bounding box of the picture 'pic'."
+  },
+  {
+    "kind": "function",
+    "name": "bangles",
+    "type": "real[][]",
+    "signature": "bangles(picture,hyperbola)",
+    "documentation": "Return the array {{ma1, Ma1}, {ma2, Ma2}} where 'maX' and 'MaX' are respectively the smaller and the bigger angles (from h.FX) for which the hyperbola 'h' is included in the bounding box of the picture 'pic'."
+  },
+  {
+    "kind": "function",
+    "name": "draw",
+    "type": "void",
+    "signature": "draw(picture,Label,circle,align,pen,arrowbar,arrowbar,margin,Label,marker)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "draw",
+    "type": "void",
+    "signature": "draw(picture,Label,ellipse,align,pen,arrowbar,arrowbar,margin,Label,marker)",
+    "documentation": "</documentation>Draw the ellipse 'el' if it is not degenerated else draw 'el.l'.</function></asyxml>*/ if(degenerate(el)) draw(pic, L, el.l, align, p, arrow, legend, marker); else draw(pic, L, (path)el, align, p, arrow, bar, margin, legend, marker); } void fill(picture pic = currentpicture, ellipse el, pen p = currentpen) { if (!degenerate(el)) fill(pic, (path)el, p); } void filldraw(picture pic = currentpicture, ellipse el, pen fillpen = currentpen, pen drawpen = currentpen) { fill(pic, el, fillpen); draw(pic, el, drawpen); } /*<asyxml><function type=\"void\" signature=\"draw(picture,Label,parabola,align,pen,arrowbar,arrowbar,margin,Label,marker)\"><code></asyxml>*/ void draw(picture pic = currentpicture, Label L = \"\", parabola parabola, align align = NoAlign, pen p = currentpen, arrowbar arrow = None, arrowbar bar = None, margin margin = NoMargin, Label legend = \"\", marker marker = nomarker) {/*<asyxml></code><documentation>Draw the parabola 'p' on 'pic' without (if possible) altering the size of picture pic."
+  },
+  {
+    "kind": "function",
+    "name": "draw",
+    "type": "void",
+    "signature": "draw(picture,Label,hyperbola,align,pen,arrowbar,arrowbar,margin,Label,marker)",
+    "documentation": "Draw the hyperbola 'h' on 'pic' without (if possible) altering the size of the picture pic."
+  },
+  {
+    "kind": "function",
+    "name": "draw",
+    "type": "void",
+    "signature": "draw(picture,Label,explicit conic,align,pen,arrowbar,arrowbar,margin,Label,marker)",
+    "documentation": "Use one of the routine 'draw(ellipse, ...)', 'draw(parabola, ...)' or 'draw(hyperbola, ...)' depending of the value of eccentricity of 'co'."
+  },
+  {
+    "kind": "function",
+    "name": "conicnodesnumber",
+    "type": "int",
+    "signature": "conicnodesnumber(conic,real,real)",
+    "documentation": "Return the number of node to draw a conic arc."
+  },
+  {
+    "kind": "function",
+    "name": "equation",
+    "type": "bqe",
+    "signature": "equation(explicit conic)",
+    "documentation": "Return the coefficients of the equation of conic section in its coordinate system: bqe.a[0] * x^2 + bqe.a[1] * x * y + bqe.a[2] * y^2 + bqe.a[3] * x + bqe.a[4] * y + bqe.a[5] = 0. One can change the coordinate system of 'bqe' using the routine 'changecoordsys'."
+  },
+  {
+    "kind": "function",
+    "name": "conictype",
+    "type": "string",
+    "signature": "conictype(bqe)",
+    "documentation": "Returned values are \"ellipse\" or \"parabola\" or \"hyperbola\" depending of the conic section represented by 'bqe'."
+  },
+  {
+    "kind": "function",
+    "name": "conic",
+    "type": "conic",
+    "signature": "conic(point,point,point,point,point)",
+    "documentation": "Return the conic passing through 'M1', 'M2', 'M3', 'M4' and 'M5' if the conic is not degenerated."
+  },
+  {
+    "kind": "function",
+    "name": "canonicalcartesiansystem",
+    "type": "coordsys",
+    "signature": "canonicalcartesiansystem(hyperbola)",
+    "documentation": "Return the canonical cartesian system of the conic 'co'."
+  },
+  {
+    "kind": "function",
+    "name": "canonical",
+    "type": "bqe",
+    "signature": "canonical(bqe)",
+    "documentation": "Return the bivariate quadratic equation relative to the canonical coordinate system of the conic section represented by 'bqe'."
+  },
+  {
+    "kind": "function",
+    "name": "conic",
+    "type": "conic",
+    "signature": "conic(bqe)",
+    "documentation": "Return the conic section represented by the bivariate quartic equation 'bqe'."
+  },
+  {
+    "kind": "function",
+    "name": "arclength",
+    "type": "real",
+    "signature": "arclength(circle)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "focusToCenter",
+    "type": "real",
+    "signature": "focusToCenter(ellipse,real)",
+    "documentation": "Return the angle relatively to the center of 'el' for the angle 'a' given relatively to the focus of 'el'."
+  },
+  {
+    "kind": "function",
+    "name": "centerToFocus",
+    "type": "real",
+    "signature": "centerToFocus(ellipse,real)",
+    "documentation": "Return the angle relatively to the focus of 'el' for the angle 'a' given relatively to the center of 'el'."
+  },
+  {
+    "kind": "function",
+    "name": "arclength",
+    "type": "real",
+    "signature": "arclength(ellipse)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "arclength",
+    "type": "real",
+    "signature": "arclength(ellipse,real,real,bool,polarconicroutine)",
+    "documentation": "Return the length of the arc of the ellipse between 'angle1' and 'angle2'. 'angle1' and 'angle2' must be in the interval ]-360;+oo[ if polarconicroutine = fromFocus, ]-oo;+oo[ if polarconicroutine = fromCenter."
+  },
+  {
+    "kind": "function",
+    "name": "arclength",
+    "type": "real",
+    "signature": "arclength(parabola,real)",
+    "documentation": "Return the arclength from 180 to 'angle' given from focus in the canonical coordinate system of 'p'."
+  },
+  {
+    "kind": "function",
+    "name": "arclength",
+    "type": "real",
+    "signature": "arclength(parabola,real,real)",
+    "documentation": "Return the arclength from 'angle1' to 'angle2' given from focus in the canonical coordinate system of 'p'"
+  },
+  {
+    "kind": "function",
+    "name": "arclength",
+    "type": "real",
+    "signature": "arclength(parabola p)",
+    "documentation": "Return the length of the arc of the parabola bounded to the bounding box of the current picture."
+  },
+  {
+    "kind": "struct",
+    "name": "abscissa",
+    "type": "",
+    "signature": "abscissa",
+    "documentation": "Provide abscissa structure on a curve used in the routine-like 'point(object, abscissa)' where object can be 'line','segment','ellipse','circle','conic'...</documentation><property type = \"real\" signature=\"x\"><code></asyxml>*/ real x;/*<asyxml></code><documentation>The abscissa value.</documentation></property><property type = \"int\" signature=\"system\"><code></asyxml>*/ int system;/*<asyxml></code><documentation>0 = relativesystem; 1 = curvilinearsystem; 2 = angularsystem; 3 = nodesystem</documentation></property><property type = \"polarconicroutine\" signature=\"polarconicroutine\"><code></asyxml>*/ polarconicroutine polarconicroutine = fromCenter;/*<asyxml></code><documentation>The routine used with angular system and two foci conic section. Possible values are 'formCenter' and 'formFocus'."
+  },
+  {
+    "kind": "method",
+    "name": "copy",
+    "type": "",
+    "signature": "copy()",
+    "documentation": "Return a copy of this abscissa."
+  },
+  {
+    "kind": "constant",
+    "name": "relativesystem,curvilinearsystem,angularsystem,nodesystem",
+    "type": "",
+    "signature": "relativesystem,curvilinearsystem,angularsystem,nodesystem",
+    "documentation": "Constant used to set the abscissa system."
+  },
+  {
+    "kind": "function",
+    "name": "relabscissa",
+    "type": "abscissa",
+    "signature": "relabscissa(real)",
+    "documentation": "Return a relative abscissa."
+  },
+  {
+    "kind": "function",
+    "name": "curabscissa",
+    "type": "abscissa",
+    "signature": "curabscissa(real)",
+    "documentation": "Return a curvilinear abscissa."
+  },
+  {
+    "kind": "function",
+    "name": "angabscissa",
+    "type": "abscissa",
+    "signature": "angabscissa(real,polarconicroutine)",
+    "documentation": "Return a angular abscissa."
+  },
+  {
+    "kind": "function",
+    "name": "nodabscissa",
+    "type": "abscissa",
+    "signature": "nodabscissa(real)",
+    "documentation": "Return an abscissa as time on the path."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(circle,abscissa)",
+    "documentation": "Return the point of 'c' which has the abscissa 'l.x' according to the abscissa system 'l.system'."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(ellipse,abscissa)",
+    "documentation": "Return the point of 'el' which has the abscissa 'l.x' according to the abscissa system 'l.system'."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(parabola,abscissa)",
+    "documentation": "Return the point of 'p' which has the abscissa 'l.x' according to the abscissa system 'l.system'."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(hyperbola,abscissa)",
+    "documentation": "Return the point of 'h' which has the abscissa 'l.x' according to the abscissa system 'l.system'."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "abscissa",
+    "signature": "point(conic,point)",
+    "documentation": "Return the curvilinear abscissa of 'M' on the conic 'co'."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(line,abscissa)",
+    "documentation": "Return the point of 'l' which has the abscissa 'l.x' according to the abscissa system 'l.system'. Note that the origin is l.A, and point(l, relabscissa(x)) returns l.A + x.x * vector(l.B - l.A)."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(line,real)",
+    "documentation": "Return the point between node l.A and l.B (x <= 0 means l.A, x >=1 means l.B)."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "circle",
+    "signature": "point(explicit circle,explicit real)",
+    "documentation": "Return the point between node floor(x) and floor(x) + 1."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(explicit ellipse,explicit real)",
+    "documentation": "Return the point between node floor(x) and floor(x) + 1."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(explicit parabola,explicit real)",
+    "documentation": "Return the point between node floor(x) and floor(x) + 1."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(explicit hyperbola,explicit real)",
+    "documentation": "Return the point between node floor(x) and floor(x) + 1."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(explicit conic,explicit real)",
+    "documentation": "Return the point between node floor(x) and floor(x) + 1."
+  },
+  {
+    "kind": "function",
+    "name": "relpoint",
+    "type": "point",
+    "signature": "relpoint(line,real)",
+    "documentation": "Return the relative point of 'l' (0 means l.A, 1 means l.B, x means l.A + x * vector(l.B - l.A) )."
+  },
+  {
+    "kind": "function",
+    "name": "relpoint",
+    "type": "point",
+    "signature": "relpoint(explicit circle,real)",
+    "documentation": "Return the relative point of 'c' (0 means origin, 1 means end). Origin is c.center + c.r * (1, 0)."
+  },
+  {
+    "kind": "function",
+    "name": "relpoint",
+    "type": "point",
+    "signature": "relpoint(explicit ellipse,real)",
+    "documentation": "Return the relative point of 'el' (0 means origin, 1 means end)."
+  },
+  {
+    "kind": "function",
+    "name": "relpoint",
+    "type": "point",
+    "signature": "relpoint(explicit parabola,real)",
+    "documentation": "Return the relative point of the path of the parabola bounded by the bounding box of the current picture. 0 means origin, 1 means end, where the origin is the vertex of 'p'."
+  },
+  {
+    "kind": "function",
+    "name": "relpoint",
+    "type": "point",
+    "signature": "relpoint(explicit hyperbola,real)",
+    "documentation": "Not yet implemented... <look href = \"point(hyperbola, abscissa)\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "relpoint",
+    "type": "point",
+    "signature": "relpoint(explicit conic,explicit real)",
+    "documentation": "Return the relative point of 'co' (0 means origin, 1 means end)."
+  },
+  {
+    "kind": "function",
+    "name": "angpoint",
+    "type": "point",
+    "signature": "angpoint(explicit circle,real)",
+    "documentation": "Return the point of 'c' in the direction 'x' measured in degrees."
+  },
+  {
+    "kind": "function",
+    "name": "angpoint",
+    "type": "point",
+    "signature": "angpoint(explicit ellipse,real,polarconicroutine)",
+    "documentation": "Return the point of 'el' in the direction 'x' measured in degrees according to 'polarconicroutine'."
+  },
+  {
+    "kind": "function",
+    "name": "angpoint",
+    "type": "point",
+    "signature": "angpoint(explicit parabola,real)",
+    "documentation": "Return the point of 'p' in the direction 'x' measured in degrees."
+  },
+  {
+    "kind": "function",
+    "name": "angpoint",
+    "type": "point",
+    "signature": "angpoint(explicit hyperbola,real,polarconicroutine)",
+    "documentation": "Return the point of 'h' in the direction 'x' measured in degrees according to 'polarconicroutine'."
+  },
+  {
+    "kind": "function",
+    "name": "curpoint",
+    "type": "point",
+    "signature": "curpoint(line,real)",
+    "documentation": "Return the point of 'l' which has the curvilinear abscissa 'x'. Origin is l.A."
+  },
+  {
+    "kind": "function",
+    "name": "curpoint",
+    "type": "point",
+    "signature": "curpoint(explicit circle,real)",
+    "documentation": "Return the point of 'c' which has the curvilinear abscissa 'x'. Origin is c.center + c.r * (1, 0)."
+  },
+  {
+    "kind": "function",
+    "name": "curpoint",
+    "type": "point",
+    "signature": "curpoint(explicit ellipse,real)",
+    "documentation": "Return the point of 'el' which has the curvilinear abscissa 'el'."
+  },
+  {
+    "kind": "function",
+    "name": "curpoint",
+    "type": "point",
+    "signature": "curpoint(explicit parabola,real)",
+    "documentation": "Return the point of 'p' which has the curvilinear abscissa 'x'. Origin is the vertex of 'p'."
+  },
+  {
+    "kind": "function",
+    "name": "curpoint",
+    "type": "point",
+    "signature": "curpoint(conic,real)",
+    "documentation": "Return the point of 'co' which has the curvilinear abscissa 'x'."
+  },
+  {
+    "kind": "function",
+    "name": "angabscissa",
+    "type": "abscissa",
+    "signature": "angabscissa(circle,point)",
+    "documentation": "Return the angular abscissa of 'M' on the circle 'c'."
+  },
+  {
+    "kind": "function",
+    "name": "angabscissa",
+    "type": "abscissa",
+    "signature": "angabscissa(ellipse,point,polarconicroutine)",
+    "documentation": "Return the angular abscissa of 'M' on the ellipse 'el' according to 'polarconicroutine'."
+  },
+  {
+    "kind": "function",
+    "name": "angabscissa",
+    "type": "abscissa",
+    "signature": "angabscissa(hyperbola,point,polarconicroutine)",
+    "documentation": "Return the angular abscissa of 'M' on the hyperbola 'h' according to 'polarconicroutine'."
+  },
+  {
+    "kind": "function",
+    "name": "angabscissa",
+    "type": "abscissa",
+    "signature": "angabscissa(parabola,point)",
+    "documentation": "Return the angular abscissa of 'M' on the parabola 'p'."
+  },
+  {
+    "kind": "function",
+    "name": "angabscissa",
+    "type": "abscissa",
+    "signature": "angabscissa(conic,point)",
+    "documentation": "Return the angular abscissa of 'M' on the conic 'co'."
+  },
+  {
+    "kind": "function",
+    "name": "curabscissa",
+    "type": "abscissa",
+    "signature": "curabscissa(line,point)",
+    "documentation": "Return the curvilinear abscissa of 'M' on the line 'l'."
+  },
+  {
+    "kind": "function",
+    "name": "curabscissa",
+    "type": "abscissa",
+    "signature": "curabscissa(circle,point)",
+    "documentation": "Return the curvilinear abscissa of 'M' on the circle 'c'."
+  },
+  {
+    "kind": "function",
+    "name": "curabscissa",
+    "type": "abscissa",
+    "signature": "curabscissa(ellipse,point)",
+    "documentation": "Return the curvilinear abscissa of 'M' on the ellipse 'el'."
+  },
+  {
+    "kind": "function",
+    "name": "curabscissa",
+    "type": "abscissa",
+    "signature": "curabscissa(parabola,point)",
+    "documentation": "Return the curvilinear abscissa of 'M' on the parabola 'p'."
+  },
+  {
+    "kind": "function",
+    "name": "curabscissa",
+    "type": "abscissa",
+    "signature": "curabscissa(conic,point)",
+    "documentation": "Return the curvilinear abscissa of 'M' on the conic 'co'."
+  },
+  {
+    "kind": "function",
+    "name": "nodabscissa",
+    "type": "abscissa",
+    "signature": "nodabscissa(line,point)",
+    "documentation": "Return the node abscissa of 'M' on the line 'l'."
+  },
+  {
+    "kind": "function",
+    "name": "nodabscissa",
+    "type": "abscissa",
+    "signature": "nodabscissa(circle,point)",
+    "documentation": "Return the node abscissa of 'M' on the circle 'c'."
+  },
+  {
+    "kind": "function",
+    "name": "nodabscissa",
+    "type": "abscissa",
+    "signature": "nodabscissa(ellipse,point)",
+    "documentation": "Return the node abscissa of 'M' on the ellipse 'el'."
+  },
+  {
+    "kind": "function",
+    "name": "nodabscissa",
+    "type": "abscissa",
+    "signature": "nodabscissa(parabola,point)",
+    "documentation": "Return the node abscissa OF 'M' on the parabola 'p'."
+  },
+  {
+    "kind": "function",
+    "name": "nodabscissa",
+    "type": "abscissa",
+    "signature": "nodabscissa(conic,point)",
+    "documentation": "Return the node abscissa of 'M' on the conic 'co'."
+  },
+  {
+    "kind": "function",
+    "name": "relabscissa",
+    "type": "abscissa",
+    "signature": "relabscissa(line,point)",
+    "documentation": "Return the relative abscissa of 'M' on the line 'l'."
+  },
+  {
+    "kind": "function",
+    "name": "relabscissa",
+    "type": "abscissa",
+    "signature": "relabscissa(circle,point)",
+    "documentation": "Return the relative abscissa of 'M' on the circle 'c'."
+  },
+  {
+    "kind": "function",
+    "name": "relabscissa",
+    "type": "abscissa",
+    "signature": "relabscissa(ellipse,point)",
+    "documentation": "Return the relative abscissa of 'M' on the ellipse 'el'."
+  },
+  {
+    "kind": "function",
+    "name": "relabscissa",
+    "type": "abscissa",
+    "signature": "relabscissa(conic,point)",
+    "documentation": "Return the relative abscissa of 'M' on the conic 'co'."
+  },
+  {
+    "kind": "struct",
+    "name": "arc",
+    "type": "",
+    "signature": "arc",
+    "documentation": "Implement oriented ellipse (included circle) arcs. All the calculus with this structure will be as exact as Asymptote can do. For a full precision, you must not cast 'arc' to 'path' excepted for drawing routines. </documentation><property type = \"ellipse\" signature=\"el\"><code></asyxml>*/ ellipse el;/*<asyxml></code><documentation>The support of the arc.</documentation></property><property type = \"real\" signature=\"angle0\"><code></asyxml>*/ restricted real angle0 = 0;/*<asyxml></code><documentation>Internal use: rotating a circle does not modify the origin point,this variable stocks the eventual angle rotation. This value is not used for ellipses which are not circles.</documentation></property><property type = \"real\" signature=\"angle1,angle2\"><code></asyxml>*/ restricted real angle1, angle2;/*<asyxml></code><documentation>Values (in degrees) in ]-360, 360[.</documentation></property><property type = \"bool\" signature=\"direction\"><code></asyxml>*/ bool direction = CCW;/*<asyxml></code><documentation>The arc will be drawn from 'angle1' to 'angle2' rotating in the direction 'direction'.</documentation></property><property type = \"polarconicroutine\" signature=\"polarconicroutine\"><code></asyxml>*/ polarconicroutine polarconicroutine = currentpolarconicroutine;/*<asyxml></code><documentation>The routine to which the angles refer. If 'el' is a circle 'fromCenter' is always used."
+  },
+  {
+    "kind": "method",
+    "name": "setangles",
+    "type": "",
+    "signature": "setangles(real,real,real)",
+    "documentation": "Set the angles."
+  },
+  {
+    "kind": "method",
+    "name": "init",
+    "type": "",
+    "signature": "init(ellipse,real,real,real,polarconicroutine,bool)",
+    "documentation": "Constructor."
+  },
+  {
+    "kind": "method",
+    "name": "copy",
+    "type": "",
+    "signature": "copy()",
+    "documentation": "Copy the arc."
+  },
+  {
+    "kind": "function",
+    "name": "polarconicroutine",
+    "type": "polarconicroutine",
+    "signature": "polarconicroutine(ellipse)",
+    "documentation": "Return the default routine used to draw a conic."
+  },
+  {
+    "kind": "function",
+    "name": "arc",
+    "type": "arc",
+    "signature": "arc(ellipse,real,real,polarconicroutine,bool)",
+    "documentation": "Return the ellipse arc from 'angle1' to 'angle2' with respect to 'polarconicroutine' and rotating in the direction 'direction'."
+  },
+  {
+    "kind": "function",
+    "name": "complementary",
+    "type": "arc",
+    "signature": "complementary(arc)",
+    "documentation": "Return the complementary of 'a'."
+  },
+  {
+    "kind": "function",
+    "name": "reverse",
+    "type": "arc",
+    "signature": "reverse(arc)",
+    "documentation": "Return arc 'a' oriented in reverse direction."
+  },
+  {
+    "kind": "function",
+    "name": "degrees",
+    "type": "real",
+    "signature": "degrees(arc)",
+    "documentation": "Return the measure in degrees of the oriented arc 'a'."
+  },
+  {
+    "kind": "function",
+    "name": "angle",
+    "type": "real",
+    "signature": "angle(a)",
+    "documentation": "Return the measure in radians of the oriented arc 'a'."
+  },
+  {
+    "kind": "function",
+    "name": "arcnodesnumber",
+    "type": "int",
+    "signature": "arcnodesnumber(explicit arc)",
+    "documentation": "Return the number of nodes to draw the arc 'a'."
+  },
+  {
+    "kind": "function",
+    "name": "angpoint",
+    "type": "point",
+    "signature": "angpoint(arc,real)",
+    "documentation": "Return the point given by its angular position (in degrees) relative to the arc 'a'. If 'angle > degrees(a)' or 'angle < 0' the returned point is on the extended arc."
+  },
+  {
+    "kind": "function",
+    "name": "draw",
+    "type": "void",
+    "signature": "draw(picture,Label,arc,align,pen,arrowbar,arrowbar,margin,Label,marker)",
+    "documentation": "Draw 'arc' adding the pen returned by 'addpenarc(p)' to the pen 'p'. <look href = \"#addpenarc\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "arclength",
+    "type": "real",
+    "signature": "arclength(arc)",
+    "documentation": "The arc length of 'a'."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(arc,abscissa)",
+    "documentation": "Return the point of 'a' which has the abscissa 'l.x' according to the abscissa system 'l.system'. Note that 'a.polarconicroutine' is used instead of 'l.polarconicroutine'. <look href = \"#struct abscissa\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(arc,real)",
+    "documentation": "Return the point between node floor(t) and floor(t) + 1."
+  },
+  {
+    "kind": "function",
+    "name": "relpoint",
+    "type": "point",
+    "signature": "relpoint(arc,real)",
+    "documentation": "Return the relative point of 'a'. If x > 1 or x < 0, the returned point is on the extended arc."
+  },
+  {
+    "kind": "function",
+    "name": "curpoint",
+    "type": "point",
+    "signature": "curpoint(arc,real)",
+    "documentation": "Return the point of 'a' which has the curvilinear abscissa 'x'. If x < 0 or x > arclength(a), the returned point is on the extended arc."
+  },
+  {
+    "kind": "function",
+    "name": "angabscissa",
+    "type": "abscissa",
+    "signature": "angabscissa(arc,point)",
+    "documentation": "Return the angular abscissa of 'M' according to the arc 'a'."
+  },
+  {
+    "kind": "function",
+    "name": "curabscissa",
+    "type": "abscissa",
+    "signature": "curabscissa(arc,point)",
+    "documentation": "Return the curvilinear abscissa according to the arc 'a'."
+  },
+  {
+    "kind": "function",
+    "name": "nodabscissa",
+    "type": "abscissa",
+    "signature": "nodabscissa(arc,point)",
+    "documentation": "Return the node abscissa according to the arc 'a'."
+  },
+  {
+    "kind": "function",
+    "name": "relabscissa",
+    "type": "abscissa",
+    "signature": "relabscissa(arc,point)",
+    "documentation": "Return the relative abscissa according to the arc 'a'."
+  },
+  {
+    "kind": "function",
+    "name": "markarc",
+    "type": "void",
+    "signature": "markarc(picture,Label,int,real,real,arc,arrowbar,pen,pen,margin,marker)",
+    "documentation": ""
+  },
+  {
+    "kind": "struct",
+    "name": "mass",
+    "type": "",
+    "signature": "mass",
+    "documentation": "</documentation><property type = \"point\" signature=\"M\"><code></asyxml>*/ point M;/*<asyxml></code><documentation></documentation></property><property type = \"real\" signature=\"m\"><code></asyxml>*/ real m;/*<asyxml></code><documentation>"
+  },
+  {
+    "kind": "function",
+    "name": "mass",
+    "type": "mass",
+    "signature": "mass(point,real)",
+    "documentation": "Constructor of mass point."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(explicit mass)",
+    "documentation": "Cast 'm' to point"
+  },
+  {
+    "kind": "function",
+    "name": "mass",
+    "type": "mass",
+    "signature": "mass(explicit point)",
+    "documentation": "Cast 'P' to mass."
+  },
+  {
+    "kind": "function",
+    "name": "mass",
+    "type": "mass",
+    "signature": "mass(coordsys,explicit pair,real)",
+    "documentation": "Return the mass which has coordinates 'p' with respect to 'R' and weight 'm'."
+  },
+  {
+    "kind": "function",
+    "name": "masscenter",
+    "type": "mass",
+    "signature": "masscenter(... mass[])",
+    "documentation": "Return the center of the masses 'M'."
+  },
+  {
+    "kind": "function",
+    "name": "massformat",
+    "type": "string",
+    "signature": "massformat(string,string,mass)",
+    "documentation": "Return the string formated by 'format' with the mass value. In the parameter 'format', %L will be replaced by 's'. <look href = \"#defaultmassformat\"/>."
+  },
+  {
+    "kind": "function",
+    "name": "label",
+    "type": "void",
+    "signature": "label(picture,Label,explicit mass,align,string,pen,filltype)",
+    "documentation": "Draw label returned by massformat(format, L, M) at coordinates of M. <look href = \"#massformat(string, string, mass)\"/>."
+  },
+  {
+    "kind": "function",
+    "name": "dot",
+    "type": "void",
+    "signature": "dot(picture,Label,explicit mass,align,string,pen)",
+    "documentation": "Draw a dot with label 'L' as label(picture, Label, explicit mass, align, string, pen, filltype) does. <look href = \"#label(picture, Label, mass, align, string, pen, filltype)\"/>."
+  },
+  {
+    "kind": "function",
+    "name": "orthocenter",
+    "type": "point",
+    "signature": "orthocenter(point,point,point)",
+    "documentation": "Return the orthocenter of the triangle ABC."
+  },
+  {
+    "kind": "function",
+    "name": "centroid",
+    "type": "point",
+    "signature": "centroid(point,point,point)",
+    "documentation": "Return the centroid of the triangle ABC."
+  },
+  {
+    "kind": "function",
+    "name": "incenter",
+    "type": "point",
+    "signature": "incenter(point,point,point)",
+    "documentation": "Return the center of the incircle of the triangle ABC."
+  },
+  {
+    "kind": "function",
+    "name": "inradius",
+    "type": "real",
+    "signature": "inradius(point,point,point)",
+    "documentation": "Return the radius of the incircle of the triangle ABC."
+  },
+  {
+    "kind": "function",
+    "name": "incircle",
+    "type": "circle",
+    "signature": "incircle(point,point,point)",
+    "documentation": "Return the incircle of the triangle ABC."
+  },
+  {
+    "kind": "function",
+    "name": "excenter",
+    "type": "point",
+    "signature": "excenter(point,point,point)",
+    "documentation": "Return the center of the excircle of the triangle tangent with (AB)."
+  },
+  {
+    "kind": "function",
+    "name": "exradius",
+    "type": "real",
+    "signature": "exradius(point,point,point)",
+    "documentation": "Return the radius of the excircle of the triangle ABC with (AB)."
+  },
+  {
+    "kind": "function",
+    "name": "excircle",
+    "type": "circle",
+    "signature": "excircle(point,point,point)",
+    "documentation": "Return the excircle of the triangle ABC tangent with (AB)."
+  },
+  {
+    "kind": "struct",
+    "name": "triangle",
+    "type": "",
+    "signature": "triangle",
+    "documentation": "</documentation></asyxml>*/ /*<asyxml><struct signature=\"vertex\"><code></asyxml>*/ struct vertex {/*<asyxml></code><documentation>Structure used to communicate the vertex of a triangle.</documentation><property type = \"int\" signature=\"n\"><code></asyxml>*/ int n;/*<asyxml></code><documentation>1 means VA,2 means VB,3 means VC,4 means VA etc...</documentation></property><property type = \"triangle\" signature=\"triangle\"><code></asyxml>*/ triangle t;/*<asyxml></code><documentation>The triangle to which the vertex refers."
+  },
+  {
+    "kind": "property",
+    "name": "A,B,C",
+    "type": "",
+    "signature": "A,B,C",
+    "documentation": "The vertices of the triangle (as point).</documentation></property><property type = \"vertex\" signature=\"VA, VB, VC\"><code></asyxml>*/ restricted vertex VA, VB, VC;/*<asyxml></code><documentation>The vertices of the triangle (as vertex). Note that the vertex structure contains the triangle to wish it refers."
+  },
+  {
+    "kind": "method",
+    "name": "vertex",
+    "type": "",
+    "signature": "vertex(int)",
+    "documentation": "Return numbered vertex. 'n' is 1 means VA, 2 means VB, 3 means VC, 4 means VA etc..."
+  },
+  {
+    "kind": "method",
+    "name": "point",
+    "type": "",
+    "signature": "point(int)",
+    "documentation": "Return numbered point. n is 1 means A, 2 means B, 3 means C, 4 means A etc..."
+  },
+  {
+    "kind": "method",
+    "name": "init",
+    "type": "",
+    "signature": "init(point,point,point)",
+    "documentation": "Constructor."
+  },
+  {
+    "kind": "method",
+    "name": "operator init",
+    "type": "",
+    "signature": "operator init(point,point,point)",
+    "documentation": "For backward compatibility. Provide the routine 'triangle(point A, point B, point C)'."
+  },
+  {
+    "kind": "method",
+    "name": "init",
+    "type": "",
+    "signature": "init(real,real,real,real,point)",
+    "documentation": "For backward compatibility. Provide the routine 'triangle(real b, real alpha, real c, real angle = 0, point A = (0, 0)) which returns the triangle ABC rotated by 'angle' (in degrees) and where b = AC, degrees(A) = alpha, AB = c."
+  },
+  {
+    "kind": "method",
+    "name": "a",
+    "type": "",
+    "signature": "a(),b(),c()",
+    "documentation": "Return the length BC. b() and c() are also defined and return the length AC and AB respectively."
+  },
+  {
+    "kind": "method",
+    "name": "area",
+    "type": "",
+    "signature": "area()",
+    "documentation": ""
+  },
+  {
+    "kind": "method",
+    "name": "alpha",
+    "type": "",
+    "signature": "alpha(),beta(),gamma()",
+    "documentation": "Return the measure (in degrees) of the angle A. beta() and gamma() are also defined and return the measure of the angles B and C respectively."
+  },
+  {
+    "kind": "method",
+    "name": "Path",
+    "type": "",
+    "signature": "Path()",
+    "documentation": "The path of the triangle."
+  },
+  {
+    "kind": "struct",
+    "name": "side",
+    "type": "",
+    "signature": "side",
+    "documentation": "Structure used to communicate the side of a triangle.</documentation><property type = \"int\" signature=\"n\"><code></asyxml>*/ int n;/*<asyxml></code><documentation>1 or 0 means [AB],-1 means [BA],2 means [BC],-2 means [CB] etc.</documentation></property><property type = \"triangle\" signature=\"triangle\"><code></asyxml>*/ triangle t;/*<asyxml></code><documentation>The triangle to which the side refers."
+  },
+  {
+    "kind": "property",
+    "name": "AB",
+    "type": "",
+    "signature": "AB",
+    "documentation": "For the routines using the structure 'side', triangle.AB means 'side AB'. BA, AC, CA etc are also defined."
+  },
+  {
+    "kind": "method",
+    "name": "side",
+    "type": "",
+    "signature": "side(int)",
+    "documentation": "Return numbered side. n is 1 means AB, -1 means BA, 2 means BC, -2 means CB, etc."
+  },
+  {
+    "kind": "method",
+    "name": "line",
+    "type": "",
+    "signature": "line(int)",
+    "documentation": "Return the numbered line."
+  },
+  {
+    "kind": "function",
+    "name": "line",
+    "type": "line",
+    "signature": "line(explicit side)",
+    "documentation": "Return 'side' as line."
+  },
+  {
+    "kind": "function",
+    "name": "segment",
+    "type": "segment",
+    "signature": "segment(explicit side)",
+    "documentation": "Return 'side' as segment."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(explicit vertex)",
+    "documentation": "Return the point corresponding to the vertex 'V'."
+  },
+  {
+    "kind": "function",
+    "name": "opposite",
+    "type": "side",
+    "signature": "opposite(vertex)",
+    "documentation": "Return the opposite side of vertex 'V'."
+  },
+  {
+    "kind": "function",
+    "name": "opposite",
+    "type": "vertex",
+    "signature": "opposite(side)",
+    "documentation": "Return the opposite vertex of side 'side'."
+  },
+  {
+    "kind": "function",
+    "name": "midpoint",
+    "type": "point",
+    "signature": "midpoint(side)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "triangleAbc",
+    "type": "triangle",
+    "signature": "triangleAbc(real,real,real,real,point)",
+    "documentation": "Return the triangle ABC rotated by 'angle' with BAC = alpha, AC = b and AB = c."
+  },
+  {
+    "kind": "function",
+    "name": "triangleabc",
+    "type": "triangle",
+    "signature": "triangleabc(real,real,real,real,point)",
+    "documentation": "Return the triangle ABC rotated by 'angle' with BC = a, AC = b and AB = c."
+  },
+  {
+    "kind": "function",
+    "name": "triangle",
+    "type": "triangle",
+    "signature": "triangle(line,line,line)",
+    "documentation": "Return the triangle defined by three line."
+  },
+  {
+    "kind": "function",
+    "name": "foot",
+    "type": "point",
+    "signature": "foot(vertex)",
+    "documentation": "Return the endpoint of the altitude from V."
+  },
+  {
+    "kind": "function",
+    "name": "foot",
+    "type": "point",
+    "signature": "foot(side)",
+    "documentation": "Return the endpoint of the altitude on 'side'."
+  },
+  {
+    "kind": "function",
+    "name": "altitude",
+    "type": "line",
+    "signature": "altitude(vertex)",
+    "documentation": "Return the altitude passing through 'V'."
+  },
+  {
+    "kind": "function",
+    "name": "altitude",
+    "type": "line",
+    "signature": "altitude(vertex)",
+    "documentation": "Return the altitude cutting 'side'."
+  },
+  {
+    "kind": "function",
+    "name": "orthocenter",
+    "type": "point",
+    "signature": "orthocenter(triangle)",
+    "documentation": "Return the orthocenter of the triangle t."
+  },
+  {
+    "kind": "function",
+    "name": "centroid",
+    "type": "point",
+    "signature": "centroid(triangle)",
+    "documentation": "Return the centroid of the triangle 't'."
+  },
+  {
+    "kind": "function",
+    "name": "circumcenter",
+    "type": "point",
+    "signature": "circumcenter(triangle)",
+    "documentation": "Return the circumcenter of the triangle 't'."
+  },
+  {
+    "kind": "function",
+    "name": "circle",
+    "type": "circle",
+    "signature": "circle(triangle)",
+    "documentation": "Return the circumcircle of the triangle 't'."
+  },
+  {
+    "kind": "function",
+    "name": "circumcircle",
+    "type": "circle",
+    "signature": "circumcircle(triangle)",
+    "documentation": "Return the circumcircle of the triangle 't'."
+  },
+  {
+    "kind": "function",
+    "name": "incenter",
+    "type": "point",
+    "signature": "incenter(triangle)",
+    "documentation": "Return the center of the incircle of the triangle 't'."
+  },
+  {
+    "kind": "function",
+    "name": "inradius",
+    "type": "real",
+    "signature": "inradius(triangle)",
+    "documentation": "Return the radius of the incircle of the triangle 't'."
+  },
+  {
+    "kind": "function",
+    "name": "incircle",
+    "type": "circle",
+    "signature": "incircle(triangle)",
+    "documentation": "Return the the incircle of the triangle 't'."
+  },
+  {
+    "kind": "function",
+    "name": "excenter",
+    "type": "point",
+    "signature": "excenter(side,triangle)",
+    "documentation": "Return the center of the excircle tangent with the side 'side' of its triangle. side = 0 means AB, 1 means AC, other means BC. One must use the predefined sides t.AB, t.AC where 't' is a triangle...."
+  },
+  {
+    "kind": "function",
+    "name": "exradius",
+    "type": "real",
+    "signature": "exradius(side,triangle)",
+    "documentation": "Return radius of the excircle tangent with the side 'side' of its triangle. side = 0 means AB, 1 means BC, other means CA. One must use the predefined sides t.AB, t.AC where 't' is a triangle...."
+  },
+  {
+    "kind": "function",
+    "name": "excircle",
+    "type": "circle",
+    "signature": "excircle(side,triangle)",
+    "documentation": "Return the excircle tangent with the side 'side' of its triangle. side = 0 means AB, 1 means AC, other means BC. One must use the predefined sides t.AB, t.AC where 't' is a triangle...."
+  },
+  {
+    "kind": "struct",
+    "name": "trilinear",
+    "type": "",
+    "signature": "trilinear",
+    "documentation": "Trilinear coordinates 'a:b:c' relative to triangle 't'. <url href = \"http://mathworld.wolfram.com/TrilinearCoordinates.html\"/></documentation><property type = \"real\" signature=\"a,b,c\"><code></asyxml>*/ real a,b,c;/*<asyxml></code><documentation>The trilinear coordinates.</documentation></property><property type = \"triangle\" signature=\"t\"><code></asyxml>*/ triangle t;/*<asyxml></code><documentation>The reference triangle."
+  },
+  {
+    "kind": "function",
+    "name": "trilinear",
+    "type": "trilinear",
+    "signature": "trilinear(triangle,real,real,real)",
+    "documentation": "Return the trilinear coordinates relative to 't'. <url href = \"http://mathworld.wolfram.com/TrilinearCoordinates.html\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "trilinear",
+    "type": "trilinear",
+    "signature": "trilinear(triangle,point)",
+    "documentation": "Return the trilinear coordinates of 'M' relative to 't'. <url href = \"http://mathworld.wolfram.com/TrilinearCoordinates.html\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "write",
+    "type": "void",
+    "signature": "write(trilinear)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "trilinear",
+    "type": "point",
+    "signature": "trilinear(triangle,real,real,real)",
+    "documentation": "Return the trilinear coordinates relative to 't'. <url href = \"http://mathworld.wolfram.com/TrilinearCoordinates.html\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "tricoef",
+    "type": "int[]",
+    "signature": "tricoef(side)",
+    "documentation": "Return an array of integer (values are 0 or 1) which represents 'side'. For example, side = t.BC will be represented by {0, 1, 1}."
+  },
+  {
+    "kind": "typedef",
+    "name": "",
+    "type": "",
+    "signature": "",
+    "documentation": "<url href = \"http://mathworld.wolfram.com/TriangleCenterFunction.html\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "trilinear",
+    "type": "trilinear",
+    "signature": "trilinear(triangle,centerfunction,real,real,real)",
+    "documentation": "<url href = \"http://mathworld.wolfram.com/TriangleCenterFunction.html\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "symmedian",
+    "type": "point",
+    "signature": "symmedian(triangle)",
+    "documentation": "Return the symmedian point of 't'."
+  },
+  {
+    "kind": "function",
+    "name": "symmedian",
+    "type": "point",
+    "signature": "symmedian(side)",
+    "documentation": "The symmedian point on the side 'side'."
+  },
+  {
+    "kind": "function",
+    "name": "symmedian",
+    "type": "line",
+    "signature": "symmedian(vertex)",
+    "documentation": "Return the symmedian passing through 'V'."
+  },
+  {
+    "kind": "function",
+    "name": "cevian",
+    "type": "triangle",
+    "signature": "cevian(triangle,point)",
+    "documentation": "Return the Cevian triangle with respect of 'P' <url href = \"http://mathworld.wolfram.com/CevianTriangle.html\"/>."
+  },
+  {
+    "kind": "function",
+    "name": "cevian",
+    "type": "point",
+    "signature": "cevian(side,point)",
+    "documentation": "Return the Cevian point on 'side' with respect of 'P'."
+  },
+  {
+    "kind": "function",
+    "name": "cevian",
+    "type": "line",
+    "signature": "cevian(vertex,point)",
+    "documentation": "Return line passing through 'V' and its Cevian image with respect of 'P'."
+  },
+  {
+    "kind": "function",
+    "name": "gergonne",
+    "type": "point",
+    "signature": "gergonne(triangle)",
+    "documentation": "Return the Gergonne point of 't'."
+  },
+  {
+    "kind": "function",
+    "name": "fermat",
+    "type": "point[]",
+    "signature": "fermat(triangle)",
+    "documentation": "Return the Fermat points of 't'."
+  },
+  {
+    "kind": "function",
+    "name": "isotomicconjugate",
+    "type": "point",
+    "signature": "isotomicconjugate(triangle,point)",
+    "documentation": "<url href = \"http://mathworld.wolfram.com/IsotomicConjugate.html\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "isotomic",
+    "type": "line",
+    "signature": "isotomic(vertex,point)",
+    "documentation": "<url href = \"http://mathworld.wolfram.com/IsotomicConjugate.html\"/>."
+  },
+  {
+    "kind": "function",
+    "name": "isotomic",
+    "type": "point",
+    "signature": "isotomic(side,point)",
+    "documentation": "<url href = \"http://mathworld.wolfram.com/IsotomicConjugate.html\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "isotomic",
+    "type": "triangle",
+    "signature": "isotomic(triangle,point)",
+    "documentation": "<url href = \"http://mathworld.wolfram.com/IsotomicConjugate.html\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "isogonalconjugate",
+    "type": "point",
+    "signature": "isogonalconjugate(triangle,point)",
+    "documentation": "<url href = \"http://mathworld.wolfram.com/IsogonalConjugate.html\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "isogonal",
+    "type": "point",
+    "signature": "isogonal(side,point)",
+    "documentation": "<url href = \"http://mathworld.wolfram.com/IsogonalConjugate.html\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "isogonal",
+    "type": "line",
+    "signature": "isogonal(vertex,point)",
+    "documentation": "<url href = \"http://mathworld.wolfram.com/IsogonalConjugate.html\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "isogonal",
+    "type": "triangle",
+    "signature": "isogonal(triangle,point)",
+    "documentation": "<url href = \"http://mathworld.wolfram.com/IsogonalConjugate.html\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "pedal",
+    "type": "triangle",
+    "signature": "pedal(triangle,point)",
+    "documentation": "Return the pedal triangle of 'M' in 't'. <url href = \"http://mathworld.wolfram.com/PedalTriangle.html\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "pedal",
+    "type": "triangle",
+    "signature": "pedal(triangle,point)",
+    "documentation": "Return the pedal line of 'M' cutting 'side'. <url href = \"http://mathworld.wolfram.com/PedalTriangle.html\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "antipedal",
+    "type": "triangle",
+    "signature": "antipedal(triangle,point)",
+    "documentation": "<url href = \"http://mathworld.wolfram.com/AntipedalTriangle.html\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "extouch",
+    "type": "triangle",
+    "signature": "extouch(triangle)",
+    "documentation": "Return the extouch triangle of the triangle 't'. The extouch triangle of 't' is the triangle formed by the points of tangency of a triangle 't' with its excircles."
+  },
+  {
+    "kind": "function",
+    "name": "incentral",
+    "type": "triangle",
+    "signature": "incentral(triangle)",
+    "documentation": "Return the incentral triangle of the triangle 't'. It is the triangle whose vertices are determined by the intersections of the reference triangle's angle bisectors with the respective opposite sides."
+  },
+  {
+    "kind": "function",
+    "name": "extouch",
+    "type": "triangle",
+    "signature": "extouch(side)",
+    "documentation": "Return the triangle formed by the points of tangency of the triangle referenced by 'side' with its excircles. One vertex of the returned triangle is on the segment 'side'."
+  },
+  {
+    "kind": "function",
+    "name": "bisectorpoint",
+    "type": "point",
+    "signature": "bisectorpoint(side)",
+    "documentation": "The intersection point of the angle bisector from the opposite point of 'side' with the side 'side'."
+  },
+  {
+    "kind": "function",
+    "name": "bisector",
+    "type": "line",
+    "signature": "bisector(vertex,real)",
+    "documentation": "Return the interior bisector passing through 'V' rotated by angle (in degrees) around 'V'."
+  },
+  {
+    "kind": "function",
+    "name": "bisector",
+    "type": "line",
+    "signature": "bisector(side)",
+    "documentation": "Return the bisector of the line segment 'side'."
+  },
+  {
+    "kind": "function",
+    "name": "intouch",
+    "type": "point",
+    "signature": "intouch(side)",
+    "documentation": "The point of tangency on the side 'side' of its incircle."
+  },
+  {
+    "kind": "function",
+    "name": "intouch",
+    "type": "triangle",
+    "signature": "intouch(triangle)",
+    "documentation": "Return the intouch triangle of the triangle 't'. The intouch triangle of 't' is the triangle formed by the points of tangency of a triangle 't' with its incircles."
+  },
+  {
+    "kind": "function",
+    "name": "tangential",
+    "type": "triangle",
+    "signature": "tangential(triangle)",
+    "documentation": "Return the tangential triangle of the triangle 't'. The tangential triangle of 't' is the triangle formed by the lines tangent to the circumcircle of the given triangle 't' at its vertices."
+  },
+  {
+    "kind": "function",
+    "name": "medial",
+    "type": "triangle",
+    "signature": "medial(triangle t)",
+    "documentation": "Return the triangle whose vertices are midpoints of the sides of 't'."
+  },
+  {
+    "kind": "function",
+    "name": "median",
+    "type": "line",
+    "signature": "median(vertex)",
+    "documentation": "Return median from 'V'."
+  },
+  {
+    "kind": "function",
+    "name": "median",
+    "type": "line",
+    "signature": "median(side)",
+    "documentation": "Return median from the opposite vertex of 'side'."
+  },
+  {
+    "kind": "function",
+    "name": "orthic",
+    "type": "triangle",
+    "signature": "orthic(triangle)",
+    "documentation": "Return the triangle whose vertices are endpoints of the altitudes from each of the vertices of 't'."
+  },
+  {
+    "kind": "function",
+    "name": "symmedial",
+    "type": "triangle",
+    "signature": "symmedial(triangle)",
+    "documentation": "Return the symmedial triangle of 't'."
+  },
+  {
+    "kind": "function",
+    "name": "anticomplementary",
+    "type": "triangle",
+    "signature": "anticomplementary(triangle)",
+    "documentation": "Return the triangle which has the given triangle 't' as its medial triangle."
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(triangle,line,bool)",
+    "documentation": "Return the intersection points. If 'extended' is true, the sides are lines else the sides are segments. intersectionpoints(line, triangle, bool) is also defined."
+  },
+  {
+    "kind": "function",
+    "name": "dir",
+    "type": "vector",
+    "signature": "dir(vertex)",
+    "documentation": "The direction (towards the outside of the triangle) of the interior angle bisector of 'V'."
+  },
+  {
+    "kind": "function",
+    "name": "lvoid label",
+    "type": "void",
+    "signature": "lvoid label(picture,Label,vertex,pair,real,pen,filltype)",
+    "documentation": "Draw 'L' on picture 'pic' at vertex 'V' aligned by 'alignFactor * align'."
+  },
+  {
+    "kind": "function",
+    "name": "label",
+    "type": "void",
+    "signature": "label(picture,Label,Label,Label,triangle,real,real,pen,filltype)",
+    "documentation": "Draw labels LA, LB and LC aligned in the rotated (by 'alignAngle' in degrees) direction (towards the outside of the triangle) of the interior angle bisector of vertices. One can individually modify the alignment by setting the Label parameter 'align'."
+  },
+  {
+    "kind": "function",
+    "name": "show",
+    "type": "void",
+    "signature": "show(picture,Label,Label,Label,Label,Label,Label,triangle,pen,filltype)",
+    "documentation": "Draw triangle and labels of sides and vertices."
+  },
+  {
+    "kind": "function",
+    "name": "draw",
+    "type": "void",
+    "signature": "draw(picture,triangle,pen,marker)",
+    "documentation": "Draw sides of the triangle 't' on picture 'pic' using pen 'p'."
+  },
+  {
+    "kind": "function",
+    "name": "draw",
+    "type": "void",
+    "signature": "draw(picture,triangle[],pen,marker)",
+    "documentation": "Draw sides of the triangles 't' on picture 'pic' using pen 'p'."
+  },
+  {
+    "kind": "function",
+    "name": "drawline",
+    "type": "void",
+    "signature": "drawline(picture,triangle,pen)",
+    "documentation": "Draw lines of the triangle 't' on picture 'pic' using pen 'p'."
+  },
+  {
+    "kind": "function",
+    "name": "dot",
+    "type": "void",
+    "signature": "dot(picture,triangle,pen)",
+    "documentation": "Draw a dot at each vertex of 't'."
+  },
+  {
+    "kind": "struct",
+    "name": "inversion",
+    "type": "",
+    "signature": "inversion",
+    "documentation": "https://mathworld.wolfram.com/Inversion.html</documentation></asyxml>*/ point C; real k; /*<asyxml><function type=\"void\" signature=\"init(point,real)\"><code></asyxml>*/ void operator init(point C, real k) {/*<asyxml></code><documentation>Return the inversion with respect to 'C' having circle power 'k'."
+  },
+  {
+    "kind": "function",
+    "name": "init",
+    "type": "void",
+    "signature": "init(real,point)",
+    "documentation": "Return the inversion with respect to 'C' having circle power 'k'."
+  },
+  {
+    "kind": "function",
+    "name": "inverse",
+    "type": "point",
+    "signature": "inverse(inversion,point)",
+    "documentation": "Return the inverse point of 'P' with respect to 'i'."
+  },
+  {
+    "kind": "function",
+    "name": "radicalcenter",
+    "type": "point",
+    "signature": "radicalcenter(circle,circle)",
+    "documentation": "<url href=\"http://fr.wikipedia.org/wiki/Puissance_d'un_point_par_rapport_%C3%A0_un_cercle\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "radicalline",
+    "type": "line",
+    "signature": "radicalline(circle,circle)",
+    "documentation": "<url href=\"http://fr.wikipedia.org/wiki/Puissance_d'un_point_par_rapport_%C3%A0_un_cercle\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "radicalcenter",
+    "type": "point",
+    "signature": "radicalcenter(circle,circle,circle)",
+    "documentation": "<url href=\"http://fr.wikipedia.org/wiki/Puissance_d'un_point_par_rapport_%C3%A0_un_cercle\"/>"
+  },
+  {
+    "kind": "function",
+    "name": "inversion",
+    "type": "inversion",
+    "signature": "inversion(circle,circle)",
+    "documentation": "Return the inversion which transforms 'c1' to • 'c2' and positive inversion radius if 'sgn > 0'; • 'c2' and negative inversion radius if 'sgn < 0'; • 'c1' and 'c2' to 'c2' if 'sgn = 0'."
+  },
+  {
+    "kind": "function",
+    "name": "inversion",
+    "type": "inversion",
+    "signature": "inversion(circle,circle,circle)",
+    "documentation": "Return the inversion which transform 'c1' to 'c1', 'c2' to 'c2' and 'c3' to 'c3'."
+  },
+  {
+    "kind": "function",
+    "name": "circle",
+    "type": "circle",
+    "signature": "circle(inversion)",
+    "documentation": "Return the inversion circle of 'i'."
+  },
+  {
+    "kind": "function",
+    "name": "inversion",
+    "type": "inversion",
+    "signature": "inversion(circle)",
+    "documentation": "Return the inversion represented by the circle of 'c'."
+  },
+  {
+    "kind": "function",
+    "name": "inverse",
+    "type": "circle",
+    "signature": "inverse(inversion,line)",
+    "documentation": "Return the inverse circle of 'l' with respect to 'i'."
+  },
+  {
+    "kind": "function",
+    "name": "inverse",
+    "type": "circle",
+    "signature": "inverse(inversion,circle)",
+    "documentation": "Return the inverse circle of 'c' with respect to 'i'."
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(line,circle)",
+    "documentation": "Note that the line 'l' may be a segment by casting. intersectionpoints(circle, line) is also defined."
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(line,ellipse)",
+    "documentation": "Note that the line 'l' may be a segment by casting. intersectionpoints(ellipse, line) is also defined."
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(line,parabola)",
+    "documentation": "Note that the line 'l' may be a segment by casting. intersectionpoints(parabola, line) is also defined."
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(line,hyperbola)",
+    "documentation": "Note that the line 'l' may be a segment by casting. intersectionpoints(hyperbola, line) is also defined."
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(line,conic)",
+    "documentation": "Note that the line 'l' may be a segment by casting. intersectionpoints(conic, line) is also defined."
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(bqe,bqe)",
+    "documentation": "Return the intersection of the two conic sections whose equations are 'bqe1' and 'bqe2'."
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(conic,conic)",
+    "documentation": "Return the intersection points of the two conics."
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(triangle,conic,bool)",
+    "documentation": "Return the intersection points. If 'extended' is true, the sides are lines else the sides are segments. intersectionpoints(conic, triangle, bool) is also defined."
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(ellipse,ellipse)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(ellipse,circle)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(circle,ellipse)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(ellipse,parabola)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(parabola,ellipse)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(ellipse,hyperbola)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(hyperbola,ellipse)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(circle,parabola)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(parabola,circle)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(circle,hyperbola)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(hyperbola,circle)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(parabola,parabola)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(parabola,hyperbola)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(hyperbola,parabola)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(hyperbola,hyperbola)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(circle,circle)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "tangent",
+    "type": "line",
+    "signature": "tangent(circle,abscissa)",
+    "documentation": "Return the tangent of 'c' at 'point(c, x)'."
+  },
+  {
+    "kind": "function",
+    "name": "tangents",
+    "type": "line[]",
+    "signature": "tangents(circle,point)",
+    "documentation": "Return the tangents of 'c' passing through 'M'."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(circle,point)",
+    "documentation": "Return the intersection point of 'c' with the half-line '[c.C M)'."
+  },
+  {
+    "kind": "function",
+    "name": "tangent",
+    "type": "line",
+    "signature": "tangent(circle,point)",
+    "documentation": "Return the tangent of 'c' at the intersection point of the half-line'[c.C M)'."
+  },
+  {
+    "kind": "function",
+    "name": "point",
+    "type": "point",
+    "signature": "point(circle,explicit vector)",
+    "documentation": "Return the intersection point of 'c' with the half-line '[c.C v)'."
+  },
+  {
+    "kind": "function",
+    "name": "tangent",
+    "type": "line",
+    "signature": "tangent(circle,explicit vector)",
+    "documentation": "Return the tangent of 'c' at the point M so that vec(c.C M) is collinear to 'v' with the same sense."
+  },
+  {
+    "kind": "function",
+    "name": "tangent",
+    "type": "line",
+    "signature": "tangent(ellipse,abscissa)",
+    "documentation": "Return the tangent of 'el' at 'point(el, x)'."
+  },
+  {
+    "kind": "function",
+    "name": "tangents",
+    "type": "line[]",
+    "signature": "tangents(ellipse,point)",
+    "documentation": "Return the tangents of 'el' passing through 'M'."
+  },
+  {
+    "kind": "function",
+    "name": "tangent",
+    "type": "line",
+    "signature": "tangent(parabola,abscissa)",
+    "documentation": "Return the tangent of 'p' at 'point(p, x)' (use the Wells method)."
+  },
+  {
+    "kind": "function",
+    "name": "tangents",
+    "type": "line[]",
+    "signature": "tangents(parabola,point)",
+    "documentation": "Return the tangent of 'p' at 'M' (use the Wells method)."
+  },
+  {
+    "kind": "function",
+    "name": "tangent",
+    "type": "line",
+    "signature": "tangent(hyperbola,abscissa)",
+    "documentation": "Return the tangent of 'h' at 'point(p, x)'."
+  },
+  {
+    "kind": "function",
+    "name": "tangents",
+    "type": "line[]",
+    "signature": "tangents(hyperbola,point)",
+    "documentation": "Return the tangent of 'h' at 'M'."
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(conic,arc)",
+    "documentation": "intersectionpoints(arc, circle) is also defined."
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(arc,arc)",
+    "documentation": ""
+  },
+  {
+    "kind": "function",
+    "name": "intersectionpoints",
+    "type": "point[]",
+    "signature": "intersectionpoints(line,arc)",
+    "documentation": "intersectionpoints(arc, line) is also defined."
+  },
+  {
+    "kind": "function",
+    "name": "arcsubtendedcenter",
+    "type": "point",
+    "signature": "arcsubtendedcenter(point,point,real)",
+    "documentation": "Return the center of the arc retuned by the 'arcsubtended' routine."
+  },
+  {
+    "kind": "function",
+    "name": "arcsubtended",
+    "type": "arc",
+    "signature": "arcsubtended(point,point,real)",
+    "documentation": "Return the arc circle from which the segment AB is saw with the angle 'angle'. If the point 'M' is on this arc, the oriented angle (MA, MB) is equal to 'angle'."
+  },
+  {
+    "kind": "function",
+    "name": "arccircle",
+    "type": "arc",
+    "signature": "arccircle(point,point,point)",
+    "documentation": "Return the CCW arc circle 'AB' passing through 'M'."
+  },
+  {
+    "kind": "function",
+    "name": "arc",
+    "type": "arc",
+    "signature": "arc(ellipse,abscissa,abscissa,bool)",
+    "documentation": "Return the arc from 'point(c, x1)' to 'point(c, x2)' in the direction 'direction'."
+  },
+  {
+    "kind": "function",
+    "name": "arc",
+    "type": "arc",
+    "signature": "arc(ellipse,point,point,bool)",
+    "documentation": "Return the arc from 'M' to 'N' in the direction 'direction'. The points 'M' and 'N' must belong to the ellipse 'el'."
+  },
+  {
+    "kind": "function",
+    "name": "arccircle",
+    "type": "arc",
+    "signature": "arccircle(point,point,real,bool)",
+    "documentation": "Return the arc circle centered on A from B to rotate(angle, A) * B in the direction 'direction'."
+  },
+  {
+    "kind": "function",
+    "name": "arc",
+    "type": "arc",
+    "signature": "arc(explicit arc,abscissa,abscissa)",
+    "documentation": "Return the arc from 'point(a, x1)' to 'point(a, x2)' traversed in the direction of the arc direction."
+  },
+  {
+    "kind": "function",
+    "name": "arc",
+    "type": "arc",
+    "signature": "arc(explicit arc,point,point)",
+    "documentation": "Return the arc from 'M' to 'N'. The points 'M' and 'N' must belong to the arc 'a'."
+  },
+  {
+    "kind": "function",
+    "name": "inverse",
+    "type": "arc",
+    "signature": "inverse(inversion,segment)",
+    "documentation": "Return the inverse arc circle of 's' with respect to inversion 'i'."
+  },
+  {
+    "kind": "function",
+    "name": "compassmark",
+    "type": "path",
+    "signature": "compassmark(pair,pair,real,real)",
+    "documentation": "Return an arc centered on O with the angle 'angle' so that the position of 'A' on this arc makes an angle 'position * angle'."
+  },
+  {
+    "kind": "function",
+    "name": "tangent",
+    "type": "line",
+    "signature": "tangent(explicit arc,abscissa)",
+    "documentation": "Return the tangent of 'a' at 'point(a, x)'."
+  },
+  {
+    "kind": "function",
+    "name": "tangent",
+    "type": "line",
+    "signature": "tangent(explicit arc,point)",
+    "documentation": "Return the tangent of 'a' at 'M'. The points 'M' must belong to the arc 'a'."
+  }
+]

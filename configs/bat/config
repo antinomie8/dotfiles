@@ -14,5 +14,6 @@
 --italic-text=always
 
 # syntax mappings: map a certain filename pattern to a language.
+--map-syntax "*.asy:cpp"
 --map-syntax "*.conf:ini"
 --map-syntax "*justfile:Makefile"
