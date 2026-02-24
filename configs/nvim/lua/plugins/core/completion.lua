@@ -149,17 +149,6 @@ return {
 					lsp = {
 						score_offset = 100,
 					},
-					dictionary = {
-						name = "blink-cmp-words",
-						module = "blink-cmp-words.dictionary",
-						enabled = function()
-							local lang = vim.opt.spelllang:get()
-							return vim.tbl_contains(lang, "en")
-						end,
-						min_keyword_length = 3,
-						score_offset = -10,
-						opts = {},
-					},
 					buffer = {
 						opts = {
 							enable_in_ex_commands = false, -- prevents substitution previews
@@ -172,6 +161,27 @@ return {
 							end,
 						},
 					},
+					snippets = {
+						score_offset = 10,
+					},
+					dictionary = {
+						name = "blink-cmp-words",
+						module = "blink-cmp-words.dictionary",
+						enabled = function()
+							local lang = vim.opt.spelllang:get()
+							return vim.tbl_contains(lang, "en")
+						end,
+						min_keyword_length = 3,
+						score_offset = -10,
+						opts = {},
+					},
+					asymptote = {
+						name = "asymptote",
+						module = "utils.plugins.blink.asymptote",
+						enabled = function() return vim.bo.filetype == "asymptote" end,
+						score_offset = 5,
+						opts = {},
+					},
 				},
 				per_filetype = {
 					text = { inherit_defaults = true, "dictionary" },
@@ -181,6 +191,7 @@ return {
 					typst = { inherit_defaults = true, "dictionary" },
 					gitcommit = { inherit_defaults = true, "dictionary" },
 					tex = { inherit_defaults = true, "dictionary" },
+					asymptote = { inherit_defaults = true, "asymptote" },
 				},
 			},
 			signature = {
