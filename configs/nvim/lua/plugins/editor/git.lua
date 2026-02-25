@@ -113,7 +113,7 @@ return {
 		},
 	},
 	{
-		"anonymousgrasshopper/diffview.nvim",
+		"dlyongemallo/diffview.nvim",
 		cmd = {
 			"DiffviewOpen",
 			"DiffviewToggleFiles",
