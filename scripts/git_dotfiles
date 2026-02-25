@@ -26,7 +26,7 @@ function copy() {
 }
 
 # list of configs and scripts to copy
-configs=("bat" "btop" "browser" "clangd" "eza" "fastfetch" "formatters" "git" "hypr"
+configs=("asy" "bat" "btop" "browser" "clangd" "eza" "fastfetch" "formatters" "git" "hypr"
 	"hyprland-preview-share-picker" "illogical-impulse" "imv" "kitty" "lazygit" "mpv"
 	"neomutt" "ncdu" "npm" "nvim" "oly" "quickshell" "thundery" "tmux" "udiskie" "uwsm"
 	"wget" "xdg-desktop-portal" "xdg-desktop-portal-termfilechooser" "yazi" "zathura" "zsh"

@@ -3,11 +3,13 @@ vim.b.current_compiler = "typst" -- disable default compiler in $VIMRUNTIME/comp
 vim.bo.makeprg = "typst compile --diagnostic-format short "
                  .. vim.fn.shellescape(vim.b.typst_root or vim.api.nvim_buf_get_name(0))
 
-vim.api.nvim_buf_create_user_command(0, "Asymptote", function(arg)
+vim.api.nvim_buf_create_user_command(0, "Asy", function(arg)
 	local name = arg.args
 	if name == "" then
-		vim.notify("Error: Name argument is required", vim.log.levels.ERROR, { title = "Asymptote", icon = "󰒕" })
-		return
+		vim.ui.input({ prompt = "New figure name" }, function(input)
+			name = input
+		end)
+		if not name then return end
 	end
 
 	local root = vim.fn.fnamemodify(vim.b.typst_root, ":h") or vim.fn.getcwd()
@@ -27,9 +29,12 @@ vim.api.nvim_buf_create_user_command(0, "Asymptote", function(arg)
 
 	-- Insert initial content into the new .asy buffer if it's empty
 	if vim.api.nvim_buf_line_count(0) <= 1 and vim.api.nvim_buf_get_lines(0, 0, 1, false)[1] == "" then
-		-- vim.api.nvim_buf_set_lines(0, 0, 0, false, { "", "" })
+		vim.api.nvim_buf_set_lines(0, 0, 0, false, vim.split(require("static.lang.asymptote.preamble"), "\n"))
 	end
 end, {
-	nargs = 1,
+	nargs = "?",
 	desc = "Create a new Asymptote figure and insert Typst reference",
 })
+
+vim.keymap.set("n", "<leader>A", "<Cmd>Asy<CR>",
+	{ desc = "Create a new Asymptote figure and insert Typst reference" })

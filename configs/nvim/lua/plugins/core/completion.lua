@@ -1,14 +1,12 @@
 return {
 	{
 		"saghen/blink.cmp",
-		version = "*",
+		build = "cargo build --release",
 		event = { "InsertEnter", "CmdlineEnter" },
-		dependencies = {
-			"archie-judd/blink-cmp-words",
-		},
 		opts = {
 			keymap = {
 				["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+				["<C-k>"] = { "show_signature", "hide_signature" },
 				["<C-e>"] = { "hide", "fallback" },
 
 				["<Tab>"] = {
@@ -178,8 +176,12 @@ return {
 					asymptote = {
 						name = "asymptote",
 						module = "utils.plugins.blink.asymptote",
-						enabled = function() return vim.bo.filetype == "asymptote" end,
 						score_offset = 5,
+						opts = {},
+					},
+					dap = {
+						name = "dap",
+						module = "blink-cmp-dap",
 						opts = {},
 					},
 				},
@@ -192,6 +194,9 @@ return {
 					gitcommit = { inherit_defaults = true, "dictionary" },
 					tex = { inherit_defaults = true, "dictionary" },
 					asymptote = { inherit_defaults = true, "asymptote" },
+					["dap-repl"] = { "dap" },
+					dapui_watches = { "dap" },
+					dapui_hover = { "dap" },
 				},
 			},
 			signature = {

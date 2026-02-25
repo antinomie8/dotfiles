@@ -1,4 +1,4 @@
 ; extends
 
-((identifier) @namespace.builtin
-	(#eq? @namespace.builtin "vim"))
+((identifier) @lsp.typemod.variable.global.lua
+	(#eq? @lsp.typemod.variable.global.lua "vim"))

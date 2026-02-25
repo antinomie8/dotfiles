@@ -5,7 +5,7 @@ vim.bo.errorformat = "%f: %l.%c: %m"
 
 vim.b.output_format = "pdf"
 
--- use C treesitter highlighting with custom queries
+-- use C++ treesitter highlighting with custom queries
 local query_path = vim.fn.stdpath("config") .. "/queries/asymptote/highlights.scm"
 if vim.fn.filereadable(query_path) ~= 1 then return end
 local query_text = table.concat(vim.fn.readfile(query_path), "\n")
@@ -42,7 +42,8 @@ local function asy(args, bufnr, notify)
 					vim.notify(obj.stderr, vim.log.levels.WARN, { title = "Asymptote", icon = "󰒕" })
 				end
 			end
-		end)
+		end
+	)
 end
 
 vim.keymap.set("n", "<localleader>p", function()
@@ -77,10 +78,10 @@ end, {
 
 vim.keymap.set("n", "<localleader>ll", function()
 	if vim.b.asy_live_rendering then
-		vim.notify("Live rendering disabled ! ", vim.log.levels.INFO, { title = "Asymptote", icon = "󰒕" })
+		vim.notify("Live rendering disabled !", vim.log.levels.INFO, { title = "Asymptote", icon = "󰒕" })
 		vim.cmd("LiveRender!")
 	else
-		vim.notify("Live rendering enabled ! ", vim.log.levels.INFO, { title = "Asymptote", icon = "󰒕" })
+		vim.notify("Live rendering enabled !", vim.log.levels.INFO, { title = "Asymptote", icon = "󰒕" })
 		vim.cmd("LiveRender")
 	end
 end, { desc = "Toggle live rendering" })

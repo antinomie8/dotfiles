@@ -131,11 +131,13 @@ return {
 			local disabled_paths = {
 				"^" .. vim.fn.stdpath("config") .. "/lua/config/options.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/plugins/coding/dial.lua$",
+				"^" .. vim.fn.stdpath("config") .. "/lua/plugins/coding/surround.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/plugins/ui/dashboard.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/static/.*.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/after/plugin/icons.lua$",
 
 				"^" .. (vim.env.TEXMFHOME or vim.env.HOME) .. "/tex/latex.*%.tex$",
+				"^" .. (vim.env.ASYMPTOTE_HOME or vim.env.HOME .. "/.asy") .. "/config.asy$",
 			}
 			for _, path in ipairs(disabled_paths) do
 				if vim.api.nvim_buf_get_name(0):match(path) then

@@ -6,6 +6,10 @@ local libs = {
 	"MunifTanjim/nui.nvim",
 	"kevinhwang91/promise-async",
 	"b0o/schemastore.nvim",
+
+	-- completion sources
+	"archie-judd/blink-cmp-words",
+	"mayromr/blink-cmp-dap",
 }
 
 for _, lib in ipairs(libs) do

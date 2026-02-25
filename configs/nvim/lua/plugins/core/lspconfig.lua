@@ -44,8 +44,8 @@ return {
 					on_attach = function(_, bufnr) vim.diagnostic.enable(false, { bufnr = bufnr }) end,
 				},
 
-				asymptote_ls = {
-					cmd = { "asy", "-lsp" },
+				asy_ls = {
+					cmd = { "asy", "-autoimport", "geometry", "-lsp" },
 					filetypes = { "asymptote" },
 					root_markers = { ".git", ".latexmkrc" },
 					single_file_support = true,
