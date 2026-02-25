@@ -142,7 +142,7 @@ return {
 			snippets = { preset = "luasnip" },
 
 			sources = {
-				default = { "lsp", "path", "snippets", "buffer" },
+				default = { "lsp", "path", "snippets", "buffer", "luasnip_choice_nodes" },
 				providers = {
 					lsp = {
 						score_offset = 100,
@@ -183,6 +183,11 @@ return {
 						name = "dap",
 						module = "blink-cmp-dap",
 						opts = {},
+					},
+					luasnip_choice_nodes = {
+						name = "LuaSnip Choice Nodes",
+						module = "blink-cmp-luasnip-choice",
+						opts = { name = "luasnip_choice_nodes" },
 					},
 				},
 				per_filetype = {
