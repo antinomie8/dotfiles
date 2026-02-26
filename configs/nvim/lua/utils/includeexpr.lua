@@ -27,7 +27,7 @@ function M.systemd(module)
 	return module
 end
 
-function M.typst(_)
+function M.typst()
 	local line = vim.api.nvim_get_current_line()
 
 	-- package import: #import "@repo/name:version"

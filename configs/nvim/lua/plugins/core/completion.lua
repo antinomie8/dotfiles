@@ -5,9 +5,10 @@ return {
 		event = { "InsertEnter", "CmdlineEnter" },
 		opts = {
 			keymap = {
+				preset = "none",
 				["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
-				["<C-k>"] = { "show_signature", "hide_signature" },
-				["<C-e>"] = { "hide", "fallback" },
+				["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
+				["<C-e>"] = { "cancel", "fallback" },
 
 				["<Tab>"] = {
 					function(cmp)
@@ -32,10 +33,8 @@ return {
 				["<M-ç>"] = { function(cmp) cmp.accept({ index = 9 }) end },
 				["<M-à>"] = { function(cmp) cmp.accept({ index = 10 }) end },
 
-				["<Up>"] = { "select_prev", "fallback" },
-				["<Down>"] = { "select_next", "fallback" },
-				["<C-p>"] = { "select_prev", "fallback" },
-				["<C-n>"] = { "select_next", "fallback" },
+				["<C-p>"] = { "select_prev", "show", "fallback" },
+				["<C-n>"] = { "select_next", "show", "fallback" },
 
 				["<M-j>"] = { "snippet_forward", "fallback" },
 				["<M-k>"] = { "snippet_backward", "fallback" },
@@ -142,10 +141,10 @@ return {
 			snippets = { preset = "luasnip" },
 
 			sources = {
-				default = { "lsp", "path", "snippets", "buffer", "luasnip_choice_nodes" },
+				default = { "lsp", "path", "snippets", "buffer" },
 				providers = {
 					lsp = {
-						score_offset = 100,
+						score_offset = 15,
 					},
 					buffer = {
 						opts = {
@@ -158,9 +157,10 @@ return {
 								return vim.fn.getcwd()
 							end,
 						},
+						score_offset = 10,
 					},
 					snippets = {
-						score_offset = 10,
+						score_offset = 8,
 					},
 					dictionary = {
 						name = "blink-cmp-words",
@@ -183,11 +183,6 @@ return {
 						name = "dap",
 						module = "blink-cmp-dap",
 						opts = {},
-					},
-					luasnip_choice_nodes = {
-						name = "LuaSnip Choice Nodes",
-						module = "blink-cmp-luasnip-choice",
-						opts = { name = "luasnip_choice_nodes" },
 					},
 				},
 				per_filetype = {

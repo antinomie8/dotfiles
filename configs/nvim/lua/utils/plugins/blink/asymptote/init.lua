@@ -167,6 +167,7 @@ function source:get_completions(ctx, callback)
 		["end"] = { line = row - 1, character = col },
 	}
 
+	---@diagnostic disable-next-line: undefined-field
 	for _, sym in ipairs(self.symbols) do
 		table.insert(items, {
 			label = sym.name,

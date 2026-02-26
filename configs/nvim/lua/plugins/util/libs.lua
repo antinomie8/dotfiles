@@ -10,7 +10,6 @@ local libs = {
 	-- completion sources
 	"archie-judd/blink-cmp-words",
 	"mayromr/blink-cmp-dap",
-	"anonymousgrasshopper/blink-cmp-luasnip-choice",
 }
 
 for _, lib in ipairs(libs) do
