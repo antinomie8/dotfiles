@@ -12,7 +12,7 @@
   "competitest.nvim": { "branch": "master", "commit": "b42c06ca308906f07912ba9aff015ac2c0831f85" },
   "conform.nvim": { "branch": "master", "commit": "e969e302bced7ffb9a0a0323629f31feb0ca35a6" },
   "dial.nvim": { "branch": "master", "commit": "f2634758455cfa52a8acea6f142dcd6271a1bf57" },
-  "diffview.nvim": { "branch": "main", "commit": "5f37197241c7df9a42e20f20a324937e3faf17bd" },
+  "diffview.nvim": { "branch": "main", "commit": "397db142ebed437e9a0da2335b6a35712f8bdebb" },
   "dropbar.nvim": { "branch": "master", "commit": "ce202248134e3949aac375fd66c28e5207785b10" },
   "flit.nvim": { "branch": "main", "commit": "ef18183b22377741e154cffb5b914516381d3870" },
   "gitgraph.nvim": { "branch": "main", "commit": "c16daa7d7dd597caf9085644c009cfa80b75db8e" },
@@ -32,7 +32,7 @@
   "nui.nvim": { "branch": "main", "commit": "de740991c12411b663994b2860f1a4fd0937c130" },
   "numb.nvim": { "branch": "master", "commit": "12ef3913dea8727d4632c6f2ed47957a993de627" },
   "nvim-bqf": { "branch": "main", "commit": "f65fba733268ffcf9c5b8ac381287eca7c223422" },
-  "nvim-colorizer.lua": { "branch": "master", "commit": "a6919ed9aadd0a8b2c11f264c9cbd41316dabf73" },
+  "nvim-colorizer.lua": { "branch": "master", "commit": "773f9ea44e832fbf74f69d20bb85ce7805eae677" },
   "nvim-dap": { "branch": "master", "commit": "b516f20b487b0ac6a281e376dfac1d16b5040041" },
   "nvim-dap-ui": { "branch": "master", "commit": "cf91d5e2d07c72903d052f5207511bf7ecdb7122" },
   "nvim-dap-virtual-text": { "branch": "master", "commit": "fbdb48c2ed45f4a8293d0d483f7730d24467ccb6" },
@@ -76,5 +76,5 @@
   "vimtex": { "branch": "master", "commit": "fcd1533862cc3153c203399964065bc835f6919a" },
   "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" },
   "yanky.nvim": { "branch": "main", "commit": "9d3caea67cf183639d4e510d34f2d58b6109abdd" },
-  "yazi.nvim": { "branch": "main", "commit": "6b178086bdfd90b13bc8b68ba6595a82c898e4f1" }
+  "yazi.nvim": { "branch": "main", "commit": "9aefb685f1512f77e23ed248f0ceb629b2bcb848" }
 }
