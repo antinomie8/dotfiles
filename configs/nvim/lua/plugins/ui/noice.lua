@@ -11,12 +11,14 @@ return {
 				vim.keymap.set("n", "gf", function()
 					local line = vim.api.nvim_get_current_line()
 					local file, linenr = line:match("callback: ([/.].*):(%d*): ")
-					if vim.startswith(file, "...") then
+					if file and vim.startswith(file, "...") then
 						file = file:gsub("%.%.%..*nvim/", vim.env.XDG_DATA_HOME .. "/nvim/")
 					end
 					if file and linenr then
 						vim.cmd.vsplit(file)
 						vim.api.nvim_win_set_cursor(0, { tonumber(linenr), 0 })
+					else
+						vim.cmd("vertical wincmd f")
 					end
 				end, { desc = "go to location", buffer = vim.api.nvim_win_get_buf(win) })
 			end,

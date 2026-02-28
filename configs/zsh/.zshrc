@@ -1,5 +1,5 @@
 # terminal emulator specific settings
-[[ $TERM == "xterm-kitty" ]] && source "$ZDOTDIR/misc/kitty.zsh"
+[[ "$TERM" == "xterm-kitty" && -f "$ZDOTDIR/misc/kitty.zsh" ]] && source "$ZDOTDIR/misc/kitty.zsh"
 
 # source Powerlevel10k's instant prompt
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
@@ -8,7 +8,7 @@ fi
 
 # setup the plugin manager
 [[ -d $ZSH_CACHE_DIR ]] || mkdir -p $ZSH_CACHE_DIR
-ANTIDOTE_HOME=${XDG_DATA_HOME:-${HOME}/.local/share}/zsh/antidote/
+ANTIDOTE_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zsh/antidote/"
 if [[ ! -d $ANTIDOTE_HOME ]]; then
   git clone --depth=1 https://github.com/mattmc3/antidote $ANTIDOTE_HOME
 fi
@@ -16,7 +16,7 @@ source $ANTIDOTE_HOME/antidote.zsh
 antidote load $ZDOTDIR/plugins/plugins
 
 
-eval $(dircolors $ZDOTDIR/misc/dircolors) # colorize completion menu entries
+eval "$(dircolors "$ZDOTDIR/misc/dircolors")" # colorize completion menu entries
 LS_COLORS="=*/.[^/]#=38;2;114;113;105:=.[^/]#=38;2;114;113;105:$LS_COLORS" # colorize dotfiles in gray
 
 # completions
@@ -57,7 +57,7 @@ zstyle ':fzf-tab:complete:git-checkout:*' fzf-preview \
 esac'
 
 # load completions
-ZSH_COMPDUMP=$ZSH_CACHE_DIR/zcompdump
+ZSH_COMPDUMP="$ZSH_CACHE_DIR/zcompdump"
 autoload -Uz compinit
 compinit -d $ZSH_COMPDUMP
 
@@ -150,13 +150,13 @@ add-zsh-hook preexec _preexec_title
 
 
 # setup programs
-eval $(fzf --zsh)
-eval $(zoxide init zsh --cmd cd)
-source $ZDOTDIR/plugins/p10k.zsh
-source $ZDOTDIR/plugins/atuin.zsh
+eval "$(fzf --zsh)"
+eval "$(zoxide init zsh --cmd cd)"
+source "$ZDOTDIR/plugins/p10k.zsh"
+source "$ZDOTDIR/plugins/atuin.zsh"
 
 # config files
-source $ZDOTDIR/config/keybinds.zsh
-source $ZDOTDIR/config/functions.zsh
-source $ZDOTDIR/config/aliases.zsh
+source "$ZDOTDIR/config/keybinds.zsh"
+source "$ZDOTDIR/config/functions.zsh"
+source "$ZDOTDIR/config/aliases.zsh"
 autoload -Uz $ZDOTDIR/functions/*(:t)

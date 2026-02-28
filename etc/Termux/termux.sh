@@ -32,7 +32,7 @@ function get_answer() {
 }
 # util function for checking if a program is in $PATH
 function program() {
-	if type "$1" >/dev/null 2>&1; then
+	if command -v "$1" >/dev/null 2>&1; then
 		return 0
 	else
 		return 1

@@ -37,7 +37,7 @@ function get_answer() {
 }
 # util function for checking if a program is in $PATH
 function program() {
-	if type "$1" >/dev/null 2>&1; then
+	if command -v "$1" >/dev/null 2>&1; then
 		return 0
 	else
 		return 1
@@ -79,10 +79,10 @@ if program pacman; then
 		packages+=("cppman" "runapp" "thundery" "xdg-desktop-portal-termfilechooser-hunkyburrito-git") # misc
 		packages+=("ttf-juliamono" "otf-garamond-math")                                                # fonts
 		packages+=("codelldb-bin" "texlab" "tex-fmt" "asm-lsp" "typstyle")                             # Neovim
-		packages+=("neovim-nightly-bin" "yazi-nightly-bin")
+		packages+=("kitty-git" "neovim-nightly-bin" "yazi-nightly-bin")
 	else
 		package_manager="sudo pacman"
-		packages+=("neovim" "yazi")
+		packages+=("kitty" "neovim" "yazi")
 	fi
 	echo -en "${BLUE}Would you like to synchronize the required packages with ${package_manager##* } ? (y/n) ${COLOR_RESET}"
 	if get_answer; then
@@ -96,29 +96,6 @@ if program pacman; then
 	else
 		echo -e "${GREEN}Make sure the following packages are installed :${COLOR_RESET}"
 		echo -e "${WHITE}${packages[*]}${COLOR_RESET}"
-	fi
-
-	# install fonts
-	function install_font() {
-		if [[ ! -f /usr/share/fonts/TTF/$3/$2-Regular.ttf ]] &&
-			[[ ! -f /usr/share/fonts/TTF/$2-Regular.ttf ]]; then
-			echo -en "${BLUE}Would you like to install the $1 ? (y/n) ${COLOR_RESET}"
-			if get_answer; then
-				sudo pacman -S "$4"
-			fi
-		fi
-		if [[ -f "/usr/share/fonts/TTF/$2-Regular.ttf" ]]; then
-			[[ -d "/usr/share/fonts/TTF/$3" ]] || sudo mkdir -p "/usr/share/fonts/TTF/$3"
-			sudo mv "/usr/share/fonts/TTF/$2"*.ttf "/usr/share/fonts/TTF/$3/"
-		fi
-	}
-	install_font "JetBrains Mono Nerd Font" JetBrainsMonoNerdFont JetBrainsMono ttf-jetbrains-mono-nerd
-	install_font "FiraCode Nerd Font" FiraCodeNerdFont FiraCode ttf-firacode-nerd
-	if [[ ! -d /usr/share/fonts/noto ]]; then
-		echo -en "${BLUE}Would you like to install the Noto font to have a fallback font for unicode symbols ? (y/n) ${COLOR_RESET}"
-		if get_answer; then
-			sudo pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
-		fi
 	fi
 
 	# install, enable and start paccache
@@ -245,7 +222,7 @@ fi
 				--exclude='*@*\.*' --ignore-matching-lines='\S*@\S*\.\S*' \
 				--ignore-matching-lines='^export.*API_KEY=' \
 				"$item" "$HOME/.config/$item" >/dev/null 2>&1; then # ignore obfuscated e-mail adresses and API keys
-				if [[ ! $OVERWRITE ]]; then
+				if [[ -z $OVERWRITE ]]; then
 					if $first; then
 						echo -en "${BLUE}Would you like to :"
 						printf '\n\n\n\n'
@@ -328,7 +305,7 @@ fi
 
 # create python history dir
 if [[ -n "$PYTHON_HISTORY" && ! -d "$(dirname "$PYTHON_HISTORY")" ]]; then
-	mkdir "$(dirname "$PYTHON_HISTORY")"
+	mkdir -p "$(dirname "$PYTHON_HISTORY")"
 fi
 
 # run etc/install.sh

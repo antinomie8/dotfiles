@@ -5,12 +5,6 @@ export SUDO_EDITOR="$EDITOR"
 export TERMINAL="kitty -1"
 export BROWSER="firefox"
 
-# XDG environment variables
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_STATE_HOME="$HOME/.local/state"
-export XDG_CACHE_HOME="$HOME/.cache"
-
 # program-specific variables
 export CPLUS_INCLUDE_PATH="$HOME/Informatique/Library"
 export MANPAGER="nvim +Man!"
@@ -40,6 +34,7 @@ path=(
 )
 fpath=(
 	$ZDOTDIR/functions
+	$HOME/.local/share/zsh/completions
 	$fpath
 )
 

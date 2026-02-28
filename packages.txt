@@ -1,5 +1,4 @@
 # apps
-kitty
 firefox
 cronie
 kmonad
@@ -79,5 +78,13 @@ rust-analyzer
 uwsm
 runapp
 # hypr* things, quickshell & friends are installed elsewhere
+
+# fonts
+ttf-jetbrains-mono-nerd
+ttf-firacode-nerd
+noto-fonts
+noto-fonts-cjk
+noto-fonts-emoji
+noto-fonts-extra
 
 # vim: ft=sh
