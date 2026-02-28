@@ -115,27 +115,25 @@ icon_error      = { fg = "#e82424" }
 
 [filetype]
 rules = [
-	{ url = "*",  is  = "hidden", fg = "#54546d" },
-	{ url = "*/", is = "hidden",  fg = "#54546d" },
-	{ url = "*",  is  = "block",  fg = "#e6c384" },
-	{ url = "*",  is  = "char",   fg = "#e6c384" },
-	{ url = "*",  is  = "exec",   fg = "#ff5d62" },
-	{ url = "*",  is  = "fifo",   fg = "#c0a36e" },
-	{ url = "*",  is  = "link",   fg = "#6a9598" },
-	{ url = "*/", is = "link",    fg = "#6a9598" },
-	{ url = "*",  is  = "orphan", fg = "#e82424" },
-	{ url = "*/", is = "orphan",  fg = "#e82424" },
-	{ url = "*",  is  = "sock",   fg = "#957fb8" },
-	{ url = "*",  is  = "sticky", fg = "#7fb4ca" },
-	{ url = "*/", is = "sticky",  fg = "#7fb4ca" },
-	{ url = "*/",                 fg = "#7e9cd8" },
-	{ url = "*",                  fg  = "#dcd7ba" },
+	{ url = "*",  is = "hidden", fg = "#54546d" },
+	{ url = "*/", is = "hidden", fg = "#54546d" },
+	{ url = "*",  is = "block",  fg = "#e6c384" },
+	{ url = "*",  is = "char",   fg = "#e6c384" },
+	{ url = "*",  is = "exec",   fg = "#ff5d62" },
+	{ url = "*",  is = "fifo",   fg = "#c0a36e" },
+	{ url = "*",  is = "link",   fg = "#6a9598" },
+	{ url = "*/", is = "link",   fg = "#6a9598" },
+	{ url = "*",  is = "orphan", fg = "#e82424" },
+	{ url = "*/", is = "orphan", fg = "#e82424" },
+	{ url = "*",  is = "sock",   fg = "#957fb8" },
+	{ url = "*",  is = "sticky", fg = "#7fb4ca" },
+	{ url = "*/", is = "sticky", fg = "#7fb4ca" },
+	{ url = "*/",                fg = "#7e9cd8" },
+	{ url = "*",                 fg = "#dcd7ba" },
 ]
 
 [icon]
 prepend_dirs = [
-	{ name = ".config", text = "" },
-	{ name = "Documents", text = "" },
 	{ name = "Mathématiques", text = "󰩦" },
 	{ name = "Informatique", text = "" },
 	{ name = "Notes", text = "󰺿" },
@@ -145,13 +143,36 @@ prepend_dirs = [
 	{ name = "Photos", text = "" },
 	{ name = "Vidéos", text = "" },
 	{ name = "Musique", text = "" },
-	{ name = "Library", text = "" },
-	{ name = ".git", text = "" },
 
+	{ name = ".config", text = "" },
+	{ name = ".git", text = "" },
+	{ name = ".github", text = "" },
+	{ name = ".npm", text = "" },
+	{ name = "Desktop", text = "" },
+	{ name = "Development", text = "" },
+	{ name = "Documents", text = "" },
+	{ name = "Downloads", text = "" },
+	{ name = "Library", text = "" },
+	{ name = "Movies", text = "" },
+	{ name = "Music", text = "" },
+	{ name = "Pictures", text = "" },
+	{ name = "Public", text = "" },
+	{ name = "Videos", text = "" },
 ]
 prepend_conds = [
+	# Special files
+	{ if = "orphan", text = "", fg = "#b8b4d0" },
+	{ if = "link", text = "", fg = "#b8b4d0" },
+	{ if = "block", text = "" },
+	{ if = "char", text = "" },
+	{ if = "fifo", text = "" },
+	{ if = "sock", text = "" },
+	{ if = "sticky", text = "" },
+
+	# fallback
 	{ if = "dir",  text = "" },
 	{ if = "exec", text = "", fg = "#4d5a5e" },
+	{ if = "!dir", text = "" },
 ]
 append_exts = [
 	{ name = "asy", text = "󰒕", fg = "#ff0000" },
