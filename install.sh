@@ -44,15 +44,6 @@ function program() {
 	fi
 }
 
-if [[ -n $TERMUX_VERSION ]]; then
-	echo -en "${BLUE}It appears you are running Termux. Do you want to run  ${GREEN}./etc/Termux/termux.sh${BLUE} instead ? (y/n) ${COLOR_RESET}"
-	if get_answer; then
-		printf '\n'
-		./etc/Termux/termux.sh
-		exit 0
-	fi
-fi
-
 # warn the user if the script is being runned as root
 if [[ "$EUID" == 0 && ! "$SCRIPT_DIR" =~ ^/root ]]; then
 	echo -e "${WARNING} Running this script as root might cause permission issues."
@@ -61,27 +52,6 @@ if [[ "$EUID" == 0 && ! "$SCRIPT_DIR" =~ ^/root ]]; then
 		echo -e "${ERROR}  Aborting...${COLOR_RESET}"
 		exit 1
 	fi
-fi
-
-# configure /etc/zsh files for avoiding dotfiles clutter in home directory
-function add_line() {
-	if [[ -f "$2" ]]; then
-		if ! grep --silent "$1" "$2"; then
-			echo "$1" | sudo tee -a "$2" >/dev/null
-		fi
-	else
-		[[ -d "$(dirname "$2")" ]] || sudo mkdir -p "$(dirname "$2")"
-		sudo touch "$2"
-		echo "$1" | sudo tee -a "$2" >/dev/null
-	fi
-}
-add_line "export ZDOTDIR=\$HOME/.config/zsh" /etc/zsh/zshenv
-add_line "zsh-newuser-install() { :; }" /etc/zsh/zshrc
-
-# configure Pulseaudio to avoid having its cookies in ~/.config
-if [[ -f /etc/pulse/client.conf ]] &&
-	! grep --silent -E "cookie-file = /.+/.cache/pulse/cookie" /etc/pulse/client.conf; then
-	printf "\ncookie-file = %s/.cache/pulse/cookie" "$HOME" | sudo tee -a /etc/pulse/client.conf >/dev/null
 fi
 
 # install packages
@@ -172,6 +142,40 @@ else
 fi
 printf '\n'
 
+if [[ -n $TERMUX_VERSION ]]; then
+	echo -en "${BLUE}It appears you are running Termux. Do you want to run  ${GREEN}./etc/Termux/termux.sh${BLUE} ? (y/n) ${COLOR_RESET}"
+	if get_answer; then
+		printf '\n'
+		./etc/Termux/termux.sh
+	fi
+	if ! program sudo; then
+		function sudo() {
+			"$@"
+		}
+	fi
+fi
+
+# configure /etc/zsh files for avoiding dotfiles clutter in home directory
+function add_line() {
+	if [[ -f "$2" ]]; then
+		if ! grep --silent "$1" "$2"; then
+			echo "$1" | sudo tee -a "$2" >/dev/null
+		fi
+	else
+		[[ -d "$(dirname "$2")" ]] || sudo mkdir -p "$(dirname "$2")"
+		sudo touch "$2"
+		echo "$1" | sudo tee -a "$2" >/dev/null
+	fi
+}
+add_line "export ZDOTDIR=\$HOME/.config/zsh" /etc/zsh/zshenv
+add_line "zsh-newuser-install() { :; }" /etc/zsh/zshrc
+
+# configure Pulseaudio to avoid having its cookies in ~/.config
+if [[ -f /etc/pulse/client.conf ]] &&
+	! grep --silent -E "cookie-file = /.+/.cache/pulse/cookie" /etc/pulse/client.conf; then
+	printf "\ncookie-file = %s/.cache/pulse/cookie" "$HOME" | sudo tee -a /etc/pulse/client.conf >/dev/null
+fi
+
 # check wether the default shell is zsh or not
 if [[ ! "$SHELL" = *zsh ]]; then
 	if program zsh; then
@@ -237,7 +241,7 @@ fi
 			cp -r "$item" "$HOME/.config/"
 		else
 			[[ -d "$item" ]] && recursive="-r" || recursive=""
-			if ! diff --brief $recursive --exclude='.git' \
+			if ! diff --brief $recursive --exclude='.git' --exclude='lockfile.json' \
 				--exclude='*@*\.*' --ignore-matching-lines='\S*@\S*\.\S*' \
 				--ignore-matching-lines='^export.*API_KEY=' \
 				"$item" "$HOME/.config/$item" >/dev/null 2>&1; then # ignore obfuscated e-mail adresses and API keys
