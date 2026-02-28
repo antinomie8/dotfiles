@@ -79,8 +79,11 @@ if program systemctl; then
 fi
 
 if [[ ! -f ~/.local/bin/blackscreen ]]; then
-	g++ -std=c++20 -o blackscreen blackscreen.cpp $(pkg-config --cflags --libs sfml-window sfml-graphics)
-	mv blackscreen ~/.local/bin/
+	if
+		g++ -std=c++20 -o blackscreen blackscreen.cpp $(pkg-config --cflags --libs sfml-window sfml-graphics)
+	then
+		mv blackscreen ~/.local/bin/
+	fi
 fi
 
 # Windows and WSL specific files

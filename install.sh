@@ -131,21 +131,10 @@ if program pacman; then
 			sudo systemctl start paccache.timer
 		fi
 	fi
-else
-	echo -e "${GREEN}Make sure the following packages are installed :"
-	echo -e "${WHITE}${packages[*]}${COLOR_RESET}"
-	# TexLive
-	if ! program pdflatex; then
-		echo -e "${WHITE}Follow instructions at ${BLUE}https://www.tug.org/texlive/quickinstall.html${BLUE} to install TexLive.${COLOR_RESET}"
-		printf '\n'
-	fi
-fi
-printf '\n'
-
-if [[ -n $TERMUX_VERSION ]]; then
-	echo -en "${BLUE}It appears you are running Termux. Do you want to run  ${GREEN}./etc/Termux/termux.sh${BLUE} ? (y/n) ${COLOR_RESET}"
+elif [[ -n $TERMUX_VERSION ]]; then
+	echo -en "${BLUE}It appears you are running Termux. Do you want to run ${GREEN}./etc/Termux/termux.sh${BLUE} ? (y/n) ${COLOR_RESET}"
 	if get_answer; then
-		printf '\n'
+		echo
 		./etc/Termux/termux.sh
 	fi
 	if ! program sudo; then
@@ -153,18 +142,30 @@ if [[ -n $TERMUX_VERSION ]]; then
 			"$@"
 		}
 	fi
+else
+	echo -e "${GREEN}Make sure the following packages are installed :"
+	echo -e "${WHITE}${packages[*]}${COLOR_RESET}"
+	# TexLive
+	if ! program pdflatex; then
+		echo -e "${BLUE}Follow instructions at ${GREEN}https://www.tug.org/texlive/quickinstall.html${BLUE} to install TexLive.${COLOR_RESET}"
+		echo
+	fi
 fi
+echo
 
 # configure /etc/zsh files for avoiding dotfiles clutter in home directory
 function add_line() {
-	if [[ -f "$2" ]]; then
-		if ! grep --silent "$1" "$2"; then
-			echo "$1" | sudo tee -a "$2" >/dev/null
+	local line="$1"
+	local dest="$2"
+	[[ -n $TERMUX_VERSION ]] && dest="$PREFIX$dest"
+	if [[ -f "$dest" ]]; then
+		if ! grep --silent "$line" "$dest"; then
+			echo "$line" | sudo tee -a "$dest" >/dev/null
 		fi
 	else
-		[[ -d "$(dirname "$2")" ]] || sudo mkdir -p "$(dirname "$2")"
-		sudo touch "$2"
-		echo "$1" | sudo tee -a "$2" >/dev/null
+		[[ -d "$(dirname "$dest")" ]] || sudo mkdir -p "$(dirname "$dest")"
+		sudo touch "$dest"
+		echo "$line" | sudo tee -a "$dest" >/dev/null
 	fi
 }
 add_line "export ZDOTDIR=\$HOME/.config/zsh" /etc/zsh/zshenv
@@ -188,7 +189,7 @@ if [[ ! "$SHELL" = *zsh ]]; then
 		echo -e "${GREEN}> ${BLUE}chsh $USER"
 		echo -e "${GREEN}> ${BLUE}\$(which zsh)${COLOR_RESET}"
 	fi
-	printf '\n'
+	echo
 fi
 
 # check the user has a home directory
@@ -209,7 +210,6 @@ fi
 		exit 1
 	}
 	[[ -d "$HOME/.local/bin" ]] || mkdir -p "$HOME/.local/bin"
-	printf '\n'
 	for file in *; do
 		if [[ ! -f "$HOME/.local/bin/$file" ]]; then
 			cp "$file" "$HOME/.local/bin/"
@@ -225,7 +225,7 @@ fi
 			fi
 		fi
 	done
-	printf '\n'
+	echo
 )
 
 # copy config directories to ~/.config
@@ -279,9 +279,9 @@ fi
 		fi
 	done
 	if ! $first; then # additional newline since the cursor got up
-		printf '\n'
+		echo
 	fi
-	printf '\n'
+	echo
 )
 
 # install oly
@@ -307,6 +307,7 @@ fi
 				fi
 			fi
 			curl -fsSL https://raw.githubusercontent.com/anonymousgrasshopper/oly/main/install.sh | bash
+			echo
 		fi
 	fi
 )
@@ -326,13 +327,13 @@ if [[ ! -d ~/.local/share/gnupg ]]; then
 fi
 
 # create python history dir
-if [[ -n "$PYTHON_HISTORY" && ! -d "$PYTHON_HISTORY" ]]; then
+if [[ -n "$PYTHON_HISTORY" && ! -d "$(dirname "$PYTHON_HISTORY")" ]]; then
 	mkdir "$(dirname "$PYTHON_HISTORY")"
 fi
 
 # run etc/install.sh
 echo -en "${BLUE}Do you want to run ${GREEN}./etc/install.sh${BLUE} ? (y/n) ${COLOR_RESET}"
 if get_answer; then
-	printf '\n'
+	echo
 	./etc/install.sh
 fi

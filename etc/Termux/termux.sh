@@ -58,7 +58,6 @@ else
 	echo -e "${GREEN}Make sure the following packages are installed :"
 	echo -e "${WHITE}${packages[*]}${COLOR_RESET}"
 fi
-printf '\n'
 
-cp font.ttf ~/.termux/font.ttf
-cp color.properties ~/.termux/color.properties
+[[ ! -L ~/.termux/font.ttf ]] && ln -s font.ttf ~/.termux/font.ttf
+[[ ! -L ~/.termux/color.properties ]] && ln -s color.properties ~/.termux/color.properties
