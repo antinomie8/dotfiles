@@ -102,6 +102,7 @@ opt.mouse          = "nvi"
 
 -- miscellaneous
 opt.guicursor:append("a:Cursor/lCursor")
+opt.guicursor:append("t:ver25")
 opt.backspace      = "indent,eol,start"
 opt.wildmode       = "longest:full,full"
 opt.shortmess      = "tToOcCFI"
