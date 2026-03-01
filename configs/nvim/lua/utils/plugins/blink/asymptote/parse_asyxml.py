@@ -19,10 +19,6 @@ import sys
 from pathlib import Path
 
 
-# ------------------------------------------------------------
-# Helpers
-# ------------------------------------------------------------
-
 def clean_doc(s: str) -> str:
     """Normalize whitespace in documentation."""
     s = re.sub(r"\s+", " ", s)
@@ -38,10 +34,6 @@ def extract_name(signature: str) -> str:
     """
     return signature.split("(")[0].strip()
 
-
-# ------------------------------------------------------------
-# Core parser
-# ------------------------------------------------------------
 
 ASYXML_BLOCK = re.compile(
     r"/\*<asyxml><(?P<kind>\w+)\s+(?P<attrs>.*?)>\s*<code>"
@@ -80,10 +72,6 @@ def parse_file(text: str):
 
     return results
 
-
-# ------------------------------------------------------------
-# Main
-# ------------------------------------------------------------
 
 def main():
     if len(sys.argv) != 2:

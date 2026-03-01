@@ -59,7 +59,7 @@ return {
 			css = { "prettier" },
 			js = { "prettier" },
 			tex = { "latex_math", "tex_fmt" },
-			typst = { "typstyle" },
+			typst = { "typstyle", "spaces_to_tabs" },
 			lua = function(bufnr)
 				if
 					vim.fs.root(
