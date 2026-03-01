@@ -1,4 +1,4 @@
-local vim_enter_early_redraw = function()
+local setup_mock_statusline = function()
 	-- Skip if we already entered vim
 	if vim.v.vim_did_enter == 1 then return end
 
@@ -8,13 +8,6 @@ local vim_enter_early_redraw = function()
 	local ft = vim.filetype.match({ buf = buf })
 
 	if ft then
-		-- Add treesitter highlights and fallback to syntax
-		local lang = vim.treesitter.language.get_lang(ft)
-
-		-- VimTeX's ftplugin gets broken otherwise
-		local exclude = { "latex", "tex" }
-		if vim.tbl_contains(exclude, lang) then return end
-
 		-- find filetype icon and color
 		local icon, color
 		if pcall(require("nvim-web-devicons").setup) then
@@ -27,13 +20,6 @@ local vim_enter_early_redraw = function()
 		                     .. "%* %F %#StatusLineIconColor#" .. (icon or " ")
 		                     .. "%=%#StatusLineSeparatorGrey#%#StatusLineGrey# %p%%  %l:%c "
 		                     .. '%#StatusLineSeparatorBlue#%#StatusLineBlue#  %{strftime("%H:%M")} '
-
-		if not (lang and pcall(vim.treesitter.start, buf, lang)) then
-			vim.bo[buf].syntax = ft
-		end
-
-		-- Trigger early redraw
-		vim.cmd.redraw()
 	end
 end
 
@@ -161,6 +147,6 @@ return {
 		})
 
 		vim.cmd("colorscheme kanagawa-wave")
-		vim_enter_early_redraw()
+		setup_mock_statusline()
 	end,
 }
