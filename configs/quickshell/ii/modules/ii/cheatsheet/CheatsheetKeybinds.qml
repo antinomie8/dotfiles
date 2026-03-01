@@ -67,6 +67,9 @@ Item {
         "Slash": "/",
         "Hash": "#",
         "Return": "Enter",
+				"dead_circumflex": "^",
+				"comma": ",",
+				"code:91": "."
         // "Shift": "",
       },
       !!Config.options.cheatsheet.superKey ? {
@@ -80,10 +83,10 @@ Item {
     Row { // Keybind columns
         id: row
         spacing: root.spacing
-        
+
         Repeater {
             model: keybinds.children
-            
+
             delegate: Column { // Keybind sections
                 spacing: root.spacing
                 required property var modelData
@@ -102,7 +105,7 @@ Item {
                             id: sectionColumn
                             anchors.centerIn: parent
                             spacing: root.titleSpacing
-                            
+
                             StyledText {
                                 id: sectionTitle
                                 font {
@@ -133,7 +136,7 @@ Item {
                                                 keybind.mods = [keybind.mods.join(' ') ]
                                                 keybind.mods[0] += !keyBlacklist.includes(keybind.key) && keybind.mods[0].length ? ' ' : ''
                                                 keybind.mods[0] += !keyBlacklist.includes(keybind.key) ? (keySubstitutions[keybind.key] || keybind.key) : ''
-                                            } 
+                                            }
 
                                             result.push({
                                                 "type": "keys",
@@ -208,8 +211,8 @@ Item {
 
                 }
             }
-            
+
         }
     }
-    
+
 }
