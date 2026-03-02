@@ -7,7 +7,7 @@ return {
 		buftypes = {},
 		options = {
 			parsers = {
-				hex = { enable = true },
+				hex = { default = true },
 				rgb = { enable = true },
 			},
 			display = {

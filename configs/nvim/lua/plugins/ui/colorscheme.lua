@@ -37,6 +37,7 @@ return {
 					-- syntax highlighting
 					Boolean = { bold = false },
 					DiagnosticUnnecessary = { force = true },
+					Conceal = { fg = palette.oniViolet },
 					["@markup.math.typst"] = { link = "Special" },
 					["MailURL"] = { link = "@string.special.url" },
 
