@@ -153,7 +153,7 @@ return {
 							-- for some reason the <> is sometimes preceded by another char
 							return line:sub(col - 1, col + 1):match("<>$") -- do not remove brackets unless they're next to each other
 						elseif obj.key == "<" then -- do not pair if not next to text ( e.g. 'std::cout <|', but 'std::vector<|>' )
-							return line:sub(col - 1, col):match("%w")
+							return line:sub(col - 1, col):match("%a")
 						end
 						return true
 					end,

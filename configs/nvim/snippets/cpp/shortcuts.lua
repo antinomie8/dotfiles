@@ -36,15 +36,69 @@ return {
 	),
 	s(
 		{
-			trig = "([^%w_]%s*)virt",
+			trig = "fillarr",
 			dscr = "virtual member function",
-			regTrig = true,
-			wordTrig = false,
-			snippetType = "autosnippet",
 		},
 		{
-			f(function(_, snip) return snip.captures[1] end),
-			t("virtual "),
+			t("for (auto& x : "),
+			i(1),
+			t(") cin >> x;"),
 		}
+	),
+	s(
+		{
+			trig = "vi",
+			dscr = "vector<int>",
+			snippetType = "autosnippet",
+			condition = not_in_string_comment,
+		},
+		{
+			t("vector<int> "),
+			i(1),
+			t("("),
+			i(2),
+			t(");"),
+		}
+	),
+	s(
+		{
+			trig = "vvi",
+			dscr = "vector<int>",
+			snippetType = "autosnippet",
+			condition = not_in_string_comment,
+		},
+		{
+			t("vector<vector<int>> "),
+			i(1),
+			t("("),
+			i(2, "N"),
+			t(", vector<int>("),
+			i(3),
+			t("));"),
+		}
+	),
+	s(
+		{
+			trig = "vii",
+			dscr = "vector<pair<int, int>>",
+			snippetType = "autosnippet",
+			condition = not_in_string_comment,
+		},
+		{
+			t("vector<pair<int, int>> "),
+			i(1),
+			t("("),
+			i(2),
+			t(");"),
+		}
+	),
+	s(
+		{
+			trig = "pi",
+			dscr = "pair<int, int>",
+			snippetType = "autosnippet",
+			condition = not_in_string_comment,
+		},
+		t("pair<int, int> ")
 	),
 }

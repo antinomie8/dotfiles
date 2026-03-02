@@ -46,7 +46,7 @@ local open_floating_window = function(filepath)
 		pattern = tostring(win_id),
 		callback = function()
 			vim.b[main_buf].stdio_completed = true
-			if vim.b[main_buf].compilation_completed then
+			if vim.b[main_buf].compilation_completed and not require("dap").session() then
 				vim.schedule(function() require("dap").continue() end)
 			end
 		end,

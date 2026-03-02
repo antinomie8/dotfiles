@@ -105,43 +105,4 @@ return {
 		},
 		t({ "private:", "\t" })
 	),
-	s(
-		{
-			trig = "vi ",
-			dscr = "vector<int>",
-			snippetType = "autosnippet",
-			condition = not_in_string_comment,
-		},
-		{
-			t("vector<int> "),
-			i(1),
-			t("("),
-			i(2),
-			t(");"),
-		}
-	),
-	s(
-		{
-			trig = "vii ",
-			dscr = "vector<pair<int, int>>",
-			snippetType = "autosnippet",
-			condition = not_in_string_comment,
-		},
-		{
-			t("vector<pair<int, int>> "),
-			i(1),
-			t("("),
-			i(2),
-			t(");"),
-		}
-	),
-	s(
-		{
-			trig = "pi ",
-			dscr = "pair<int, int>",
-			snippetType = "autosnippet",
-			condition = not_in_string_comment,
-		},
-		t("pair<int, int> ")
-	),
 }

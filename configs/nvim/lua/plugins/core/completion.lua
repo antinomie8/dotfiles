@@ -279,7 +279,7 @@ return {
 			vim.api.nvim_create_user_command("LuasnipReload", function()
 				require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets" })
 			end, { desc = "Reload LuaSnip snippets" })
-			vim.keymap.set("n", "<localleader>rs", "<Cmd>LuasnipReload<CR>", { desc = "Reload Snippets" })
+			vim.keymap.set("n", "<localleader>snp", "<Cmd>LuasnipReload<CR>", { desc = "Reload Snippets" })
 		end,
 	},
 }
