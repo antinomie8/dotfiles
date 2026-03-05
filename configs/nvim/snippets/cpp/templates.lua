@@ -10,8 +10,8 @@ return {
 			trig = "tmp",
 			dscr = "CP template",
 			snippetType = "autosnippet",
-			condition = first_line,
-			not_in_string_comment,
+			condition = first_line * not_in_string_comment,
+			hidden = true,
 		},
 		fmt(
 			[[
@@ -51,8 +51,8 @@ return {
 			trig = "cf",
 			dscr = "Codeforces template",
 			snippetType = "autosnippet",
-			condition = first_line,
-			not_in_string_comment,
+			condition = first_line * not_in_string_comment,
+			hidden = true,
 		},
 		fmt(
 			[[
@@ -98,8 +98,8 @@ return {
 			trig = "io ",
 			dscr = "input/output from file",
 			snippetType = "autosnippet",
-			condition = line_begin,
-			not_in_string_comment,
+			condition = line_begin * not_in_string_comment,
+			hidden = true,
 		},
 		fmt(
 			[[

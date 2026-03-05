@@ -32,11 +32,9 @@ return {
 				if in_node("math", "raw_span", "raw_blck", "string", "comment", "ERROR")(fn, obj, pair) then
 					return false
 				end
-				local node = vim.treesitter.get_node({ pos = { obj.row - 1, obj.col - 1 } })
-				if node and node:type() == "source_file" then
-					-- HACK: sometimes the current position is just out of the edge of the node
-					node = vim.treesitter.get_node({ pos = { obj.row - 1, obj.col - 2 } })
-				end
+				-- needs col - 2 instead of col - 1 else #let a| is not in code so
+				-- adding an underscore for instance will yield #let a_|_
+				local node = vim.treesitter.get_node({ pos = { obj.row - 1, math.max(obj.col - 2, 0) } })
 				while node do
 					if node:type() == "content" then
 						return true

@@ -63,14 +63,6 @@ keymap.set("c", "<M-i>", "<C-b>", { desc = "Go to beginning" })
 keymap.set("c", "<M-a>", "<C-e>", { desc = "Go to end" })
 keymap.set("c", "<M-f>", "<S-Right>", { desc = "Forward word" })
 keymap.set("c", "<M-b>", "<S-Left>", { desc = "Backward word" })
-keymap.set("c", "<M-v>", function()
-	local str = vim.api.nvim_replace_termcodes("vim.notify(vim.inspect())<Left><Left>", true, false, true)
-	if vim.fn.getcmdline():match("^lua") then
-		vim.api.nvim_feedkeys(str, "c", false)
-	else
-		vim.api.nvim_feedkeys("lua " .. str, "c", false)
-	end
-end, { desc = "Inspect" })
 
 -- indert mode keymaps
 keymap.set("i", "<M-i>", "<C-o>^", { desc = "Got to beginning" })

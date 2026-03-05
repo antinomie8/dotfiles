@@ -68,7 +68,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
 			return
 		end
 		vim.opt_local.winhighlight = "Normal:TerminalBackground"
-		vim.cmd("startinsert")
+		vim.cmd.startinsert()
 	end,
 })
 
@@ -184,9 +184,10 @@ vim.api.nvim_create_autocmd("FileType", {
 		if not vim.opt_local.modifiable:get() then return end
 
 		vim.opt_local.wrap = true
+		vim.opt_local.textwidth = 78
+		vim.opt_local.formatoptions = "t,c,q,n,2,j"
 		vim.opt_local.spell = true
 		vim.api.nvim_exec_autocmds("OptionSet", { pattern = "spell" })
-		vim.opt_local.formatoptions = "t,c,q,n,2,j"
 
 		vim.keymap.set(
 			"i",

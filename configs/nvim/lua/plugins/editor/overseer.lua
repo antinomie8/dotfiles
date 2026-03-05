@@ -88,7 +88,7 @@ return {
 			})
 			if cmakelists then
 				vim.cmd.cd(vim.fs.dirname(cmakelists[#cmakelists]))
-				vim.opt_local.makeprg = "cmake --build build"
+				vim.opt_local.makeprg = "cmake --build build/Debug"
 			end
 
 			-- Insert args at the '$*' in the makeprg

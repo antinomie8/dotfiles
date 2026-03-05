@@ -8,21 +8,19 @@ return {
 			vim.api.nvim_create_autocmd("FileType", {
 				callback = function(event)
 					local buf = event.buf
-					local disabled_filetypes = { "checkhealth" }
-					local regex_highlighting = { "tex" }
-					local no_indentexpr = { "bash", "zsh", "sh", "typst", "qml", "asm" }
-					if not vim.tbl_contains(disabled_filetypes, vim.bo[buf].filetype) then
-						if pcall(vim.treesitter.start) then
-							local win = vim.api.nvim_get_current_win()
-							if vim.wo[win][0].foldexpr ~= "v:lua.vim.lsp.foldexpr()" then
-								vim.wo[win][0].foldmethod = "expr"
-								vim.wo[win][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+					local lang = vim.treesitter.language.get_lang(event.match)
+					local disabled = { "checkhealth", "tex", "plaintex", "notify" }
+					if not vim.tbl_contains(disabled, vim.bo[buf].filetype) then
+						if pcall(vim.treesitter.start) and lang then
+							if
+								vim.wo[0][0].foldexpr ~= "v:lua.vim.lsp.foldexpr()" and
+								vim.treesitter.query.get(lang, "folds")
+							then
+								vim.wo[0][0].foldmethod = "expr"
+								vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
 							end
-							if not vim.tbl_contains(no_indentexpr, vim.bo[buf].filetype) then
+							if vim.treesitter.query.get(lang, "indents") then
 								vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-							end
-							if vim.tbl_contains(regex_highlighting, vim.bo[buf].filetype) then
-								vim.bo[buf].syntax = "ON"
 							end
 						end
 					end

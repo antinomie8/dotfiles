@@ -11,6 +11,7 @@ return {
 			dscr = "template",
 			snippetType = "autosnippet",
 			condition = first_line * line_begin,
+			hidden = true,
 		},
 		fmt(
 			[[
