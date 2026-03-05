@@ -1,6 +1,6 @@
 -- tab title
 ps.sub("ind-app-title", function(args)
-	args.value = "󰇥 " .. tostring(cx.active.current.cwd)
+	args.value = "󰇥 " .. tostring(cx.active.current.cwd.name)
 	return args
 end)
 

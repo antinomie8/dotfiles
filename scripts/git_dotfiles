@@ -26,11 +26,11 @@ function copy() {
 }
 
 # list of configs and scripts to copy
-configs=("asy" "bat" "btop" "browser" "clangd" "eza" "fastfetch" "formatters" "git" "hypr"
-	"hyprland-preview-share-picker" "illogical-impulse" "imv" "kitty" "lazygit" "mpv"
-	"neomutt" "ncdu" "npm" "nvim" "oly" "quickshell" "thundery" "tmux" "udiskie" "uwsm"
-	"wget" "xdg-desktop-portal" "xdg-desktop-portal-termfilechooser" "yazi" "zathura" "zsh"
-	"fzf.conf" "kmonad.kbd" "mimeapps.list" "ripgrep.conf" "safeeyes" "shellcheckrc" "user-dirs.dirs")
+configs=("asy" "bat" "btop" "browser" "clang-format" "clangd" "eza" "fastfetch" "git" "hypr"
+	"hyprland-preview-share-picker" "illogical-impulse" "imv" "kitty" "lazygit" "mpv" "neomutt"
+	"ncdu" "npm" "nvim" "oly" "quickshell" "ruff" "rustfmt" "safeeyes" "stylua" "tex-fmt" "thundery"
+	"tmux" "udiskie" "uwsm" "wget" "xdg-desktop-portal" "xdg-desktop-portal-termfilechooser" "yazi"
+	"zathura" "zsh" "fzf.conf" "kmonad.kbd" "mimeapps.list" "ripgrep.conf" "shellcheckrc" "user-dirs.dirs")
 # mozilla msmtp notmuch goimapnotify himalaya mirador aerc
 scripts=("assemble" "fzf_preview_wrapper" "git_dotfiles" "mailto" "rgb" "zoxide-rename")
 systemd_user_units=("mail-sync.service" "goimapnotify.service")

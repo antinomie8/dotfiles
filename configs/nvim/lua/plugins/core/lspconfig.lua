@@ -137,6 +137,11 @@ return {
 										"~/.config/yazi/plugins/types.yazi/",
 									},
 								},
+								diagnostics = {
+									globals = {
+										"Status", "Header", "Tabs", "Linemode", "Entity",
+									},
+								},
 							},
 						}
 
@@ -167,8 +172,6 @@ return {
 						},
 					},
 				},
-
-				pyright = {},
 
 				rust_analyzer = {},
 
@@ -210,6 +213,8 @@ return {
 						)
 					end,
 				},
+
+				ty = {}, -- python
 
 				yamlls = {
 					settings = {

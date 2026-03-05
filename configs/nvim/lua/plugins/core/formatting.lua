@@ -58,7 +58,8 @@ return {
 			bash = { "shfmt" },
 			css = { "prettier" },
 			js = { "prettier" },
-			tex = { "latex_math", "tex_fmt" },
+			python = { "ruff_format" },
+			tex = { "latex_math", "tex-fmt" },
 			typst = { "typstyle", "spaces_to_tabs" },
 			lua = function(bufnr)
 				if
@@ -80,40 +81,38 @@ return {
 			clang_format = {
 				command = "clang-format",
 				args = function(_, ctx)
-					return "--style=file:" .. find_config_file(ctx.dirname, ".clang-format")
-				end,
-			},
-			rustfmt = {
-				command = "rustfmt",
-				args = function(_, ctx)
 					return {
-						"--config-path",
-						find_config_file(ctx.dirname, { "rustfmt.toml", ".rustfmt.toml" }),
+						"-assume-filename", "$FILENAME",
+						"--style=file:" .. find_config_file(ctx.dirname, { ".clang-format", "_clang-format" }),
 					}
 				end,
-			},
-			tex_fmt = {
-				command = "tex-fmt",
-				args = function(_, ctx)
+				range_args = function(self, ctx)
+					local util = require("conform.util")
+					local start_offset, end_offset = util.get_offsets_from_range(ctx.buf, ctx.range)
+					local length = end_offset - start_offset
 					return {
-						"--config",
-						find_config_file(ctx.dirname, "tex-fmt.toml"),
-						"--stdin",
-					}
-				end,
-			},
-			stylua = {
-				command = "stylua",
-				prepend_args = function(_, ctx)
-					return {
-						"--config-path",
-						find_config_file(ctx.dirname, { "stylua.toml", ".stylua.toml" }),
+						"-assume-filename",
+						"$FILENAME",
+						"--offset",
+						tostring(start_offset),
+						"--length",
+						tostring(length),
 					}
 				end,
 			},
 			prettier = {
 				command = "prettier",
+				range_args = function(self, ctx)
+					local util = require("conform.util")
+					local start_offset, end_offset = util.get_offsets_from_range(ctx.buf, ctx.range)
+					local args = { "--stdin-filepath", "$FILENAME" }
+					return vim.list_extend(args, { "--range-start=" .. start_offset, "--range-end=" .. end_offset })
+				end,
 				prepend_args = { "--use-tabs" },
+				args = { "--stdin-filepath", "$FILENAME" },
+				cwd = function(self, ctx)
+					return require("conform.formatters.prettierd").cwd(self, ctx)
+				end,
 			},
 			typstyle = {
 				command = "typstyle",
