@@ -67,6 +67,7 @@ Scope { // Scope
 
     onDetachChanged: {
         if (root.detach) {
+            GlobalFocusGrab.removeDismissable(sidebarLoader.item) // Remove sidebar from the focus grab system
             sidebarContent.parent = null; // Detach content from sidebar
             sidebarLoader.active = false; // Unload sidebar
             detachedSidebarLoader.active = true; // Load detached window
@@ -82,11 +83,11 @@ Scope { // Scope
     Loader {
         id: sidebarLoader
         active: true
-        
+
         sourceComponent: PanelWindow { // Window
             id: panelWindow
             visible: GlobalStates.sidebarLeftOpen
-            
+
             property bool extend: false
             property real sidebarWidth: panelWindow.extend ? Appearance.sizes.sidebarWidthExtended : Appearance.sizes.sidebarWidth
             property var contentParent: sidebarLeftBackground
@@ -181,7 +182,7 @@ Scope { // Scope
             onVisibleChanged: {
                 if (!visible) GlobalStates.sidebarLeftOpen = false;
             }
-            
+
             Rectangle {
                 id: detachedSidebarBackground
                 anchors.fill: parent
