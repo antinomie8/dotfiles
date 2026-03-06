@@ -156,9 +156,10 @@ return {
 				},
 
 				hooks = {
-					diff_buf_read = function(_, _)
+					diff_buf_read = function(bufnr, _)
 						vim.cmd("hi Cursor blend=100")
 						vim.opt_local.relativenumber = false
+						vim.treesitter.start(bufnr)
 					end,
 					view_opened = function(_)
 						vim.opt_local.sidescrolloff = 0
