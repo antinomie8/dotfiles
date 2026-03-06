@@ -271,7 +271,7 @@
         },
         "night": {
             "automatic": false,
-            "colorTemperature": 2533,
+            "colorTemperature": 5057,
             "from": "19:00",
             "to": "06:30"
         }
@@ -436,15 +436,15 @@
                     },
                     {
                         "size": 1,
-                        "type": "screenSnip"
-                    },
-                    {
-                        "size": 1,
                         "type": "audio"
                     },
                     {
                         "size": 1,
                         "type": "mic"
+                    },
+                    {
+                        "size": 1,
+                        "type": "screenSnip"
                     },
                     {
                         "size": 1,
