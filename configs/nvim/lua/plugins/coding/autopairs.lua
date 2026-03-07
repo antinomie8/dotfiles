@@ -139,7 +139,15 @@ return {
 				},
 				config_internal_pairs = {
 					{ '"', '"', suround = false },
-					{ "'", "'", suround = false },
+					{
+						"'",
+						"'",
+						suround = false,
+						cond = function(fn)
+							return not (fn.in_lisp() or fn.in_string()) and
+								(vim.bo.filetype ~= "typst" or typst.in_text())
+						end,
+					},
 				},
 				{
 					"<",

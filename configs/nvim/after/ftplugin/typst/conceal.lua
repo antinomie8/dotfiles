@@ -193,6 +193,17 @@ local queries = {
 			)
 		]]
 	),
+	primes = vim.treesitter.query.parse(
+		"typst",
+		[[
+			(
+				(prime)
+				@prime
+				(#has-ancestor? @prime math)
+				(#not-has-ancestor? @prime attach)
+			)
+		]]
+	),
 }
 
 local function conceal_math(first, last)
@@ -357,6 +368,17 @@ local function conceal_math(first, last)
 		local repl = shorthands[text]
 		if repl then
 			conceal_at_positions(buf, sr, sc, er, ec, repl, "@operator.typst")
+		end
+	end
+
+	-- primes
+	for _, node, metadata in queries.primes:iter_captures(root, buf, first, last) do
+		local sr, sc, er, ec = node:range()
+		local text = vim.treesitter.get_node_text(node, 0, { metadata = metadata })
+		local offset, primes = text:match("([^']*)('+)")
+		local repl = primes and shorthands[primes] or nil
+		if repl then
+			conceal_at_positions(buf, sr, sc + #offset, sr, sc + #offset + #primes, repl, "@operator.typst")
 		end
 	end
 end
