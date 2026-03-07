@@ -54,7 +54,6 @@ program pacman && copy_item pacman.conf /etc
 program pacman && copy_item paccache.timer /etc/systemd/system
 program loginctl && copy_item logind.conf /etc/systemd
 program hyprland && copy_item icons/Bibata ~/.local/share/icons
-program typst && copy_item oly ~/.local/share/typst/packages/local
 program pdflatex && copy_item texmf ~/.local/share
 program firefox && copy_item autoconfig.js /usr/lib/firefox/defaults/pref
 program firefox && copy_item firefox.cfg /usr/lib/firefox

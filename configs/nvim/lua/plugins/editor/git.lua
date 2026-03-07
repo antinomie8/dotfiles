@@ -160,6 +160,9 @@ return {
 						vim.cmd("hi Cursor blend=100")
 						vim.opt_local.relativenumber = false
 						vim.treesitter.start(bufnr)
+						if not package.loaded["ibl"] then
+							require("ibl") -- setup indent guides
+						end
 					end,
 					view_opened = function(_)
 						vim.opt_local.sidescrolloff = 0
