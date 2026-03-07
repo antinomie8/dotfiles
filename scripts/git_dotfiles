@@ -54,7 +54,6 @@ for desktop_file in ${desktop_entries[@]}; do
 done
 # others
 copy $CPLUS_INCLUDE_PATH/dbg.hpp etc
-copy $HOME/.local/share/typst/packages/local/oly etc
 copy $HOME/.local/share/texmf etc
 
 # remove chosen files and directories
