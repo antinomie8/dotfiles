@@ -10,6 +10,10 @@ set statusbar-v-padding 0
 set page-padding 5
 set font "JetBrains Mono 11"
 
+# reduce flickering
+set render-loading-bg "#ffffff"
+set render-loading    false # don't display Loading...
+
 # mappings
 map u scroll half-up
 map d scroll half-down
