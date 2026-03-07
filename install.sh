@@ -234,6 +234,7 @@ fi
 					echo -e "\033[2K\r  ${BLUE}- 2 :${WHITE} delete your current ${GREEN}$item${WHITE} config and replace it"
 					echo -e "\033[2K\r  ${BLUE}- 3 :${WHITE} skip this step and keep your current ${GREEN}$item${WHITE} config ?"
 					echo -en "\e[29C" # move cursor after the prompt
+					echo -ne '\033[P'
 					read -r answer
 					printf "\e[A" # move the cursor up one line
 				else
