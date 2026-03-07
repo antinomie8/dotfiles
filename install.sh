@@ -187,12 +187,17 @@ fi
 		exit 1
 	}
 	[[ -d "$HOME/.local/bin" ]] || mkdir -p "$HOME/.local/bin"
+	first=true
 	for file in *; do
 		if [[ ! -f "$HOME/.local/bin/$file" ]]; then
 			cp "$file" "$HOME/.local/bin/"
 			chmod +x "$HOME/.local/bin/$file"
 		elif ! cmp --silent "$file" "$HOME/.local/bin/$file"; then
 			if [[ -z $OVERWRITE ]]; then
+				if [[ $first == true ]]; then
+					echo
+					first=false
+				fi
 				echo -en '\e[A\e[2K' # cursor one line up and clear line
 				echo -en "${BLUE}Would you like to delete your current ${GREEN}$file${BLUE} script to replace it with the one in this repo ? (y/n) ${COLOR_RESET}"
 			fi
@@ -223,10 +228,12 @@ fi
 				--ignore-matching-lines='^export.*API_KEY=' \
 				"$item" "$HOME/.config/$item" >/dev/null 2>&1; then # ignore obfuscated e-mail adresses and API keys
 				if [[ -z $OVERWRITE ]]; then
-					if $first; then
+					if [[ $first == true ]]; then
 						echo -en "${BLUE}Would you like to :"
 						printf '\n\n\n\n'
 						echo -en "${ERROR}Enter a number (default 3) :${COLOR_RESET} "
+						echo
+						printf "\e[A" # move the cursor on line up
 						first=false
 					fi
 					printf "\e[3A" # move the cursor up three lines
@@ -234,9 +241,9 @@ fi
 					echo -e "\033[2K\r  ${BLUE}- 2 :${WHITE} delete your current ${GREEN}$item${WHITE} config and replace it"
 					echo -e "\033[2K\r  ${BLUE}- 3 :${WHITE} skip this step and keep your current ${GREEN}$item${WHITE} config ?"
 					echo -en "\e[29C" # move cursor after the prompt
-					echo -ne '\033[P'
+					echo -ne '\033[P' # clear character under cursor
 					read -r answer
-					printf "\e[A" # move the cursor up one line
+					printf "\e[A" # move the cursor one line up
 				else
 					answer=2
 				fi
@@ -256,7 +263,7 @@ fi
 			fi
 		fi
 	done
-	if ! $first; then # additional newline since the cursor got up
+	if [[ $first == false ]]; then # additional newline since the cursor got up
 		echo
 	fi
 	echo
