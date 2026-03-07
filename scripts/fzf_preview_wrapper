@@ -5,17 +5,17 @@ if [[ -d $1 ]]; then
 elif [[ -f $1 ]]; then
 	filetype=$(file --brief $1)
 	case $filetype in
-		*image*)
-			kitty icat --clear --transfer-mode=stream --unicode-placeholder --stdin=no --place=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}@0x0 $1
-			;;
-		*text*)
-			bat --plain --color=always "$1"
-			;;
-		*)
-			hexyl --border=none --terminal-width=$FZF_PREVIEW_COLUMNS $1
-			;;
+	*image*)
+		kitty icat --clear --transfer-mode=stream --unicode-placeholder --stdin=no --place=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}@0x0 $1
+		;;
+	*text*)
+		bat --plain --color=always "$1"
+		;;
+	*)
+		hexyl --border=none --terminal-width=$FZF_PREVIEW_COLUMNS $1
+		;;
 	esac
-elif [[ -n $(printenv $1) ]]; then
+elif [[ ${1:0:1} != "-" && -n $(printenv $1) ]]; then
 	if [[ $1 == PATH ]]; then
 		echo -e ${PATH//:/\\n}
 	else

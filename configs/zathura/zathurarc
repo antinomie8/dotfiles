@@ -3,6 +3,7 @@ include kanagawa_theme
 
 # options
 set selection-clipboard false
+set dbus-raise-window false
 set guioptions none
 set statusbar-h-padding 0
 set statusbar-v-padding 0

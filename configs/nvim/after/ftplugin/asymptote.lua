@@ -78,10 +78,10 @@ end, {
 
 vim.keymap.set("n", "<localleader>ll", function()
 	if vim.b.asy_live_rendering then
-		vim.notify("Live rendering disabled !", vim.log.levels.INFO, { title = "Asymptote", icon = "󰒕" })
+		vim.notify("Live rendering disabled !", vim.log.levels.INFO, { title = "Asymptote", icon = "󰒕", timeout = 0 })
 		vim.cmd("LiveRender!")
 	else
-		vim.notify("Live rendering enabled !", vim.log.levels.INFO, { title = "Asymptote", icon = "󰒕" })
+		vim.notify("Live rendering enabled !", vim.log.levels.INFO, { title = "Asymptote", icon = "󰒕", timeout = 0 })
 		vim.cmd("LiveRender")
 	end
 end, { desc = "Toggle live rendering" })
@@ -95,7 +95,7 @@ vim.api.nvim_buf_create_user_command(0, "OpenPdf", function()
 				vim.notify(obj.stderr, vim.log.levels.ERROR, { title = "Open PDF", icon = "" })
 			end
 		end)
-		vim.notify("Opening " .. pdf_path, vim.log.levels.INFO, { title = "Open PDF", icon = "" })
+		vim.notify("Opening " .. pdf_path, vim.log.levels.INFO, { title = "Open PDF", icon = "", timeout = 0 })
 	else
 		vim.notify(pdf_path .. " does not exist !", vim.log.levels.ERROR, { title = "Open PDF", icon = "" })
 	end

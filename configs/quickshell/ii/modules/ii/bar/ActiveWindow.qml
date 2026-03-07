@@ -16,16 +16,30 @@ Item {
     property bool focusingThisMonitor: HyprlandData.activeWorkspace?.monitor == monitor?.name
     property var biggestWindow: HyprlandData.biggestWindowForWorkspace(HyprlandData.monitors[root.monitor?.id]?.activeWorkspace.id)
 
-	  function addSpaceAfterIcon(str) {
-        const chars = Array.from(str);
-        if (chars.length < 2)
-            return str;
+    function fixGlyphSpacing(str) {
+        let out = "";
+        let i = 0;
 
-        const cp = chars[0].codePointAt(0);
-        if (cp > 127)
-            chars.splice(2, 0, " ");
+        while (i < str.length) {
+            const cp = str.codePointAt(i);
+            const ch = String.fromCodePoint(cp);
 
-        return chars.join("");
+            const isPUA =
+                (cp >= 0xE000 && cp <= 0xF8FF) ||
+                (cp >= 0xF0000 && cp <= 0xFFFFD) ||
+                (cp >= 0x100000 && cp <= 0x10FFFD);
+
+            if (isPUA) {
+                out += `<span style="font-family:'JetBrainsMono Nerd Font'">${ch}</span>`;
+                out += " ‎" // both the space and invisible character are needed
+            } else {
+                out += ch;
+            }
+
+            i += ch.length;
+        }
+
+        return out;
     }
 
     implicitWidth: colLayout.implicitWidth
@@ -54,9 +68,9 @@ Item {
             font.pixelSize: Appearance.font.pixelSize.small
             color: Appearance.colors.colOnLayer0
             elide: Text.ElideRight
-            text: root.focusingThisMonitor && root.activeWindow?.activated && root.biggestWindow ?
-                addSpaceAfterIcon(root.activeWindow?.title) :
-                (addSpaceAfterIcon(root.biggestWindow?.title)) ?? `${Translation.tr("Workspace")} ${monitor?.activeWorkspace?.id ?? 1}`
+            text: fixGlyphSpacing(root.focusingThisMonitor && root.activeWindow?.activated && root.biggestWindow ?
+                root.activeWindow?.title :
+                (root.biggestWindow?.title) ?? `${Translation.tr("Workspace")} ${monitor?.activeWorkspace?.id ?? 1}`)
         }
 
     }
