@@ -23,22 +23,6 @@ return {
 			},
 		},
 		config = function()
-			vim.lsp.config("*", {
-				capabilities = {
-					textDocument = {
-						completionItem = {
-							snippetSupprt = true,
-						},
-					},
-					workspace = {
-						fileOperations = {
-							didRename = true,
-							willRename = true,
-						},
-					},
-				},
-			})
-
 			local lspconfigs = {
 				asm_lsp = {
 					on_attach = function(_, bufnr) vim.diagnostic.enable(false, { bufnr = bufnr }) end,
@@ -185,7 +169,39 @@ return {
 						},
 					},
 					on_attach = function(client, bufnr)
-						require("lspconfig.configs.tinymist").default_config.on_attach(client, bufnr)
+						local root_path = vim.b[bufnr].typst_root
+						if not root_path then
+							local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 3, false)
+
+							for _, line in ipairs(lines) do
+								local typst_root = line:match("^//%s*typst%s+root:%s*(.*)%s*$")
+								if typst_root then
+									vim.b[bufnr].typst_root = typst_root
+									root_path = typst_root
+								end
+							end
+						end
+						if not root_path or not vim.uv.fs_stat(root_path) then
+							return
+						end
+
+						local root_buf = vim.fn.bufadd(root_path)
+						vim.fn.bufload(root_buf)
+						vim.bo[root_buf].buflisted = false
+
+						if client then
+							client:exec_cmd({
+								title = "pin",
+								command = "tinymist.pinMain",
+								arguments = { vim.api.nvim_buf_get_name(root_buf) },
+							}, { bufnr = bufnr })
+							client:exec_cmd({
+								title = "exportpdf",
+								command = "tinymist.exportPdf",
+								arguments = { vim.api.nvim_buf_get_name(root_buf) },
+							}, { bufnr = bufnr })
+						end
+
 						vim.keymap.set(
 							"n",
 							"<localleader>tp",
@@ -198,7 +214,6 @@ return {
 							end,
 							{ desc = "tinymist pin main" }
 						)
-
 						vim.keymap.set(
 							"n",
 							"<localleader>tu",
@@ -211,6 +226,9 @@ return {
 							end,
 							{ desc = "tinymist unpin main" }
 						)
+
+						-- load default ~/.local/share/nvim/pack/nvim-lspconfig/lsp/tinymist.lua
+						dofile(vim.fn.stdpath("data") .. "/pack/nvim-lspconfig/lsp/tinymist.lua").on_attach(client, bufnr)
 					end,
 				},
 
