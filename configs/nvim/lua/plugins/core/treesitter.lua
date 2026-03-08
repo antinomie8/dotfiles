@@ -5,6 +5,7 @@ return {
 		build = ":TSUpdate",
 		event = { "BufReadPre", "BufNewFile" },
 		config = function()
+			vim.cmd.syntax("off")
 			vim.api.nvim_create_autocmd("FileType", {
 				callback = function(event)
 					local buf = event.buf
@@ -23,8 +24,26 @@ return {
 							if vim.treesitter.query.get(lang, "indents") and not vim.tbl_contains(no_indentexpr, vim.bo[buf].filetype) then
 								vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 							end
+							return
 						end
 					end
+					vim.cmd.syntax("on")
+					vim.cmd([[" $VIMRUNTIME/syntax/nosyntax.vim
+						if !has("syntax")
+							finish
+						endif
+
+						" Remove all autocommands for the Syntax event.  This also avoids that
+						" "syntax=foo" in a modeline triggers the SynSet() function of synload.vim.
+						au! Syntax
+
+						if exists("syntax_on")
+							unlet syntax_on
+						endif
+						if exists("syntax_manual")
+							unlet syntax_manual
+						endif
+					]])
 				end,
 			})
 

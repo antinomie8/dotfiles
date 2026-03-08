@@ -37,7 +37,9 @@ return {
 					-- syntax highlighting
 					Boolean = { bold = false },
 					DiagnosticUnnecessary = { force = true },
+
 					["@markup.math.typst"] = { link = "Special" },
+					["@variable.cmake"] = { link = "Identifier" },
 					["MailURL"] = { link = "@string.special.url" },
 
 					-- user interface
