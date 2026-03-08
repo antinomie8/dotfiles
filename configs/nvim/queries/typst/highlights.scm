@@ -1,4 +1,4 @@
-; extends
+;; extends
 
 (math) @nospell
 (code) @nospell

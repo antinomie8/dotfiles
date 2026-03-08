@@ -87,19 +87,25 @@ function gacp() {
 }
 function clone() {
 	[[ $# == 0 ]] && { echo "clone: missing operand"; return 1 }
+
 	local repo_name
-	if [[ "$1" =~ [^:]*:(.*) ]]; then
+	if [[ $1 =~ ^[A-Za-z0-9._-]+:([/A-Za-z0-9._-]+)$ ]]; then
 		repo_name=$match[1]
 	else
-		[[ "$1" =~ ^https?:// ]] || 1="https://github.com/$1" # default domain
+		if [[ $1 =~ ^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$ ]]; then
+			1="https://github.com/$1" # default domain
+		fi
 		repo_name=${1:t}
 	fi
-	local dir="${2:-$HOME/Téléchargements/git/$repo_name}"
-	[[ "$2" == . || -d "$dir" ]] && dir+="/${1:t}"
-	if [[ -z "$2" && "$dir" =~ ^(.*)/([^/]+)\.git$ ]]; then
-		dir="${match[1]}/${match[2]}" # strip trailing .git, if any
+
+	local dir=${2:-$HOME/Téléchargements/git/$repo_name}
+	if [[ -d $2 ]]; then
+		dir+="/$repo_name"
 	fi
-	git clone "$1" "$dir" && cd "$dir"
+	if [[ -z $2 && $dir =~ ^(.*/[^/]+)\.git$ ]]; then
+		dir=$match[1] # strip trailing .git, if any
+	fi
+	git clone $1 $dir && cd $dir
 }
 gitdot() {
 	if [[ $# == 0 ]]; then

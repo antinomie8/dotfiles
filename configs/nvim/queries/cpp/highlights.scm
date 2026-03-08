@@ -1,4 +1,4 @@
-; extends
+;; extends
 
 (import_declaration
   "import" @keyword.import)

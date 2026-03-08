@@ -10,6 +10,7 @@ return {
 					local buf = event.buf
 					local lang = vim.treesitter.language.get_lang(event.match)
 					local disabled = { "checkhealth", "tex", "plaintex", "notify" }
+					local no_indentexpr = { "typst" }
 					if not vim.tbl_contains(disabled, vim.bo[buf].filetype) then
 						if pcall(vim.treesitter.start) and lang then
 							if
@@ -19,7 +20,7 @@ return {
 								vim.wo[0][0].foldmethod = "expr"
 								vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
 							end
-							if vim.treesitter.query.get(lang, "indents") then
+							if vim.treesitter.query.get(lang, "indents") and not vim.tbl_contains(no_indentexpr, vim.bo[buf].filetype) then
 								vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 							end
 						end
@@ -72,10 +73,9 @@ return {
 
 			require("nvim-treesitter-textobjects").setup({
 				select = {
-					include_surrounding_whitespace = false,
 					lookahead = true, -- jump forward to textobject
 
-					selection_modes = { -- "v" : charwise, "V" : linewise, "<c-v>" :blockwise
+					selection_modes = { -- "v": charwise, "V": linewise, "<C-v>": blockwise
 						["@function.outer"] = "V",
 						["@function.inner"] = "v",
 						["@class.outer"] = "V",
@@ -98,6 +98,9 @@ return {
 
 						["aa"] = { query = "@parameter.outer", desc = "Select outer part of a parameter/argument" },
 						["ia"] = { query = "@parameter.inner", desc = "Select inner part of a parameter/argument" },
+
+						["ab"] = { query = "@block.outer", desc = "Select outer part of a block" },
+						["ib"] = { query = "@block.inner", desc = "Select inner part of a block" },
 
 						["ai"] = { query = "@conditional.outer", desc = "Select outer part of a conditional" },
 						["ii"] = { query = "@conditional.inner", desc = "Select inner part of a conditional" },
@@ -224,6 +227,16 @@ return {
 						)
 					end
 				end
+			end
+
+			-- overrides
+			if vim.bo.filetype == "typst" then
+				vim.keymap.set({ "x", "o" }, "am", function()
+					require("nvim-treesitter-textobjects.select").select_textobject("@math.outer", "textobjects")
+				end, { buffer = true, desc = "outer math" })
+				vim.keymap.set({ "x", "o" }, "im", function()
+					require("nvim-treesitter-textobjects.select").select_textobject("@math.inner", "textobjects")
+				end, { buffer = true, desc = "inner math" })
 			end
 		end,
 	},

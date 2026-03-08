@@ -38,3 +38,11 @@ end, {
 
 vim.keymap.set("n", "<leader>A", "<Cmd>Asy<CR>",
 	{ desc = "Create a new Asymptote figure and insert Typst reference" })
+
+-- textobjects
+vim.keymap.set({ "x", "o" }, "am", function()
+	require("nvim-treesitter-textobjects.select").select_textobject("@math.outer", "textobjects")
+end, { buffer = true, desc = "outer math" })
+vim.keymap.set({ "x", "o" }, "im", function()
+	require("nvim-treesitter-textobjects.select").select_textobject("@math.inner", "textobjects")
+end, { buffer = true, desc = "inner math" })
