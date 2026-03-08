@@ -61,17 +61,27 @@ end, { desc = "Edit debugger input ", buffer = true })
 vim.keymap.set("n", "<localleader>dbg", function()
 	vim.cmd("silent! write")
 	local buf = vim.api.nvim_get_current_buf()
+	local file = vim.api.nvim_buf_get_name(buf)
 
 	vim.b[buf].compilation_completed = false
-	vim.system({
+
+	local sources = { file }
+	local cands = { "grader" }
+	for _, name in ipairs(cands) do
+		local source = vim.fs.joinpath(vim.fs.dirname(file), name .. ".cpp")
+		if vim.uv.fs_stat(source) then
+			table.insert(sources, source)
+		end
+	end
+	vim.system(vim.iter({
 		"clang++",
 		"-g",
 		"-O0",
 		"-std=c++23",
-		vim.fn.expand("%"),
+		sources,
 		"-o",
 		vim.fn.expand("%:r"),
-	}, {}, function(obj)
+	}):flatten():totable(), {}, function(obj)
 		if obj.stderr and obj.stderr ~= "" then
 			-- Fill quickfix list with errors/warnings
 			local lines = vim.split(obj.stderr, "\n")
