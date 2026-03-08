@@ -15,9 +15,3 @@ If:
   PathMatch: .*\.(cpp|hpp)$
 CompileFlags:
   Add: [-std=c++26,-Wno-c23-extensions]
-
----
-If:
-  PathMatch: .*\.(c|h)
-CompileFlags:
-  Add: [-std=c17]

@@ -1,4 +1,19 @@
 [[mgr.prepend_keymap]]
+on   = [ "g", "d" ]
+run  = "cd ~/Téléchargements"
+desc = "Cd to ~/Téléchargements"
+
+[[mgr.prepend_keymap]]
+on   = [ "d" ]
+run  = "plugin remove"
+desc = "Trash selected files"
+
+[[mgr.prepend_keymap]]
+on   = [ "D" ]
+run  = "plugin remove -- --permanently"
+desc = "Permanently delete selected files"
+
+[[mgr.prepend_keymap]]
 on   = "A"
 run  = "create --dir"
 desc = "Create a directory"

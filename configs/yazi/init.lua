@@ -27,7 +27,7 @@ th.git.deleted = ui.Style():fg("#c34043")
 th.git.updated = ui.Style():fg("#5fd700")
 th.git.untracked = ui.Style():fg("#957fb8")
 th.git.ignored = ui.Style():fg("#727169")
-require("git"):setup({ order = 1500 })
+require("git"):setup({ order = 500 })
 
 -- statusline components
 function Status:mode()
