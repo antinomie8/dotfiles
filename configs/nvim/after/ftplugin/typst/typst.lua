@@ -14,16 +14,16 @@ vim.api.nvim_buf_create_user_command(0, "Asy", function(arg)
 
 	local root = vim.fn.fnamemodify(vim.b.typst_root, ":h") or vim.fn.getcwd()
 	local fig_dir = root .. "/figures"
-
 	if vim.fn.isdirectory(fig_dir) == 0 then
 		vim.fn.mkdir(fig_dir, "p")
 	end
-
-	local figure_line = string.format('#figure(image("figures/%s.pdf"))', name)
-	local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
-	vim.api.nvim_buf_set_lines(0, row, row, false, { figure_line })
-
 	local asy_path = fig_dir .. "/" .. name .. ".asy"
+
+	if not vim.uv.fs_stat(asy_path) then
+		local figure_line = string.format('#figure(image("figures/%s.pdf"))', name)
+		local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+		vim.api.nvim_buf_set_lines(0, row, row, false, { figure_line })
+	end
 
 	vim.cmd.edit(asy_path)
 
