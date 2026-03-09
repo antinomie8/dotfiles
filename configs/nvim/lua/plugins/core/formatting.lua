@@ -146,7 +146,12 @@ return {
 				end
 			end
 
-			return { timeout_ms = 700, lsp_format = "fallback" }
+			local formatters = require("conform").list_formatters_to_run(bufnr)
+			if formatters == {} then
+				return { timeout_ms = 700, lsp_format = "prefer" }
+			else
+				return { timeout_ms = 700 }
+			end
 		end,
 	},
 }
