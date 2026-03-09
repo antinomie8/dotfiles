@@ -8,10 +8,13 @@ Hover:
   ShowAKA: true
 
 Diagnostics:
-  Suppress: [unused-parameter]
+  Suppress:
+    - unused-parameter
+    - sign-compare
+    - c23-extensions
 
 ---
 If:
-  PathMatch: .*\.(cpp|hpp)$
+  PathMatch: \.(cpp|hpp)$
 CompileFlags:
-  Add: [-std=c++26,-Wno-c23-extensions]
+  Add: [-std=c++26, -DLOCAL, -Wno-c23-extensions]

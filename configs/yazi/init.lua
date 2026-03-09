@@ -29,6 +29,12 @@ th.git.untracked = ui.Style():fg("#957fb8")
 th.git.ignored = ui.Style():fg("#727169")
 require("git"):setup({ order = 500 })
 
+require("restore"):setup({
+	position = { "center", h = 20, w = 70 },
+	show_confirm = false, -- Show confirm prompt before restore.
+	suppress_success_notification = true, -- Suppress success notification when all files or folder are restored.
+})
+
 -- statusline components
 function Status:mode()
 	local mode = tostring(self._tab.mode):upper()

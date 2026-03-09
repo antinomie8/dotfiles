@@ -232,6 +232,8 @@ return {
 					end,
 				},
 
+				ts_query_ls = {},
+
 				ty = {}, -- python
 
 				yamlls = {

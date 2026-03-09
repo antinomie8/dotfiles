@@ -54,11 +54,11 @@ contest_format:
   Pot Pourri: "../POFM/2025-2026/Envois/5. Pot-Pourri/${source}"
 
 # customize the colors used by the show command
-colorscheme:
-  math_mode: "#7fb4ca"
-  operator: "#c0a36e"
-  digit: "#d27e99"
-  punctuation: "#9cabca"
+# colorscheme:
+#   math_mode: "#7fb4ca"
+#   operator: "#c0a36e"
+#   digit: "#d27e99"
+#   punctuation: "#9cabca"
 
 # where to output the generated pdf
 # defaults to ${XDG_CACHE_HOME:-~/.cache}/oly/${source}
