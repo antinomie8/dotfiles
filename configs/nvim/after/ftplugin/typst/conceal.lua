@@ -384,7 +384,26 @@ local function conceal_math(first, last)
 end
 
 vim.api.nvim_buf_attach(buf, false, {
-	on_lines = function(_, _, _, first, last) conceal_math(first, last) end,
+	on_lines = function(_, _, _, first, last)
+		conceal_math(first, last)
+	end,
 })
 
 conceal_math(0, -1)
+
+
+vim.keymap.set("n", "<localleader>m", function()
+	conceal_delims(0, -1)
+	conceal_math(0, -1)
+end, { desc = "Update conceal extmarks", buffer = true })
+vim.keymap.set("v", "<localleader>m", function()
+	-- '< and '> marks send previous selection instead of current
+	local start_line = vim.fn.line("v")
+	local end_line = vim.fn.line(".")
+	if start_line > end_line then
+		start_line, end_line = end_line, start_line
+	end
+
+	conceal_delims(start_line - 1, end_line)
+	conceal_math(start_line - 1, end_line)
+end, { desc = "Update conceal extmarks", buffer = true })

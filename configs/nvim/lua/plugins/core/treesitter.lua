@@ -58,7 +58,7 @@ return {
 		end,
 	},
 	{
-		"nvim-treesitter/nvim-treesitter-textobjects",
+		"anonymousgrasshopper/nvim-treesitter-textobjects",
 		branch = "main",
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {

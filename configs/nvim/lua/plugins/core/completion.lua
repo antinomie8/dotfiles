@@ -1,6 +1,6 @@
 return {
 	{
-		"saghen/blink.cmp",
+		"anonymousgrasshopper/blink.cmp",
 		build = "cargo build --release",
 		event = { "InsertEnter", "CmdlineEnter" },
 		opts = {
