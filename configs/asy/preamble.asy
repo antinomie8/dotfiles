@@ -46,6 +46,9 @@ line bisector(pair A, pair B, pair C, int angle = 0) {
 line extbisector(pair A, pair B, pair C) {
 	return bisector(line(A, B), line(B, C), 90);
 }
+line radicalaxis(circle c1, circle c2) {
+	return radicalline(c1, c2);
+}
 pair intersect(pair A, pair B, conic C) {
 	pair[] inter = intersectionpoints(line(A, B), C);
 	assert(inter.length > 0);
