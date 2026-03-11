@@ -22,9 +22,10 @@ edit = [
 	{ run = "$EDITOR %s",  block = true, desc = "Edit" },
 	{ run = "sudoedit %s", block = true, desc = "Sudo Edit" },
 ]
-execute = [ { run = "%s", desc = "Execute" } ]
 play = [ { run = "xdg-open %s", orphan = true, desc = "Play" } ]
 open = [ { run = "xdg-open %s", orphan = true, desc = "Open" } ]
+view = [ { run = "imv %s", orphan = true, desc = "View" } ]
+execute = [ { run = "%s", desc = "Execute" } ]
 add_sub = [ { run  = ''' printf "sub-add '%%s'\n" %s1 | socat - /tmp/mpv.sock ''', desc = "Add subtitles to mpv" } ]
 
 [open]
@@ -34,6 +35,7 @@ prepend_rules = [
 	{ mime = "text/shellscript", use = [ "edit", "execute" ] },
 	{ mime = "text/lua", use = [ "edit", "execute" ] },
 	{ mime = "application/pie-executable", use = [ "edit", "execute" ] },
+	{ mime = "image/svg+xml", use = [ "edit", "view", "open" ] }
 ]
 
 [plugin]
