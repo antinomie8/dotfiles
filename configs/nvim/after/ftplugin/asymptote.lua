@@ -2,6 +2,7 @@
 vim.bo.commentstring = "// %s"
 vim.bo.makeprg = "asy %"
 vim.bo.errorformat = "%f: %l.%c: %m"
+vim.wo.winhighlight = "@constant.cpp:@variable.cpp"
 
 vim.b.output_format = "pdf"
 

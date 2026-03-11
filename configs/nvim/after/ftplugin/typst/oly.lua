@@ -17,6 +17,7 @@ local function highlight_metadata(first, last)
 		author = true,
 		difficulty = true,
 	}
+	local priority = 130 -- needs to override lsp semantic tokens (priority 125)
 
 	for lnum, line in ipairs(lines) do
 		lnum = lnum + first
@@ -27,7 +28,7 @@ local function highlight_metadata(first, last)
 
 		local whitespace, keyword, _ = line:match("^(%s*)([a-zA-Z]+):%s*(.*)")
 		if not keyword then
-			if vim.api.nvim_win_get_cursor(0)[1] == lnum then
+			if vim.api.nvim_win_get_cursor(0)[1] == lnum then -- editing the current line
 				goto continue
 			end
 			break
@@ -38,7 +39,7 @@ local function highlight_metadata(first, last)
 			end_col = #line,
 			hl_group = "Text",
 			spell = false,
-			priority = 101,
+			priority = priority,
 		})
 
 		-- Highlight keyword
@@ -47,7 +48,7 @@ local function highlight_metadata(first, last)
 			end_col = #whitespace + #keyword,
 			hl_group = group,
 			spell = false,
-			priority = 101,
+			priority = priority,
 		})
 		valid_keywords[keyword] = false
 
@@ -57,7 +58,7 @@ local function highlight_metadata(first, last)
 			vim.api.nvim_buf_set_extmark(buf, ns_metadata, lnum - 1, colon_col - 1, {
 				end_col = colon_col,
 				hl_group = "Special",
-				priority = 101,
+				priority = priority,
 			})
 		end
 
@@ -68,7 +69,7 @@ local function highlight_metadata(first, last)
 				vim.api.nvim_buf_set_extmark(buf, ns_metadata, lnum - 1, i - 1, {
 					end_col = i,
 					hl_group = "Delimiter",
-					priority = 101,
+					priority = priority,
 				})
 			end
 		end
@@ -104,7 +105,7 @@ if vim.env.OLY and not vim.b[buf].oly_highlight then
 	vim.api.nvim_buf_attach(buf, false, {
 		on_lines = function(_, _, _, first, last)
 			if last < 10 then
-				highlight_metadata(first, last)
+				highlight_metadata(0, 10)
 			end
 			highlight_hrule(first, last)
 		end,

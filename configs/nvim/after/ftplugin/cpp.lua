@@ -8,7 +8,7 @@ vim.keymap.set("n", "<leader>oc", function()
 	vim.b.codelldb_stdio_redirection = not vim.b.codelldb_stdio_redirection
 end, { desc = "Toggle codelldb stdio redirection", buffer = true })
 
---debugger input
+-- debugger input
 local open_floating_window = function(filepath)
 	local main_buf = vim.api.nvim_get_current_buf()
 	local bufnr = vim.fn.bufadd(filepath)

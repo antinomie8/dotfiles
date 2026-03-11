@@ -80,10 +80,6 @@ opt.gdefault       = true
 opt.ignorecase     = true
 opt.smartcase      = true
 
--- spellcheck
-opt.spelllang      = "en,fr"
-vim.api.nvim_exec_autocmds("OptionSet", { pattern = "spelllang" })
-
 -- colors
 opt.termguicolors  = true
 opt.cmdheight      = 0

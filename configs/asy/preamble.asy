@@ -30,15 +30,8 @@ transform reflect(point O) {
 point reflect(point A, point O) {
 	return scale(-1, 0) * A;
 }
-circle circletangentat(line l, point T, point X) {
-	point center = intersectionpoint(perpendicular(T, l), bisector(segment(T, X)));
-	return circle(center, abs(center - T));
-}
-segment chord(line l, circle C) {
-	pair[] inter = intersectionpoints(l, C);
-	assert(inter.length == 2);
-	pair X = inter[0], Y = inter[1];
-	return segment(X, Y);
+circle circle(pair C, real r) {
+	return circle(point(C), r);
 }
 line bisector(pair A, pair B, pair C, int angle = 0) {
 	return bisector(line(A, B), line(B, C), angle);
@@ -48,6 +41,16 @@ line extbisector(pair A, pair B, pair C) {
 }
 line radicalaxis(circle c1, circle c2) {
 	return radicalline(c1, c2);
+}
+circle circletangentat(line l, point T, point X) {
+	point center = intersectionpoint(perpendicular(T, l), bisector(segment(T, X)));
+	return circle(center, abs(center - T));
+}
+segment chord(line l, circle C) {
+	pair[] inter = intersectionpoints(l, C);
+	assert(inter.length == 2);
+	pair X = inter[0], Y = inter[1];
+	return segment(X, Y);
 }
 pair intersect(pair A, pair B, conic C) {
 	pair[] inter = intersectionpoints(line(A, B), C);
@@ -63,22 +66,17 @@ pair intersect(pair A, pair B, conic C) {
 }
 
 // recalibrate fill and filldraw for conics
+void fill(picture pic = currentpicture, conic g, pen p = defaultpen) {
+	filldraw(pic, (path)g, p);
+}
 void filldraw(picture pic = currentpicture, conic g, pen fillpen = defaultpen,
               pen drawpen = defaultpen) {
 	filldraw(pic, (path)g, fillpen, drawpen);
-}
-void fill(picture pic = currentpicture, conic g, pen p = defaultpen) {
-	filldraw(pic, (path)g, p);
 }
 
 // use default size of 5 for markrightangle
 void markrightangle(picture pic = currentpicture, point A, point O, point B,
                     real size = 5, pen p = currentpen, margin margin = NoMargin,
                     filltype filltype = NoFill) {
-	pair Ap = A, Bp = B, Op = O;
-	pair dir = Ap - Op;
-	real a1 = degrees(dir);
-	pair align = rotate(-a1) * dir(Op--Ap, Op--Bp);
-	perpendicularmark(pic = pic, z = O, align = align, dir = dir, size = size, p = p,
-	                  margin = margin, filltype = filltype);
+	markrightangle(pic, A, O, B, size, p, margin, filltype);
 }

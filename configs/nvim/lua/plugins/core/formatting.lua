@@ -136,6 +136,7 @@ return {
 				"^" .. vim.fn.stdpath("config") .. "/lua/plugins/ui/dashboard.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/lua/static/.*.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/after/plugin/icons.lua$",
+				"^" .. vim.fn.stdpath("config") .. "/queries/asymptote/highlights.scm$",
 
 				"^" .. (vim.env.TEXMFHOME or vim.env.HOME) .. "/tex/latex.*%.tex$",
 				"^" .. (vim.env.ASYMPTOTE_HOME or vim.env.HOME .. "/.asy") .. "/config.asy$",

@@ -160,8 +160,6 @@ return {
 				rust_analyzer = {},
 
 				tinymist = {
-					on_init = function() vim.api.nvim_set_hl(0, "@lsp.type.comment.typst", { fg = "none", bg = "none" }) end,
-
 					settings = {
 						exportPdf = "onType",
 						lint = {

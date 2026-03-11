@@ -52,7 +52,7 @@ return {
 		{ "<leader>sR", function() require("snacks.picker").resume() end, desc = "Resume" },
 		{ "<leader>su", function() require("snacks.picker").undo() end, desc = "Undo History" },
 		{ "<leader>uC", function() require("snacks.picker").colorschemes() end, desc = "Colorschemes" },
-		{ "<leader>sn", function() require("snacks.picker").notifications() end, desc = "Notification History" },
+		{ "<leader>sn", function() require("snacks.picker").noice() end, desc = "Notification History" },
 		-- LSP
 		{ "grd", function() require("snacks.picker").lsp_definitions() end, desc = "Goto Definition" },
 		{ "grD", function() require("snacks.picker").lsp_declarations() end, desc = "Goto Declaration" },

@@ -12,7 +12,7 @@ require("full-border"):setup({
 
 require("smart-enter"):setup({ open_multi = true })
 
-require("folder-rules"):setup()
+require("directory-rules"):setup()
 
 th.git = th.git or {}
 th.git.added_sign = " "

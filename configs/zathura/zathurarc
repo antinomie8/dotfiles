@@ -18,3 +18,4 @@ map i recolor
 map R reload
 map p print
 map <C-h> nohlsearch
+map S toggle_statusbar
