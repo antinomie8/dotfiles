@@ -44,71 +44,78 @@ return {
 			on_attach = function(bufnr)
 				local gitsigns = require("gitsigns")
 
-				-- Navigation
-				vim.keymap.set("n", "]g", function()
-					if vim.wo.diff then
-						vim.cmd.normal({ "]c", bang = true })
-					else
-						gitsigns.nav_hunk("next")
-					end
-				end)
+				local keymaps = {
+					-- Navigation
+					{
+						"]h",
+						function()
+							if vim.wo.diff then
+								vim.cmd.normal({ "]c", bang = true })
+							else
+								gitsigns.nav_hunk("next")
+							end
+						end,
+					},
+					{
+						"[h",
+						function()
+							if vim.wo.diff then
+								vim.cmd.normal({ "[c", bang = true })
+							else
+								gitsigns.nav_hunk("prev")
+							end
+						end,
+					},
+					{ "ih", gitsigns.select_hunk, desc = "inner hunk", modes = { "o", "x" } },
 
-				vim.keymap.set("n", "[g", function()
-					if vim.wo.diff then
-						vim.cmd.normal({ "[c", bang = true })
-					else
-						gitsigns.nav_hunk("prev")
-					end
-				end)
+					-- Stage / Reset
+					{ "<leader>gs", gitsigns.stage_hunk, desc = "Stage hunk" },
+					{ "<leader>gr", gitsigns.reset_hunk, desc = "Reset hunk" },
 
-				-- Actions
-				vim.keymap.set("n", "<leader>gs", gitsigns.stage_hunk, { desc = "Stage hunk" })
-				vim.keymap.set("n", "<leader>gr", gitsigns.reset_hunk, { desc = "Reset hunk" })
+					{
+						"<leader>gs",
+						function() gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end,
+						desc = "Stage selection",
+						modes = "v",
+					},
+					{
+						"<leader>gr",
+						function() gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end,
+						desc = "Reset selection",
+						modes = "v",
+					},
+					{ "<leader>gS", gitsigns.stage_buffer, desc = "Stage buffer" },
+					{ "<leader>gR", gitsigns.reset_buffer, desc = "Reset buffer" },
 
-				vim.keymap.set(
-					"v",
-					"<leader>gs",
-					function() gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end,
-					{ desc = "Stage the current line" }
-				)
-				vim.keymap.set(
-					"v",
-					"<leader>gr",
-					function() gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end,
-					{ desc = "Reset the current line" }
-				)
+					-- hunks
+					{ "<leader>gp", gitsigns.preview_hunk, desc = "Preview hunk" },
+					{ "<leader>gi", gitsigns.preview_hunk_inline, desc = "Preview hunk inline" },
+					{ "<leader>gq", gitsigns.setqflist, desc = "Populate quickfix list with hunks" },
+					{
+						"<leader>gQ",
+						function() gitsigns.setqflist("all") end,
+						desc = "Populate quickfix list with all hunks",
+					},
 
-				vim.keymap.set("n", "<leader>gS", gitsigns.stage_buffer, { desc = "Stage buffer" })
-				vim.keymap.set("n", "<leader>gR", gitsigns.reset_buffer, { desc = "Reset buffer" })
-				vim.keymap.set("n", "<leader>gp", gitsigns.preview_hunk, { desc = "Preview hunk" })
-				vim.keymap.set("n", "<leader>gi", gitsigns.preview_hunk_inline, { desc = "Preview hunk inline" })
+					-- diff
+					{
+						"<leader>gD",
+						function() gitsigns.diffthis("~") end,
+						desc = "View diff for current file",
+					},
+					{ "<leader>gd", gitsigns.diffthis, desc = "View diff for current file against the index" },
 
-				vim.keymap.set("n", "<leader>gb", function() gitsigns.blame_line({ full = true }) end, { desc = "Blame line" })
+					-- blame
+					{ "<leader>gb", function() gitsigns.blame_line({ full = true }) end, desc = "Blame line" },
 
-				vim.keymap.set("n", "<leader>gd", gitsigns.diffthis, { desc = "View diff for current file against the index" })
+					-- Toggles
+					{ "<leader>tb", gitsigns.toggle_current_line_blame, desc = "Toggle current line blame" },
+					{ "<leader>tw", gitsigns.toggle_word_diff, desc = "Toggle word diff" },
+				}
 
-				vim.keymap.set(
-					"n",
-					"<leader>gD",
-					function() gitsigns.diffthis("~") end,
-					{ desc = "View diff for current file" }
-				)
-
-				vim.keymap.set(
-					"n",
-					"<leader>gQ",
-					function() gitsigns.setqflist("all") end,
-					{ desc = "Populate quickfix list with all hunks" }
-				)
-				vim.keymap.set("n", "<leader>gq", gitsigns.setqflist, { desc = "Populate quickfix list with hunks" })
-
-				-- Toggles
-				vim.keymap.set("n", "<leader>tb", gitsigns.toggle_current_line_blame, { desc = "Toggle current line blame" })
-				vim.keymap.set("n", "<leader>td", gitsigns.toggle_deleted, { desc = "Toggle deleted" })
-				vim.keymap.set("n", "<leader>tw", gitsigns.toggle_word_diff, { desc = "Toggle word diff" })
-
-				-- Text object
-				vim.keymap.set({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "inner hunk" })
+				for _, keymap in ipairs(keymaps) do
+					vim.keymap.set(keymap.modes or "n", keymap[1], keymap[2], { desc = keymap.desc, buffer = bufnr })
+				end
 			end,
 		},
 	},

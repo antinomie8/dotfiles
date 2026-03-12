@@ -46,7 +46,7 @@ return {
 		{ "<leader>sk", function() require("snacks.picker").keymaps() end, desc = "Keymaps" },
 		{ "<leader>sl", function() require("snacks.picker").loclist() end, desc = "Location List" },
 		{ "<leader>sm", function() require("snacks.picker").marks() end, desc = "Marks" },
-		{ "<leader>sM", function() require("snacks.picker").man() end, desc = "Man Pages" },
+		{ "<leader>sM", function() require("snacks.picker").man({ previewers = { diff = { style = "syntax" } } }) end, desc = "Man Pages" },
 		{ "<leader>sp", function() require("snacks.picker").lazy() end, desc = "Search for Plugin Spec" },
 		{ "<leader>sq", function() require("snacks.picker").qflist() end, desc = "Quickfix List" },
 		{ "<leader>sR", function() require("snacks.picker").resume() end, desc = "Resume" },

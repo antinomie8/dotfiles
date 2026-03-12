@@ -8,13 +8,27 @@ local function setup()
 			home .. "Téléchargements",
 			data_home .. "Trash/files",
 		}
+		local disable = {
+			[home .. "Téléchargements"] = { "git" },
+		}
 
 		for _, name in ipairs(dirs) do
 			if cwd:starts_with(name) then
+				if disable[name] then
+					for _, disabled in ipairs(disable[name]) do
+						if cwd.parent:starts_with(name .. "/" .. disabled) then
+							goto default
+						end
+					end
+				end
+
 				opt.by, opt.reverse, opt.dir_first = "mtime", true, false
 				return opt
 			end
 		end
+
+		::default::
+
 		opt.by, opt.reverse, opt.dir_first = "natural", false, true
 		return opt
 	end)

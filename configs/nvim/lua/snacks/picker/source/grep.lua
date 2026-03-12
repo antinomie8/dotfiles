@@ -134,7 +134,7 @@ function M.grep(opts, ctx)
 			transform = function(item)
 				item.cwd = cwd
 				-- Split on NUL byte (which comes from rg's -0 flag)
-				local file_sep = item.text:find("\0")
+				local file_sep = item.text:find("\0") or #item.text + 1
 				local file = item.text:sub(1, file_sep - 1)
 				local rest = item.text:sub(file_sep + 1)
 				item.text = file .. ":" .. rest:gsub(MATCH_SEP, "")
