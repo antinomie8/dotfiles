@@ -21,20 +21,21 @@ local function find_swapfiles(swapname)
 	return swaps
 end
 
-local function pick_swapfile(file, swapname)
-	local function time_ago(sec)
-		local diff = os.time() - sec
-		if diff < 60 then
-			return diff .. "s ago"
-		elseif diff < 3600 then
-			return math.floor(diff / 60) .. "m ago"
-		elseif diff < 86400 then
-			return math.floor(diff / 3600) .. "h ago"
-		else
-			return math.floor(diff / 86400) .. "d ago"
-		end
+-- pretty-print elapsed time
+local function time_ago(sec)
+	local diff = os.time() - sec
+	if diff < 60 then
+		return diff .. "s ago"
+	elseif diff < 3600 then
+		return math.floor(diff / 60) .. "m ago"
+	elseif diff < 86400 then
+		return math.floor(diff / 3600) .. "h ago"
+	else
+		return math.floor(diff / 86400) .. "d ago"
 	end
+end
 
+local function pick_swapfile(file, swapname)
 	require("snacks.picker")({
 		finder = function()
 			local swapfiles = find_swapfiles(swapname)
@@ -141,10 +142,7 @@ vim.api.nvim_create_autocmd("SwapExists", {
 		local iswin = 1 == vim.fn.has("win32")
 		if not (info.error or info.pid <= 0 or (not iswin and info.user ~= user)) then
 			vim.v.swapchoice = "e" -- Choose "(E)dit".
-			vim.notify(
-				("W325: Ignoring swapfile from Nvim process %d"):format(info.pid),
-				vim.log.levels.WARN
-			)
+			-- don't notify since the default autocmd will trigger anyway
 			return
 		end
 
@@ -158,8 +156,8 @@ vim.api.nvim_create_autocmd("SwapExists", {
 			if #swapfiles == 1 then
 				local stat = vim.uv.fs_stat(swapname)
 				if stat then
-					local mtime = os.date("%A %b %-d %H:%M:%S %Y", stat.mtime.sec)
-					prompt = string.format("Found a swapfile for %s, last modified at %s:", event.file, mtime)
+					local mtime = time_ago(stat.mtime.sec)
+					prompt = string.format("Found a swapfile for %s from %s:", event.file, mtime)
 				else
 					prompt = string.format("Found a swapfile for %s:", event.file)
 				end

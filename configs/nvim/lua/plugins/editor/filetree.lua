@@ -382,12 +382,14 @@ return {
 				{
 					event = "neo_tree_buffer_enter",
 					handler = function()
-						vim.keymap.set("n", "J", "5j", { desc = "Scroll 5 lines down", buffer = true })
-						vim.keymap.set("n", "K", "5k", { desc = "Scroll 5 lines down", buffer = true })
+						if vim.bo.filetype == "neo-tree" then
+							vim.keymap.set("n", "J", "5j", { desc = "Scroll 5 lines down", buffer = true })
+							vim.keymap.set("n", "K", "5k", { desc = "Scroll 5 lines down", buffer = true })
 
-						vim.wo.fillchars = "vert: ,horizup:─,horizdown:─,vertleft:│,vertright:│,verthoriz:┬"
-						vim.opt_local.sidescrolloff = 0
-						vim.wo.winhighlight = "Normal:NormalDark"
+							vim.wo.fillchars = "vert: ,horizup:─,horizdown:─,vertleft:│,vertright:│,verthoriz:┬"
+							vim.opt_local.sidescrolloff = 0
+							vim.wo.winhighlight = "Normal:NormalDark"
+						end
 					end,
 				},
 				{
@@ -400,6 +402,12 @@ return {
 							vim.wo.winhighlight = "WinSeparator:NeoTreePopupWinSeparator"
 							vim.cmd("hi Cursor blend=100")
 						end
+					end,
+				},
+				{
+					event = "neo_tree_preview_before_render",
+					handler = function(arg)
+						vim.wo[arg.preview.winid].winhighlight = "Normal:Normal"
 					end,
 				},
 				{
