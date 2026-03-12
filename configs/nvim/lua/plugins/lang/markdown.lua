@@ -110,6 +110,9 @@ return {
 				row = "MarkdownTable",
 				filler = "MarkdownTable",
 			},
+			html = {
+				comment = { conceal = false },
+			},
 			latex = { enabled = false },
 		},
 	},

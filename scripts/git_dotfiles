@@ -57,7 +57,6 @@ copy $CPLUS_INCLUDE_PATH/dbg.hpp etc
 copy $HOME/.local/share/texmf etc
 
 # remove chosen files and directories
-fd . etc/oly -tf -e 'pdf' -x rm {}
 find configs/neomutt/accounts -regex '\S*@\S*\.\S*' -type f -delete
 # obfuscate email adresses
 [[ -f configs/neomutt/neomuttrc ]] && {

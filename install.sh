@@ -320,5 +320,5 @@ fi
 echo -en "${BLUE}Do you want to run ${GREEN}./etc/install.sh${BLUE} ? (y/n) ${COLOR_RESET}"
 if get_answer; then
 	echo
-	./etc/install.sh
+	source ./etc/install.sh
 fi

@@ -44,11 +44,6 @@ function btop() {
 	command btop "$@"
 	kitty_set_spacing
 }
-function man() {
-	kitty_remove_spacing
-	command man "$@"
-	kitty_set_spacing
-}
 function ncdu() {
 	kitty_remove_spacing
 	command ncdu "$@"
