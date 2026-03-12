@@ -39,7 +39,6 @@ local function pick_swapfile(file, swapname)
 	require("snacks.picker")({
 		finder = function()
 			local swapfiles = find_swapfiles(swapname)
-			vim.notify(vim.inspect(swapname))
 			local items = {}
 
 			for _, swap in ipairs(swapfiles) do
@@ -62,11 +61,11 @@ local function pick_swapfile(file, swapname)
 
 		format = function(item)
 			return {
-				{ item.text, "Keyword" },
-				{ string.rep(" ", 4) },
-				{ item.mtime, "Title" },
-				{ string.rep(" ", 3) },
 				{ item.since, "Constant" },
+				{ string.rep(" ", 3) },
+				{ item.mtime, "Title" },
+				{ string.rep(" ", 4) },
+				{ item.text, "Keyword" },
 			}
 		end,
 
@@ -92,12 +91,23 @@ local function pick_swapfile(file, swapname)
 				if obj.code ~= 0 then
 					vim.notify(obj.stderr, vim.log.levels.ERROR, { title = "Swapfiles", icon = " " })
 				end
+				local cmp = vim.uv.fs_stat(file) and file or "/dev/null"
 				vim.system(
-					{ "diff", "-u", file, tmpfile },
+					{ "diff", "-u", cmp, tmpfile },
 					{ text = true },
-					function(diff)
-						if not diff.stdout then return end
-						local lines = vim.split(diff.stdout, "\n")
+					function(obj)
+						if obj.code ~= 0 and #obj.stderr > 0 then
+							vim.notify(obj.stderr, vim.log.levels.ERROR, { title = "Swapfiles", icon = " " })
+						elseif not obj.stdout then
+							return
+						end
+						local lines = vim.split(obj.stdout, "\n")
+						if #lines >= 1 and cmp == "/dev/null" then
+							lines[1] = lines[1]:sub(1, 4) .. vim.fn.fnamemodify(file, ":~") .. lines[1]:sub(4 + #cmp + 1)
+						end
+						if #lines >= 2 then
+							lines[2] = lines[2]:sub(1, 4) .. item.text .. lines[2]:sub(4 + #tmpfile + 1)
+						end
 
 						vim.schedule(function()
 							ctx.preview:set_lines(lines)

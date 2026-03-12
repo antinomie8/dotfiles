@@ -36,6 +36,7 @@ return {
 				enabled = false,
 			},
 		},
+		input = {},
 		scratch = {
 			name = "Notepad",
 			icon = "󰠮",
