@@ -13,8 +13,9 @@ local function find_swapfiles(swapname)
 		local name, type = vim.uv.fs_scandir_next(fd)
 		if not name then break end
 
-		if type == "file" and name:match(pattern) then
-			table.insert(swaps, dir .. "/" .. name)
+		local swapfile = dir .. "/" .. name
+		if type == "file" and name:match(pattern) and vim.fn.swapinfo(swapfile).dirty ~= 0 then
+			table.insert(swaps, swapfile)
 		end
 	end
 
@@ -36,7 +37,9 @@ local function time_ago(sec)
 end
 
 local function pick_swapfile(file, swapname)
-	require("snacks.picker")({
+	require("snacks.picker").pick({
+		title = "Swapfiles  ",
+
 		finder = function()
 			local swapfiles = find_swapfiles(swapname)
 			local items = {}
@@ -57,10 +60,10 @@ local function pick_swapfile(file, swapname)
 
 			return items
 		end,
-		title = "Swapfiles  ",
 
 		format = function(item)
 			return {
+				{ string.rep(" ", 7 - #item.since) },
 				{ item.since, "Constant" },
 				{ string.rep(" ", 3) },
 				{ item.mtime, "Title" },
@@ -70,6 +73,8 @@ local function pick_swapfile(file, swapname)
 		end,
 
 		preview = function(ctx)
+			ctx.preview:set_title("diff")
+
 			local item = ctx.item
 			if not item then return end
 
@@ -91,6 +96,7 @@ local function pick_swapfile(file, swapname)
 				if obj.code ~= 0 then
 					vim.notify(obj.stderr, vim.log.levels.ERROR, { title = "Swapfiles", icon = " " })
 				end
+				-- if the file doesn't exist, diff will fail with an error, so use an empty file instead
 				local cmp = vim.uv.fs_stat(file) and file or "/dev/null"
 				vim.system(
 					{ "diff", "-u", cmp, tmpfile },
@@ -101,15 +107,17 @@ local function pick_swapfile(file, swapname)
 						elseif not obj.stdout then
 							return
 						end
+
+						-- modify context lines
 						local lines = vim.split(obj.stdout, "\n")
 						if #lines >= 1 and cmp == "/dev/null" then
-							lines[1] = lines[1]:sub(1, 4) .. vim.fn.fnamemodify(file, ":~") .. lines[1]:sub(4 + #cmp + 1)
+							lines[1] = lines[1]:sub(1, 4) .. file .. lines[1]:sub(4 + #cmp + 1)
 						end
 						if #lines >= 2 then
 							lines[2] = lines[2]:sub(1, 4) .. item.text .. lines[2]:sub(4 + #tmpfile + 1)
 						end
 
-						vim.schedule(function()
+						vim.schedule(function() -- necessary because of fast event context
 							ctx.preview:set_lines(lines)
 							ctx.preview:highlight({ ft = "diff" })
 						end)
@@ -141,6 +149,41 @@ local function pick_swapfile(file, swapname)
 				},
 			},
 		},
+
+		layout = function()
+			if vim.o.columns >= 120 then
+				-- telescope preset
+				return {
+					reverse = true,
+					cycle = true,
+					layout = {
+						box = "horizontal",
+						backdrop = false,
+						width = 0.8,
+						height = 0.9,
+						border = "none",
+						{
+							box = "vertical",
+							{ win = "list", title = " " .. file .. " ", title_pos = "center", border = true }, -- set title to file
+							{ win = "input", height = 1, border = true, title = "{title} {live} {flags}", title_pos = "center" },
+						},
+						{
+							win = "preview",
+							title = "{preview:Preview}",
+							width = 0.45,
+							border = true,
+							title_pos = "center",
+						},
+					},
+				}
+			else
+				return {
+					cycle = true,
+					preset = "vertical",
+				}
+			end
+		end
+		,
 	})
 end
 
@@ -188,14 +231,18 @@ vim.api.nvim_create_autocmd("SwapExists", {
 			vim.ui.select(options, { prompt = prompt }, function(_, idx)
 				if idx == 1 then
 					if #swapfiles == 1 then
+						-- only 1 swapfile: recover it
 						vim.cmd("silent! recover")
 					else
+						-- open picker
 						pick_swapfile(event.match, swapname)
 					end
-				elseif idx == 2 then -- don't do anything
+				elseif idx == 2 then
+					-- don't do anything
 					return
-				elseif idx == 3 then -- delete all swapfiles and open the file normally
-					for swap in swapfiles do
+				elseif idx == 3 then
+					-- delete all swapfiles
+					for _, swap in ipairs(swapfiles) do
 						vim.uv.fs_unlink(swap)
 					end
 				else
@@ -203,6 +250,7 @@ vim.api.nvim_create_autocmd("SwapExists", {
 			end)
 		end)
 
-		vim.v.swapchoice = "e" -- don't trigger next SwapExists autocmds
+		-- don't trigger next SwapExists autocmds
+		vim.v.swapchoice = "e"
 	end,
 })

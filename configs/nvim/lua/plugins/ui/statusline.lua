@@ -22,7 +22,7 @@ return {
 		require("heirline").load_colors(colors)
 
 		require("heirline").setup({
-			statusline = require("statusline"),
+			statusline = require("utils.statusline"),
 			opts = {},
 		})
 

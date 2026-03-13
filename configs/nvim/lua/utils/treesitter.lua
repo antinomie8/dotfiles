@@ -1,5 +1,7 @@
 local treesitter = {}
 
+---@param node (TSNode?)
+---@param node_type (string)
 function treesitter.has_ancestor(node, node_type)
 	if not node then return end
 	local parent = node:parent()

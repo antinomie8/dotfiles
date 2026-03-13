@@ -1,9 +1,9 @@
-local ls = require("snippets.luasnip")
+local ls = require("utils.snippets.luasnip")
 local s, t, i, c, d, sn, rep, fmt =
       ls.s, ls.t, ls.i, ls.c, ls.d, ls.sn, ls.rep, ls.fmt
-local helpers = require("snippets.helpers")
+local helpers = require("utils.snippets.helpers")
 local line_begin = helpers.line_begin
-local tex = require("snippets.tex_utils")
+local tex = require("utils.snippets.tex_utils")
 
 local rec_item
 rec_item = function()

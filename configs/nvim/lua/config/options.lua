@@ -104,5 +104,4 @@ opt.backspace      = "indent,eol,start"
 opt.wildmode       = "longest:full,full"
 opt.shortmess      = "tToOcCFI"
 opt.belloff        = "all"
-opt.exrc           = false  -- patched by ~/.config/nvim/after/plugin/exrc.lua
 opt.fileformat     = "unix" -- convert line endings to unix

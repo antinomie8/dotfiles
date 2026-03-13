@@ -1,4 +1,4 @@
-local make_cond = require("snippets.luasnip").make_cond
+local make_cond = require("utils.snippets.luasnip").make_cond
 local trigger_not_preceded_by = require("luasnip.extras.expand_conditions").trigger_not_preceded_by
 
 local tex_utils = {}

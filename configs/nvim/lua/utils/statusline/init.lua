@@ -1,4 +1,4 @@
-local components = require("statusline.components")
+local components = require("utils.statusline.components")
 
 local SectionA = {
 	init = function(self) self.mode = vim.fn.mode(1) end,

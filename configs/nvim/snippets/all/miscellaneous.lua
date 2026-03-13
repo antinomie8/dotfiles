@@ -1,6 +1,6 @@
--- local ls = require("snippets.luasnip")
+-- local ls = require("utils.snippets.luasnip")
 -- local s, t, i, f = ls.s, ls.t, ls.i, ls.f
--- local helpers = require("snippets.helpers")
+-- local helpers = require("utils.snippets.helpers")
 -- local first_line, line_begin = helpers.first_line, helpers.line_begin
 --
 -- local update_filetype = function(index)

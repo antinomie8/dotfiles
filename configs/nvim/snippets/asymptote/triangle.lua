@@ -1,4 +1,4 @@
-local ls = require("snippets.luasnip")
+local ls = require("utils.snippets.luasnip")
 local s, t, i = ls.s, ls.t, ls.i
 
 return {

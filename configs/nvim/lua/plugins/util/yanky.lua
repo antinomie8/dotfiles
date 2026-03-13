@@ -4,6 +4,12 @@ return {
 		"folke/snacks.nvim",
 	},
 	keys = {
+		-- load yanky before executing the following to get highlight on yank and put
+		{ "<leader>P", "i<C-R><C-P>+<ESC>", desc = 'Paste "+ content before cursor' },
+		{ "<C-M-y>", "<Cmd>%y+<CR>", mode = { "n", "v" }, desc = "Yank buffer content to the system clipboard" },
+		{ '"+y', mode = "v", "<C-z>", desc = "Yank selected text into the system cliboard" },
+
+		-- yanky
 		{ "<leader>p", function() require("snacks.picker").yanky() end, mode = { "n", "x" }, desc = "Open Yank History" },
 		{ "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank text" },
 		{ "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after cursor" },
@@ -23,5 +29,9 @@ return {
 		{ "=p", "<Plug>(YankyPutAfterFilter)", desc = "Put after applying a filter" },
 		{ "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put before applying a filter" },
 	},
-	opts = {},
+	opts = {
+		highlight = {
+			timer = 360,
+		},
+	},
 }

@@ -1,4 +1,5 @@
 return {
+	---@param match (string)
 	open = function(match)
 		-- get cppman output
 		local handle = io.popen("cppman " .. match)

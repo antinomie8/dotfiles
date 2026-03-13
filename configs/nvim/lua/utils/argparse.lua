@@ -1,5 +1,6 @@
 local M = {}
 
+---@param input (string)
 function M.shell_split(input)
 	local words = {}
 	local word = {}

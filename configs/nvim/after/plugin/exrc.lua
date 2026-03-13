@@ -93,8 +93,8 @@ end
 ---
 ---@param path (string) Path to a file or directory to read.
 ---
----@return (boolean|string|nil) If {path} is not trusted or does not exist, returns `nil`. Otherwise,
----        returns the contents of {path} if it is a file, or true if {path} is a directory.
+---@param callback (function) If {path} is not trusted or does not exist, calls it with `nil`. Otherwise,
+---        calls it with the contents of {path} if it is a file, or true if {path} is a directory.
 local function read(path, callback)
 	vim.validate("path", path, "string")
 	local fullpath = vim.uv.fs_realpath(vim.fs.normalize(path))
@@ -138,13 +138,9 @@ local function read(path, callback)
 	-- 	1
 	-- )
 	vim.ui.select({ "view", "ignore", "deny", "allow" }, {
-		prompt = "Found untrusted code: " .. "path",
+		prompt = "Found untrusted code: " .. vim.fn.fnamemodify(path, ":~"),
 	}, function(choice, result)
-		if result == 2 then
-			-- Cancelled or ignored
-			callback(nil)
-			return
-		elseif result == 1 then
+		if result == 1 then
 			-- View
 			vim.cmd("sview " .. fullpath)
 			vim.keymap.set("n", "<localleader>t", vim.cmd.trust, { desc = "trust", buffer = true })
@@ -152,6 +148,10 @@ local function read(path, callback)
 				vim.cmd.trust()
 				vim.cmd.source(fullpath)
 			end, { desc = "trust and execute", buffer = true })
+			callback(nil)
+			return
+		elseif result == 2 then
+			-- Cancelled or ignored
 			callback(nil)
 			return
 		elseif result == 3 then
@@ -166,13 +166,10 @@ local function read(path, callback)
 		write_trust(trust)
 
 		callback(contents)
-	end
-	)
+	end)
 end
 
--- For 'exrc' and related functionality.
-
-vim.schedule(function()
+local function exrc()
 	local files = vim.fs.find({ ".nvim.lua", ".nvimrc", ".exrc" }, {
 		type = "file",
 		upward = true,
@@ -180,7 +177,6 @@ vim.schedule(function()
 	})
 	for _, file in ipairs(files) do
 		read(file, function(trusted)
-			-- local trusted = vim.secure.read(file) --[[@as string|nil]]
 			if trusted then
 				if vim.endswith(file, ".lua") then
 					assert(loadstring(trusted, "@" .. file))()
@@ -188,10 +184,15 @@ vim.schedule(function()
 					vim.api.nvim_exec2(trusted, {})
 				end
 			end
-			-- -- If the user unset 'exrc' in the current exrc then stop searching
-			-- if not vim.o.exrc then
-			-- 	break
-			-- end
 		end)
 	end
-end)
+end
+
+vim.api.nvim_create_autocmd("VimEnter", {
+	callback = function()
+		vim.schedule(exrc)
+	end,
+})
+vim.api.nvim_create_autocmd("DirChanged", {
+	callback = exrc,
+})

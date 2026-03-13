@@ -153,6 +153,7 @@ return {
 					},
 					path = {
 						opts = {
+							-- relative path relative to cwd instead of current buffer's parent directory
 							get_cwd = function(_)
 								return vim.fn.getcwd()
 							end,

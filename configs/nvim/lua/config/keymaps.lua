@@ -47,12 +47,6 @@ keymap.set({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down",
 keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 keymap.set({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 
--- yanking and pasting
-keymap.set("n", "<leader>P", "i<C-R><C-P>+<ESC>", { desc = 'Paste "+ content before cursor' })
-keymap.set({ "n", "v" }, "<C-M-y>", "<Cmd>%y+<CR>", { desc = "Yank buffer content to the system clipboard" })
-keymap.set("v", "<C-z>", '"+y', { desc = "Yank selected text into the system cliboard" })
-keymap.set("n", "<leader>cwd", '<Cmd>let @+=expand("%")<CR>', { desc = "Copy absolute path to the system clipboard" })
-
 -- indenting
 keymap.set({ "n", "v" }, "<leader>i", "=G", { desc = "Indent file" })
 keymap.set("v", ">", ">gv")
@@ -87,8 +81,7 @@ keymap.set("n", "n", "nzz")
 keymap.set("n", "N", "Nzz")
 keymap.set("n", "<leader>nh", "<Cmd>nohl<CR>", { desc = "Clear search highlights" })
 
--- new file
+-- misc
 keymap.set("n", "<leader>fn", "<Cmd>enew<CR>", { desc = "New File" })
-
--- plugin manager
 keymap.set("n", "<leader>L", "<Cmd>Lazy<CR>", { desc = "Open Lazy.nvim ui" })
+keymap.set("n", "<leader>cwd", '<Cmd>let @+=expand("%")<CR>', { desc = "Copy absolute path to the system clipboard" })

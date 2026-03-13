@@ -1,6 +1,6 @@
-local ls = require("snippets.luasnip")
+local ls = require("utils.snippets.luasnip")
 local s, t, i, d = ls.s, ls.t, ls.i, ls.d
-local helpers = require("snippets.helpers")
+local helpers = require("utils.snippets.helpers")
 local get_visual = helpers.get_visual
 
 return {

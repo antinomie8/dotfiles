@@ -1,4 +1,4 @@
-local ls = require("snippets.luasnip")
+local ls = require("utils.snippets.luasnip")
 local s, t = ls.s, ls.t
 local md = {
 	in_math = function() return vim.tbl_contains(vim.treesitter.get_captures_at_cursor(), "markup.math") end,

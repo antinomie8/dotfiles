@@ -1,8 +1,8 @@
-local ls = require("snippets.luasnip")
+local ls = require("utils.snippets.luasnip")
 local s, t, i, fmt = ls.s, ls.t, ls.i, ls.fmt
-local helpers = require("snippets.helpers")
+local helpers = require("utils.snippets.helpers")
 local first_line, line_begin = helpers.first_line, helpers.line_begin
-local tex = require("snippets.tex_utils")
+local tex = require("utils.snippets.tex_utils")
 
 return {
 	s(

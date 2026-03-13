@@ -72,17 +72,6 @@ return {
 		"anonymousgrasshopper/nvim-treesitter-textobjects",
 		branch = "main",
 		event = { "BufReadPre", "BufNewFile" },
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			{
-				"chrisgrieser/nvim-various-textobjs",
-				opts = {
-					keymaps = {
-						useDefaults = true,
-					},
-				},
-			},
-		},
 		config = function()
 			local ts_repeat_move = require("nvim-treesitter-textobjects.repeatable_move")
 
