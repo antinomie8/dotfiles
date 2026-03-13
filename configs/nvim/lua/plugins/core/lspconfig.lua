@@ -184,7 +184,6 @@ return {
 						end
 
 						local root_buf = vim.fn.bufadd(root_path)
-						vim.fn.bufload(root_buf)
 						vim.bo[root_buf].buflisted = false
 
 						if client then

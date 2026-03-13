@@ -81,6 +81,13 @@ vim.api.nvim_create_autocmd("FileType", {
 		end
 	end,
 })
+vim.api.nvim_create_autocmd("BufModifiedSet", {
+	callback = function()
+		if not vim.opt_local.modifiable:get() then
+			vim.opt_local.spell = false
+		end
+	end,
+})
 
 -- update &spellfile when &spelllang changes
 vim.api.nvim_create_autocmd("OptionSet", {

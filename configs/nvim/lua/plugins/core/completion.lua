@@ -46,8 +46,9 @@ return {
 			cmdline = {
 				keymap = {
 					preset = "none",
-					["<C-space>"] = { "show", "fallback" },
-					["<C-e>"] = { "hide", "fallback" },
+					["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+					["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
+					["<C-e>"] = { "cancel", "fallback" },
 
 					["<Tab>"] = { "accept", "fallback" },
 
@@ -64,6 +65,9 @@ return {
 
 					["<C-p>"] = { "select_prev", "fallback" },
 					["<C-n>"] = { "select_next", "fallback" },
+
+					["<M-b>"] = { "scroll_documentation_up", "fallback" },
+					["<M-f>"] = { "scroll_documentation_down", "fallback" },
 				},
 				completion = {
 					menu = { auto_show = true },

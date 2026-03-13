@@ -46,6 +46,6 @@ return {
 				footer_keys = false,
 			},
 		},
-		-- scroll = {}, -- BUG: flickers on tabs
+		-- scroll = {}, -- cannot disable for specific motions
 	},
 }

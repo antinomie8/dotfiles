@@ -7,7 +7,6 @@ return {
 		-- load yanky before executing the following to get highlight on yank and put
 		{ "<leader>P", "i<C-R><C-P>+<ESC>", desc = 'Paste "+ content before cursor' },
 		{ "<C-M-y>", "<Cmd>%y+<CR>", mode = { "n", "v" }, desc = "Yank buffer content to the system clipboard" },
-		{ '"+y', mode = "v", "<C-z>", desc = "Yank selected text into the system cliboard" },
 
 		-- yanky
 		{ "<leader>p", function() require("snacks.picker").yanky() end, mode = { "n", "x" }, desc = "Open Yank History" },

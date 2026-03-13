@@ -1,4 +1,5 @@
--- find swapfiles next to file
+--- finds swapfiles for current file
+---@param swapname (string) path to a swapfile for the current file
 local function find_swapfiles(swapname)
 	local dir = vim.fs.dirname(swapname)
 	local base = vim.fn.fnamemodify(swapname, ":t:r")
@@ -22,7 +23,8 @@ local function find_swapfiles(swapname)
 	return swaps
 end
 
--- pretty-print elapsed time
+--- pretty-print elapsed time
+---@param sec (integer) time elapsed in seconds between event and now
 local function time_ago(sec)
 	local diff = os.time() - sec
 	if diff < 60 then
@@ -36,7 +38,26 @@ local function time_ago(sec)
 	end
 end
 
-local function pick_swapfile(file, swapname)
+---@param bufnr (integer) buffer number
+---@param path (string) path to swapfile
+local function recover(bufnr, path)
+	-- recover
+	if path then
+		vim.cmd("silent! recover " .. vim.fn.fnameescape(path)) -- escape to prevent '%' expansion
+	else
+		vim.cmd("silent! recover")
+	end
+
+	-- reload language servers
+	vim.cmd.lsp("restart")
+	-- reload treesitter
+	local parser = vim.treesitter.get_parser(bufnr)
+	if parser then
+		parser:invalidate(true)
+	end
+end
+
+local function pick_swapfile(bufnr, file, swapname)
 	require("snacks.picker").pick({
 		title = "Swapfiles  ",
 
@@ -129,7 +150,7 @@ local function pick_swapfile(file, swapname)
 		actions = {
 			confirm = function(picker, item)
 				picker:close()
-				vim.cmd("silent! recover " .. vim.fn.fnameescape(item.path)) -- escape to prevent '%' expansion
+				recover(bufnr, item.path)
 			end,
 			delete = function(picker, item)
 				vim.uv.fs_unlink(item.path)
@@ -187,6 +208,7 @@ local function pick_swapfile(file, swapname)
 	})
 end
 
+vim.api.nvim_del_augroup_by_name("nvim.swapfile")
 vim.api.nvim_create_autocmd("SwapExists", {
 	callback = function(event)
 		-- /usr/share/nvim/runtime/lua/vim/_core/defaults.lua:676
@@ -195,7 +217,10 @@ vim.api.nvim_create_autocmd("SwapExists", {
 		local iswin = 1 == vim.fn.has("win32")
 		if not (info.error or info.pid <= 0 or (not iswin and info.user ~= user)) then
 			vim.v.swapchoice = "e" -- Choose "(E)dit".
-			-- don't notify since the default autocmd will trigger anyway
+			vim.notify(
+				("W325: Ignoring swapfile from Nvim process %d"):format(info.pid),
+				vim.log.levels.WARN
+			)
 			return
 		end
 
@@ -214,7 +239,6 @@ vim.api.nvim_create_autocmd("SwapExists", {
 				else
 					prompt = string.format("Found a swapfile for %s:", event.file)
 				end
-
 				options = {
 					"Recover swapfile",
 					"Edit file normally, leaving swapfile intact",
@@ -228,14 +252,15 @@ vim.api.nvim_create_autocmd("SwapExists", {
 					"Delete all swapfiles and edit file normally",
 				}
 			end
+
 			vim.ui.select(options, { prompt = prompt }, function(_, idx)
 				if idx == 1 then
 					if #swapfiles == 1 then
 						-- only 1 swapfile: recover it
-						vim.cmd("silent! recover")
+						recover(event.buf, swapname)
 					else
 						-- open picker
-						pick_swapfile(event.match, swapname)
+						pick_swapfile(event.buf, event.match, swapname)
 					end
 				elseif idx == 2 then
 					-- don't do anything
