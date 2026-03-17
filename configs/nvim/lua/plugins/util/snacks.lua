@@ -32,6 +32,9 @@ return {
 			-- 	chart = "",
 			-- 	image = "",
 			-- },
+			doc = {
+				inline = false,
+			},
 			math = {
 				enabled = false,
 			},

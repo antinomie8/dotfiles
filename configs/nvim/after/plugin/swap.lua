@@ -103,11 +103,10 @@ local function pick_swapfile(bufnr, file, swapname)
 
 			local cmd = {
 				"nvim",
-				"--clean",
-				"--noplugin",
+				"-u", "NONE",
 				"--headless",
-				"-n",       -- no swapfile,
-				"-r",
+				"-n",      -- no swapfile,
+				"-r",      -- recover
 				string.format("+w! %s", tmpfile), -- write to a temporary file
 				"+q!",     -- quit after writing
 				item.path, -- swap file to recover

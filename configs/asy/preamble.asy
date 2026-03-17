@@ -78,5 +78,10 @@ void filldraw(picture pic = currentpicture, conic g, pen fillpen = defaultpen,
 void markrightangle(picture pic = currentpicture, point A, point O, point B,
                     real size = 5, pen p = currentpen, margin margin = NoMargin,
                     filltype filltype = NoFill) {
-	markrightangle(pic, A, O, B, size, p, margin, filltype);
+	pair Ap = A, Bp = B, Op = O;
+	pair dir = Ap - Op;
+	real a1 = degrees(dir);
+	pair align = rotate(-a1) * dir(Op--Ap, Op--Bp);
+	perpendicularmark(pic = pic, z = O, align = align, dir = dir, size = size, p = p,
+	                  margin = margin, filltype = filltype);
 }

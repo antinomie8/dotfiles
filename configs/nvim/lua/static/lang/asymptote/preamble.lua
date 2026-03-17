@@ -1,7 +1,7 @@
 return [[
 import preamble;
 defaultpen(fontsize(10pt));
-size(8cm); // set a reasonable default
+size(12cm);
 usepackage("amsmath");
 usepackage("amssymb");
 ]]

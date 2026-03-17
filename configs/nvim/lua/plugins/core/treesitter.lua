@@ -3,6 +3,7 @@ return {
 		"nvim-treesitter/nvim-treesitter",
 		branch = "main",
 		build = ":TSUpdate",
+		cmd = { "TSUpdate", "TSInstall", "TSInstallFromGrammar", "TSUninstall", "TSLog" },
 		event = { "BufReadPre", "BufNewFile" },
 		config = function()
 			vim.cmd.syntax("manual")
