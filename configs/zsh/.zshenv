@@ -5,6 +5,12 @@ export SUDO_EDITOR="$EDITOR"
 export TERMINAL="kitty -1"
 export BROWSER="firefox"
 
+# XDG environment variables
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+
 # program-specific variables
 export CPLUS_INCLUDE_PATH="$HOME/Informatique/Library"
 export MANPAGER="nvim +Man!"
@@ -13,6 +19,7 @@ export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export GOPATH="$XDG_DATA_HOME/go"
+export PYTHONPYCACHEPREFIX="$XDG_CACHE_HOME/pycache"
 export PYTHON_HISTORY="$XDG_STATE_HOME/python/history"
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep.conf"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
