@@ -37,6 +37,7 @@ zstyle ':fzf-tab:complete:*'                  fzf-preview '~/.local/bin/fzf_prev
 zstyle ':fzf-tab:complete:(\\|*/|)man:*'      fzf-preview 'man $word'
 zstyle ':fzf-tab:complete:help:*'             fzf-preview 'help $word'
 zstyle ':fzf-tab:complete:kill:argument-rest' fzf-preview 'ps --pid=$word -o cmd --no-headers -w'
+zstyle ':fzf-tab:complete:oly:*'              fzf-preview 'oly show $word'
 zstyle ':fzf-tab:complete:*:options'          fzf-preview ''
 zstyle ':fzf-tab:complete:*:argument-1'       fzf-preview ''
 
