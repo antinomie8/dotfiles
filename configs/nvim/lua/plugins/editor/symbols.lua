@@ -91,6 +91,10 @@ return {
 						return false
 					end
 
+					if vim.tbl_contains({ "terminal", "quickfix", "nofile", "" }, vim.bo[buf].buftype) then
+						return false
+					end
+
 					return vim.bo[buf].ft == "markdown"
 						or pcall(vim.treesitter.get_parser, buf)
 						or not vim.tbl_isempty(vim.lsp.get_clients({

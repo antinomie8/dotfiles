@@ -40,18 +40,13 @@ abbreviations:
 contest_format:
   Club: "Club/${date}"
   Test Novembre: "POFM/Tests/${year}/${contest} ${year}/${contest} ${year} ${problem}"
-  Valbonne: "POFM/Valbonne/${year}/${source}"
+  Valbonne: "POFM/Valbonne/${contest} ${year}/${source}"
   Cours en ligne: "POFM/Cours en ligne/${year}/${date}"
   Liste: "POFM/Listes/${source}"
   TN: "POFM/Vidéos/TN/${source}"
   Géo: "POFM/Vidéos/Géo/${source}"
   Alg: "POFM/Vidéos/Alg/${source}"
   Comb: "POFM/Vidéos/Comb/${source}"
-  Envoi Géo: "../POFM/2025-2026/Envois/1. Géométrie/${source}"
-  Envoi TN: "../POFM/2025-2026/Envois/2. Arithmétique/${source}"
-  Envoi Alg: "../POFM/2025-2026/Envois/3. Algèbre/${source}"
-  Envoi Combi: "../POFM/2025-2026/Envois/4. Combinatoire/${source}"
-  Pot Pourri: "../POFM/2025-2026/Envois/5. Pot-Pourri/${source}"
 
 # customize the colors used by the show command
 # colorscheme:

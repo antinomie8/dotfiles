@@ -262,6 +262,41 @@ return {
 			vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, { desc = "Signature help" })
 			-- vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
 
+			vim.keymap.set("n", "<leader>cpd", function()
+				local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
+				local diagnostics = vim.diagnostic.get(0, { lnum = lnum })
+
+				if vim.tbl_isempty(diagnostics) then
+					print("No diagnostics on this line")
+					return
+				end
+
+				local lines = {}
+
+				for _, d in ipairs(diagnostics) do
+					-- Main diagnostic message
+					table.insert(lines, d.message)
+
+					-- Related information (if any)
+					if d.user_data and d.user_data.lsp and d.user_data.lsp.relatedInformation then
+						for _, info in ipairs(d.user_data.lsp.relatedInformation) do
+							local uri = info.location.uri or ""
+							local filename = vim.uri_to_fname(uri)
+							local row = info.location.range.start.line + 1
+							local col = info.location.range.start.character + 1
+
+							table.insert(lines,
+								string.format("  -> %s:%d:%d: %s", filename, row, col, info.message)
+							)
+						end
+					end
+				end
+
+				local text = table.concat(lines, "\n")
+				vim.fn.setreg("+", text)
+				print("Diagnostic info copied to clipboard")
+			end, { desc = "Copy diagnostics to clipboard" })
+
 			vim.api.nvim_create_autocmd("LspAttach", {
 				callback = function(args)
 					local client = vim.lsp.get_client_by_id(args.data.client_id)
