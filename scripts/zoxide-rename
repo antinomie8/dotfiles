@@ -8,6 +8,15 @@ local TRACE = "\27[38;5;250m"
 local RESET = "\27[0m"
 
 -- utilities
+local function help()
+	io.stderr:write([[
+Usage: zoxide-rename [OPTIONS] <old> <new> [file]
+
+Options:
+  --dry-run, -n   Show what would change, but do not modify zoxide
+]])
+end
+
 local function shell_escape(s)
 	-- minimal POSIX-safe shell escaping
 	return "'" .. s:gsub("'", "'\\''") .. "'"
@@ -20,15 +29,23 @@ end
 -- argument parsing
 local options = {
 	["dry-run"] = false,
+	["debug"] = false,
 }
 local positional = {}
 
 for _, a in ipairs(arg) do
-	if a == "--dry-run" or a == "-n" then
-		options["dry-run"] = true
-	elseif a:sub(1, 2) == "--" then
-		io.stderr:write("Unknown option: " .. a .. "\n")
-		os.exit(1)
+	if a:sub(1, 1) == "-" then
+		if a == "--dry-run" or a == "-n" then
+			options["dry-run"] = true
+		elseif a == "--debug" or a == "-d" then
+			options["debug"] = true
+		elseif a == "--help" or a == "-h" then
+			help()
+			os.exit(0)
+		else
+			io.stderr:write("Unknown option: " .. a .. "\n")
+			os.exit(1)
+		end
 	else
 		table.insert(positional, a)
 	end
@@ -44,12 +61,7 @@ if #positional == 3 then
 elseif #positional == 2 then
 	command = "zoxide query -als"
 else
-	io.stderr:write([[
-Usage: zoxide-rename [OPTIONS] <old> <new> [file]
-
-Options:
-  --dry-run, -n   Show what would change, but do not modify zoxide
-]])
+	help()
 	os.exit(1)
 end
 
@@ -91,10 +103,10 @@ for line in cmd:lines() do
 					)
 				end
 				print(string.format(
-					SUCCESS .. "✔" .. TRACE .. " %s → %s (score=%s)" .. RESET,
+					SUCCESS .. "✔" .. RESET .. " %s " .. TRACE .. "→" .. RESET .. " %s " .. TRACE .. "(score=%s)" .. RESET,
 					path, new_path, score
 				))
-			else
+			elseif options["debug"] then
 				io.stderr:write(
 					TRACE .. "No substitution made, skipping: " .. path .. "\n" .. RESET
 				)
