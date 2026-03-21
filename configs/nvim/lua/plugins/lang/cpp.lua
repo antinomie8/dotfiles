@@ -6,18 +6,6 @@ return {
 		cmd = { "CompetiTest" },
 		keys = {
 			{
-				"<localleader>ctst",
-				"<Cmd>CompetiTest receive contest<CR>",
-				ft = { "alpha", "c", "cpp" },
-				desc = "Receive contest",
-			},
-			{
-				"<localleader>cpb",
-				"<Cmd>CompetiTest receive problem<CR>",
-				ft = { "alpha", "c", "cpp" },
-				desc = "Receive problem",
-			},
-			{
 				"<localleader>add",
 				"<Cmd>CompetiTest add_testcase<CR>",
 				ft = { "c", "cpp", "asm" },
@@ -199,13 +187,13 @@ return {
 
 			companion_port = 27121,
 			receive_print_message = true,
-			template_file = "~/Informatique/Codeforces/template.cpp",
+			template_file = "$(HOME)/Informatique/Competitive Programming/Codeforces/template.cpp",
 			evaluate_template_modifiers = false,
 			date_format = "%c",
 			received_files_extension = "cpp",
-			received_problems_path = "$(HOME)/Informatique/Codeforces/$(CONTEST)/$(PROBLEM).$(FEXT)",
+			received_problems_path = "$(HOME)/Informatique/Competitive Programming/Codeforces/$(CONTEST)/$(PROBLEM).$(FEXT)",
 			received_problems_prompt_path = true,
-			received_contests_directory = "$(HOME)/Informatique/Codeforces/$(CONTEST)",
+			received_contests_directory = "$(HOME)/Informatique/Competitive Programming/Codeforces/$(CONTEST)",
 			received_contests_problems_path = "$(PROBLEM).$(FEXT)",
 			received_contests_prompt_directory = true,
 			received_contests_prompt_extension = false,
@@ -213,7 +201,9 @@ return {
 			open_received_contests = true,
 			replace_received_testcases = false,
 		},
-		init = function() vim.api.nvim_create_user_command("CodeForces", "CompetiTest receive contest", {}) end,
+		init = function()
+			vim.api.nvim_create_user_command("CodeForces", "CompetiTest receive contest", {})
+		end,
 	},
 	{
 		"p00f/clangd_extensions.nvim",

@@ -78,6 +78,7 @@ setopt OCTAL_ZEROES         # use 0 for displaying octal numbers
 setopt EXTENDED_HISTORY     # save timestamp and command execution duration to history
 setopt INC_APPEND_HISTORY   # write directly to the history file
 setopt COMPLETE_IN_WORD     # complete missing letters before cursor with <tab>
+setopt HIST_EXPAND          # expand !n
 
 autoload -Uz zargs          # zargs [options] -- PATTERN -- COMMAND --
 autoload -Uz regexp-replace # regexp-replace VARNAME REGEXP REPLACE
