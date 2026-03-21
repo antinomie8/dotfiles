@@ -5,6 +5,30 @@ return {
 	keys = {
 		{ "<localleader>.", function() require("snacks.scratch")() end, desc = "Toggle Scratch Buffer" },
 		{ "<localleader>%", function() require("snacks.scratch").select() end, desc = "Select Scratch Buffer" },
+		{
+			"<leader>lg",
+			function()
+				require("snacks.terminal").open("lazygit")
+			end,
+			desc = "Open Lazygit",
+		},
+		{
+			"<C-_>",
+			function()
+				require("snacks.terminal").toggle(nil, {
+					win = {
+						position = "float",
+						border = "rounded",
+						backdrop = false,
+						wo = { winblend = 15 },
+					},
+				}):on("TermClose", function()
+					vim.opt.cursorline = true
+				end)
+			end,
+			mode = { "n", "t" },
+			desc = "Toggle terminal",
+		},
 	},
 	init = function()
 		vim.api.nvim_create_user_command("Nerdy", function()
@@ -49,6 +73,7 @@ return {
 				footer_keys = false,
 			},
 		},
+		terminal = {},
 		-- scroll = {}, -- cannot disable for specific motions
 	},
 }
