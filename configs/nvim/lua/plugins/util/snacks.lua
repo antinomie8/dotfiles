@@ -32,6 +32,8 @@ return {
 			mode = { "n", "t" },
 			desc = "Toggle terminal",
 		},
+		{ "]r", function() require("snacks.words").jump(vim.v.count1) end },
+		{ "[r", function() require("snacks.words").jump(-vim.v.count1) end },
 	},
 	init = function()
 		vim.api.nvim_create_user_command("Nerdy", function()
