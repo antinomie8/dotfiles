@@ -1,11 +1,7 @@
 -- show the cursorline in the active buffer only, and hide for some filetypes
 vim.api.nvim_create_autocmd("WinLeave", {
 	callback = function()
-		if vim.bo.filetype ~= "snacks_terminal" then
-			vim.opt_local.cursorline = false
-		else
-			vim.opt_local.cursorline = true
-		end
+		vim.opt_local.cursorline = false
 	end,
 })
 vim.api.nvim_create_autocmd("WinEnter", {

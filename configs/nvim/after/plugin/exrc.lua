@@ -139,9 +139,8 @@ local function read(path, callback)
 	-- )
 	vim.ui.select({ "view", "ignore", "deny", "allow" }, {
 		prompt = "Found untrusted code: " .. vim.fn.fnamemodify(path, ":~"),
-	}, function(choice, result)
-		if result == 1 then
-			-- View
+	}, function(choice)
+		if choice == "view" then
 			vim.cmd("sview " .. fullpath)
 			vim.keymap.set("n", "<localleader>t", vim.cmd.trust, { desc = "trust", buffer = true })
 			vim.keymap.set("n", "<localleader>T", function()
@@ -150,15 +149,13 @@ local function read(path, callback)
 			end, { desc = "trust and execute", buffer = true })
 			callback(nil)
 			return
-		elseif result == 2 then
-			-- Cancelled or ignored
+		elseif choice == "ignore" or choice == nil then
 			callback(nil)
 			return
-		elseif result == 3 then
-			-- Deny
+		elseif choice == "deny" then
 			trust[fullpath] = "!"
 			contents = nil
-		elseif result == 4 then
+		elseif choice == "allow" then
 			-- Allow
 			trust[fullpath] = hash
 		end
@@ -189,9 +186,7 @@ local function exrc()
 end
 
 vim.api.nvim_create_autocmd("VimEnter", {
-	callback = function()
-		vim.schedule(exrc)
-	end,
+	callback = vim.schedule_wrap(exrc),
 })
 vim.api.nvim_create_autocmd("DirChanged", {
 	callback = exrc,

@@ -1,3 +1,8 @@
+local function exec_autocmds()
+	vim.api.nvim_exec_autocmds("WinEnter", { buffer = 0 })
+	vim.api.nvim_exec_autocmds("BufEnter", { buffer = 0 })
+end
+
 return {
 	"folke/snacks.nvim",
 	lazy = false,
@@ -8,7 +13,7 @@ return {
 		{
 			"<leader>lg",
 			function()
-				require("snacks.terminal").open("lazygit")
+				require("snacks.terminal").open("lazygit"):on("TermClose", exec_autocmds)
 			end,
 			desc = "Open Lazygit",
 		},
@@ -22,9 +27,7 @@ return {
 						backdrop = false,
 						wo = { winblend = 15 },
 					},
-				}):on("TermClose", function()
-					vim.opt.cursorline = true
-				end)
+				}):on("TermClose", exec_autocmds)
 			end,
 			mode = { "n", "t" },
 			desc = "Toggle terminal",
@@ -74,6 +77,5 @@ return {
 			},
 		},
 		terminal = {},
-		-- scroll = {}, -- cannot disable for specific motions
 	},
 }

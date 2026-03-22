@@ -121,7 +121,7 @@ return {
 			return coroutine.create(function(coro)
 				local exclude = {
 					".git/*",
-					"build/_deps",
+					"build/**/_deps",
 					"CMakeFiles",
 				}
 				local cmd = { "fd", "--no-ignore", "--type", "x" }
@@ -133,7 +133,7 @@ return {
 				if obj.code == 0 then
 					vim.ui.select(
 						vim.split(obj.stdout, "\n", { trimempty = true }),
-						{ prompt_title = "Path to executable" },
+						{ prompt = "Path to executable" },
 						function(choice) coroutine.resume(coro, choice) end
 					)
 				else
