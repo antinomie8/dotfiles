@@ -35,69 +35,6 @@ local function is_alive(pid)
 	return ok
 end
 
----@private
----@param pdf_path string
----@param opts OpenOpts
----@return vim.SystemObj handle
-local function hyprland_set_layout(pdf_path, opts)
-	local ws
-	local old_layout
-
-	vim.system({ "hyprctl", "getoption", "general:layout", "-j" }, function(obj)
-		if obj.code ~= 0 then
-			error(obj.stderr)
-			return
-		end
-		old_layout = vim.json.decode(obj.stdout).str
-	end)
-
-	vim.system({ "hyprctl", "-j", "activewindow" }, function(hyprctl)
-		if hyprctl.code ~= 0 then
-			error(hyprctl.stderr)
-			return
-		end
-
-		local win = vim.json.decode(hyprctl.stdout)
-		ws = win.workspace.id
-
-		vim.system({ "hyprctl", "keyword", "workspace", ws .. ",", "layout:master" }, function(hyprctl)
-			if hyprctl.code ~= 0 then
-				error(hyprctl.stderr)
-				return
-			end
-		end)
-	end)
-
-	local function hyprland_reset_layout()
-		vim.system({ "hyprctl", "keyword", "workspace", ws .. ",", "layout:" .. old_layout }, function(hyprctl)
-			if hyprctl.code ~= 0 then
-				error(hyprctl.stderr)
-				return
-			end
-		end)
-	end
-
-	local group = vim.api.nvim_create_augroup("pdf_zathura_hyprland_layout", {})
-	vim.api.nvim_create_autocmd("VimLeave", {
-		group = group,
-		callback = hyprland_reset_layout,
-	})
-
-	local handle = vim.system({ "zathura", pdf_path }, { detach = true }, function(obj)
-		if obj.code ~= 0 then
-			error(obj.stderr)
-		end
-		if opts.layout and old_layout and ws then
-			hyprland_reset_layout()
-			vim.schedule(function()
-				vim.api.nvim_del_augroup_by_id(group)
-			end)
-		end
-	end)
-
-	return handle
-end
-
 ---@class OpenOpts
 ---@field silent? boolean
 ---@field layout? boolean
@@ -124,17 +61,55 @@ function M.open(pdf_path, opts)
 				pdf_path, "", "1",
 			})
 		else
-			local handle
+			local old_layout
+			local ws
 
 			if opts.layout then
-				handle = hyprland_set_layout(pdf_path, opts)
-			else
-				handle = vim.system({ "zathura", pdf_path }, { detach = true }, function(obj)
+				-- get default hyprland layout
+				vim.system({ "hyprctl", "getoption", "general:layout", "-j" }, function(obj)
 					if obj.code ~= 0 then
 						error(obj.stderr)
+						return
 					end
+					old_layout = vim.json.decode(obj.stdout).str
+				end)
+
+				-- get current window and set layout to master
+				vim.system({ "hyprctl", "-j", "activewindow" }, function(hyprctl)
+					if hyprctl.code ~= 0 then
+						error(hyprctl.stderr)
+						return
+					end
+
+					local win = vim.json.decode(hyprctl.stdout)
+					ws = win.workspace.id
+
+					vim.system({ "hyprctl", "keyword", "workspace", ws .. ",", "layout:master" }, function(hyprctl)
+						if hyprctl.code ~= 0 then
+							error(hyprctl.stderr)
+							return
+						end
+					end)
 				end)
 			end
+
+			-- open zathura
+			local handle = vim.system({ "zathura", pdf_path }, { detach = true }, function(obj)
+				if obj.code ~= 0 then
+					error(obj.stderr)
+				end
+
+				if opts.layout and old_layout and ws then
+					-- reset hyprland layout
+					vim.system({ "hyprctl", "keyword", "workspace", ws .. ",", "layout:" .. old_layout }, function(hyprctl)
+						if hyprctl.code ~= 0 then
+							error(hyprctl.stderr)
+							return
+						end
+					end)
+				end
+			end)
+
 			vim.g.zathura_window_pid = handle.pid
 		end
 
