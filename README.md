@@ -8,12 +8,16 @@ git clone https://github.com/anonymousgrasshopper/dotfiles ~/.config/dotfiles &&
 | modify sudo prompt | `sudo visudo` and add line `Defaults passprompt=" Password for %u: "` |
 | `pacman -Syu` error about marginal trust signatures | `sudo pacman -Sy archlinux-keyring` |
 
+
 ### Things to do after installing
 - `rustup default stable`
 - `go telemetry off`
-- [get a plymouth theme](https://github.com/adi1090x/plymouth-themes)
-- change `configs/hypr/hypridle.conf` keyboard device if necessary
 <!-- - `build-fzf-tab-module` # does not respect LS_COLORS -->
+
+- [get a plymouth theme](https://github.com/adi1090x/plymouth-themes)
+
+- change `configs/hypr/hypridle.conf` keyboard device if necessary
+- change `configs/hypr/hyprland/general.conf` monitor width and terminal cell size if necessary
 
 #### Systemd
 - `systemctl --user enable --now hypridle.service`

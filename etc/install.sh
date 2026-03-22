@@ -58,9 +58,9 @@ program pdflatex && copy_item texmf ~/.local/share
 program firefox && copy_item autoconfig.js /usr/lib/firefox/defaults/pref
 program firefox && copy_item firefox.cfg /usr/lib/firefox
 program yazi && copy_item desktop/yazi.desktop ~/.local/share/applications
-program yazi && copy_item icons/hicolor/1254x1260/apps/yazi.png ~/.local/share/icons/hicolor/1254:1260/apps
+program yazi && copy_item icons/hicolor/48x48/apps/yazi.png ~/.local/share/icons/hicolor/48x48/apps
 program neomutt && copy_item desktop/neomutt.desktop ~/.local/share/applications
-program neomutt && copy_item icons/hicolor/325x325/apps/neomutt.png ~/.local/share/icons/hicolor/325x325/apps
+program neomutt && copy_item icons/hicolor/48x48/apps/neomutt.png ~/.local/share/icons/hicolor/48x48/apps
 program nvim && copy_item desktop/mail.desktop ~/.local/share/applications
 program nvim && copy_item icons/hicolor/scalable/apps/mail.svg ~/.local/share/icons/hicolor/scalable/apps
 program spotify && copy_item desktop/spotify.desktop ~/.local/share/applications
