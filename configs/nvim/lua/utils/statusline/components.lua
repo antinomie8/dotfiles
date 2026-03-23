@@ -1,5 +1,3 @@
-local components = {}
-
 local conditions = require("heirline.conditions")
 local utils = require("heirline.utils")
 utils.truncate = function(str, thresh, is_winbar)
@@ -16,6 +14,8 @@ utils.truncate = function(str, thresh, is_winbar)
 		return str:sub(1, len_max - 1) .. "…"
 	end
 end
+
+local components = {}
 
 components.Space = { provider = " " }
 
@@ -115,23 +115,31 @@ local FileNameBlock = {
 }
 
 local FileName = {
-	provider = function(self)
+	init = function(self)
 		if vim.bo.buftype == "terminal" then
-			return vim.b.term_title
+			self.filename = vim.b.term_title
+		else
+			self.filename = vim.fn.fnamemodify(self.filename, ":~")
+			if self.filename == "" then
+				self.filename = "[No Name]"
+			end
 		end
-		local filename = vim.fn.fnamemodify(self.filename, ":~")
-		if filename == "" then
-			return "[No Name]"
-		end
-		local shorten_length = 5
-		while not conditions.width_percent_below(#filename, 0.60 - 10 / vim.o.columns) and shorten_length >= 2 do
-			filename = vim.fn.pathshorten(filename, shorten_length)
-			shorten_length = shorten_length - 1
-		end
-		return filename
 	end,
 	hl = { fg = "fg" },
+	flexible = 10,
+	{
+		provider = function(self)
+			return self.filename
+		end,
+	},
 }
+for i = 10, 1, -1 do
+	table.insert(FileName, {
+		provider = function(self)
+			return vim.fn.pathshorten(self.filename, i)
+		end,
+	})
+end
 
 local FileIcon = {
 	init = function(self)
@@ -208,7 +216,7 @@ local function OverseerTasksForStatus(status)
 	return {
 		condition = function(self) return self.tasks[status] end,
 		provider = function(self) return string.format("%s%d ", self.symbols[status], #self.tasks[status]) end,
-		hl = function(self)
+		hl = function()
 			return {
 				fg = utils.get_highlight(string.format("Overseer%s", status)).fg,
 			}
@@ -321,7 +329,13 @@ local extension_filetypes = {
 }
 
 components.ExtensionA = {
-	condition = function() return vim.tbl_contains(extension_filetypes, vim.bo.filetype) end,
+	condition = function()
+		local ft = vim.bo.filetype
+		if ft == "mail" and not vim.b.notmuch_thread then
+			return false
+		end
+		return vim.tbl_contains(extension_filetypes, ft)
+	end,
 	init = function(self)
 		local git_head = require("utils.git").git_head
 		self.ft = vim.bo.filetype
@@ -354,8 +368,6 @@ components.ExtensionA = {
 					end
 					senders = senders:sub(1, #senders - 2)
 					return utils.truncate(senders, 0.20)
-				else
-					return "Mail"
 				end
 			end,
 			["man"] = "MAN",
@@ -378,6 +390,17 @@ components.ExtensionA = {
 }
 
 components.ExtensionB = {
+	condition = function()
+		return vim.tbl_contains({
+			"checkhealth",
+			"lazy",
+			"man",
+			"diffview",
+			"fugitive",
+			"git",
+			"qf",
+		}, vim.bo.filetype)
+	end,
 	init = function(self)
 		local git_root = require("utils.git").git_root
 		self.ft = vim.bo.filetype
@@ -397,17 +420,6 @@ components.ExtensionB = {
 			end,
 		}
 	end,
-	condition = function(self)
-		return vim.tbl_contains({
-			"checkhealth",
-			"lazy",
-			"man",
-			"diffview",
-			"fugitive",
-			"git",
-			"qf",
-		}, vim.bo.filetype)
-	end,
 	components.Space,
 	{
 		provider = function(self)
@@ -422,7 +434,13 @@ components.ExtensionB = {
 }
 
 components.ExtensionC = {
-	condition = function() return vim.tbl_contains(extension_filetypes, vim.bo.filetype) end,
+	condition = function()
+		local ft = vim.bo.filetype
+		if ft == "mail" and not vim.b.notmuch_thread then
+			return false
+		end
+		return vim.tbl_contains(extension_filetypes, ft)
+	end,
 	init = function(self)
 		self.ft = vim.bo.filetype
 		self.filetype_data = {
