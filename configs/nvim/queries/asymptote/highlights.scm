@@ -1,4 +1,4 @@
-;; extends
+; extends
 
 ((type_identifier) @keyword.import
 	(#in_asy?)
