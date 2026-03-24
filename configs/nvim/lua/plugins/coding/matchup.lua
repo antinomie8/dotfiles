@@ -1,6 +1,6 @@
 return {
 	"andymass/vim-matchup",
-	event = { "BufReadPre", "BufNewFile" },
+	event = { "BufReadPost", "BufNewFile" },
 	config = function()
 		require("match-up").setup({
 			matchparen = {

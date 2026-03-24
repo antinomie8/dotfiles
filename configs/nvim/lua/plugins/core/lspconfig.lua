@@ -9,7 +9,7 @@ end
 return {
 	{
 		"neovim/nvim-lspconfig",
-		event = { "BufReadPre", "BufNewFile" },
+		event = { "BufReadPost", "BufNewFile" },
 		dependencies = {
 			{
 				"rachartier/tiny-inline-diagnostic.nvim",
@@ -229,7 +229,13 @@ return {
 					end,
 				},
 
-				ts_query_ls = {},
+				ts_query_ls = {
+					init_options = {
+						parser_aliases = {
+							asymptote = "cpp",
+						},
+					},
+				},
 
 				ty = {}, -- python
 
@@ -305,9 +311,9 @@ return {
 						vim.wo[win][0].foldmethod = "expr"
 						vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
 					end
-					vim.lsp.document_color.enable(false, args.buf)
 				end,
 			})
+			vim.lsp.document_color.enable(false)
 		end,
 	},
 	{

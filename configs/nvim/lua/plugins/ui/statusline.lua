@@ -26,7 +26,6 @@ return {
 			opts = {},
 		})
 
-
 		vim.api.nvim_create_augroup("Heirline", { clear = true })
 		vim.api.nvim_create_autocmd("ColorScheme", {
 			callback = function()

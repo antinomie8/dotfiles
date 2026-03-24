@@ -72,7 +72,7 @@ return {
 	{
 		"anonymousgrasshopper/nvim-treesitter-textobjects",
 		branch = "main",
-		event = { "BufReadPre", "BufNewFile" },
+		event = { "BufReadPost", "BufNewFile" },
 		config = function()
 			local ts_repeat_move = require("nvim-treesitter-textobjects.repeatable_move")
 

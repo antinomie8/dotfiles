@@ -13,7 +13,7 @@ for vault, path in pairs(obsidian_vaults) do
 end
 local vault_enter = {}
 for _, path in pairs(obsidian_vaults) do
-	table.insert(vault_enter, "BufReadPre " .. path[1] .. "/*.md")
+	table.insert(vault_enter, "BufReadPost " .. path[1] .. "/*.md")
 	table.insert(vault_enter, "BufNewFile " .. path[1] .. "/*.md")
 end
 

@@ -1,6 +1,6 @@
 return {
 	"mbbill/undotree",
-	event = { "BufReadPre", "BufNewFile" },
+	event = { "BufReadPost", "BufNewFile" },
 	cmd = { "Undotree" },
 	keys = {
 		{ "<leader>tr", "<Cmd>UndotreeToggle<CR>", desc = "Toggle UndoTree" },

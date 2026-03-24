@@ -19,11 +19,14 @@ return {
 			"GRemove",
 			"GBrowse",
 		},
+		dependencies = {
+			"tpope/vim-rhubarb", -- GBrowse for github.com
+		},
 		ft = { "git", "DiffviewFiles" }, -- for statusline component
 	},
 	{
 		"lewis6991/gitsigns.nvim",
-		event = { "BufReadPre", "BufNewFile" },
+		event = { "BufReadPost", "BufNewFile" },
 		opts = {
 			signs = {
 				add = { text = "▎" },
