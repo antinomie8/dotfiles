@@ -49,7 +49,10 @@ local function recover(bufnr, path)
 	end
 
 	-- reload language servers
-	vim.cmd.lsp("restart")
+	local clients = vim.lsp.get_clients({ bufnr = bufnr })
+	for _, client in ipairs(clients) do
+		client:_restart()
+	end
 	-- reload treesitter
 	local parser = vim.treesitter.get_parser(bufnr)
 	if parser then
@@ -113,7 +116,7 @@ local function pick_swapfile(bufnr, file, swapname)
 			}
 
 			vim.system(cmd, { text = true }, function(obj)
-				if obj.code ~= 0 then
+				if obj.code ~= 0 and obj.stderr and #obj.stderr > 0 then
 					vim.notify(obj.stderr, vim.log.levels.ERROR, { title = "Swapfiles", icon = " " })
 				end
 				-- if the file doesn't exist, diff will fail with an error, so use an empty file instead
@@ -121,15 +124,15 @@ local function pick_swapfile(bufnr, file, swapname)
 				vim.system(
 					{ "diff", "-u", cmp, tmpfile },
 					{ text = true },
-					function(obj)
-						if obj.code ~= 0 and #obj.stderr > 0 then
-							vim.notify(obj.stderr, vim.log.levels.ERROR, { title = "Swapfiles", icon = " " })
-						elseif not obj.stdout then
+					function(diff)
+						if diff.code ~= 0 and diff.stderr and #diff.stderr > 0 then
+							vim.notify(diff.stderr, vim.log.levels.ERROR, { title = "Swapfiles", icon = " " })
+						elseif not diff.stdout then
 							return
 						end
 
 						-- modify context lines
-						local lines = vim.split(obj.stdout, "\n")
+						local lines = vim.split(diff.stdout, "\n")
 						if #lines >= 1 and cmp == "/dev/null" then
 							lines[1] = lines[1]:sub(1, 4) .. file .. lines[1]:sub(4 + #cmp + 1)
 						end
@@ -137,8 +140,8 @@ local function pick_swapfile(bufnr, file, swapname)
 							lines[2] = lines[2]:sub(1, 4) .. item.text .. lines[2]:sub(4 + #tmpfile + 1)
 						end
 
-						vim.schedule(function() -- necessary because of fast event context
-							ctx.preview:set_lines(lines)
+						vim.schedule(function()
+							pcall(ctx.preview.set_lines, ctx.preview, lines)
 							ctx.preview:highlight({ ft = "diff" })
 						end)
 					end
@@ -202,8 +205,7 @@ local function pick_swapfile(bufnr, file, swapname)
 					preset = "vertical",
 				}
 			end
-		end
-		,
+		end,
 	})
 end
 
@@ -269,7 +271,6 @@ vim.api.nvim_create_autocmd("SwapExists", {
 					for _, swap in ipairs(swapfiles) do
 						vim.uv.fs_unlink(swap)
 					end
-				else
 				end
 			end)
 		end)
