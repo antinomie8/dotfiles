@@ -22,7 +22,7 @@ return {
 		dependencies = {
 			"tpope/vim-rhubarb", -- GBrowse for github.com
 		},
-		ft = { "git", "DiffviewFiles" }, -- for statusline component
+		ft = { "git" },
 	},
 	{
 		"lewis6991/gitsigns.nvim",
