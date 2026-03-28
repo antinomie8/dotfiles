@@ -4,11 +4,14 @@
 # You must at least set author, base_path and pdf_viewer.                      #
 ################################################################################
 
-# the author's name in the preview and generated pdf
+# the author's name in the preview and generated pdfs
 author: Antoine Saez Dumas
 
-# The base path where solutions are stored
+# the base path where solutions are stored
 base_path: ~/Mathématiques/Solutions
+
+# the path where figures are stored, inside of base_path
+figures_dir: figures
 
 # the markup language the solutions are typed in
 # must be one of latex or typst (default latex)
@@ -26,7 +29,7 @@ language: fr
 pdf_viewer: zathura
 
 # wether to open the generated pdf with pdf_viewer when running 'oly gen'
-preview: true
+open: true
 
 # wether to confirm deletion or not in 'oly rm'
 confirm: true
@@ -63,15 +66,15 @@ colorscheme:
 
 # where temporary files are written
 # defaults to ${TMPDIR:-/tmp}/oly
-# OLY_TMPDIR: /tmp/oly
+# tmpdir: /tmp/oly
 
-# added right after \documentclass in the preview file
+# added right after \documentclass in the preview file in latex
 # meant to specify which latex packages to use
 packages: '\usepackage[french]{antoine}'
 
-# You can also override preamble, contents, and metadata.
-# preamble is what gets put in the preview file
-# contents is the content that is already written in the file
+# You can also override preview, contents, and metadata.
+# preview is what gets put in the preview file
+# contents is the initial content in a file opened through 'oly add'
 # metadata is the metadata you get prompted for in 'oly add'
 # For example, you can use the following
 # metadata: "\
