@@ -67,13 +67,13 @@ npm
 # Neovim
 tree-sitter-cli
 lua-language-server
-stylua
 tinymist
+rust-analyzer
 bash-language-server
 shellcheck
+biome
+stylua
 shfmt
-prettier
-rust-analyzer
 
 # WM
 uwsm

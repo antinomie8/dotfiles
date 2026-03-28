@@ -61,8 +61,8 @@ return {
 			sh = { "shfmt" },
 			zsh = { "shfmt" },
 			bash = { "shfmt" },
-			css = { "prettier" },
-			js = { "prettier" },
+			css = { "biome" },
+			html = { "biome" },
 			python = { "ruff_format" },
 			tex = { "latex_math", "tex-fmt" },
 			typst = { "typstyle", "spaces_to_tabs" },
@@ -100,20 +100,6 @@ return {
 						"--length",
 						tostring(length),
 					}
-				end,
-			},
-			prettier = {
-				command = "prettier",
-				range_args = function(self, ctx)
-					local util = require("conform.util")
-					local start_offset, end_offset = util.get_offsets_from_range(ctx.buf, ctx.range)
-					local args = { "--stdin-filepath", "$FILENAME" }
-					return vim.list_extend(args, { "--range-start=" .. start_offset, "--range-end=" .. end_offset })
-				end,
-				prepend_args = { "--use-tabs" },
-				args = { "--stdin-filepath", "$FILENAME" },
-				cwd = function(self, ctx)
-					return require("conform.formatters.prettierd").cwd(self, ctx)
 				end,
 			},
 			typstyle = {
