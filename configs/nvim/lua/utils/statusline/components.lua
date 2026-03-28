@@ -111,29 +111,33 @@ components.Git = {
 }
 
 local FileNameBlock = {
-	init = function(self) self.filename = vim.api.nvim_buf_get_name(0) end,
-}
-
-local FileName = {
 	init = function(self)
 		if vim.bo.buftype == "terminal" then
 			self.filename = vim.b.term_title
 		else
-			self.filename = vim.fn.fnamemodify(self.filename, ":~")
+			self.filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":~")
 			if self.filename == "" then
 				self.filename = "[No Name]"
 			end
 		end
 	end,
+}
+
+local path_component_max_length = 30
+local FileName = {
 	hl = { fg = "fg" },
-	flexible = 10,
+	update = {
+		"BufEnter",
+		"BufFilePost",
+	},
+	flexible = path_component_max_length,
 	{
 		provider = function(self)
 			return self.filename
 		end,
 	},
 }
-for i = 10, 1, -1 do
+for i = path_component_max_length, 1, -1 do
 	table.insert(FileName, {
 		provider = function(self)
 			return vim.fn.pathshorten(self.filename, i)
@@ -143,17 +147,25 @@ end
 
 local FileIcon = {
 	init = function(self)
+		if vim.bo.buftype == "terminal" then self.icon = "" end
+
 		local filename = self.filename
 		local extension = vim.fn.fnamemodify(filename, ":e")
 		self.icon, self.icon_color = require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
 	end,
-	provider = function(self) return self.icon and self.icon end,
+	provider = function(self) return self.icon end,
 	hl = function(self) return { fg = self.icon_color } end,
+	update = {
+		"BufEnter",
+		"FileType",
+	},
 }
 
 local FileFlags = {
 	{
-		condition = function() return not vim.bo.modifiable or vim.bo.readonly end,
+		condition = function()
+			return ((not vim.bo.modifiable) or vim.bo.readonly) and vim.bo.buftype ~= "terminal"
+		end,
 		provider = " ",
 		hl = { fg = "fg" },
 	},
@@ -177,10 +189,13 @@ local FileFlags = {
 		provider = " ●",
 		hl = { fg = "green" },
 	},
+	update = {
+		"BufEnter",
+		"OptionSet",
+	},
 }
 
-components.FileNameBlock = utils.insert(
-	FileNameBlock,
+components.FileNameBlock = utils.insert(FileNameBlock,
 	{ provider = "%<" }, -- this means that the statusline is cut here when there's not enough space
 	FileName,
 	components.Space,
@@ -191,8 +206,12 @@ components.FileNameBlock = utils.insert(
 )
 
 components.Macro = {
-	condition = function() return vim.fn.reg_recording() ~= "" and vim.o.cmdheight == 0 end,
-	provider = function() return " " .. vim.fn.reg_recording() .. " " end,
+	condition = function()
+		return vim.fn.reg_recording() ~= "" and vim.o.cmdheight == 0
+	end,
+	provider = function()
+		return " " .. vim.fn.reg_recording() .. " "
+	end,
 	hl = { fg = "orange" },
 	update = {
 		"RecordingEnter",
@@ -208,14 +227,20 @@ components.Debugger = {
 		end
 		return false
 	end,
-	provider = function() return "  " .. require("dap").status() .. " " end,
+	provider = function()
+		return "  " .. require("dap").status() .. " "
+	end,
 	hl = "Debug",
 }
 
 local function OverseerTasksForStatus(status)
 	return {
-		condition = function(self) return self.tasks[status] end,
-		provider = function(self) return string.format("%s%d ", self.symbols[status], #self.tasks[status]) end,
+		condition = function(self)
+			return self.tasks[status]
+		end,
+		provider = function(self)
+			return string.format("%s%d ", self.symbols[status], #self.tasks[status])
+		end,
 		hl = function()
 			return {
 				fg = utils.get_highlight(string.format("Overseer%s", status)).fg,
