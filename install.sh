@@ -76,9 +76,10 @@ if program pacman; then
 	# install required packages
 	if program yay; then
 		package_manager="yay"
-		packages+=("cppman" "runapp" "thundery" "xdg-desktop-portal-termfilechooser-hunkyburrito-git") # misc
-		packages+=("ttf-juliamono" "otf-garamond-math")                                                # fonts
-		packages+=("codelldb-bin" "texlab" "tex-fmt" "asm-lsp" "typstyle")                             # Neovim
+		packages+=("cppman" "hyprtime" "runapp" "thundery"
+		  "xdg-desktop-portal-termfilechooser-hunkyburrito-git")           # misc
+		packages+=("ttf-juliamono" "otf-garamond-math")                    # fonts
+		packages+=("codelldb-bin" "texlab" "tex-fmt" "asm-lsp" "typstyle") # Neovim
 		packages+=("kitty-git" "neovim-nightly-bin" "yazi-nightly-bin")
 	else
 		package_manager="sudo pacman"
