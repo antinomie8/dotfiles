@@ -34,12 +34,17 @@ zstyle ':completion:*'                 list-colors ${(s.:.)LS_COLORS}
 # preview
 zstyle ':fzf-tab:*:*'                         fzf-flags   '--style=default' '--no-scrollbar' '--info=right'
 zstyle ':fzf-tab:complete:*'                  fzf-preview '~/.local/bin/fzf_preview_wrapper ${realpath:-$word}'
+zstyle ':fzf-tab:complete:*:options'          fzf-preview 'echo' # disable preview for options
+
+# commands
 zstyle ':fzf-tab:complete:(\\|*/|)man:*'      fzf-preview 'man $word'
-zstyle ':fzf-tab:complete:help:*'             fzf-preview 'help $word'
+zstyle ':fzf-tab:complete:help:*'             fzf-preview '$word --help 2>/dev/null | bat --plain --language=help'
 zstyle ':fzf-tab:complete:kill:argument-rest' fzf-preview 'ps --pid=$word -o cmd --no-headers -w'
-zstyle ':fzf-tab:complete:oly:*'              fzf-preview 'oly show $word'
-zstyle ':fzf-tab:complete:*:options'          fzf-preview ''
-zstyle ':fzf-tab:complete:*:argument-1'       fzf-preview ''
+zstyle ':fzf-tab:complete:oly:*'              fzf-preview \
+	'case "$group" in
+	"[problem]") oly show $word --color=always ;;
+	"[subcommand]") oly $word --help ;;
+esac'
 
 # git
 zstyle ':fzf-tab:complete:git-(add|diff|restore):*' fzf-preview 'git diff $word | delta'
@@ -47,8 +52,8 @@ zstyle ':fzf-tab:complete:git-log:*'                fzf-preview 'git log --color
 zstyle ':fzf-tab:complete:git-help:*'               fzf-preview 'git help $word | bat -plman --color=always'
 zstyle ':fzf-tab:complete:git-show:*' fzf-preview \
 	'case "$group" in
-	"commit tag" git show --color=always $word ;;
-	* git show --color=always $word | delta ;;
+	"commit tag") git show --color=always $word ;;
+	*) git show --color=always $word | delta ;;
 esac'
 zstyle ':fzf-tab:complete:git-checkout:*' fzf-preview \
 	'case "$group" in
