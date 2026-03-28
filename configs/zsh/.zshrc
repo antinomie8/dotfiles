@@ -81,9 +81,7 @@ setopt RCQUOTES             # escape single quotes with '' instead of '\'' in si
 setopt C_BASES              # use 0x for displaying hexadecimal numbers
 setopt OCTAL_ZEROES         # use 0 for displaying octal numbers
 setopt EXTENDED_HISTORY     # save timestamp and command execution duration to history
-setopt INC_APPEND_HISTORY   # write directly to the history file
 setopt COMPLETE_IN_WORD     # complete missing letters before cursor with <tab>
-setopt HIST_EXPAND          # expand !n
 
 autoload -Uz zargs          # zargs [options] -- PATTERN -- COMMAND --
 autoload -Uz regexp-replace # regexp-replace VARNAME REGEXP REPLACE
@@ -95,15 +93,16 @@ autoload -U colors && colors
 SPROMPT="Correct $fg[red]%R$reset_color to $fg[green]%r$reset_color? [Yes, No, Abort, Edit]: "
 
 # history
-HISTSIZE=10000
 HISTFILE=$HOME/.local/state/zsh/zsh_history
 [[ -f $HISTFILE ]] || mkdir -p $(dirname $HISTFILE)
+HISTSIZE=1000000
 SAVEHIST=$HISTSIZE
 HISTDUP=erase
 HIST_STAMPS="dd/mm/yyyy"
-setopt appendhistory
-setopt sharehistory
-setopt hist_ignore_space
+setopt SHARE_HISTORY        # share history between sessions
+setopt HIST_IGNORE_SPACE    # don't save commands starting with a space
+setopt INC_APPEND_HISTORY   # write directly to the history file
+setopt HIST_EXPAND          # expand !n
 
 
 # Vi mode and cursor style
