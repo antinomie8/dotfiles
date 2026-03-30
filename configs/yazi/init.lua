@@ -35,7 +35,7 @@ require("restore"):setup({
 	suppress_success_notification = true, -- Suppress success notification when all files or folder are restored.
 })
 
--- statusline components
+-- statusline components {{{
 function Status:mode()
 	local mode = tostring(self._tab.mode):upper()
 
@@ -149,15 +149,136 @@ function Status:position()
 	})
 end
 
--- merge tabs into header
-Header:children_add(function()
-	if #cx.tabs == 1 then return "" end
+-- }}}
+
+-- merge tabs into header {{{
+Header = {
+	-- TODO: remove these two constants
+	LEFT = 0,
+	RIGHT = 1,
+
+	_id = "header",
+	_inc = 1000,
+	_left = {
+		{ "cwd", id = 1, order = 1000 },
+		{ "flags", id = 2, order = 2000 },
+	},
+	_right = {
+		{ "count", id = 1, order = 1000 },
+	},
+	_offsets = {},
+}
+
+function Header:new(area, tab)
+	return setmetatable({
+		_area = area,
+		_tab = tab,
+		_current = tab.current,
+	}, { __index = self })
+end
+
+function Header:cwd()
+	local max = self._area.w - self._right_width
+	if max <= 0 then
+		return ""
+	end
+
+	local s = ya.readable_path(tostring(self._current.cwd))
+	return ui.Span(ui.truncate(s, { max = max, rtl = true })):style(th.mgr.cwd)
+end
+
+function Header:flags()
+	local cwd = self._current.cwd
+	local filter = self._current.files.filter
+	local finder = self._tab.finder
+
+	local t = {}
+	if cwd.is_search then
+		t[#t + 1] = string.format("search: %s", cwd.domain)
+	end
+	if filter then
+		t[#t + 1] = string.format("filter: %s", filter)
+	end
+	if finder then
+		t[#t + 1] = string.format("find: %s", finder)
+	end
+	-- return #t == 0 and "" or " (" .. table.concat(t, ", ") .. ")"
+	local text = #t == 0 and "" or " (" .. table.concat(t, ", ") .. ")"
+	return ui.Span(text):style(th.status.perm_sep)
+end
+
+function Header:count()
+	local selected = #self._tab.selected
+	local yanked = selected > 0 and 0 or #cx.yanked
+
+	local span
+	if selected > 0 then
+		span = ui.Span(" " .. selected .. " "):style(th.mgr.count_selected)
+	elseif yanked <= 0 then
+		return ""
+	elseif cx.yanked.is_cut then
+		span = ui.Span(" " .. yanked .. " "):style(th.mgr.count_cut)
+	else
+		span = ui.Span(" " .. yanked .. " "):style(th.mgr.count_copied)
+	end
+
+	return ui.Line({ span, " " })
+end
+
+function Header:reflow() return { self } end
+
+function Header:redraw()
+	local right = self:children_redraw(self.RIGHT)
+	self._right_width = right:width()
+
+	local left = self:children_redraw(self.LEFT)
+
+	return {
+		ui.Line(left):area(self._area),
+		ui.Line(right):area(self._area):align(ui.Align.RIGHT),
+	}
+end
+
+-- Children
+function Header:children_add(fn, order, side)
+	self._inc = self._inc + 1
+	local children = side == self.RIGHT and self._right or self._left
+
+	children[#children + 1] = { fn, id = self._inc, order = order }
+	table.sort(children, function(a, b) return a.order < b.order end)
+
+	return self._inc
+end
+
+function Header:children_remove(id, side)
+	local children = side == self.RIGHT and self._right or self._left
+	for i, child in ipairs(children) do
+		if child.id == id then
+			table.remove(children, i)
+			break
+		end
+	end
+end
+
+function Header:children_redraw(side)
+	local lines = {}
+	for _, c in ipairs(side == self.RIGHT and self._right or self._left) do
+		lines[#lines + 1] = (type(c[1]) == "string" and self[c[1]] or c[1])(self)
+	end
+	return ui.Line(lines)
+end
+
+Header:children_add(function(self)
+	if #cx.tabs == 1 then
+		return ""
+	end
+
 	local lines = {}
 	if cx.tabs.idx ~= 1 then
 		lines[1] = ui.Line(th.tabs.sep_outer.open):fg(th.tabs.inactive:bg())
 	end
 
-	local max = 20
+	local max = math.floor(self:inner_width() / #cx.tabs)
 	for i = 1, #cx.tabs do
 		if i == cx.tabs.idx then
 			local name = ui.truncate(string.format(
@@ -186,18 +307,40 @@ Header:children_add(function()
 			), { max = max })
 			lines[#lines + 1] = ui.Line(name):style(th.tabs.inactive)
 		end
+		self._offsets[i] = lines[#lines]:width()
 	end
 
 	if cx.tabs.idx ~= #cx.tabs then
 		lines[#lines + 1] = ui.Line(th.tabs.sep_outer.close):fg(th.tabs.inactive:bg())
 	end
 
-	return ui.Line(lines)
+	return ui.Line(lines):area(self._area)
 end, 9000, Header.RIGHT)
+
+function Header:inner_width()
+	local si, so = th.tabs.sep_inner, th.tabs.sep_outer
+	return 0.75 * math.max(0, self._area.w - ui.Line({ si.open, si.close, so.open, so.close }):width())
+end
+
+function Header:click(event, up)
+	if up or event.is_middle then
+		return
+	end
+	local col = self._area.w
+	for i = #cx.tabs, 1, -1 do
+		col = col - self._offsets[i]
+		if event.x >= col then
+			ya.emit("tab_switch", { i - 1 })
+			break
+		end
+	end
+end
 
 function Tabs.height() return 0 end -- hide tab bar
 
--- change linemode style
+-- }}}
+
+-- change linemode style {{{
 th.linemode = ui.Style():fg("#54546d")
 
 function Linemode:mime()
@@ -261,6 +404,8 @@ function Entity:found()
 	local s = string.format("[%d/%s]", found[1] + 1, found[2] >= 100 and "99+" or found[2])
 	return ui.Line({ "  ", ui.Span(s):style(th.mgr.find_position) }):style(th.linemode)
 end
+
+-- }}}
 
 -- don't color the icon the same color as the current line
 function Entity:icon()
