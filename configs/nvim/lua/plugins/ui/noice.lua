@@ -1,6 +1,6 @@
 return {
 	{
-		"anonymousgrasshopper/nvim-notify",
+		"antinomie8/nvim-notify",
 		event = "VeryLazy",
 		opts = {
 			timeout = 3000,

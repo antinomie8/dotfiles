@@ -4,7 +4,7 @@ install the Arch Linux WSL (`wsl --install archlinux`)
 - Inside of the Arch WSL, `pacman -S sudo git zsh`, create a root password (`passwd`)
 and a user (`useradd -m -G wheel -s /bin/zsh Antoine`) with their password, execute `visudo`
 and uncomment the ` %wheel   ALL=(ALL)   ALL` line.
-- `git clone https://github.com/anonymousgrasshopper/dotfiles ~/.config/dotfiles && ~/.config/dotfiles/install.sh`,
+- `git clone https://github.com/antinomie8/dotfiles ~/.config/dotfiles && ~/.config/dotfiles/install.sh`,
 run `etc/install.sh`.
 
 - Install [Vcxsrv](https://vcxsrv.com/) ([download link](https://sourceforge.net/projects/vcxsrv/files/latest/download)).

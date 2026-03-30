@@ -141,7 +141,7 @@
 	insteadOf = gh:
 [url "https://codeberg.org/"]
 	insteadOf = cb:
-[url "https://github.com/anonymousgrasshopper/"]
+[url "https://github.com/antinomie8/"]
 	insteadOf = me:
 
 [difftool "nvim_difftool"]

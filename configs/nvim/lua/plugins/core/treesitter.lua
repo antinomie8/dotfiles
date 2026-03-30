@@ -70,7 +70,7 @@ return {
 		end,
 	},
 	{
-		"anonymousgrasshopper/nvim-treesitter-textobjects",
+		"antinomie8/nvim-treesitter-textobjects",
 		branch = "main",
 		event = { "BufReadPost", "BufNewFile" },
 		config = function()

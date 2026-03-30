@@ -1,5 +1,5 @@
 ```
-git clone https://github.com/anonymousgrasshopper/dotfiles ~/.config/dotfiles && ~/.config/dotfiles/install.sh
+git clone https://github.com/antinomie8/dotfiles ~/.config/dotfiles && ~/.config/dotfiles/install.sh
 ```
 
 | Problem | Solution |

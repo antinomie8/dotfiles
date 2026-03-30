@@ -292,7 +292,7 @@ fi
 					exit
 				fi
 			fi
-			curl -fsSL https://raw.githubusercontent.com/anonymousgrasshopper/oly/main/install.sh | bash
+			curl -fsSL https://raw.githubusercontent.com/antinomie8/oly/main/install.sh | bash
 			echo
 		fi
 	fi

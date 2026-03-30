@@ -1,5 +1,5 @@
 return {
-	"anonymousgrasshopper/notmuch.nvim",
+	"antinomie8/notmuch.nvim",
 	cmd = { "Notmuch", "NmSearch", "Inbox", "ComposeMail" },
 	opts = {
 		maildir_sync_cmd = "mbsync -a",

@@ -8,7 +8,7 @@ GREEN='\e[38;5;46m'
 COLOR_RESET='\e[0m'
 
 # clone the repo if it is not in ~/.config ans cd into it
-[[ -d ~/.config/dotfiles ]] || git clone https://github.com/anonymousgrasshopper/dotfiles ~/.config/dotfiles
+[[ -d ~/.config/dotfiles ]] || git clone https://github.com/antinomie8/dotfiles ~/.config/dotfiles
 cd ~/.config/dotfiles || {
 	echo "${ERROR}Cloning the GitHub repository failed. Check you internet connection and try again${COLOR_RESET}"
 	exit
