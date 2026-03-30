@@ -84,4 +84,6 @@ keymap.set("n", "<leader>nh", "<Cmd>nohl<CR>", { desc = "Clear search highlights
 -- misc
 keymap.set("n", "<leader>fn", "<Cmd>enew<CR>", { desc = "New File" })
 keymap.set("n", "<leader>L", "<Cmd>Lazy<CR>", { desc = "Open Lazy.nvim ui" })
-keymap.set("n", "<leader>cwd", '<Cmd>let @+=expand("%")<CR>', { desc = "Copy absolute path to the system clipboard" })
+keymap.set("n", "<leader>cpf", function()
+	vim.fn.setreg("+", vim.api.nvim_buf_get_name(0))
+end, { desc = "Copy filepath to the system clipboard" })

@@ -212,7 +212,7 @@ end
 vim.api.nvim_del_augroup_by_name("nvim.swapfile")
 vim.api.nvim_create_autocmd("SwapExists", {
 	callback = function(event)
-		-- /usr/share/nvim/runtime/lua/vim/_core/defaults.lua:676
+		-- $VIMRUNTIME/lua/vim/_core/defaults.lua:676
 		local info = vim.fn.swapinfo(vim.v.swapname)
 		local user = vim.uv.os_get_passwd().username
 		local iswin = 1 == vim.fn.has("win32")
