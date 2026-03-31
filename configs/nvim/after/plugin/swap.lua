@@ -15,7 +15,7 @@ local function find_swapfiles(swapname)
 		if not name then break end
 
 		local swapfile = dir .. "/" .. name
-		if type == "file" and name:match(pattern) and vim.fn.swapinfo(swapfile).dirty ~= 0 then
+		if type == "file" and name:match(pattern) then
 			table.insert(swaps, swapfile)
 		end
 	end
@@ -279,3 +279,9 @@ vim.api.nvim_create_autocmd("SwapExists", {
 		vim.v.swapchoice = "e"
 	end,
 })
+
+vim.api.nvim_create_user_command("SwapFiles", function()
+	local buf = vim.api.nvim_get_current_buf()
+	local name = vim.api.nvim_buf_get_name(buf)
+	pick_swapfile(buf, name, vim.fn.swapname(buf))
+end, { desc = "open swapfiles picker" })
