@@ -12,12 +12,13 @@ git clone https://github.com/antinomie8/dotfiles ~/.config/dotfiles && ~/.config
 ### Things to do after installing
 - `rustup default stable`
 - `go telemetry off`
+- `just --completions zsh > ~/.local/share/zsh/completions/_just`
 <!-- - `build-fzf-tab-module` # does not respect LS_COLORS -->
-
-- [get a plymouth theme](https://github.com/adi1090x/plymouth-themes)
 
 - change `configs/hypr/hypridle.conf` keyboard device if necessary
 - change `configs/hypr/hyprland/general.conf` monitor width and terminal cell size if necessary
+
+- [get a plymouth theme](https://github.com/adi1090x/plymouth-themes)
 
 #### Systemd
 - `systemctl --user enable --now hypridle.service`

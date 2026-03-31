@@ -34,6 +34,10 @@ open: true
 # wether to confirm deletion or not in 'oly rm'
 confirm: true
 
+# wether to only output the entries written in the current markup language in
+# 'oly list'
+filter_lang: true
+
 # map contest names to other ones
 abbreviations:
     Shortlist: ISL

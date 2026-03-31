@@ -49,3 +49,7 @@ x-scheme-handler/mailto=mail.desktop
 x-scheme-handler/aether=aether-protocol-handler.desktop
 x-scheme-handler/discord=vesktop.desktop
 x-scheme-handler/oly=oly.desktop
+
+# fallback
+application/octet-stream=nvim.desktop
+application/wine-extension-ini=nvim.desktop
