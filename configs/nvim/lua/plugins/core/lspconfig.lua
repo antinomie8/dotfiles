@@ -106,6 +106,11 @@ return {
 										-- "${3rd}/busted/library",
 									},
 								},
+								diagnostics = {
+									disable = {
+										"redefined-local",
+									},
+								},
 							},
 							yazi = {
 								runtime = {
