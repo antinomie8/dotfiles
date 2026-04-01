@@ -70,6 +70,46 @@ return {
 					folder_open = "",
 					folder_empty = "󰷏",
 					default = "",
+					use_filtered_colors = false,
+					provider = function(icon, node, state) -- default icon provider utilizes nvim-web-devicons if available
+						if node.type == "directory" then
+							if node.loaded and not node:has_children() then
+								-- empty folder
+							elseif node:is_expanded() then
+								local directory_icons = {
+									[".config"] = "",
+									["build"] = "󱧼",
+									[".git"] = "",
+									[".github"] = "",
+								}
+								icon.text = directory_icons[node.name] or icon.text
+							else
+								local directory_icons = {
+									[".config"] = "",
+									["build"] = "󱧼",
+									[".git"] = "",
+									[".github"] = "",
+								}
+								icon.text = directory_icons[node.name] or icon.text
+							end
+							local filtered_by = require("neo-tree.sources.common.components").filtered_by(nil, node, state)
+							icon.highlight = filtered_by.highlight or icon.highlight
+						elseif node.type == "file" or node.type == "terminal" then
+							local ok, devicons = pcall(require, "nvim-web-devicons")
+							local name = node.type == "terminal" and "terminal" or node.name
+							if ok then
+								local devicon, hl = devicons.get_icon(name, node.ext or "")
+								icon.text = devicon or icon.text
+								icon.highlight = hl or icon.highlight
+							end
+							if not icon.text then
+								if vim.uv.fs_access(node.path, "X") then
+									icon.text = ""
+									icon.highlight = "DevIconOut"
+								end
+							end
+						end
+					end,
 				},
 				modified = {
 					symbol = "●",
@@ -185,11 +225,6 @@ return {
 			},
 			nesting_rules = {},
 			filesystem = {
-				components = {
-					custom_icon = function(config, node, state)
-						return require("utils.plugins.filetree").get_icon(config, node, state)
-					end,
-				},
 				filtered_items = {
 					visible = false, -- wether to show dotfiles by default
 					hide_dotfiles = true,
@@ -282,37 +317,6 @@ return {
 						-- Linux: open file in default application
 						vim.fn.jobstart({ "xdg-open", path }, { detach = true })
 					end,
-				},
-				-- components = {
-				-- harpoon_index = function(config, node, _)
-				-- 	local harpoon_list = require("harpoon"):list()
-				-- 	local path = node:get_id()
-				-- 	local harpoon_key = vim.uv.cwd()
-
-				-- 	for i, item in ipairs(harpoon_list.items) do
-				-- 		local value = item.value
-				-- 		if string.sub(item.value, 1, 1) ~= "/" then
-				-- 			value = harpoon_key .. "/" .. item.value
-				-- 		end
-
-				-- 		if value == path then
-				-- 			return {
-				-- 				text = string.format(" ⥤ %d", i),
-				-- 				highlight = config.highlight or "NeoTreeDirectoryIcon",
-				-- 			}
-				-- 		end
-				-- 	end
-				-- 	return {}
-				-- end,
-				-- },
-				renderers = {
-					file = {
-						{ "custom_icon" },
-						{ "name", use_git_status_colors = true },
-						-- { "harpoon_index" },
-						{ "diagnostics" },
-						{ "git_status", highlight = "NeoTreeDimText" },
-					},
 				},
 			},
 			buffers = {

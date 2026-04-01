@@ -10,8 +10,9 @@ local setup_mock_statusline = function()
 	if ft then
 		-- find filetype icon and color
 		local icon, color
-		if pcall(require("nvim-web-devicons").setup) then
-			icon, color = require("nvim-web-devicons").get_icon_color(vim.fn.expand("%"), vim.fn.expand("%:e"))
+		local ok, devicons = pcall(require, "nvim-web-devicons")
+		if ok then
+			icon, color = devicons.get_icon_color(vim.fn.expand("%"), vim.fn.expand("%:e"))
 		end
 		vim.api.nvim_set_hl(0, "StatusLineIconColor", { fg = color or "#6d8086" })
 

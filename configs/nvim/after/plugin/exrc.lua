@@ -38,8 +38,7 @@ local function compute_hash(fullpath, bufnr)
 
 	if bufnr then
 		local newline = vim.bo[bufnr].fileformat == "unix" and "\n" or "\r\n"
-		contents =
-		           table.concat(vim.api.nvim_buf_get_lines(bufnr --[[@as integer]], 0, -1, false), newline)
+		contents = table.concat(vim.api.nvim_buf_get_lines(bufnr --[[@as integer]], 0, -1, false), newline)
 		if vim.bo[bufnr].endofline then
 			contents = contents .. newline
 		end

@@ -4,7 +4,7 @@ return {
 		branch = "main",
 		build = ":TSUpdate",
 		cmd = { "TSUpdate", "TSInstall", "TSInstallFromGrammar", "TSUninstall", "TSLog" },
-		event = { "BufReadPre", "BufNewFile" },
+		event = { "BufReadPost", "BufNewFile" },
 		config = function()
 			vim.cmd.syntax("manual")
 

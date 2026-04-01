@@ -264,10 +264,12 @@ return {
 				},
 			}
 
-			for server, config in pairs(lspconfigs) do
-				vim.lsp.config(server, config)
-				vim.lsp.enable(server)
-			end
+			vim.schedule(function()
+				for server, config in pairs(lspconfigs) do
+					vim.lsp.config(server, config)
+					vim.lsp.enable(server)
+				end
+			end)
 
 			vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
 			vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, { desc = "Signature help" })

@@ -46,6 +46,7 @@ require("lazy").setup({
 	root = vim.fn.stdpath("data") .. "/pack",
 	lockfile = vim.fn.stdpath("config") .. "/lockfile.json",
 	readme = { root = vim.fn.stdpath("state") .. "docs/readme" },
+	local_spec = false, -- wether to source .lazy.lua
 	spec = {
 		{ import = "plugins.coding" },
 		{ import = "plugins.core" },

@@ -1,5 +1,5 @@
 return {
-	"nvim-tree/nvim-web-devicons",
+	"antinomie8/nvim-web-devicons",
 	lazy = true,
 	opts = {
 		override_by_extension = {
