@@ -13,6 +13,7 @@ local function highlight_metadata(first, last)
 		topic = true,
 		tags = true,
 		url = true,
+		date = true,
 		desc = true,
 		author = true,
 		difficulty = true,
