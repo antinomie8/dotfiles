@@ -50,4 +50,22 @@ function M.typst()
 	end
 end
 
+function M.asymptote()
+	local line = vim.api.nvim_get_current_line()
+
+	local import = line:match("import%s+(%S*)%s*;")
+	if import then
+		local dirs = {
+			vim.env.ASYMPTOTE_HOME or vim.env.HOME .. "/.asy",
+			"/usr/share/asymptote",
+		}
+		for _, dir in ipairs(dirs) do
+			local path = vim.fs.joinpath(dir, import .. ".asy")
+			if vim.uv.fs_stat(path) then
+				return path
+			end
+		end
+	end
+end
+
 return M

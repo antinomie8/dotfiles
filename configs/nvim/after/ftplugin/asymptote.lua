@@ -3,6 +3,7 @@ vim.bo.commentstring = "// %s"
 vim.bo.makeprg = "asy %"
 vim.bo.errorformat = "%f: %l.%c: %m"
 vim.wo.winhighlight = "@constant.cpp:@variable.cpp"
+vim.bo.includeexpr = "v:lua.require'utils.includeexpr'.asymptote(v:fname)"
 
 vim.b.output_format = "pdf"
 
