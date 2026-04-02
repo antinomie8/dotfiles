@@ -106,11 +106,6 @@ return {
 										-- "${3rd}/busted/library",
 									},
 								},
-								diagnostics = {
-									disable = {
-										"redefined-local",
-									},
-								},
 							},
 							yazi = {
 								runtime = {
@@ -156,6 +151,12 @@ return {
 									align_continuous_inline_comment = "true",
 									align_chain_expr = "none",
 									space_before_inline_comment = "keep",
+								},
+							},
+							diagnostics = {
+								disable = {
+									"redefined-local",
+									"unused-local",
 								},
 							},
 						},
