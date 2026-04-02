@@ -3,7 +3,8 @@
 declare -A workspaces=(
 	["[Maths]"]=2
 	["[Divers]"]=3
-	["[Info]"]=4
+	["[Administratif]"]=4
+	["[Info]"]=5
 )
 browser_name="Mozilla Firefox"
 

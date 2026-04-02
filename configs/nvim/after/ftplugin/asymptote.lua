@@ -92,9 +92,9 @@ vim.keymap.set("n", "<localleader>ll", function()
 end, { desc = "Toggle live rendering" })
 
 -- open pdf
-vim.api.nvim_buf_create_user_command(0, "OpenPdf", function()
-	local pdf_path = vim.api.nvim_buf_get_name(0):gsub("%.asy$", ".pdf")
-	require("utils.pdf").open(pdf_path)
-end, {})
+vim.api.nvim_buf_create_user_command(0, "OpenPdf", function(arg)
+	local path = arg.fargs[1] or vim.api.nvim_buf_get_name(0):gsub("%.asy$", ".pdf")
+	require("utils.pdf").open(path, { silent = arg.bang })
+end, { nargs = "?", bang = true })
 
 vim.keymap.set("n", "<localleader>o", "<Cmd>OpenPdf<CR>", { desc = "Open pdf", buffer = true })
