@@ -15,6 +15,7 @@ if query_text then
 end
 
 -- compile asy code
+local ns = vim.api.nvim_create_namespace("Asymptote")
 local function asy(opts)
 	opts = opts or {}
 	local args = vim.iter({ "-f", vim.b.output_format or "pdf", opts.args }):flatten():totable()
@@ -36,10 +37,31 @@ local function asy(opts)
 		{ text = true, stdin = input },
 		function(obj)
 			if opts.notify and #obj.stderr ~= 0 then
-				obj.stderr = obj.stderr:gsub("%-: (%d+)%.", function(num)
-					local new_num = tonumber(num) - preamble_size
-					return string.format("-: %d.1:", new_num)
+				---@class vim.Diagnostic.Set[]
+				local diagnostics = {}
+
+				-- parse diagnostics
+				obj.stderr = obj.stderr:gsub("^%-: (%d+)%.(%d+): (.*)$", function(lnum, col, message)
+					local new_num = tonumber(lnum) - preamble_size
+					col = tonumber(col)
+					table.insert(diagnostics, { lnum = new_num - 1, col = col, message = message, source = "Asymptote compiler" })
+					return string.format("-: %d.%d: %s", new_num, col, vim.trim(message))
 				end)
+
+				-- set diagnostics
+				vim.schedule(function()
+					for _, i in ipairs(diagnostics) do
+						vim.diagnostic.set(ns, bufnr, diagnostics, { update_in_insert = true })
+					end
+					vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+						callback = function()
+							vim.diagnostic.reset(ns, bufnr)
+						end,
+						once = true,
+					})
+				end)
+
+				-- notify errors
 				if obj.code ~= 0 then
 					vim.notify(obj.stderr, vim.log.levels.ERROR, { title = "Asymptote", icon = "󰒕" })
 				else
