@@ -235,7 +235,7 @@ function Header:redraw()
 
 	return {
 		ui.Line(left):area(self._area),
-		ui.Line(right):area(self._area):align(ui.Align.RIGHT),
+		ui.Line(right):area(self._area)--[[@as ui.Line]]:align(ui.Align.RIGHT),
 	}
 end
 
@@ -362,9 +362,9 @@ function Linemode:btime()
 	if time == 0 then
 		return ""
 	elseif os.date("%Y", time) == os.date("%Y") then
-		return ui.Span(os.date("%m/%d %H:%M", time)):style(th.linemode)
+		return ui.Span(os.date("%d/%m %H:%M", time)--[[@as string]]):style(th.linemode)
 	else
-		return ui.Span(os.date("%m/%d  %Y", time)):style(th.linemode)
+		return ui.Span(os.date("%d/%m  %Y", time)--[[@as string]]):style(th.linemode)
 	end
 end
 
@@ -373,9 +373,9 @@ function Linemode:mtime()
 	if time == 0 then
 		return ""
 	elseif os.date("%Y", time) == os.date("%Y") then
-		return ui.Span(os.date("%m/%d %H:%M", time)):style(th.linemode)
+		return ui.Span(os.date("%d/%m %H:%M", time)--[[@as string]]):style(th.linemode)
 	else
-		return ui.Span(os.date("%m/%d  %Y", time)):style(th.linemode)
+		return ui.Span(os.date("%d/%m  %Y", time)--[[@as string]]):style(th.linemode)
 	end
 end
 

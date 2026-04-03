@@ -110,7 +110,7 @@ return {
 							yazi = {
 								runtime = {
 									-- Tell the language server which version of Lua you're using
-									version = "Lua 5.4",
+									version = "Lua 5.5",
 									-- Tell the language server how to find Lua modules
 									path = {
 										"plugins/?.yazi/main.lua",
@@ -124,6 +124,9 @@ return {
 								diagnostics = {
 									globals = {
 										"Status", "Header", "Tabs", "Linemode", "Entity",
+									},
+									disable = {
+										"cast-local-type",
 									},
 								},
 							},
@@ -230,8 +233,8 @@ return {
 							{ desc = "tinymist unpin main" }
 						)
 
-						-- load default ~/.local/share/nvim/pack/nvim-lspconfig/lsp/tinymist.lua
-						dofile(vim.fn.stdpath("data") .. "/pack/nvim-lspconfig/lsp/tinymist.lua").on_attach(client, bufnr)
+						-- execute nvim-lspconfig's on_attach from ~/.local/share/nvim/site/pack/nvim-lspconfig/lsp/tinymist.lua
+						dofile(vim.fn.stdpath("data") .. "/site/pack/nvim-lspconfig/lsp/tinymist.lua").on_attach(client, bufnr)
 					end,
 				},
 
@@ -239,6 +242,12 @@ return {
 					init_options = {
 						parser_aliases = {
 							asymptote = "cpp",
+						},
+						valid_predicates = {
+							in_asy = {
+								parameters = {},
+								description = "Check the current file is an asymptote file",
+							},
 						},
 					},
 				},

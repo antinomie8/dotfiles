@@ -11,7 +11,7 @@ require("config.keymaps")
 require("config.options")
 
 -- download lazy.nvim if it isn't here yet
-local lazypath = vim.fn.stdpath("data") .. "/pack/lazy.nvim"
+local lazypath = vim.fn.stdpath("data") .. "/site/pack/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
 	vim.fn.system({
 		"git",
@@ -43,7 +43,7 @@ end, 150)
 
 -- setup plugins
 require("lazy").setup({
-	root = vim.fn.stdpath("data") .. "/pack",
+	root = vim.fn.stdpath("data") .. "/site/pack",
 	lockfile = vim.fn.stdpath("config") .. "/lockfile.json",
 	readme = { root = vim.fn.stdpath("state") .. "docs/readme" },
 	local_spec = false, -- wether to source .lazy.lua

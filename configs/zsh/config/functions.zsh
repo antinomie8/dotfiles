@@ -89,22 +89,22 @@ function clone() {
 	[[ $# == 0 ]] && { echo "clone: missing operand"; return 1 }
 
 	local repo_name
-	if [[ $1 =~ ^[A-Za-z0-9._-]+:([/A-Za-z0-9._-]+)$ ]]; then
+	if [[ $1 =~ ^[A-Za-z0-9._-]+:([^/][/A-Za-z0-9._-]*)$ ]]; then
+		# git url insteadOf
 		repo_name=$match[1]
 	else
-		if [[ $1 =~ ^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$ ]]; then
-			1="https://github.com/$1" # default domain
-		fi
 		repo_name=${1:t}
+		if [[ $1 =~ ^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$ ]]; then
+			# repo/owner format
+			1="gh:$1"
+		fi
 	fi
 
 	local dir=${2:-$HOME/Téléchargements/git/$repo_name}
-	if [[ -d $2 ]]; then
-		dir+="/$repo_name"
-	fi
 	if [[ -z $2 && $dir =~ ^(.*/[^/]+)\.git$ ]]; then
-		dir=$match[1] # strip trailing .git, if any
+		dir=$match[1] # strip trailing .git
 	fi
+
 	git clone $1 $dir && cd $dir
 }
 gitdot() {

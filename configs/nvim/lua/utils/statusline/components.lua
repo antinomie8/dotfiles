@@ -188,8 +188,12 @@ local FileFlags = {
 		condition = function() return vim.bo.modified end,
 		provider = " ●",
 		hl = { fg = "green" },
+		update = {
+			"BufModifiedSet",
+		},
 	},
 	update = {
+		"BufModifiedSet",
 		"BufEnter",
 		"OptionSet",
 	},

@@ -38,7 +38,6 @@ end
 ---@class OpenOpts
 ---@field silent? boolean
 ---@field layout? boolean
-
 local defaults = {
 	silent = false,
 	layout = true,

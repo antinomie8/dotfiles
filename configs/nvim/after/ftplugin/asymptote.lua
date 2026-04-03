@@ -9,9 +9,10 @@ vim.b.output_format = "pdf"
 
 -- use C++ treesitter highlighting with custom queries
 local query_path = vim.fn.stdpath("config") .. "/queries/asymptote/highlights.scm"
-if vim.fn.filereadable(query_path) ~= 1 then return end
-local query_text = table.concat(vim.fn.readfile(query_path), "\n")
-vim.treesitter.query.set("cpp", "highlights", query_text)
+local query_text = require("utils").loadfile(query_path)
+if query_text then
+	vim.treesitter.query.set("cpp", "highlights", query_text)
+end
 
 -- compile asy code
 local function asy(opts)
@@ -59,7 +60,6 @@ end, { desc = "compile and open", buffer = true })
 vim.keymap.set("n", "<localleader>c", asy, { desc = "compile", buffer = true })
 
 -- live rendering
-vim.b.asy_live_rendering = nil
 vim.api.nvim_buf_create_user_command(0, "LiveRender", function(args)
 	local id = vim.b.asy_live_render_autocmd_id
 	if args.bang and id then
@@ -85,10 +85,11 @@ end, {
 vim.keymap.set("n", "<localleader>ll", function()
 	if vim.b.asy_live_rendering then
 		vim.notify("Live rendering disabled !", vim.log.levels.INFO, { title = "Asymptote", icon = "󰒕", timeout = 0 })
-		vim.cmd("LiveRender!")
+		vim.cmd.LiveRender({ bang = true })
 	else
 		vim.notify("Live rendering enabled !", vim.log.levels.INFO, { title = "Asymptote", icon = "󰒕", timeout = 0 })
-		vim.cmd("LiveRender")
+		vim.cmd.LiveRender()
+		vim.cmd.OpenPdf({ bang = true })
 	end
 end, { desc = "Toggle live rendering" })
 

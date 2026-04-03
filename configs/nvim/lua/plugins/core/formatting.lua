@@ -66,6 +66,7 @@ return {
 			python = { "ruff_format" },
 			tex = { "latex_math", "tex-fmt" },
 			typst = { "typstyle", "spaces_to_tabs" },
+			query = { "spaces_to_tabs", lsp_format = "first" },
 			lua = function(bufnr)
 				if
 					vim.fs.root(
