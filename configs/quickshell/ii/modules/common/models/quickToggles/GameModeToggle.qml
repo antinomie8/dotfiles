@@ -33,8 +33,8 @@ QuickToggleModel {
                 "decoration:rounding", //
                 "general:allow_tearing", //
             ]);
-    }
         }
+    }
 
     HyprlandConfigOption {
         id: confOpt
