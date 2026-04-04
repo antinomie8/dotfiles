@@ -39,7 +39,7 @@ local function asy(opts)
 			"-o",
 			vim.fn.expand("%:r"),
 		}):flatten():totable(),
-		{ text = true, stdin = input },
+		{ stdin = input },
 		function(obj)
 			if opts.notify and #obj.stderr ~= 0 then
 				---@class vim.Diagnostic.Set[]

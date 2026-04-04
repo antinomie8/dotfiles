@@ -115,7 +115,7 @@ local function pick_swapfile(bufnr, file, swapname)
 				item.path, -- swap file to recover
 			}
 
-			vim.system(cmd, { text = true }, function(obj)
+			vim.system(cmd, function(obj)
 				if obj.code ~= 0 and obj.stderr and #obj.stderr > 0 then
 					vim.notify(obj.stderr, vim.log.levels.ERROR, { title = "Swapfiles", icon = " " })
 				end
@@ -123,7 +123,6 @@ local function pick_swapfile(bufnr, file, swapname)
 				local cmp = vim.uv.fs_stat(file) and file or "/dev/null"
 				vim.system(
 					{ "diff", "-u", cmp, tmpfile },
-					{ text = true },
 					function(diff)
 						if diff.code ~= 0 and diff.stderr and #diff.stderr > 0 then
 							vim.notify(diff.stderr, vim.log.levels.ERROR, { title = "Swapfiles", icon = " " })

@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+filename=${1:r}
+g++ -c $filename.cpp -o $filename.o
+g++ $filename.o -o $filename.out -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+rm $filename.o

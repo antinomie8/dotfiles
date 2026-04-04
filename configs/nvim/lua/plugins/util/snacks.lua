@@ -63,6 +63,8 @@ return {
 			-- },
 			doc = {
 				inline = false,
+				max_width = 40,
+				max_height = 20,
 			},
 			math = {
 				enabled = false,

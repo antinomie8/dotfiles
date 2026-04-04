@@ -140,5 +140,5 @@ end, { buffer = true })
 
 -- compile and run SFML programs
 vim.keymap.set("n", "<localleader>sf", function()
-	vim.system({ "compile_sfml", vim.fn.expand("%:p:r") }, { text = true })
+	vim.system({ "compile_sfml", vim.fn.expand("%:p:r") })
 end, { expr = true, buffer = true })
