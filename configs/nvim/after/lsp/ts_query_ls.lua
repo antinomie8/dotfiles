@@ -1,5 +1,19 @@
 local path = vim.fn.stdpath("data") .. "/site/pack/nvim-treesitter/.tsqueryrc.json"
-local content = require("utils").loadfile(path)
-if not content then return {} end
+local tsqueryrc = require("utils").loadfile(path)
+if not tsqueryrc then return {} end
 
-return { init_options = vim.json.decode(content) }
+local init_options = vim.tbl_deep_extend("force", vim.json.decode(tsqueryrc), {
+	parser_aliases = {
+		asymptote = "cpp",
+	},
+	valid_predicates = {
+		in_asy = {
+			parameters = {},
+			description = "Check the current file is an asymptote file",
+		},
+	},
+})
+
+return {
+	init_options = init_options,
+}

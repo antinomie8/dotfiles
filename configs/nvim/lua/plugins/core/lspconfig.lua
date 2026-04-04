@@ -23,260 +23,24 @@ return {
 			},
 		},
 		config = function()
-			local lspconfigs = {
-				asm_lsp = {
-					on_attach = function(_, bufnr) vim.diagnostic.enable(false, { bufnr = bufnr }) end,
-				},
-
-				asy_ls = {
-					cmd = { "asy", "-lsp" },
-					filetypes = { "asymptote" },
-					root_markers = { ".git", ".latexmkrc" },
-					single_file_support = true,
-					settings = {},
-				},
-
-				bashls = {
-					filetypes = { "bash", "sh", "zsh" },
-					on_attach = function(client, bufnr)
-						local ft = vim.bo[bufnr].filetype
-						-- Disable shellcheck diagnostics for zsh
-						if ft == "zsh" then
-							if client.name == "bashls" then
-								vim.diagnostic.enable(false, { bufnr = bufnr })
-							end
-						end
-					end,
-				},
-
-				clangd = {},
-
-				cmake = {},
-
-				cssls = {
-					filetypes = { "html", "css", "scss" },
-				},
-
-				jsonls = {
-					settings = {
-						json = {
-							schemas = function()
-								local ok, schemas = pcall(require("schemastore").json.schemas())
-								if ok then
-									return schemas
-								else
-									return nil
-								end
-							end,
-							validate = { enable = true },
-						},
-					},
-				},
-
-				lua_ls = {
-					on_init = function(client)
-						local config = "nvim"
-						local path = client.workspace_folders and client.workspace_folders[1].name or vim.api.nvim_buf_get_name(0)
-						if vim.fs.root(path, { ".luarc.json", ".luarc.jsonc" }) then
-							return
-						end
-
-						if path:match("^" .. vim.env.HOME .. "/.config/yazi") then
-							config = "yazi"
-						end
-
-						local configs = {
-							nvim = {
-								runtime = {
-									-- Tell the language server which version of Lua you're using
-									version = "LuaJIT",
-									-- Tell the language server how to find Lua modules same way as Neovim
-									-- (see `:h lua-module-load`)
-									path = {
-										"lua/?.lua",
-										"lua/?/init.lua",
-									},
-								},
-								-- Make the server aware of Neovim runtime files
-								workspace = {
-									checkThirdParty = false,
-									library = {
-										vim.env.VIMRUNTIME,
-										"${3rd}/luv/library",
-										-- "${3rd}/busted/library",
-									},
-								},
-							},
-							yazi = {
-								runtime = {
-									-- Tell the language server which version of Lua you're using
-									version = "Lua 5.5",
-									-- Tell the language server how to find Lua modules
-									path = {
-										"plugins/?.yazi/main.lua",
-									},
-								},
-								workspace = {
-									library = {
-										"~/.config/yazi/plugins/types.yazi/",
-									},
-								},
-								diagnostics = {
-									globals = {
-										"Status", "Header", "Tabs", "Linemode", "Entity",
-									},
-									disable = {
-										"inject-field",
-									},
-								},
-							},
-						}
-
-						client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, configs[config])
-					end,
-					settings = {
-						Lua = {
-							format = {
-								defaultConfig = {
-									continuation_indent = "5", -- modifying this will break ../../conform/formatters/lua_align.lua
-									quote_style = "double",
-									max_line_length = "120",
-									table_separator_style = "comma",
-									trailing_table_separator = "smart",
-									call_arg_parentheses = "always",
-									align_function_params = "true",
-									align_continuous_assign_statement = "false",
-									align_continuous_rect_table_field = "false",
-									align_continuous_line_space = "2",
-									align_if_branch = "false",
-									align_array_table = "false",
-									align_continuous_similar_call_args = "false",
-									align_continuous_inline_comment = "true",
-									align_chain_expr = "none",
-									space_before_inline_comment = "keep",
-								},
-							},
-							diagnostics = {
-								disable = {
-									"redefined-local",
-									"unused-local",
-								},
-							},
-						},
-					},
-				},
-
-				rust_analyzer = {},
-
-				tinymist = {
-					settings = {
-						exportPdf = "onType",
-						lint = {
-							enabled = true,
-						},
-					},
-					on_attach = function(client, bufnr)
-						local root_path = vim.b[bufnr].typst_root
-						if not root_path then
-							local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 3, false)
-
-							for _, line in ipairs(lines) do
-								local typst_root = line:match("^//%s*typst%s+root:%s*(.*)%s*$")
-								if typst_root then
-									vim.b[bufnr].typst_root = typst_root
-									root_path = typst_root
-								end
-							end
-						end
-						if not root_path or not vim.uv.fs_stat(root_path) then
-							return
-						end
-
-						local root_buf = vim.fn.bufadd(root_path)
-						vim.bo[root_buf].buflisted = false
-
-						if client then
-							client:exec_cmd({
-								title = "pin",
-								command = "tinymist.pinMain",
-								arguments = { vim.api.nvim_buf_get_name(root_buf) },
-							}, { bufnr = bufnr })
-							client:exec_cmd({
-								title = "exportpdf",
-								command = "tinymist.exportPdf",
-								arguments = { vim.api.nvim_buf_get_name(root_buf) },
-							}, { bufnr = bufnr })
-						end
-
-						vim.keymap.set(
-							"n",
-							"<localleader>tp",
-							function()
-								client:exec_cmd({
-									title = "pin",
-									command = "tinymist.pinMain",
-									arguments = { vim.api.nvim_buf_get_name(0) },
-								}, { bufnr = bufnr })
-							end,
-							{ desc = "tinymist pin main" }
-						)
-						vim.keymap.set(
-							"n",
-							"<localleader>tu",
-							function()
-								client:exec_cmd({
-									title = "unpin",
-									command = "tinymist.pinMain",
-									arguments = { vim.v.null },
-								}, { bufnr = bufnr })
-							end,
-							{ desc = "tinymist unpin main" }
-						)
-
-						-- execute nvim-lspconfig's on_attach from ~/.local/share/nvim/site/pack/nvim-lspconfig/lsp/tinymist.lua
-						dofile(vim.fn.stdpath("data") .. "/site/pack/nvim-lspconfig/lsp/tinymist.lua").on_attach(client, bufnr)
-					end,
-				},
-
-				ts_query_ls = {
-					init_options = {
-						parser_aliases = {
-							asymptote = "cpp",
-						},
-						valid_predicates = {
-							in_asy = {
-								parameters = {},
-								description = "Check the current file is an asymptote file",
-							},
-						},
-					},
-				},
-
-				ty = {}, -- python
-
-				yamlls = {
-					settings = {
-						yaml = {
-							schemaStore = {
-								enable = false,
-								url = "",
-							},
-							schemas = function()
-								local ok, schemas = pcall(require("schemastore").json.schemas())
-								if ok then
-									return schemas
-								else
-									return nil
-								end
-							end,
-						},
-					},
-				},
-			}
-
 			vim.schedule(function()
-				for server, config in pairs(lspconfigs) do
-					vim.lsp.config(server, config)
+				local servers = {
+					"asm_lsp",
+					"asy_ls",
+					"bashls",
+					"clangd",
+					"cmake",
+					"cssls",
+					"jsonls",
+					"lua_ls",
+					"rust_analyzer",
+					"tinymist",
+					"ts_query_ls",
+					"qmlls",
+					"ty",
+					"yamlls",
+				}
+				for _, server in ipairs(servers) do
 					vim.lsp.enable(server)
 				end
 			end)
@@ -330,6 +94,7 @@ return {
 					end
 				end,
 			})
+
 			vim.lsp.document_color.enable(false)
 		end,
 	},

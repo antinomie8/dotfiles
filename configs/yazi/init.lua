@@ -74,7 +74,6 @@ function Status:name()
 	}
 
 	if h.link_to then
-		local color = h:style()
 		table.insert(spans, 2, ui.Span(" -> "):fg(h:style():fg()))
 		table.insert(spans, 3, ui.Span(tostring(h.link_to)))
 	end
