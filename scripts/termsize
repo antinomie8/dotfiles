@@ -1,0 +1,23 @@
+#!/bin/sh
+
+read rows cols <<EOF
+$(command stty size)
+EOF
+
+oldstty=$(command stty -g)
+command stty raw -echo
+printf "\033[14t"
+response=""
+while :; do
+	char=$(command dd bs=1 count=1 2>/dev/null)
+	[ "$char" = "t" ] && break
+	response="${response}${char}"
+done
+command stty "$oldstty"
+h=$(echo "$response" | cut -d';' -f2)
+w=$(echo "$response" | cut -d';' -f3)
+
+echo "number of rows:    $rows"
+echo "number of columns: $cols"
+echo "screen width:      $w"
+echo "screen height:     $h"

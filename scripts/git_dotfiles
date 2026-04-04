@@ -7,52 +7,51 @@ BLUE='\e[38;5;39m'
 GREEN='\e[38;5;46m'
 COLOR_RESET='\e[0m'
 
-# clone the repo if it is not in ~/.config ans cd into it
-[[ -d ~/.config/dotfiles ]] || git clone https://github.com/antinomie8/dotfiles ~/.config/dotfiles
-cd ~/.config/dotfiles || {
+# clone the repo if it is not in ~/.config and cd to it
+if [[ ! -d ~/.config/dotfiles ]]; then
+	git clone https://github.com/antinomie8/dotfiles ~/.config/dotfiles
+fi
+if ! cd ~/.config/dotfiles; then
 	echo "${ERROR}Cloning the GitHub repository failed. Check you internet connection and try again${COLOR_RESET}"
 	exit
-}
+fi
 
 # $1: file to copy (relative to ~/.config/dotfiles)
 # $2: destination  (relative to ~/.config/dotfiles)
 function copy() {
-	[[ -e $1 ]] || {
-		echo -e "${WARNING} $1 not found${COLOR_RESET}"
+	if [[ ! -e $1 ]]; then
+		echo -e "${WARNING} ${1/#$HOME/~} not found${COLOR_RESET}"
 		return 1
-	}
+	fi
 	[[ -d $1 ]] && rsync -a --delete "$1/" $2/$(basename $1)/
 	[[ -f $1 ]] && rsync -a --delete $1 $2/$(basename $1)
 }
+# $1: source base
+# $2: destination base
+# ${>=3}: items to copy from source to destination
+function copy_group() {
+	local src_base=$1 dst_base=$2
+	shift 2
+	for item in $@; do
+		copy "$src_base/$item" "$dst_base"
+	done
+}
 
-# list of configs and scripts to copy
+# lists of files to copy
 configs=("asy" "bat" "btop" "browser" "clang-format" "clangd" "eza" "fastfetch" "git" "hypr"
 	"hyprland-preview-share-picker" "illogical-impulse" "imv" "kitty" "lazygit" "mpv" "neomutt"
 	"ncdu" "npm" "nvim" "oly" "quickshell" "ruff" "rustfmt" "safeeyes" "stylua" "tex-fmt" "thundery"
 	"tmux" "udiskie" "uwsm" "wget" "xdg-desktop-portal" "xdg-desktop-portal-termfilechooser" "yazi"
 	"zathura" "zsh" "fzf.conf" "kmonad.kbd" "mimeapps.list" "ripgrep.conf" "shellcheckrc" "user-dirs.dirs")
 # mozilla msmtp notmuch goimapnotify himalaya mirador aerc
-scripts=("assemble" "fzf_preview_wrapper" "git_dotfiles" "mailto" "rgb" "zoxide-rename")
+scripts=("assemble" "fzf_preview_wrapper" "git_dotfiles" "mailto" "rgb" "termsize" "zoxide-rename")
 systemd_user_units=("mail-sync.service" "goimapnotify.service")
 desktop_entries=("mail" "neomutt" "spotify" "yazi")
 
-# overwrite configs in the dotfiles repo
-for config in ${configs[@]}; do
-	copy $HOME/.config/$config configs
-done
-# overwrite scripts in the dotfiles repo
-for script in ${scripts[@]}; do
-	copy $HOME/.local/bin/$script scripts
-done
-# overwrite systemd user units in the dotfiles repo
-for systemd_user_unit in ${systemd_user_units[@]}; do
-	copy $HOME/.config/systemd/user/$systemd_user_unit etc/systemd/user
-done
-# overwrite desktop files in the dotfiles repo
-for desktop_file in ${desktop_entries[@]}; do
-	copy $HOME/.local/share/applications/$desktop_file.desktop etc/desktop
-done
-# others
+copy_group $HOME/.config configs $configs
+copy_group $HOME/.local/bin scripts $scripts
+copy_group $HOME/.config/systemd/user etc/systemd/user $systemd_user_units
+copy_group $HOME/.local/share/applications etc/desktop ${desktop_entries[@]/%/.desktop}
 copy $CPLUS_INCLUDE_PATH/dbg.hpp etc
 copy $HOME/.local/share/texmf etc
 
@@ -60,7 +59,9 @@ copy $HOME/.local/share/texmf etc
 find configs/neomutt/accounts -regex '\S*@\S*\.\S*' -type f -delete
 # obfuscate email adresses
 [[ -f configs/neomutt/neomuttrc ]] && {
-	sed -i 's:\(source .*/\)\S*@\S*\(<enter>;<check-stats>. "switch to \)\S*@\S*\("\):\2example@mail.com\2example@mail.com\3:' configs/neomutt/neomuttrc
+	sed -i \
+		's:\(source .*/\)\S*@\S*\(<enter>;<check-stats>. "switch to \)\S*@\S*\("\):\2example@mail.com\2example@mail.com\3:' \
+		configs/neomutt/neomuttrc
 	sed -i 's:\(source .*/\)\S*@\S*\( # primary account\):\1example@mail.com\2:' configs/neomutt/neomuttrc
 }
 # obfuscate API keys
@@ -69,7 +70,7 @@ sed -i 's:\(export.*API_KEY=\).*:\1"ooops not supposed to show that":' configs/z
 # cleanup
 for file in configs/*; do
 	if [[ ! $configs[(Ie)$file] ]]; then
-		echo "${WARNING}${GREEN}$file${BLUE} is in configs/ directory. Remove it ? ${COLOR_RESET}"
+		echo "${WARNING} ${GREEN}$file${BLUE} is in configs/ directory. Remove it ? ${COLOR_RESET}"
 		read -r answer
 		read -r answer
 		case $answer in
