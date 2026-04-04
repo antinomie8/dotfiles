@@ -27,13 +27,17 @@ PanelWindow {
         bottom: true
     }
 
+    // Modes
     // TODO: Ask: sidebar AI
     enum SnipAction { Copy, Edit, Search, CharRecognition, Record, RecordWithSound }
     enum SelectionMode { RectCorners, Circle }
+    enum Phase { Select, Post }
     property var action: RegionSelection.SnipAction.Copy
     property var selectionMode: RegionSelection.SelectionMode.RectCorners
+    property var phase: RegionSelection.Phase.Select
     signal dismiss()
 
+    // Styles
     property string screenshotDir: Directories.screenshotTemp
     property color overlayColor: ColorUtils.transparentize("#000000", 0.4)
     property color brightText: Appearance.m3colors.darkmode ? Appearance.colors.colOnLayer0 : Appearance.colors.colLayer0
@@ -46,6 +50,10 @@ PanelWindow {
     property color imageBorderColor: brightTertiary
     property color imageFillColor: ColorUtils.transparentize(imageBorderColor, 0.85)
     property color onBorderColor: "#ff000000"
+    property real targetRegionOpacity: Config.options.regionSelector.targetRegions.opacity
+    property bool contentRegionOpacity: Config.options.regionSelector.targetRegions.contentRegionOpacity
+
+    // Vars for indicators
     readonly property var windows: [...HyprlandData.windowList].sort((a, b) => {
         // Sort floating=true windows before others
         if (a.floating === b.floating) return 0;
@@ -54,6 +62,7 @@ PanelWindow {
     readonly property var layers: HyprlandData.layers
     readonly property real falsePositivePreventionRatio: 0.5
 
+    // Screen & interaction vars
     readonly property HyprlandMonitor hyprlandMonitor: Hyprland.monitorFor(screen)
     readonly property real monitorScale: hyprlandMonitor.scale
     readonly property real monitorOffsetX: hyprlandMonitor.x
@@ -105,13 +114,13 @@ PanelWindow {
         return offsetAdjustedLayers;
     }
 
+    // Config
     property bool isCircleSelection: (root.selectionMode === RegionSelection.SelectionMode.Circle)
     property bool enableWindowRegions: Config.options.regionSelector.targetRegions.windows && !isCircleSelection
     property bool enableLayerRegions: Config.options.regionSelector.targetRegions.layers && !isCircleSelection
     property bool enableContentRegions: Config.options.regionSelector.targetRegions.content
-    property real targetRegionOpacity: Config.options.regionSelector.targetRegions.opacity
-    property bool contentRegionOpacity: Config.options.regionSelector.targetRegions.contentRegionOpacity
 
+    // Target
     property real targetedRegionX: -1
     property real targetedRegionY: -1
     property real targetedRegionWidth: 0
@@ -175,6 +184,7 @@ PanelWindow {
     property real regionX: Math.min(dragStartX, draggingX)
     property real regionY: Math.min(dragStartY, draggingY)
 
+    // Screenshot stuff
     TempScreenshotProcess {
         id: screenshotProc
         running: true
@@ -247,6 +257,7 @@ PanelWindow {
         }
     }
 
+    // Execution after selection
     function snip() {
         // Validity check
         if (root.regionWidth <= 0 || root.regionHeight <= 0) {
@@ -277,21 +288,28 @@ PanelWindow {
             screenshotAction, //
             screenshotDir
         )
-        snipProc.command = command;
-
-        // Image post-processing
-        snipProc.startDetached();
-        root.dismiss();
+        Quickshell.execDetached(command);
+        if (root.action == RegionSelection.SnipAction.Record || root.action == RegionSelection.SnipAction.RecordWithSound) {
+            root.phase = RegionSelection.Phase.Post
+            root.selectionMode = RegionSelection.SelectionMode.RectCorners
+        } else {
+            root.dismiss();
+        }
     }
 
-    Process {
-        id: snipProc
+    // Only clickable in Selection phase
+    mask: Region {
+        item: switch(root.phase) {
+            case RegionSelection.Phase.Select: return mouseArea;
+            case RegionSelection.Phase.Post: return null;
+        }
     }
 
-    ScreencopyView {
+    ScreencopyView { // For freezing
         anchors.fill: parent
         live: false
         captureSource: root.screen
+        visible: root.phase === RegionSelection.Phase.Select
 
         focus: root.visible
         Keys.onPressed: (event) => { // Esc to close
@@ -299,6 +317,7 @@ PanelWindow {
                 root.dismiss();
             }
         }
+    }
 
         MouseArea {
             id: mouseArea
@@ -361,6 +380,7 @@ PanelWindow {
                     mouseY: mouseArea.mouseY
                     color: root.selectionBorderColor
                     overlayColor: root.overlayColor
+                breathingBorderOnly: root.phase === RegionSelection.Phase.Post
                 }
             }
 
@@ -375,8 +395,10 @@ PanelWindow {
                 }
             }
 
+        // The thing to the bottom-right with an icon
             CursorGuide {
                 z: 9999
+            visible: root.phase === RegionSelection.Phase.Select
                 x: root.dragging ? root.regionX + root.regionWidth : mouseArea.mouseX
                 y: root.dragging ? root.regionY + root.regionHeight : mouseArea.mouseY
                 action: root.action
@@ -386,18 +408,24 @@ PanelWindow {
             // Window regions
             Repeater {
                 model: ScriptModel {
-                    values: root.enableWindowRegions ? root.windowRegions : []
+                values: {
+                    if (root.phase === RegionSelection.Phase.Select && root.enableWindowRegions) {
+                        return root.windowRegions
+                    } else {
+                        return []
+                    }
+                }
                 }
                 delegate: TargetRegion {
                     z: 2
                     required property var modelData
                     clientDimensions: modelData
                     showIcon: true
-                    targeted: !root.draggedAway &&
-                        (root.targetedRegionX === modelData.at[0]
-                        && root.targetedRegionY === modelData.at[1]
-                        && root.targetedRegionWidth === modelData.size[0]
-                        && root.targetedRegionHeight === modelData.size[1])
+                targeted: !root.draggedAway && //
+                    (root.targetedRegionX === modelData.at[0]  //
+                    && root.targetedRegionY === modelData.at[1] //
+                    && root.targetedRegionWidth === modelData.size[0] //
+                    && root.targetedRegionHeight === modelData.size[1])
 
                     opacity: root.draggedAway ? 0 : root.targetRegionOpacity
                     borderColor: root.windowBorderColor
@@ -410,7 +438,13 @@ PanelWindow {
             // Layer regions
             Repeater {
                 model: ScriptModel {
-                    values: root.enableLayerRegions ? root.layerRegions : []
+                values: {
+                    if (root.phase === RegionSelection.Phase.Select && root.enableLayerRegions) {
+                        return root.layerRegions
+                    } else {
+                        return []
+                    }
+                }
                 }
                 delegate: TargetRegion {
                     z: 3
@@ -433,7 +467,13 @@ PanelWindow {
             // Content regions
             Repeater {
                 model: ScriptModel {
-                    values: root.enableContentRegions ? root.imageRegions : []
+                values: {
+                    if (root.phase === RegionSelection.Phase.Select && root.enableContentRegions) {
+                        return root.imageRegions
+                    } else {
+                        return []
+                    }
+                }
                 }
                 delegate: TargetRegion {
                     z: 4
@@ -456,6 +496,7 @@ PanelWindow {
             Row {
                 id: regionSelectionControls
                 z: 10
+            visible: root.phase === RegionSelection.Phase.Select
                 anchors {
                     horizontalCenter: parent.horizontalCenter
                     bottom: parent.bottom
@@ -487,32 +528,15 @@ PanelWindow {
                     }
                     onDismiss: root.dismiss();
                 }
-                Item {
-                    anchors {
-                        verticalCenter: parent.verticalCenter
-                    }
-                    implicitWidth: closeFab.implicitWidth
-                    implicitHeight: closeFab.implicitHeight
-                    StyledRectangularShadow {
-                        target: closeFab
-                        radius: closeFab.buttonRadius
-                    }
-                    FloatingActionButton {
-                        id: closeFab
-                        baseSize: 48
-                        iconText: "close"
-                        onClicked: root.dismiss();
-                        StyledToolTip {
-                            text: Translation.tr("Close")
-                        }
-                        colBackground: Appearance.colors.colTertiaryContainer
-                        colBackgroundHover: Appearance.colors.colTertiaryContainerHover
-                        colRipple: Appearance.colors.colTertiaryContainerActive
-                        colOnBackground: Appearance.colors.colOnTertiaryContainer
-                    }
+            ToolbarPairedFab {
+                anchors.verticalCenter: parent.verticalCenter
+                iconText: "close"
+                onClicked: root.dismiss();
+                StyledToolTip {
+                    text: Translation.tr("Close")
                 }
             }
-
         }
+
     }
 }
