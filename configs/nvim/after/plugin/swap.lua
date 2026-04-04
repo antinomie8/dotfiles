@@ -1,4 +1,4 @@
---- finds swapfiles for current file
+---finds swapfiles for current file
 ---@param swapname (string) path to a swapfile for the current file
 local function find_swapfiles(swapname)
 	local dir = vim.fs.dirname(swapname)
@@ -23,7 +23,7 @@ local function find_swapfiles(swapname)
 	return swaps
 end
 
---- pretty-print elapsed time
+---pretty-print elapsed time
 ---@param sec (integer) time elapsed in seconds between event and now
 local function time_ago(sec)
 	local diff = os.time() - sec

@@ -1,6 +1,8 @@
 local M = {}
 
----@param input (string)
+---splits the input string like a shell would
+---@param input string
+---@return string[] words input split by whitespace, with respect to quoting and escaping
 function M.shell_split(input)
 	local words = {}
 	local word = {}

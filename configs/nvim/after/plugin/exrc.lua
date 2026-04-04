@@ -1,6 +1,9 @@
---- Reads trust database from $XDG_STATE_HOME/nvim/trust.
+-- $VIMRUNTIME/lua/nvim/vim/_core/exrc.lua
+-- $VIMRUNTIME/lua/nvim/vim/secure.lua
+
+---Reads trust database from $XDG_STATE_HOME/nvim/trust.
 ---
----@return table<string, string> Contents of trust database, if it exists. Empty table otherwise.
+---@return table<string, string> contents Contents of trust database, if it exists. Empty table otherwise.
 local function read_trust()
 	local trust = {} ---@type table<string, string>
 	local f = io.open(vim.fn.stdpath("state") .. "/trust", "r")
@@ -19,11 +22,11 @@ local function read_trust()
 	return trust
 end
 
---- If {fullpath} is a file, read the contents of {fullpath} (or the contents of {bufnr}
---- if given) and returns the contents and a hash of the contents.
+---If {fullpath} is a file, read the contents of {fullpath} (or the contents of {bufnr}
+---if given) and returns the contents and a hash of the contents.
 ---
---- If {fullpath} is a directory, then nothing is read from the filesystem, and
---- `contents = true` and `hash = "directory"` is returned instead.
+---If {fullpath} is a directory, then nothing is read from the filesystem, and
+---`contents = true` and `hash = "directory"` is returned instead.
 ---
 ---@param fullpath string Path to a file or directory to read.
 ---@param bufnr integer? The number of the buffer.
@@ -62,8 +65,8 @@ local function compute_hash(fullpath, bufnr)
 	return contents, hash
 end
 
---- Writes provided {trust} table to trust database at
---- $XDG_STATE_HOME/nvim/trust.
+---Writes provided {trust} table to trust database at
+---$XDG_STATE_HOME/nvim/trust.
 ---
 ---@param trust table<string, string> Trust table to write
 local function write_trust(trust)
@@ -78,14 +81,14 @@ local function write_trust(trust)
 	f:close()
 end
 
---- If {path} is a file: attempt to read the file, prompting the user if the file should be
---- trusted.
+---If {path} is a file: attempt to read the file, prompting the user if the file should be
+---trusted.
 ---
---- If {path} is a directory: return true if the directory is trusted (non-recursive), prompting
---- the user as necessary.
+---If {path} is a directory: return true if the directory is trusted (non-recursive), prompting
+---the user as necessary.
 ---
---- The user's choice is persisted in a trust database at
---- $XDG_STATE_HOME/nvim/trust.
+---The user's choice is persisted in a trust database at
+---$XDG_STATE_HOME/nvim/trust.
 ---
 ---@since 11
 ---@see |:trust|
@@ -93,7 +96,7 @@ end
 ---@param path (string) Path to a file or directory to read.
 ---
 ---@param callback (function) If {path} is not trusted or does not exist, calls it with `nil`. Otherwise,
----        calls it with the contents of {path} if it is a file, or true if {path} is a directory.
+---       calls it with the contents of {path} if it is a file, or true if {path} is a directory.
 local function read(path, callback)
 	vim.validate("path", path, "string")
 	local fullpath = vim.uv.fs_realpath(vim.fs.normalize(path))

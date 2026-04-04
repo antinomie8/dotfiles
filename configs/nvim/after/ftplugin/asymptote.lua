@@ -16,6 +16,13 @@ end
 
 -- compile asy code
 local ns = vim.api.nvim_create_namespace("Asymptote")
+
+---@class AsyOpts
+---@field bufnr? integer
+---@field args? string[]
+---@field open? boolean
+---@field notify? boolean
+---@param opts AsyOpts?
 local function asy(opts)
 	opts = opts or {}
 	local args = vim.iter({ "-f", vim.b.output_format or "pdf", opts.args }):flatten():totable()

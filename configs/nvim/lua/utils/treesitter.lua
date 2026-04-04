@@ -1,12 +1,13 @@
 local treesitter = {}
 
----@param node (TSNode?)
----@param node_type (string)
-function treesitter.has_ancestor(node, node_type)
+---@param node TSNode?
+---@param ancestor_type string
+---@return boolean? has_ancestor wether node has an ancestor of type ancestor_type
+function treesitter.has_ancestor(node, ancestor_type)
 	if not node then return end
 	local parent = node:parent()
 	while parent do
-		if node_type == parent:type() then
+		if ancestor_type == parent:type() then
 			return true
 		end
 		parent = parent:parent()

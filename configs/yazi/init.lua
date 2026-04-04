@@ -117,7 +117,7 @@ function Status:perm()
 end
 
 function Status:percent()
-	local percent = 0
+	local percent = 0 ---@type integer|string
 	local cursor = self._current.cursor
 	local length = #self._current.files
 	if cursor ~= 0 and length ~= 0 then
