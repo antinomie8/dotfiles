@@ -4,7 +4,6 @@
 	(#in_asy?)
 	(#any-of? @keyword.import "access" "from" "import" ))
 
-
 ((identifier) @constant.builtin
 	(#in_asy?)
 	(#any-of? @constant.builtin "currentpicture" "currentpen" "defaultpen"
@@ -39,3 +38,6 @@
 
 	"thinp" "thickp"
 	))
+
+((escape_sequence) @string
+	(#in_asy?))
