@@ -77,7 +77,7 @@ if program pacman; then
 	if program yay; then
 		package_manager="yay"
 		packages+=("cppman" "hyprtime" "runapp" "thundery"
-		  "xdg-desktop-portal-termfilechooser-hunkyburrito-git")           # misc
+			"xdg-desktop-portal-termfilechooser-hunkyburrito-git")            # misc
 		packages+=("ttf-juliamono" "otf-garamond-math")                    # fonts
 		packages+=("codelldb-bin" "texlab" "tex-fmt" "asm-lsp" "typstyle") # Neovim
 		packages+=("kitty-git" "neovim-nightly-bin" "yazi-nightly-bin")
@@ -224,10 +224,16 @@ fi
 			cp -r "$item" "$HOME/.config/"
 		else
 			[[ -d "$item" ]] && recursive="-r" || recursive=""
-			if ! diff --brief $recursive --exclude='.git' --exclude='lockfile.json' \
-				--exclude='*@*\.*' --ignore-matching-lines='\S*@\S*\.\S*' \
-				--ignore-matching-lines='^export.*API_KEY=' \
-				"$item" "$HOME/.config/$item" >/dev/null 2>&1; then # ignore obfuscated e-mail adresses and API keys
+			if
+				! diff --brief $recursive \
+					--exclude='.git' \
+					--exclude='lockfile.json' \
+					--exclude=".qmlls.ini" \
+					--exclude='*@*\.*' \
+					--ignore-matching-lines='\S*@\S*\.\S*' \
+					--ignore-matching-lines='^export.*API_KEY=' \
+					"$item" "$HOME/.config/$item" >/dev/null 2>&1
+			then
 				if [[ -z $OVERWRITE ]]; then
 					if [[ $first == true ]]; then
 						echo -en "${BLUE}Would you like to :"

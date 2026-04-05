@@ -57,6 +57,8 @@ copy $HOME/.local/share/texmf etc
 
 # remove chosen files and directories
 find configs/neomutt/accounts -regex '\S*@\S*\.\S*' -type f -delete
+rm configs/quickshell/ii/.qmlls.ini
+touch configs/quickshell/ii/.qmlls.ini
 # obfuscate email adresses
 [[ -f configs/neomutt/neomuttrc ]] && {
 	sed -i \
