@@ -124,6 +124,7 @@ return {
 					NeoTreeFileIcon = { fg = palette.oldWhite },
 					NeoTreeDotfile = { fg = palette.sumiInk6 },
 					NeoTreeHiddenByName = { fg = palette.sumiInk6 },
+					NeoTreeGitUntracked = { fg = palette.oniViolet },
 
 					SnacksPickerPrompt = { fg = palette.autumnYellow, bg = palette.sumiInk3 },
 					SnacksDashboardKey = { link = "Keyword" },

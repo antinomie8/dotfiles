@@ -25,6 +25,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CmdlineLeave" }, {
 			"gitgraph",
 			"neo-tree",
 			"notmuch-threads",
+			"notmuch-tags",
 			"dashboard",
 			"trouble",
 			"undotree",
@@ -53,7 +54,7 @@ vim.api.nvim_create_autocmd("CmdlineEnter", {
 
 -- toggle some options and hide the cursor on enter
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "notmuch-threads", "gitgraph", "undotree" },
+	pattern = { "notmuch-threads", "notmuch-tags", "gitgraph", "undotree" },
 	callback = function()
 		vim.cmd("hi Cursor blend=100")
 		vim.opt_local.number = false
@@ -137,6 +138,7 @@ vim.api.nvim_create_autocmd("FileType", {
 			["man"] = "󱚊",
 			["mail"] = "",
 			["notmuch-threads"] = "",
+			["notmuch-tags"] = "",
 		}
 		local ft_ignore = { "noice", "notify", "blink-cmp-menu" }
 		if vim.tbl_contains(ft_ignore, vim.bo[event.buf].filetype) then

@@ -73,23 +73,17 @@ return {
 					use_filtered_colors = false,
 					provider = function(icon, node, state) -- default icon provider utilizes nvim-web-devicons if available
 						if node.type == "directory" then
+							local directory_icons = {
+								[".config"] = "",
+								["build"] = "󱧼",
+								[".git"] = "",
+								[".github"] = "",
+							}
 							if node.loaded and not node:has_children() then
 								-- empty folder
 							elseif node:is_expanded() then
-								local directory_icons = {
-									[".config"] = "",
-									["build"] = "󱧼",
-									[".git"] = "",
-									[".github"] = "",
-								}
 								icon.text = directory_icons[node.name] or icon.text
 							else
-								local directory_icons = {
-									[".config"] = "",
-									["build"] = "󱧼",
-									[".git"] = "",
-									[".github"] = "",
-								}
 								icon.text = directory_icons[node.name] or icon.text
 							end
 							local filtered_by = require("neo-tree.sources.common.components").filtered_by(nil, node, state)

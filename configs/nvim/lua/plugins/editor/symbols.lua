@@ -36,6 +36,7 @@ return {
 				"Class",
 				"Constructor",
 				"Enum",
+				"Function",
 				"Interface",
 				"Module",
 				"Method",
