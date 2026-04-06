@@ -68,6 +68,10 @@ return {
 		},
 		opts = {
 			bar = {
+				attach_events = {
+					"FileType",
+					"LspAttach",
+				},
 				enable = function(buf, win, _)
 					buf = vim._resolve_bufnr(buf)
 					if
