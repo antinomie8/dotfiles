@@ -39,6 +39,9 @@ point reflect(point A, point O) {
 circle circle(pair C, real r) {
 	return circle((point)C, r);
 }
+pair dir(point P) {
+	return dir((pair)P);
+}
 line bisector(pair A, pair B, pair C, int angle = 0) {
 	return bisector(line(A, B), line(B, C), angle);
 }

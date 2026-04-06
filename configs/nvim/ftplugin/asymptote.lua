@@ -31,6 +31,7 @@ local function asy(opts)
 	local preamble = require("static.lang.asymptote.preamble")
 	local preamble_size = select(2, preamble:gsub("\n", ""))
 	local input = preamble .. table.concat(text, "\n")
+	local name = vim.fn.expand("%:r")
 
 	vim.system(
 		vim.iter({
@@ -74,7 +75,7 @@ local function asy(opts)
 				end
 			end
 			if opts.open and obj.code == 0 then
-				require("utils.pdf").open(vim.fn.expand("%:r") .. ".pdf")
+				require("utils.pdf").open(name .. ".pdf")
 			end
 		end
 	)

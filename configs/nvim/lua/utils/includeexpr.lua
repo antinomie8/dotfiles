@@ -63,9 +63,11 @@ function M.asymptote()
 			local path = vim.fs.joinpath(dir, import .. ".asy")
 			if vim.uv.fs_stat(path) then
 				return path
+			else
 			end
 		end
 	end
+	return import
 end
 
 return M

@@ -180,7 +180,7 @@ return {
 					},
 					asymptote = {
 						name = "asymptote",
-						module = "utils.plugins.blink.asymptote",
+						module = "blink.asymptote",
 						score_offset = 5,
 						opts = {},
 					},

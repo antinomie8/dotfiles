@@ -7,6 +7,7 @@ git clone https://github.com/antinomie8/dotfiles ~/.config/dotfiles && ~/.config
 | `man oec` gives an error | `sudo localectl set-locale LANG=en_US.UTF-8` |
 | `pacman -Syu` marginal trust signatures error | `sudo pacman -Sy archlinux-keyring` |
 | `notmuch` hangs on every command | kill all notmuch processes and remove `flintlock` in `.notmuch/xapian` |
+| `asymptote` refuses to render `geometry.asy` constructs | ensure `autoimport` is not used |
 
 
 ### Things to do after installing
