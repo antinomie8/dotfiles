@@ -39,10 +39,11 @@ return {
 					Boolean = { bold = false },
 					DiagnosticUnnecessary = { force = true },
 
+					MailURL = { link = "@string.special.url" },
+					leanGoalsAccomplishedSign = { link = "leanInfoDiagnosticOk" },
 					["@markup.math.typst"] = { link = "Special" },
 					["@variable.cmake"] = { link = "Identifier" },
-					["MailURL"] = { link = "@string.special.url" },
-					leanGoalsAccomplishedSign = { link = "leanInfoDiagnosticOk" },
+					["@lsp.type.formatSpecifier.rust"] = { link = "@lsp.type.property" },
 
 					-- user interface
 					NormalFloat = { bg = "none" },
@@ -78,12 +79,12 @@ return {
 					diffDelete = { link = "Comment" },
 
 					-- plugins
-					markdownH1 = { fg = palette.peachRed },
-					markdownH2 = { fg = palette.surimiOrange },
-					markdownH3 = { fg = palette.carpYellow },
-					markdownH4 = { fg = palette.springGreen },
-					markdownH5 = { fg = palette.springBlue },
-					markdownH6 = { fg = palette.oniViolet },
+					MarkdownH1 = { fg = palette.peachRed },
+					MarkdownH2 = { fg = palette.surimiOrange },
+					MarkdownH3 = { fg = palette.carpYellow },
+					MarkdownH4 = { fg = palette.springGreen },
+					MarkdownH5 = { fg = palette.springBlue },
+					MarkdownH6 = { fg = palette.oniViolet },
 
 					MarkdownInfo = { fg = palette.crystalBlue },
 					MarkdownSuccess = { fg = palette.springGreen },

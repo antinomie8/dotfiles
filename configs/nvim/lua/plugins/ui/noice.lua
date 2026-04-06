@@ -68,6 +68,16 @@ return {
 				view_search = false, -- view for search count messages. "virtualtext" or 'false' to disable
 			},
 			lsp = {
+				hover = {
+					opts = {
+						size = {
+							max_width = 85,
+						},
+						win_options = {
+							wrap = false,
+						},
+					},
+				},
 				progress = {
 					enabled = false,
 				},
@@ -90,7 +100,7 @@ return {
 					end,
 				},
 				highlights = {
-					["\\<a href=\"[^>]*\">(.-)\\</a>"] = "@markup.link",
+					['\\<a href="[^>]*">(.-)\\</a>'] = "@markup.link",
 					["|%S-|"] = "@markup.link",
 					["@%S+"] = "@keyword",
 					["@c [^ .]+"] = "@function",

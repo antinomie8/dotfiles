@@ -92,7 +92,7 @@ return {
 						return false
 					end
 
-					if vim.tbl_contains({ "terminal", "quickfix", "nofile", "" }, vim.bo[buf].buftype) then
+					if vim.tbl_contains({ "terminal", "quickfix", "nofile" }, vim.bo[buf].buftype) then
 						return false
 					end
 

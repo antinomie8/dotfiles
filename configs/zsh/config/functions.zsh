@@ -87,6 +87,7 @@ function gacp() {
 }
 function clone() {
 	[[ $# == 0 ]] && { echo "clone: missing operand"; return 1 }
+	[[ $# > 2 ]]  && { echo "clone: too many operands"; return 1 }
 
 	local repo_name
 	if [[ $1 =~ ^[A-Za-z0-9._-]+:([^/][/A-Za-z0-9._-]*)$ ]]; then
@@ -110,7 +111,7 @@ function clone() {
 
 	git clone $1 $dir && cd $dir
 }
-gitdot() {
+function gitdot() {
 	if [[ $# == 0 ]]; then
 		git_dotfiles
 		if cd ~/.config/dotfiles; then
@@ -119,6 +120,17 @@ gitdot() {
 		fi
 	else
 		git_dotfiles $@
+	fi
+}
+function ghfork() {
+	local url=$(git config --get remote.origin.url)
+	if [[ $url =~ .*/([^/]*\.git)$ ]]; then
+		echo "n" | gh repo fork $url
+		git remote remove origin
+		git remote add origin me:"$match[1]"
+		git push -u origin $(git branch --show-current)
+	else
+		return 1
 	fi
 }
 

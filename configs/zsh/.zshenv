@@ -37,6 +37,7 @@ export ZSH_CACHE_DIR="${XDG_CACHE_HOME:-${HOME}/.cache}/zsh"
 # Path
 path=(
 	$HOME/.local/bin
+	$HOME/.local/share/cargo/bin
 	$path
 	/usr/local/texlive/2024/bin/x86_64-linux
 )

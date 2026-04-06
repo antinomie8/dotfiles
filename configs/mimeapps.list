@@ -13,10 +13,13 @@ text/x-tcl=nvim.desktop
 text/x-tex=nvim.desktop
 text/x-c=nvim.desktop
 text/x-c++=nvim.desktop
+text/c=nvim.desktop
+text/xml=nvim.desktop
 application/x-shellscript=nvim.desktop
 application/xml=nvim.desktop
-text/xml=nvim.desktop
 application/json=nvim.desktop
+application/octet-stream=nvim.desktop
+application/wine-extension-ini=nvim.desktop
 application/pdf=org.pwmt.zathura-pdf-mupdf.desktop
 inode/directory=yazi.desktop
 image/png=imv.desktop
@@ -46,10 +49,5 @@ x-scheme-handler/https=firefox.desktop
 x-scheme-handler/about=firefox.desktop
 x-scheme-handler/unknown=firefox.desktop
 x-scheme-handler/mailto=mail.desktop
-x-scheme-handler/aether=aether-protocol-handler.desktop
 x-scheme-handler/discord=vesktop.desktop
 x-scheme-handler/oly=oly.desktop
-
-# fallback
-application/octet-stream=nvim.desktop
-application/wine-extension-ini=nvim.desktop
