@@ -98,7 +98,7 @@ function _precmd_title() {
   print -Pn "\e]0; %~\a"
 }
 function _preexec_title() {
-  print -Pn "\e]0; $2\a"
+  print -Pn "\e]0; $1\a"
 }
 add-zsh-hook precmd _precmd_title
 add-zsh-hook preexec _preexec_title

@@ -1,10 +1,10 @@
 function kitty_set_spacing() {
-	if [[ -z "$NVIM" && -z "$TMUX" && -n "$KITTY_LISTEN_ON" ]]; then
+	if [[ -z $NVIM && -z $TMUX && -n $KITTY_LISTEN_ON ]]; then
 		kitty @ --to $KITTY_LISTEN_ON set-spacing padding=20
 	fi
 }
 function kitty_remove_spacing() {
-	if [[ -z "$NVIM" && -z "$TMUX" && -n "$KITTY_LISTEN_ON" ]]; then
+	if [[ -z $NVIM && -z $TMUX && -n $KITTY_LISTEN_ON ]]; then
 		kitty @ --to $KITTY_LISTEN_ON set-spacing padding=0
 	fi
 }
@@ -17,55 +17,47 @@ function zshexit() {
 	fi
 }
 
-function nvim() {
+function _tui_handle_spacing() {
+	local cmd=$1
+	shift 1
 	kitty_remove_spacing
-	command nvim "$@"
+	SPACING=ok command $cmd $@
 	kitty_set_spacing
 }
-function yazi() {
-	kitty_remove_spacing
-	command yazi "$@"
-	kitty_set_spacing
+
+function nvim() {
+	for arg in $@; do
+		if [[ $arg == "--headless" ]]; then
+			command nvim $@
+			return
+		fi
+	done
+	_tui_handle_spacing nvim $@
 }
 function lazygit() {
 	local repo
 	if repo=$(git rev-parse --show-toplevel 2>/dev/null); then
 		print -Pn "\e]0; $(basename $repo)\a"
+		export LAZYGIT=$repo
 		kitty_remove_spacing
-		command lazygit "$@"
+		_tui_handle_spacing lazygit $@
 		kitty_set_spacing
+		unset LAZYGIT
 	else
 		echo "Error: must be run inside a git repository"
 	fi
 }
 function btop() {
-	kitty_remove_spacing
 	print -Pn "\e]0; top\a"
-	command btop "$@"
-	kitty_set_spacing
-}
-function ncdu() {
-	kitty_remove_spacing
-	command ncdu "$@"
-	kitty_set_spacing
+	_tui_handle_spacing btop $@
 }
 function neomutt() {
 	kitty_remove_spacing
-	TERM=xterm-direct command neomutt "$@"
+	TERM=xterm-direct command neomutt $@
 	kitty_set_spacing
 }
-function aerc() {
-	kitty_remove_spacing
-	command aerc "$@"
-	kitty_set_spacing
-}
-function cxxmatrix() {
-	kitty_remove_spacing
-	command cxxmatrix "$@"
-	kitty_set_spacing
-}
-function tmux() {
-	kitty_remove_spacing
-	command tmux "$@"
-	kitty_set_spacing
-}
+alias yazi="_tui_handle_spacing yazi"
+alias ncdu="_tui_handle_spacing ncdu"
+alias aerc="_tui_handle_spacing aerc"
+alias cxxmatrix="_tui_handle_spacing cxxmatrix"
+alias tmux="_tui_handle_spacing tmux"

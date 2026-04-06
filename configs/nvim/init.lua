@@ -1,10 +1,5 @@
 vim.loader.enable()
 
--- remove terminal padding
-if not vim.env.NVIM and not vim.env.TMUX and not vim.env.YAZI_ID and vim.env.KITTY_LISTEN_ON then
-	vim.system({ "kitty", "@", "--to", vim.env.KITTY_LISTEN_ON, "set-spacing", "padding=0" })
-end
-
 require("config.autocmds")
 require("config.filetypes")
 require("config.keymaps")
