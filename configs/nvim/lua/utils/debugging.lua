@@ -53,7 +53,7 @@ local function setup(cmd)
 
 	-- stdio redirection
 	vim.b[buf].codelldb_stdio_redirection = nil
-	vim.keymap.set("n", "<leader>oc", function()
+	vim.keymap.set("n", "<localleader>dc", function()
 		vim.b[buf].codelldb_stdio_redirection = not vim.b[buf].codelldb_stdio_redirection
 	end, { desc = "Toggle codelldb stdio redirection", buffer = true })
 

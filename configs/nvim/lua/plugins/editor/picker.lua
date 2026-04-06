@@ -47,11 +47,10 @@ return {
 		{ "<leader>sl", function() require("snacks.picker").loclist() end, desc = "Location List" },
 		{ "<leader>sm", function() require("snacks.picker").marks() end, desc = "Marks" },
 		{ "<leader>sM", function() require("snacks.picker").man({ previewers = { diff = { style = "syntax" } } }) end, desc = "Man Pages" },
-		{ "<leader>sp", function() require("snacks.picker").lazy() end, desc = "Search for Plugin Spec" },
+		{ "<leader>sp", function() require("snacks.picker").lazy() end, desc = "Plugin specs" },
 		{ "<leader>sq", function() require("snacks.picker").qflist() end, desc = "Quickfix List" },
 		{ "<leader>sR", function() require("snacks.picker").resume() end, desc = "Resume" },
 		{ "<leader>su", function() require("snacks.picker").undo() end, desc = "Undo History" },
-		{ "<leader>uC", function() require("snacks.picker").colorschemes() end, desc = "Colorschemes" },
 		{ "<leader>sn", function() require("snacks.picker").noice() end, desc = "Notification History" },
 		-- LSP
 		{ "grd", function() require("snacks.picker").lsp_definitions() end, desc = "Goto Definition" },

@@ -167,7 +167,6 @@ return {
 			{ "<leader>sq", desc = "Quickfix List", icon = { icon = " ", color = "grey" } },
 			{ "<leader>sR", desc = "Resume", icon = { icon = "󰜉 ", color = "azure" } },
 			{ "<leader>su", desc = "Undo History", icon = { icon = "󰕍 ", color = "orange" } },
-			{ "<leader>uC", desc = "Colorschemes", icon = { icon = "🎨 ", color = "blue" } },
 			{ "<leader>sn", desc = "Notification History", icon = { icon = " ", color = "cyan" } },
 			-- LSP
 			{ "grd", desc = "Goto Definition", icon = { icon = " ", color = "azure" } },

@@ -1,11 +1,11 @@
 return {
 	on_init = function(client)
-		local config = "nvim"
 		local path = client.workspace_folders and client.workspace_folders[1].name or vim.api.nvim_buf_get_name(0)
 		if vim.fs.root(path, { ".luarc.json", ".luarc.jsonc" }) then
 			return
 		end
 
+		local config = "nvim"
 		if path:match("^" .. vim.env.HOME .. "/.config/yazi") then
 			config = "yazi"
 		end

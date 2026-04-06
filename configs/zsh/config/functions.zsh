@@ -101,7 +101,10 @@ function clone() {
 	fi
 
 	local dir=${2:-$HOME/Téléchargements/git/$repo_name}
-	if [[ -z $2 && $dir =~ ^(.*/[^/]+)\.git$ ]]; then
+	if [[ $dir == '.' ]]; then
+		dir=$repo_name # clone in cwd
+	fi
+	if [[ (-z $2 || $2 == '.') && $dir =~ ^(.*)\.git$ ]]; then
 		dir=$match[1] # strip trailing .git
 	fi
 

@@ -176,4 +176,5 @@ prepend_conds = [
 ]
 append_exts = [
 	{ name = "asy", text = "󰒕", fg = "#ff0000" },
+	{ name = "lean", text = "L", fg = "#ffffff" },
 ]

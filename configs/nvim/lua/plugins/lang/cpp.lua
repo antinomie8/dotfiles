@@ -208,14 +208,20 @@ return {
 	},
 	{
 		"p00f/clangd_extensions.nvim",
-		ft = { "c", "cpp" },
 		keys = {
 			{
 				"<localleader>f",
 				"<Cmd>ClangdSwitchSourceHeader<CR>",
-				ft = "cpp",
+				ft = { "c", "cpp" },
 				desc = "Switch between source and header files",
 			},
+		},
+		cmd = {
+			"ClangdSwitchSourceHeader",
+			"ClangdAST",
+			"ClangdSymbolInfo",
+			"ClangdTypeHierarchy",
+			"ClangdMemoryUsage",
 		},
 		opts = {
 			ast = {

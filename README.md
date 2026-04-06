@@ -10,6 +10,7 @@ git clone https://github.com/antinomie8/dotfiles ~/.config/dotfiles && ~/.config
 
 
 ### Things to do after installing
+- `elan toolchain install leanprover/lean4:stable && elan default stable`
 - `rustup default stable`
 - `go telemetry off`
 - `just --completions zsh > ~/.local/share/zsh/completions/_just`

@@ -42,6 +42,7 @@ return {
 					["@markup.math.typst"] = { link = "Special" },
 					["@variable.cmake"] = { link = "Identifier" },
 					["MailURL"] = { link = "@string.special.url" },
+					leanGoalsAccomplishedSign = { link = "leanInfoDiagnosticOk" },
 
 					-- user interface
 					NormalFloat = { bg = "none" },

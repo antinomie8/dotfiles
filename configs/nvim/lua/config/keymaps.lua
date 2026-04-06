@@ -64,18 +64,6 @@ keymap.set("i", "<M-a>", "<C-o>$", { desc = "Go to end" })
 keymap.set("i", "<M-f>", "<C-o>E", { desc = "Forward word" })
 keymap.set("i", "<M-b>", "<C-o>B", { desc = "Backward word" })
 
--- toggle options
-keymap.set("n", "<leader>os", "<Cmd>set spell!<CR>", { desc = "Toggle spell checking" })
-keymap.set("n", "<leader>ow", "<Cmd>set wrap!<CR>", { desc = "Toggle line wrapping" })
-keymap.set("n", "<leader>or", "<Cmd>set relativenumber!<CR>", { desc = "Toggle relative numbers" })
-keymap.set("n", "<leader>oa", "<Cmd>set autochdir!<CR>", { desc = "Sync cwd with buffer's" })
-keymap.set(
-	"n",
-	"<leader>od",
-	function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end,
-	{ desc = "Toggle diagnostics" }
-)
-
 -- search
 keymap.set("n", "n", "nzz")
 keymap.set("n", "N", "Nzz")

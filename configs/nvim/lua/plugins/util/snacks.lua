@@ -10,6 +10,7 @@ return {
 	keys = {
 		{ "<localleader>.", function() require("snacks.scratch")() end, desc = "Toggle Scratch Buffer" },
 		{ "<localleader>%", function() require("snacks.scratch").select() end, desc = "Select Scratch Buffer" },
+
 		{
 			"<leader>lg",
 			function()
@@ -32,6 +33,7 @@ return {
 			mode = { "n", "t" },
 			desc = "Toggle terminal",
 		},
+
 		{ "]r", function() require("snacks.words").jump(vim.v.count1) end },
 		{ "[r", function() require("snacks.words").jump(-vim.v.count1) end },
 	},
@@ -49,6 +51,18 @@ return {
 				end)
 			end,
 		})
+
+		local function toggle(option, keys, name)
+			local map = require("snacks.toggle").option(option)
+			map.opts.name = name
+			map:map(keys)
+		end
+		toggle("spell", "<leader>os", "spell checking")
+		toggle("wrap", "<leader>ow", "line wrapping")
+		toggle("relativenumber", "<leader>or", "relative numbering")
+		toggle("autochdir", "<leader>oa", "directory syncing with buffer")
+		require("snacks.toggle").diagnostics():map("<leader>od")
+		require("snacks.toggle").inlay_hints():map("<leader>oi")
 	end,
 	opts = {
 		bigfile = {},
@@ -81,5 +95,8 @@ return {
 			},
 		},
 		terminal = {},
+		toggle = {
+			notify = false,
+		},
 	},
 }
