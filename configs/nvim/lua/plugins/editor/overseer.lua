@@ -86,7 +86,7 @@ return {
 				limit = math.huge,
 				upward = true,
 			})
-			if cmakelists then
+			if #cmakelists > 0 then
 				vim.cmd.cd(vim.fs.dirname(cmakelists[#cmakelists]))
 				vim.opt_local.makeprg = "cmake --build build/Debug"
 			end

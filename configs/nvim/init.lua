@@ -17,7 +17,7 @@ if not vim.uv.fs_stat(lazypath) then
 		lazypath,
 	})
 end
-vim.opt.rtp:prepend(lazypath)
+vim.opt.runtimepath:prepend(lazypath)
 
 -- defer notifications happening during startup
 _G.pending_notifications = {
@@ -75,3 +75,6 @@ require("lazy").setup({
 		},
 	},
 })
+
+-- add plugin overrides and extensions
+vim.opt.runtimepath:prepend(vim.fn.stdpath("config") .. "/lua/utils/plugins")

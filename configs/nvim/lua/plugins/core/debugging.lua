@@ -196,7 +196,7 @@ return {
 		dap.configurations.c = dap.configurations.cpp
 		dap.configurations.rust = dap.configurations.cpp
 
-		-- automatically add a breakpoint at the beginning of main function
+		-- automatically add breakpoints
 		dap.listeners.before.event_initialized.auto_breakpoint = function()
 			local pattern
 			if vim.tbl_contains({ "c", "cpp" }, vim.bo.filetype) then

@@ -97,7 +97,6 @@ return {
 				border = "thin",
 				position = "right",
 				width = "block",
-				left_pad = 1,
 				right_pad = 1,
 				highlight = "TerminalBackground",
 				highlight_border = "TerminalBackground",

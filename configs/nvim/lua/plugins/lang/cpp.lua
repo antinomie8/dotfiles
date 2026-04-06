@@ -8,7 +8,7 @@ return {
 			{
 				"<localleader>add",
 				"<Cmd>CompetiTest add_testcase<CR>",
-				ft = { "c", "cpp", "asm" },
+				ft = { "c", "cpp", "asm", "rust" },
 				desc = "Add testcase",
 			},
 			{
@@ -17,20 +17,20 @@ return {
 					vim.cmd("hi Cursor blend=100")
 					vim.cmd("CompetiTest delete_testcase")
 				end,
-				ft = { "c", "cpp", "asm" },
+				ft = { "c", "cpp", "asm", "rust" },
 				desc = "Delete testcase",
 			},
 			{
 				"<localleader>run",
 				"<Cmd>CompetiTest run<CR>",
-				ft = { "c", "cpp", "asm" },
+				ft = { "c", "cpp", "asm", "rust" },
 				desc = "Run the code on tests",
 			},
 			{ "<localleader>shw", "<Cmd>CompetiTest show_ui<CR>", ft = { "c", "cpp", "asm" }, desc = "Show ui" },
 			{
 				"<localleader>tst",
 				"<Cmd>CompetiTest run_no_compile<CR>",
-				ft = { "c", "cpp", "asm" },
+				ft = { "c", "cpp", "asm", "rust" },
 				desc = "Test without recompiling",
 			},
 			{
@@ -39,7 +39,7 @@ return {
 					vim.cmd("hi Cursor blend=100")
 					vim.cmd("CompetiTest edit_testcase")
 				end,
-				ft = { "c", "cpp", "asm" },
+				ft = { "c", "cpp", "asm", "rust" },
 				desc = "Edit testcase",
 			},
 		},
@@ -48,6 +48,7 @@ return {
 
 			floating_border = "rounded",
 			floating_border_highlight = "FloatBorder",
+			run_empty_testcase = true,
 			picker_ui = {
 				width = 0.2,
 				height = 0.3,

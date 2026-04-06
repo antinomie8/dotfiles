@@ -27,8 +27,6 @@ return {
 					checkThirdParty = false,
 					library = {
 						vim.env.VIMRUNTIME,
-						"${3rd}/luv/library",
-						-- "${3rd}/busted/library",
 					},
 				},
 			},
@@ -84,7 +82,6 @@ return {
 			diagnostics = {
 				disable = {
 					"redefined-local",
-					"unused-local",
 				},
 			},
 		},
