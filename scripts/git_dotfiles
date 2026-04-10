@@ -52,7 +52,7 @@ copy_group $HOME/.config configs $configs
 copy_group $HOME/.local/bin scripts $scripts
 copy_group $HOME/.config/systemd/user etc/systemd/user $systemd_user_units
 copy_group $HOME/.local/share/applications etc/desktop ${desktop_entries[@]/%/.desktop}
-copy $CPLUS_INCLUDE_PATH/dbg.hpp etc
+copy $CPLUS_INCLUDE_PATH/dbg.h etc
 copy $HOME/.local/share/texmf etc
 
 # remove chosen files and directories

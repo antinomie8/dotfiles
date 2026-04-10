@@ -26,15 +26,19 @@ function copy_item() {
 	local target_loc="$2/$(basename "$1")"
 
 	[[ -d "$2" ]] || $sudo mkdir -p "$2" 2>/dev/null
+
 	if [[ ! -e $target_loc ]]; then
-		$sudo cp -r "$1" "$2/" 2>/dev/null || echo -e "${ERROR} ${WHITE}You need to manually move ${SUCCESS}$1${WHITE} to ${SUCCESS}$2${COLOR_RESET}"
+		$sudo cp -r "$1" "$2/" 2>/dev/null ||
+			echo -e "${ERROR} ${WHITE}You need to manually move ${SUCCESS}$1${WHITE} to ${SUCCESS}$2${COLOR_RESET}"
 	elif ! diff --brief -r --exclude='*.pdf' "$1" "$target_loc" >/dev/null 2>&1; then
-		echo -en "${INFO}Would you like to delete your current ${SUCCESS}$(basename $1)${INFO} to replace it with the one in this repo ? (y/n) ${COLOR_RESET}"
+		echo -en "${INFO}Would you like to delete your current ${SUCCESS}$(basename "$1")${INFO} \
+to replace it with the one in this repo ? (y/n) ${COLOR_RESET}"
 		local answer
 		read -r answer
 		case "$answer" in
 		[yY][eE][sS] | [yY])
-			$sudo cp -r "$1" "$2/" 2>/dev/null || echo -e "${ERROR} ${WHITE}You need to manually move ${SUCCESS}$1${WHITE} to ${SUCCESS}$2${COLOR_RESET}"
+			$sudo cp -r "$1" "$2/" 2>/dev/null ||
+				echo -e "${ERROR} ${WHITE}You need to manually move ${SUCCESS}$1${WHITE} to ${SUCCESS}$2${COLOR_RESET}"
 			;;
 		esac
 	fi
@@ -64,7 +68,7 @@ program neomutt && copy_item icons/hicolor/48x48/apps/neomutt.png ~/.local/share
 program nvim && copy_item desktop/mail.desktop ~/.local/share/applications
 program nvim && copy_item icons/hicolor/scalable/apps/mail.svg ~/.local/share/icons/hicolor/scalable/apps
 program spotify && copy_item desktop/spotify.desktop ~/.local/share/applications
-[[ -n "$CPLUS_INCLUDE_PATH" ]] && copy_item dbg.hpp "$CPLUS_INCLUDE_PATH"
+[[ -n "$CPLUS_INCLUDE_PATH" ]] && copy_item dbg.h "$CPLUS_INCLUDE_PATH"
 if program systemctl; then
 	for file in systemd/user/*; do
 		if [[ ! -f "$file" ]]; then
