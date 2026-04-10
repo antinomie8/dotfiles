@@ -1,0 +1,175 @@
+"comment" = "#727169"
+# comment.line.number-sign.shell # the actual comment body
+"constant.character.escape" = "#c0a36e"
+# constant.character.escape.backtick.shell
+# constant.character.escape.shell
+"constant.numeric" = "#d27e99"
+# constant.numeric.integer.decimal.base.shell
+# constant.numeric.integer.decimal.file-descriptor.shell
+# constant.numeric.integer.decimal.job.shell
+# constant.numeric.integer.decimal.shell
+# constant.numeric.integer.generic-base.shell
+# constant.numeric.integer.hexadecimal.shell
+# constant.numeric.integer.octal.shell
+"dynamic" = "#6a9589"
+"dynamic.callable.alias.shell" = "#7aa89f"
+"dynamic.callable.builtin.shell" = "#7fb4ca"
+# dynamic.callable.command.shell
+# dynamic.callable.function.shell
+"dynamic.callable.missing.shell" = "#c34043"
+"dynamic.path" = { underline = true }
+# dynamic.path.directory.shell
+# dynamic.path.file.shell
+"entity.name.function" = "#7e9cd8"
+# entity.name.function.alias.shell
+# entity.name.function.coproc.shell
+# entity.name.function.shell
+"invalid" = "#e82424"
+# invalid.illegal.extraneous-spaces-after-line-continuation.shell
+# invalid.illegal.no-spaces-allowed-after-heredoc-token.shell
+# invalid.illegal.not-a-hex-character.shell
+# invalid.illegal.not-an-octal-character.shell
+"keyword" = "#957fb8"
+"keyword.control.case.item.shell" = "#9cabca"
+# keyword.control.case.begin.shell
+# keyword.control.case.end.shell
+# keyword.control.case.in.shell
+# keyword.control.case.item.shell
+# keyword.control.do.shell
+# keyword.control.done.shell
+# keyword.control.end.shell
+# keyword.control.flow.break.shell
+# keyword.control.flow.continue.shell
+# keyword.control.flow.nocorrect.shell
+# keyword.control.flow.time.shell
+# keyword.control.for.shell
+# keyword.control.foreach.shell
+# keyword.control.heredoc-token.shell
+# keyword.control.if.begin.shell
+# keyword.control.if.elif.shell
+# keyword.control.if.else.shell
+# keyword.control.if.end.shell
+# keyword.control.if.then.shell
+# keyword.control.in.shell
+"keyword.control.regexp" = "#9cabca"
+# keyword.control.regexp.set.end.shell
+# keyword.control.repeat.shell
+# keyword.control.select.shell
+# keyword.control.until.shell
+# keyword.control.while.shell
+"keyword.operator" = "#c0a36e"
+# keyword.operator.arithmetic.shell
+# keyword.operator.assignment.option.shell
+# keyword.operator.assignment.redirection.process.shell
+# keyword.operator.assignment.redirection.shell
+# keyword.operator.assignment.shell
+# keyword.operator.bitwise.shell
+# keyword.operator.end-of-options.shell
+# keyword.operator.expansion.shell
+# keyword.operator.herestring.shell
+# keyword.operator.indirection.shell
+# keyword.operator.logical.and.shell
+"keyword.operator.logical.continue.shell" = "#9cabca" # semicolon
+# keyword.operator.logical.job.shell
+# keyword.operator.logical.not.shell
+# keyword.operator.logical.or.shell
+# keyword.operator.logical.pipe.shell
+# keyword.operator.logical.shell
+# keyword.operator.regexp.quantifier.shell
+# keyword.operator.substitution.shell
+# keyword.operator.substring.begin.shell
+# keyword.operator.substring.end.shell
+# keyword.operator.ternary.shell
+# keyword.operator.word.shell
+# keyword.other.coproc.shell
+"meta" = "#7fb4ca"
+"meta.function-call.arguments.shell" = "#b8b4d0"
+# "meta.function-call.shell" = "#7fb4ca"
+# "meta.function.coproc.shell" = "#7fb4ca"
+# "meta.function.shell" = "#7fb4ca"
+# "meta.group.arithmetic.shell" = "#7fb4ca"
+# "meta.group.expansion" = "#7fb4ca"
+# "meta.group.expansion.arithmetic.shell" = "#7fb4ca"
+"meta.group.expansion.brace.shell" = "#c0a36e"
+# "meta.group.expansion.command.backticks.shell" = "#7fb4ca"
+# "meta.group.expansion.command.parens.shell" = "#7fb4ca"
+# "meta.group.expansion.job.shell" = "#7fb4ca"
+# "meta.group.expansion.parameter.shell" = "#7fb4ca"
+# "meta.group.expansion.tilde" = "#7fb4ca"
+# "meta.group.for.shell" = "#7fb4ca"
+# "meta.group.foreach.shell" = "#7fb4ca"
+# "meta.group.parens.shell" = "#7fb4ca"
+# "meta.group.select.shell" = "#7fb4ca"
+# "meta.post-cmd.shell" = "#7fb4ca"
+"meta.regexp.shell" = "#c0a36e"
+"punctuation" = "#9cabca"
+"punctuation.definition.comment.begin.shell" = "#727169"
+# "punctuation.definition.compound.begin.shell" = "#7fb4ca"
+# "punctuation.definition.compound.braces.begin.shell" = "#7fb4ca"
+# "punctuation.definition.compound.braces.end.shell" = "#7fb4ca"
+# "punctuation.definition.compound.end.shell" = "#7fb4ca"
+# "punctuation.definition.numeric.base.shell" = "#7fb4ca"
+# "punctuation.definition.numeric.hexadecimal.shell" = "#7fb4ca"
+# "punctuation.definition.numeric.octal.shell" = "#7fb4ca"
+# "punctuation.definition.parameter.shell" = "#7fb4ca"
+"punctuation.definition.string" = "#98bb6c"
+# "punctuation.definition.string.begin.shell" = "#7fb4ca"
+# "punctuation.definition.string.end.shell" = "#7fb4ca"
+# "punctuation.definition.string.shell" = "#7fb4ca"
+# "punctuation.definition.variable.job.shell" = "#7fb4ca"
+"punctuation.definition.variable.shell" = "#7fb4ca"
+# "punctuation.section.arithmetic.begin.shell" = "#7fb4ca"
+# "punctuation.section.arithmetic.end.shell" = "#7fb4ca"
+# "punctuation.section.braces.begin.shell" = "#7fb4ca"
+# "punctuation.section.braces.end.shell" = "#7fb4ca"
+# "punctuation.section.brackets.begin.shell" = "#7fb4ca"
+# "punctuation.section.brackets.end.shell" = "#7fb4ca"
+"punctuation.section.expansion" = "#7fb4ca"
+# "punctuation.section.expansion.brace.begin.shell" = "#7fb4ca"
+# "punctuation.section.expansion.brace.end.shell" = "#7fb4ca"
+# "punctuation.section.expansion.parameter.begin.shell" = "#7fb4ca"
+# "punctuation.section.expansion.parameter.end.shell" = "#7fb4ca"
+# "punctuation.section.group.begin.shell" = "#7fb4ca"
+# "punctuation.section.group.end.shell" = "#7fb4ca"
+"punctuation.section.parens" = "#7fb4ca"
+# "punctuation.section.parens.begin.shell"
+# "punctuation.section.parens.end.shell"
+# "punctuation.separator.character-class.begin.shell" = "#7fb4ca"
+# "punctuation.separator.character-class.end.shell" = "#7fb4ca"
+# "punctuation.separator.collate.begin.shell" = "#7fb4ca"
+# "punctuation.separator.collate.end.shell" = "#7fb4ca"
+# "punctuation.separator.continuation.line.shell" = "#7fb4ca"
+# "punctuation.separator.equivalence-class.begin.shell" = "#7fb4ca"
+# "punctuation.separator.equivalence-class.end.shell" = "#7fb4ca"
+# "punctuation.separator.shell" = "#7fb4ca"
+# "punctuation.terminator.case.shell" = "#7fb4ca"
+# "punctuation.terminator.file-descriptor.shell" = "#7fb4ca"
+# "source.shell.bash" = "#223249"
+"storage" = "#957fb8"
+# storage.modifier.shell
+# storage.type.function.shell
+"string" = "#98bb6c"
+# string.quoted.double.locale.shell
+# string.quoted.double.shell
+# string.quoted.single.ansi-c.shell
+# string.quoted.single.shell
+# string.unquoted.heredoc.shell
+# "string.unquoted.shell" = "#d27e99"
+"support" = "#9cabca"
+# support.function.alias.shell
+# support.function.double-brace.begin.shell
+# support.function.double-brace.end.shell
+# support.function.let.bash
+# support.function.test.begin.shell
+# support.function.test.end.shell
+"variable" = "#dcd7ba"
+# "variable.function.shell" = "#7fb4ca"
+"variable.language" = "#e46876"
+# "variable.language.array.shell" = "#7fb4ca"
+# "variable.language.job.shell" = "#7fb4ca"
+# "variable.language.shell" = "#e46876"
+"variable.language.tilde.shell" = "#b8b4d0"
+# variable.other.readwrite.assignment.shell
+# variable.other.readwrite.shell
+"variable.parameter.option.shell" = "#9cabca"
+# variable.parameter.switch.shell

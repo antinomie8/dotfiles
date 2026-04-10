@@ -7,9 +7,6 @@
 # change the tab width
 --tabs 2
 
-# disable automatic paging
---paging=never
-
 # enable this to use italic text on the terminal.
 --italic-text=always
 

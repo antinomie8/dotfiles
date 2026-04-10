@@ -1,20 +1,13 @@
-local function exec_autocmds()
-	vim.api.nvim_exec_autocmds("WinEnter", { buffer = 0 })
-	vim.api.nvim_exec_autocmds("BufEnter", { buffer = 0 })
-end
-
 return {
-	"folke/snacks.nvim",
+	"antionmie8/snacks.nvim",
+	branch = "master",
 	lazy = false,
 	priority = 1000,
 	keys = {
-		{ "<localleader>.", function() require("snacks.scratch")() end, desc = "Toggle Scratch Buffer" },
-		{ "<localleader>%", function() require("snacks.scratch").select() end, desc = "Select Scratch Buffer" },
-
 		{
 			"<leader>lg",
 			function()
-				require("snacks.terminal").open("lazygit"):on("TermClose", exec_autocmds)
+				require("snacks.terminal").open("lazygit")
 			end,
 			desc = "Open Lazygit",
 		},
@@ -28,11 +21,14 @@ return {
 						backdrop = false,
 						wo = { winblend = 15 },
 					},
-				}):on("TermClose", exec_autocmds)
+				})
 			end,
 			mode = { "n", "t" },
 			desc = "Toggle terminal",
 		},
+
+		{ "<localleader>.", function() require("snacks.scratch")() end, desc = "Toggle Scratch Buffer" },
+		{ "<localleader>%", function() require("snacks.scratch").select() end, desc = "Select Scratch Buffer" },
 
 		{ "]r", function() require("snacks.words").jump(vim.v.count1) end },
 		{ "[r", function() require("snacks.words").jump(-vim.v.count1) end },
@@ -42,13 +38,10 @@ return {
 			require("snacks.picker").icons()
 		end, {})
 
-		vim.api.nvim_create_autocmd("UIEnter", {
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "SnacksDashboardOpened",
 			callback = function()
-				vim.schedule(function()
-					if vim.bo.filetype == "dashboard" then
-						vim.cmd("hi Cursor blend=100")
-					end
-				end)
+				vim.cmd("hi Cursor blend=100")
 			end,
 		})
 
@@ -94,7 +87,18 @@ return {
 				footer_keys = false,
 			},
 		},
-		terminal = {},
+		terminal = {
+			auto_close = false,
+			on = {
+				TermClose = function(terminal)
+					terminal:close()
+					vim.cmd.checktime()
+
+					vim.api.nvim_exec_autocmds("WinEnter", { buffer = 0 })
+					vim.api.nvim_exec_autocmds("BufEnter", { buffer = 0 })
+				end,
+			},
+		},
 		toggle = {
 			notify = false,
 		},

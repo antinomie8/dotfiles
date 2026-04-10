@@ -37,15 +37,11 @@ function get_answer() {
 }
 # util function for checking if a program is in $PATH
 function program() {
-	if command -v "$1" >/dev/null 2>&1; then
-		return 0
-	else
-		return 1
-	fi
+	command -v "$1" >/dev/null 2>&1
 }
 
 # warn the user if the script is being runned as root
-if [[ "$EUID" == 0 && ! "$SCRIPT_DIR" =~ ^/root ]]; then
+if [[ "$EUID" -eq 0 && ! "$SCRIPT_DIR" = /root && ! "$SCRIPT_DIR" = /root/* ]]; then
 	echo -e "${WARNING} Running this script as root might cause permission issues."
 	echo -en "${WARNING}  Do you really want to continue ? (y/n) ${COLOR_RESET}"
 	if ! get_answer; then
@@ -76,8 +72,9 @@ if program pacman; then
 	# install required packages
 	if program yay; then
 		package_manager="yay"
-		packages+=("cppman" "hyprtime" "runapp" "thundery"
-		  "xdg-desktop-portal-termfilechooser-hunkyburrito-git" "elan")    # misc
+		packages+=("cppman" "cpulimit" "dbg-macro" "hyprtime" "runapp" "thundery"
+			"xdg-desktop-portal-termfilechooser-hunkyburrito-git" "elan")    # misc
+		packages+=("zsh-abbr" "zsh-patina-git")                            # shell
 		packages+=("ttf-juliamono" "otf-garamond-math")                    # fonts
 		packages+=("codelldb-bin" "texlab" "tex-fmt" "asm-lsp" "typstyle") # Neovim
 		packages+=("kitty-git" "neovim-nightly-bin" "yazi-nightly-bin")
@@ -156,7 +153,7 @@ if [[ -f /etc/pulse/client.conf ]] &&
 fi
 
 # check wether the default shell is zsh or not
-if [[ ! "$SHELL" = *zsh ]]; then
+if [[ ! "$SHELL" = */zsh ]]; then
 	if program zsh; then
 		echo -en "${BLUE}Do you want to make zsh your default shell ? (y/n) ${COLOR_RESET}"
 		if get_answer; then
@@ -172,7 +169,7 @@ fi
 
 # check the user has a home directory
 if [[ -z "$HOME" ]]; then
-	echo "${ERROR}You don't have a home directory. Create one ? (y/n) ${COLOR_RESET}"
+	echo "${ERROR}Looks like you don't have a home directory. Create one ? (y/n) ${COLOR_RESET}"
 	if get_answer && program mkhomedir_helper; then
 		sudo mkhomedir_helper "$USER"
 	else

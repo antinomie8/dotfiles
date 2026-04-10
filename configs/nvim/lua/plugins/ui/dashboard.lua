@@ -1,5 +1,5 @@
 return {
-	"folke/snacks.nvim",
+	"antinomie8/snacks.nvim",
 	opts = {
 		dashboard = {
 			width = 60,

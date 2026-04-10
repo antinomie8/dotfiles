@@ -1,7 +1,7 @@
 return {
 	"gbprod/yanky.nvim",
 	dependencies = {
-		"folke/snacks.nvim",
+		"antinomie8/snacks.nvim",
 	},
 	keys = {
 		-- load yanky before executing the following to get highlight on yank and put

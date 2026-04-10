@@ -1,5 +1,5 @@
 local obsidian_vaults = {
-	["Mathématiques"] = { vim.env.HOME .. "/Mathématiques/Mathématiques", "Solutions et Notes/Compétitions" },
+	["Mathématiques"] = { vim.env.HOME .. "/Mathématiques/Notes", "Notes" },
 }
 local workspaces = {}
 for vault, path in pairs(obsidian_vaults) do
@@ -139,11 +139,13 @@ return {
 	},
 	{
 		"obsidian-nvim/obsidian.nvim",
-		version = "*",
-		event = vault_enter,
 		-- dependencies:
 		--  nvim-lua/plenary.nvim
+		version = "*",
+		event = vault_enter,
+		cmd = { "Obsidian" },
 		opts = {
+			legacy_commands = false,
 			workspaces = workspaces,
 			log_level = vim.log.levels.INFO,
 			completion = {
@@ -151,8 +153,6 @@ return {
 				nvim_cmp = false,
 				min_chars = 2,
 			},
-			wiki_link_func = "use_alias_only",
-			disable_frontmatter = true,
 			picker = {
 				name = "snacks.nvim",
 				note_mappings = {
@@ -175,8 +175,11 @@ return {
 			ui = {
 				enable = false,       -- set to false to disable all additional syntax features
 			},
+			frontmatter = {
+				enabled = false,
+			},
 			attachments = {
-				img_folder = "assets/imgs",
+				folder = "assets/imgs",
 				---@return string
 				img_name_func = function()
 					-- Prefix image names with timestamp.

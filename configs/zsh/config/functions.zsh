@@ -1,8 +1,8 @@
 # misc
 function compile() {
-	local file_extension="$1:e"
-	local ouput_filename="$1:r"
-	case "$file_extension" in
+	local file_extension=${1:e}
+	local ouput_filename=${1:r}
+	case $file_extension in
 		cpp)
 			local compiler="g++"
 			;;
@@ -16,13 +16,13 @@ function compile() {
 			echo "file extension not recognized"
 			;;
 	esac
-	[[ -n "$compiler" ]] && command "$compiler" "$1" -o "$ouput_filename"
+	[[ -n $compiler ]] && command $compiler $1 -o $ouput_filename
 }
 function view_json() {
 	jq . $1 -C | less -R
 }
 function bak() {
-	mv "$1" "$1.bak"
+	mv $1{,.bak}
 }
 function weather {
   curl --silent "http://wttr.in/$1" | head -n -2
@@ -37,13 +37,13 @@ function c() {
 	fi
 }
 function cfd() {
-	cd "$(fd . -td | fzf --no-multi --query="$1")"
+	cd "$(fd . -td | fzf --no-multi --query=$1)"
 }
 function mkcd() {
 	[[ $# ==  0 ]] && echo "mkcd: missing operand"
 	[[ $# -ge 2 ]] && echo "mkcd: too many operands"
 	[[ $# -ne 1 ]] && return 1
-	mkdir -p "$1"  && cd "$1"
+	mkdir -p $1  && cd $1
 }
 
 # rm that only asks for confirmation for nonempty files
@@ -52,18 +52,18 @@ function rm_confirm_nonempty() {
 	local args=()
 	local items=()
 	while (($#)); do
-		if [[ "$1" =~ ^- ]]; then
-			args+=("$1")
+		if [[ $1 =~ ^- ]]; then
+			args+=($1)
 		else
-			items+=("$1")
+			items+=($1)
 		fi
 		shift
 	done
-	for element ("$items[@]"); do
+	for element ($items[@]); do
 	if [[ (-e "$element" && ! -s "$element") || ${#items[@]} == 1 ]]; then
-			command rm -f "${args[@]}" "$element"
+			command rm -f ${args[@]} $element
 		else
-			command rm -i "${args[@]}" "$element"
+			command rm -i ${args[@]} $element
 		fi
 	done
 }
@@ -123,12 +123,25 @@ function gitdot() {
 	fi
 }
 function ghfork() {
-	local url=$(git config --get remote.origin.url)
-	if [[ $url =~ .*/([^/]*\.git)$ ]]; then
+	local url="$(git config --get remote.origin.url)"
+	if [[ $url =~ (github\.com|^gh).*/([^/]*)$ ]]; then
 		echo "n" | gh repo fork $url
 		git remote remove origin
-		git remote add origin me:"$match[1]"
-		git push -u origin $(git branch --show-current)
+		git remote add origin me:"$match[2]"
+		local cur_branch="$(git branch --show-current)"
+		case $cur_branch in
+			main|master)
+				local new_branch
+				echo -en "Enter new branch name: "
+				read -r new_branch
+				git switch -c $new_branch
+				git push -u origin $new_branch
+				;;
+			*)
+				echo $cur
+				git push -u origin $cur_branch
+				;;
+		esac
 	else
 		return 1
 	fi
@@ -152,15 +165,22 @@ function nfd() {
 		nvim $lines
 	fi
 }
+function viml() {
+	file_and_line=$1
+	file="$(echo $file_and_line | cut -d: -f1)"
+	line="$(echo $file_and_line | cut -d: -f2)"
+
+	nvim $file +$line
+}
 
 # yazi
 function x() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi $@ --cwd-file="$tmp"
-	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		builtin cd -- "$cwd"
+	yazi $@ --cwd-file=$tmp
+	if cwd="$(command cat -- $tmp)" && [ -n $cwd ] && [ $cwd != $PWD ]; then
+		builtin cd -- $cwd
 	fi
-	/bin/rm -f -- "$tmp"
+	command rm -f -- $tmp
 }
 
 # pandoc
@@ -170,7 +190,7 @@ function pdfconvert() {
 	while (($#)); do
 		local input=$1
 		local ext=${1:e}
-		pandoc --from $ext --to pdf $1 --output "${1:r}.pdf"
+		pandoc --from $ext --to pdf $1 --output ${1:r}.pdf
 		shift
 	done
 }

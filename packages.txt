@@ -29,6 +29,7 @@ ncdu
 man-db
 at
 trash-cli
+task
 
 # utils
 7zip

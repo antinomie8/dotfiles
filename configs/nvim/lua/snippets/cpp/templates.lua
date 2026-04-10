@@ -19,14 +19,9 @@ return {
 				using namespace std;
 
 				#ifdef LOCAL
-				#include "dbg.hpp"
+				#include "dbg.h"
 				#else
-				#define n(...) 42
-				#define id(...) 42
 				#define dbg(...) 42
-				#define line(...) 42
-				#define dbgarr(...) 42
-				#define dbg_var(...) 42
 				#endif
 				
 				///////////////////////////////////
@@ -60,14 +55,9 @@ return {
 				using namespace std;
 				
 				#ifdef LOCAL
-				#include "dbg.hpp"
+				#include "dbg.h"
 				#else
-				#define n(...) 42
-				#define id(...) 42
 				#define dbg(...) 42
-				#define line(...) 42
-				#define dbgarr(...) 42
-				#define dbg_var(...) 42
 				#endif
 				
 				///////////////////////////////////

@@ -20,11 +20,6 @@ end
 
 function helpers.in_node(node_type)
 	return make_cond(function()
-		local buf = vim.api.nvim_get_current_buf()
-		local highlighter = require("vim.treesitter.highlighter")
-		if not highlighter.active[buf] then
-			return false
-		end
 		local pos = vim.api.nvim_win_get_cursor(0)
 		local row, col = pos[1] - 1, pos[2] - 1
 		local node = vim.treesitter.get_node({ pos = { row, col } })
@@ -33,10 +28,9 @@ function helpers.in_node(node_type)
 end
 
 helpers.not_in_string_comment = make_cond(function()
-	local ignored_nodes = { "string", "string_content", "comment", "comment_content" }
-	local buf = vim.api.nvim_get_current_buf()
-	local highlighter = require("vim.treesitter.highlighter")
-	if not highlighter.active[buf] then return true end
+	local ignored_nodes = {
+		"string", "raw_string", "string_content", "comment", "comment_content",
+	}
 	local pos = vim.api.nvim_win_get_cursor(0)
 	local row, col = pos[1] - 1, pos[2] - 1
 	local node_type = vim.treesitter.get_node({ pos = { row, col } }):type()

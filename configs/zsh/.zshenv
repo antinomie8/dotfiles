@@ -31,8 +31,7 @@ export ASYMPTOTE_HOME="$XDG_CONFIG_HOME/asy"
 export TEXMFCONFIG="$XDG_CONFIG_HOME/texlive/texmf-config"
 export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
 export TEXMFHOME="$XDG_DATA_HOME/texmf"
-export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump"
-export ZSH_CACHE_DIR="${XDG_CACHE_HOME:-${HOME}/.cache}/zsh"
+export ZSH_PATINA_CONFIG_FILE="$ZDOTDIR/plugins/zsh-patina.toml"
 
 # Path
 path=(

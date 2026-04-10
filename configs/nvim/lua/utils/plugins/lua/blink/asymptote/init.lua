@@ -15,22 +15,10 @@ function source.new(opts)
 	local self = setmetatable({}, { __index = source })
 	self.opts = opts or {}
 
-	-- load symbols once
-	local function get_current_dir()
-		local source = debug.getinfo(1, "S").source
-		source = source:sub(2) -- remove '@'
-		return vim.fn.fnamemodify(source, ":h")
-	end
-
-	local function load_json(filename)
-		local dir = get_current_dir()
-		local path = dir .. "/" .. filename
-
-		local lines = vim.fn.readfile(path)
-		return vim.json.decode(table.concat(lines, "\n"))
-	end
-
-	self.symbols = load_json("geometry.json")
+	-- load symbols
+	local path = vim.fn.stdpath("config") .. "/lua/static/lang/asymptote/geometry.json"
+	local lines = vim.fn.readfile(path)
+	self.symbols = vim.json.decode(table.concat(lines, "\n"))
 
 	-- signature lookup
 	self.signatures = {}

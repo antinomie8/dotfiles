@@ -1,6 +1,8 @@
 # global aliases
-alias -g C='| wc -l'
+alias -g HGR='--help 2>&1 | grep'
 alias -g NUL='>/dev/null 2>&1'
+alias -g C='| wc -l'
+alias -g L='| less'
 alias -g gr="| rg"
 
 # suffix aliases
@@ -17,24 +19,13 @@ alias zcp='zmv -C' # Copy with patterns
 alias zln='zmv -L' # Link with patterns
 
 # shortcuts
+alias q='exit'
 alias _='sudo'
 alias __='sudoedit'
-alias q='exit'
 alias -- +x='chmod u+x'
 alias -- -x='chmod u+x'
 alias path='echo -e ${PATH//:/\\n}' # human-readable path
-alias uncompress='tar -xvzf'
 alias soft-reboot='systemctl soft-reboot'
-function {
-	local dots='..'
-	local back='../'
-	local i
-	for i in {1..7}; do
-		alias $dots="cd $back"
-		dots="$dots."
-		back="$back../"
-	done
-}
 
 # CLI tools default options
 alias grep='grep --color=auto'
@@ -44,6 +35,7 @@ alias mime='file --mime-type --brief'
 
 # programs
 alias top='btop'
+alias cat='bat --plain --paging=never'
 alias fetch='fastfetch'
 alias lg='lazygit'
 alias py='python3'

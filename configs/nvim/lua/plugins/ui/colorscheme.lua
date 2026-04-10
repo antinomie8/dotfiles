@@ -40,7 +40,10 @@ return {
 					DiagnosticUnnecessary = { force = true },
 
 					MailURL = { link = "@string.special.url" },
+					MailQuoted1 = { link = "Comment" },
+					MailQuoted2 = { link = "NonText" },
 					leanGoalsAccomplishedSign = { link = "leanInfoDiagnosticOk" },
+					["@markup.math.latex"] = { link = "Special" },
 					["@markup.math.typst"] = { link = "Special" },
 					["@variable.cmake"] = { link = "Identifier" },
 					["@lsp.type.formatSpecifier.rust"] = { link = "@lsp.type.property" },

@@ -1,33 +1,30 @@
-bindkey "^p" history-search-backward
-bindkey "^n" history-search-forward
-bindkey "^[[A" history-search-backward
-bindkey "^[[B" history-search-forward
+bindkey '^p'  history-search-backward                     \
+        '^n'  history-search-forward                      \
+        '\cb' beginning-of-line                           \
+        '\ce' end-of-line                                 \
+        '\ei' beginning-of-line                           \
+        '\ea' end-of-line                                 \
+        '\ef' forward-word                                \
+        '\eb' backward-word                               \
+        '^Z'  undo                                        \
+        '^?'  backward-delete-char # fix backspace at the beginning of a new line
 
-bindkey "\cb" beginning-of-line
-bindkey "\ce" end-of-line
-bindkey "\ei" beginning-of-line
-bindkey "\ea" end-of-line
-bindkey "\ef" forward-word
-bindkey "\eb" backward-word
-bindkey '^Z' undo
+bindkey -M vicmd '^[[A' history-beginning-search-backward \
+                 '^[[B' history-beginning-search-forward
 
-bindkey " " magic-space
-bindkey -a -r ':'                 # disable vicmd mode
-bindkey "^?" backward-delete-char # fix backspace in insert mode
+bindkey -a -r ':' # disable vicmd mode
 
-# Alt-Enter: Execute what's been typed even if it's malformed.
-bindkey '^[^J' accept-line
-bindkey '^[^M' accept-line
+# open cmd in editor
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^x' edit-command-line
 
 # plugins
-bindkey "\ee" autosuggest-accept
+bindkey '\ee'  autosuggest-accept                        \
+        '^[^M' autosuggest-execute                       \
+        '^[[A' history-substring-search-up               \
+        '^[[B' history-substring-search-down             \
 
-[[ -v terminfo ]] || zmodload zsh/terminfo
-bindkey -M vicmd "k" history-substring-search-up
-bindkey -M vicmd "j" history-substring-search-down
-if [[ -n "$terminfo[kcuu1]" ]]; then
-	bindkey -M viins "$terminfo[kcuu1]" history-substring-search-up
-fi
-if [[ -n "$terminfo[kcud1]" ]]; then
-	bindkey -M viins "$terminfo[kcud1]" history-substring-search-down
-fi
+# \c   -> Ctrl
+# \e   -> Meta
+# ^[^M -> Meta+<CR>

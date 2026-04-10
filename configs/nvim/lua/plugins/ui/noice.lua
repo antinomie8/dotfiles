@@ -25,7 +25,7 @@ return {
 		},
 	},
 	{
-		"folke/noice.nvim",
+		"antinomie8/noice.nvim",
 		event = "VeryLazy",
 		-- dependencies:
 		-- 	MunifTanjim/nui.nvim
@@ -154,6 +154,12 @@ return {
 						event = "notify",
 						kind = "warn",
 						find = "^Heads up! This layout changed the list order,\nso `up` goes down and `down` goes up.",
+					},
+					opts = { skip = true },
+				},
+				{
+					filter = {
+						find = "^filetype unknown$",
 					},
 					opts = { skip = true },
 				},

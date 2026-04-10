@@ -32,4 +32,18 @@ return {
 			t({ "", "```", "" }),
 		}
 	),
+	s(
+		{
+			trig = "conceal",
+			dscr = "concealed text",
+		},
+		{
+			t({ "<details>", "" }),
+			t("<summary>"), i(1), t("</summary>"),
+			t({ "", "" }),
+			i(2),
+			t({ "", "" }),
+			t("</details>"),
+		}
+	),
 }

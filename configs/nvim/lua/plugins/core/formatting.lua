@@ -61,6 +61,7 @@ return {
 			sh = { "shfmt" },
 			zsh = { "shfmt_zsh" },
 			bash = { "shfmt" },
+			fish = { "fish_indent", "spaces_to_tabs" },
 			css = { "biome" },
 			html = { "biome" },
 			python = { "ruff_format" },
@@ -138,9 +139,11 @@ return {
 				"^" .. vim.fn.stdpath("config") .. "/lua/static/.*.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/after/plugin/icons.lua$",
 				"^" .. vim.fn.stdpath("config") .. "/queries/asymptote/highlights.scm$",
+				"^" .. vim.fn.stdpath("config") .. "/queries/typst/highlights.scm$",
 
 				"^" .. (vim.env.TEXMFHOME or vim.env.HOME) .. "/tex/latex.*%.tex$",
 				"^" .. (vim.env.ASYMPTOTE_HOME or vim.env.HOME .. "/.asy") .. "/config.asy$",
+				"^" .. (vim.env.ZDOTDIR or vim.env.HOME .. ".zsh") .. "/config/keybinds.zsh$",
 				"^" .. (vim.env.ZDOTDIR or vim.env.HOME .. ".zsh") .. "/config/completions.zsh$",
 			}
 			for _, path in ipairs(disabled_paths) do

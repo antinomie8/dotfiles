@@ -19,12 +19,21 @@ elif [[ -f $1 ]]; then
 		hexyl --border=none --terminal-width=$FZF_PREVIEW_COLUMNS $1
 		;;
 	esac
-elif [[ ${1:0:1} != "-" && -n $(printenv $1) ]]; then
-	if [[ $1 == PATH ]]; then
-		echo -e ${PATH//:/\\n}
-	else
-		printenv $1
-	fi
 elif type $1 >/dev/null 2>&1; then
-	help=$($1 --help) && echo $help | bat --plain --language=help --paging=always
+	( # search for --help flag in the file
+		strings $(whence -p $word) | rg --quiet --fixed-strings -- "--help" &&
+			# sandbox
+			bwrap \
+				--unshare-all \
+				--ro-bind / / \
+				--chdir $PWD \
+				--tmpfs /tmp \
+				--dev /dev \
+				--proc /proc \
+				--unshare-net \
+				$word --help | bat --plain --language=help
+	) ||
+		(MANWIDTH=$FZF_PREVIEW_COLUMNS man $word 2>/dev/null | bat -plman --color=always) ||
+		(out=which $word && echo $out) ||
+		echo ${(P)word}
 fi

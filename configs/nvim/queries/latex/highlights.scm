@@ -1,4 +1,4 @@
-;; extends
+; extends
 
 (math_environment) @nospell
 (generic_command) @nospell

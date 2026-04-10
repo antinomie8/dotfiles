@@ -1,0 +1,2 @@
+[highlighting]
+theme = "file:$ZDOTDIR/config/colors/highlighting.toml"

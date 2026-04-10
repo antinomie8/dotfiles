@@ -93,7 +93,7 @@ vim.api.nvim_create_autocmd("BufModifiedSet", {
 vim.api.nvim_create_autocmd("OptionSet", {
 	pattern = "spelllang",
 	callback = function()
-		local spell_dir = vim.fn.stdpath("config") .. "/spell"
+		local spell_dir = vim.fn.stdpath("config") .. "/lua/static/spell"
 		local langs = vim.opt.spelllang:get()
 
 		local add_files = {}
