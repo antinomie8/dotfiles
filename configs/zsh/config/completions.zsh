@@ -59,7 +59,7 @@ zstyle ':fzf-tab:complete:*:*'            fzf-preview '
 					;;
 			esac
 			;;
-		"command]"|"[executable file]")
+		"command]" | "[executable file]")
 				(# search for --help flag in the file
 					strings $(whence -p $word) | rg --quiet --fixed-strings -- "--help" && \
 					# sandbox
@@ -80,7 +80,7 @@ zstyle ':fzf-tab:complete:*:*'            fzf-preview '
 			autoload +X $word
 			which $word | bat --plain --language=zsh 
 			;;
-		"[alias]"|"[regular alias]")
+		"[alias]" | "[regular alias]")
 			source $ZDOTDIR/config/aliases.zsh
 			if [[ $aliases[$word] ]]; then
 				out="$aliases[$word]"

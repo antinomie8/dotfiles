@@ -123,6 +123,7 @@ zmodload zsh/mapfile   # $mapfile[path/to/file] contains path/to/file's contents
 
 # autocorrect
 SPROMPT="Correct $fg[red]%R$reset_color to $fg[green]%r$reset_color? [Yes, No, Abort, Edit]: "
+PROMPT_EOL_MARK="$fg[yellow] "
 
 # history
 HISTFILE=$XDG_STATE_HOME/zsh/zsh_history

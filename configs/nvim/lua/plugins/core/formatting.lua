@@ -143,6 +143,7 @@ return {
 
 				"^" .. (vim.env.TEXMFHOME or vim.env.HOME) .. "/tex/latex.*%.tex$",
 				"^" .. (vim.env.ASYMPTOTE_HOME or vim.env.HOME .. "/.asy") .. "/config.asy$",
+				"^" .. (vim.env.ZDOTDIR or vim.env.HOME .. ".zsh") .. "/.zshrc$",
 				"^" .. (vim.env.ZDOTDIR or vim.env.HOME .. ".zsh") .. "/config/keybinds.zsh$",
 				"^" .. (vim.env.ZDOTDIR or vim.env.HOME .. ".zsh") .. "/config/completions.zsh$",
 			}
