@@ -96,8 +96,19 @@ gui:
   # If true, display the files in the file views as a tree. If false, display the files as a flat list.
   # This can be toggled from within Lazygit with the '~' key, but that will not change the default.
   showFileTree: true
+  # If true, add a "/" root item in the file tree representing the root of the
+  # repository. It is only added when necessary, i.e. when there is more than one
+  # item at top level.
+  showRootItemInFileTree: false
+  # How to sort files and directories in the file tree.
+  # One of: 'mixed' (default) | 'filesFirst' | 'foldersFirst'
+  fileTreeSortOrder: foldersFirst
+  # If true (default), sort the file tree case-sensitively.
+  fileTreeSortCaseSensitive: false
+  # If true, show the number of lines changed per file in the Files view
+  showNumstatInFilesView: false
   # If true, show a random tip in the command log when Lazygit starts
-  showRandomTip: true
+  showRandomTip: false
   # If true, show the command log
   showCommandLog: true
   # If true, show the bottom line that contains keybinding info and useful buttons. If false, this line will be hidden except to display a loader for an in-progress action.

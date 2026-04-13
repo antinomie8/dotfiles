@@ -17,7 +17,7 @@ local function is_alive(pid)
 	if not pid then
 		return false
 	end
-	local ok, err = vim.uv.kill(pid, 0)
+	local ok = vim.uv.kill(pid, 0)
 	return ok
 end
 

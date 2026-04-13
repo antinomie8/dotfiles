@@ -19,7 +19,10 @@ return {
 						position = "float",
 						border = "rounded",
 						backdrop = false,
-						wo = { winblend = 15 },
+						wo = {
+							winblend = 15,
+							winhilight = "Normal:TerminalBackground",
+						},
 					},
 				})
 			end,

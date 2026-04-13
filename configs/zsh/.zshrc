@@ -24,7 +24,7 @@ source $ZDOTDIR/config/aliases.zsh
 autoload -Uz $ZDOTDIR/functions/*(:t)
 
 # vi mode and cursor style
-bindkey -v # enable vi keybindings
+bindkey -v   # enable vi keybindings
 KEYTIMEOUT=1 # time to wait for key sequences
 autoload -Uz add-zsh-hook
 

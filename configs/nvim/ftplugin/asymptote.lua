@@ -56,10 +56,9 @@ local function asy(opts)
 
 				-- set diagnostics
 				vim.schedule(function()
-					for _, i in ipairs(diagnostics) do
-						vim.diagnostic.set(ns, bufnr, diagnostics, { update_in_insert = true })
-					end
+					vim.diagnostic.set(ns, bufnr, diagnostics, { update_in_insert = true })
 					vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+						group = vim.api.nvim_create_augroup("Asymptote compiler", {}),
 						callback = function()
 							vim.diagnostic.reset(ns, bufnr)
 						end,
@@ -68,11 +67,11 @@ local function asy(opts)
 				end)
 
 				-- notify errors
-				if obj.code ~= 0 then
-					vim.notify(obj.stderr, vim.log.levels.ERROR, { title = "Asymptote", icon = "󰒕" })
-				else
-					vim.notify(obj.stderr, vim.log.levels.WARN, { title = "Asymptote", icon = "󰒕" })
-				end
+				vim.notify(
+					obj.stderr,
+					obj.code == 0 and vim.log.levels.WARN or vim.log.levels.ERROR,
+					{ title = "Asymptote", icon = "󰒕" }
+				)
 			end
 			if opts.open and obj.code == 0 then
 				require("utils.pdf").open(name .. ".pdf")

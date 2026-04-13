@@ -1,9 +1,10 @@
 local hypr = {}
 
-local function error(msg)
-	if msg then
+---@param hyprctl vim.SystemCompleted
+local function notify_errors(hyprctl)
+	if hyprctl.code ~= 0 then
 		vim.notify(
-			msg,
+			hyprctl.stderr,
 			vim.log.levels.ERROR,
 			{
 				title = "Hyprland",
@@ -18,71 +19,51 @@ end
 ---| "master"
 ---| "scrolling"
 ---| "monocle"
+---@alias HyprlandWorkspace integer
 
 local default_layout --[[@as HyprlandLayout]]
-local workspace      --[[@as integer]]
+local workspace      --[[@as HyprlandWorkspace]]
 
 ---@return HyprlandLayout
 local function get_default_layout()
 	if not default_layout then
-		vim.system({ "hyprctl", "getoption", "general:layout", "-j" }, function(obj)
-			if obj.code ~= 0 then
-				error(obj.stderr)
-				return
-			end
-			default_layout = vim.json.decode(obj.stdout).str
-		end):wait()
+		local handle = vim.system({ "hyprctl", "getoption", "general:layout", "-j" }, notify_errors):wait()
+		default_layout = vim.json.decode(handle.stdout).str
 	end
 	return default_layout
 end
 
----@return integer
+---@return HyprlandWorkspace
 local function get_current_workspace()
 	if not workspace then
-		vim.system({ "hyprctl", "activeworkspace", "-j" }, function(hyprctl)
-			if hyprctl.code ~= 0 then
-				error(hyprctl.stderr)
-				return
-			end
-			workspace = vim.json.decode(hyprctl.stdout).id
-		end):wait()
+		local handle = vim.system({ "hyprctl", "activeworkspace", "-j" }, notify_errors):wait()
+		workspace = vim.json.decode(handle.stdout).id
 	end
 	return workspace
 end
 
 ---@param layout HyprlandLayout?
 function hypr.set_layout(layout)
-	if not layout then
-		layout = get_default_layout()
-	end
-	if not workspace then
-		workspace = get_current_workspace()
-	end
+	layout = layout or get_default_layout()
+	workspace = workspace or get_current_workspace()
 
 	vim.system(
 		{ "hyprctl", "keyword", "workspace", workspace .. ",", "layout:" .. layout },
-		function(hyprctl)
-			if hyprctl.code ~= 0 then
-				error(hyprctl.stderr)
-				return
-			end
-		end
+		notify_errors
 	)
 end
 
 ---@param class string
----@param workspace integer?
+---@param ws HyprlandWorkspace?
 ---@return integer? pid
-function hypr.find_win_on_ws(class, workspace)
-	if not workspace then
-		workspace = get_current_workspace()
-	end
+function hypr.find_win_on_ws(class, ws)
+	ws = ws or get_current_workspace()
 
 	local clients = vim.system({ "hyprctl", "clients", "-j" }):wait()
 	local data = vim.json.decode(clients.stdout)
 
 	for _, c in ipairs(data) do
-		if c.class == class and c.workspace.id == workspace then
+		if c.class == class and c.workspace.id == ws then
 			return c.pid
 		end
 	end
