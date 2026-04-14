@@ -6,23 +6,6 @@ if [[ -r ${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh ]]; 
 	source ${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh
 fi
 
-# completions
-source $ZDOTDIR/config/completions.zsh
-
-# setup plugins and tools
-eval "$(zsh-patina activate)"
-eval "$(zoxide init zsh --cmd cd)"
-eval "$(fzf --zsh)"
-source $ZDOTDIR/plugins/p10k.zsh
-source $ZDOTDIR/plugins/atuin.zsh
-source $ZDOTDIR/plugins/rationalize-dot.zsh
-
-# config files
-source $ZDOTDIR/config/keybinds.zsh
-source $ZDOTDIR/config/functions.zsh
-source $ZDOTDIR/config/aliases.zsh
-autoload -Uz $ZDOTDIR/functions/*(:t)
-
 # vi mode and cursor style
 bindkey -v   # enable vi keybindings
 KEYTIMEOUT=1 # time to wait for key sequences
@@ -88,26 +71,42 @@ fi
 source $ANTIDOTE_HOME/antidote.zsh
 antidote load $ZDOTDIR/plugins/plugins.zsh $ZDOTDIR/plugins/static.zsh
 
+# completions
+source $ZDOTDIR/config/completions.zsh
+
+# config files
+source $ZDOTDIR/config/keybinds.zsh
+source $ZDOTDIR/config/functions.zsh
+source $ZDOTDIR/config/aliases.zsh
+autoload -Uz $ZDOTDIR/functions/*(:t)
+
+# setup plugins and tools
+eval "$(zsh-patina activate)"
+eval "$(zoxide init zsh --cmd cd)"
+eval "$(fzf --zsh)"
+source $ZDOTDIR/plugins/p10k.zsh
+source $ZDOTDIR/plugins/atuin.zsh
+source $ZDOTDIR/plugins/rationalize-dot.zsh
+
 # options and modules
 opts=(
-	"EXTENDEDGLOB"       # extend glob patterns
-	"DOT_GLOB"           # let globs match dotfiles
-	"GLOBDOTS"           # show dotfiles on tab completion
-	"AUTOCD"             # cd in a directory by typing its name
-	"AUTO_PUSHD"         # automatically push the last directory on the directory stack
-	"CDABLE_VARS"        # cd to a directory by typing its path relative to $HOME
-	"PUSHD_SILENT"       # do not print the directory stack after pushd or popd
-	"CORRECT"            # correction for invalid command names
-	"RCQUOTES"           # escape single quotes with '' instead of '\'' in singly quoted strings
-	"C_BASES"            # use 0x for displaying hexadecimal numbers
-	"OCTAL_ZEROES"       # use 0 for displaying octal numbers
-	"EXTENDED_HISTORY"   # save timestamp and command execution duration to history
-	"COMPLETE_IN_WORD"   # complete missing letters before cursor with <tab>
+	"dot_glob"           # let globs match dotfiles
+	"globdots"           # show dotfiles on tab completion
+	"autocd"             # cd in a directory by typing its name
+	"auto_pushd"         # automatically push the last directory on the directory stack
+	"cdable_vars"        # cd to a directory by typing its path relative to $HOME
+	"pushd_silent"       # do not print the directory stack after pushd or popd
+	"correct"            # correction for invalid command names
+	"rcquotes"           # escape single quotes with '' instead of '\'' in singly quoted strings
+	"c_bases"            # use 0x for displaying hexadecimal numbers
+	"octal_zeroes"       # use 0 for displaying octal numbers
+	"extended_history"   # save timestamp and command execution duration to history
+	"complete_in_word"   # complete missing letters before cursor with <tab>
 
-	"SHARE_HISTORY"      # share history between sessions
-	"HIST_IGNORE_SPACE"  # don't save commands starting with a space
-	"INC_APPEND_HISTORY" # write directly to the history file
-	"HIST_EXPAND"        # expand !n
+	"share_history"      # share history between sessions
+	"hist_ignore_space"  # don't save commands starting with a space
+	"inc_append_history" # write directly to the history file
+	"hist_expand"        # expand !n
 )
 setopt $opts[@]
 

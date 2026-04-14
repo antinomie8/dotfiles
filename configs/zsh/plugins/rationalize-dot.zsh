@@ -7,12 +7,12 @@ function expand-dots() {
 
 function expand-dots-then-expand-or-complete() {
 	zle expand-dots
-	zle expand-or-complete
+	zle fzf-tab-complete
 }
 
 function expand-dots-then-accept-line() {
 	zle expand-dots
-	zle accept-line
+	zle .zsh-no-ps2
 }
 
 zle -N expand-dots
