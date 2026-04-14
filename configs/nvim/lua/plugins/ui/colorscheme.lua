@@ -16,11 +16,16 @@ local setup_mock_statusline = function()
 		end
 		vim.api.nvim_set_hl(0, "StatusLineIconColor", { fg = color or "#6d8086" })
 
+		local clocks = { "󱑖 ", "󱑋 ", "󱑌 ", "󱑍 ", "󱑎 ", "󱑏 ", "󱑐 ", "󱑑 ", "󱑒 ", "󱑓 ", "󱑔 ", "󱑕 " }
+		local date = os.date("%R")
+		local hour = tonumber(tostring(date):sub(1, 2))
+		local clock = clocks[hour % 12 + 1]
+
 		-- setup mock statusline
 		vim.opt.statusline = "%#StatusLineBlue# NORMAL %#StatusLineSeparatorBlue#%#StatusLineSeparatorGrey#"
 		                     .. "%* %F %#StatusLineIconColor#" .. (icon or " ")
 		                     .. "%=%#StatusLineSeparatorGrey#%#StatusLineGrey# %p%%  %l:%c "
-		                     .. '%#StatusLineSeparatorBlue#%#StatusLineBlue#  %{strftime("%H:%M")} '
+		                     .. "%#StatusLineSeparatorBlue#%#StatusLineBlue# " .. clock .. date .. " "
 	end
 end
 

@@ -44,7 +44,7 @@ configs=("asy" "bat" "btop" "browser" "clang-format" "clangd" "eza" "fastfetch" 
 	"tmux" "udiskie" "uwsm" "wget" "xdg-desktop-portal" "xdg-desktop-portal-termfilechooser" "yazi"
 	"zathura" "zsh" "fzf.conf" "kmonad.kbd" "mimeapps.list" "ripgrep.conf" "shellcheckrc" "user-dirs.dirs")
 # mozilla msmtp notmuch goimapnotify himalaya mirador aerc
-scripts=("assemble" "compile_sfml" "fzf_preview_wrapper" "git_dotfiles" "mailto" "rgb" "termsize" "zoxide-rename")
+scripts=("assemble" "compile_sfml" "fzf_preview" "git_dotfiles" "mailto" "rgb" "termsize" "zoxide-rename")
 systemd_user_units=("mail-sync.service" "goimapnotify.service")
 desktop_entries=("mail" "neomutt" "spotify" "yazi")
 
@@ -76,9 +76,9 @@ for file in configs/*; do
 		read -r answer
 		read -r answer
 		case $answer in
-		[yY][eE][sS] | [yY])
-			rm -r configs/$file
-			;;
+			[yY][eE][sS] | [yY])
+				rm -r configs/$file
+				;;
 		esac
 	fi
 done

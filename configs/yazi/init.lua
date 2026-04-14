@@ -139,11 +139,16 @@ function Status:percent()
 	})
 end
 
+Status.clocks = { "󱑖 ", "󱑋 ", "󱑌 ", "󱑍 ", "󱑎 ", "󱑏 ", "󱑐 ", "󱑑 ", "󱑒 ", "󱑓 ", "󱑔 ", "󱑕 " }
 function Status:position()
 	local style = self:style()
+	local date = os.date("%R")
+	local hour = tonumber(tostring(date):sub(1, 2))
+	local icon = self.clocks[hour % 12 + 1]
+
 	return ui.Line({
 		ui.Span(th.status.sep_right.open):fg(style.main:bg()):bg(style.alt:bg()),
-		ui.Span("  " .. tostring(os.date("%R")) .. " "):style(style.main),
+		ui.Span(" " .. icon .. date .. " "):style(style.main),
 		ui.Span(th.status.sep_right.close):fg(style.main:bg()):bg("reset"),
 	})
 end

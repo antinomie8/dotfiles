@@ -119,7 +119,6 @@ rules = [
 	{ url = "*/", is = "hidden", fg = "#54546d" },
 	{ url = "*",  is = "block",  fg = "#e6c384" },
 	{ url = "*",  is = "char",   fg = "#e6c384" },
-	{ url = "*",  is = "exec",   fg = "#ff5d62" },
 	{ url = "*",  is = "fifo",   fg = "#c0a36e" },
 	{ url = "*",  is = "link",   fg = "#6a9598" },
 	{ url = "*/", is = "link",   fg = "#6a9598" },
@@ -128,6 +127,7 @@ rules = [
 	{ url = "*",  is = "sock",   fg = "#957fb8" },
 	{ url = "*",  is = "sticky", fg = "#7fb4ca" },
 	{ url = "*/", is = "sticky", fg = "#7fb4ca" },
+	{ url = "*",  is = "exec",   fg = "#ff5d62" },
 	{ url = "*/",                fg = "#7e9cd8" },
 	{ url = "*",                 fg = "#dcd7ba" },
 ]

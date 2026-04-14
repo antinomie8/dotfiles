@@ -44,6 +44,7 @@ prepend_fetchers = [
 	{ id = "git", url = "*/", run = "git" },
 ]
 prepend_previewers = [
+	{ mime = "inode/socket", run = 'faster-piper -- fzf_preview "$1"' },
 	{ mime = "message/*", run = "code" },
 ]
 append_previewers = [

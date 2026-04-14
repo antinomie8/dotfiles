@@ -38,7 +38,7 @@ function zle-keymap-select {
 				*) shape=2 ;; # normal mode: block
 			esac
 			;;
-		viins|main)
+		viins | main)
 			if [[ ${ZLE_STATE} == *overwrite* ]]; then
 				shape=4 # replace mode: underline
 			else

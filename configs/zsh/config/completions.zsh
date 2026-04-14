@@ -35,16 +35,7 @@ zstyle ':fzf-tab:complete:*:*'            fzf-preview '
 
 	case $group in
 		"[file]")
-			case $(file --mime-type --brief $realpath) in
-				"inode/directory") eza -1al --git --group-directories-first --color=always --icons $realpath ;;
-				"application/pdf") pdftoppm -singlefile -jpeg -jpegopt quality=50 $realpath |
-						     kitten icat --clear --transfer-mode=stream --unicode-placeholder \
-						       --place=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}@0x0 ;;
-				*image*) kitty icat --clear --transfer-mode=stream --unicode-placeholder --stdin=no \
-					         --place=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}@0x0 $realpath ;;
-				*text*) bat --plain $realpath ;;
-				*) hexyl --border=none --terminal-width=$FZF_PREVIEW_COLUMNS $realpath ;;
-			esac
+			~/.local/bin/fzf_preview $realpath
 			;;
 		"[parameter]")
 			case $word in
@@ -114,7 +105,7 @@ zstyle ':fzf-tab:complete:*:*'            fzf-preview '
 					printf \"%sUser%s:  %s%s%s\n\",   OCHRE, RESET, BLUE, user, RESET
 				}"
 			;;
-		"[unit]"|*" unit]")
+		"[unit]" | *" unit]")
 			SYSTEMD_COLORS=1 systemctl status $word
 			;;
 		*)

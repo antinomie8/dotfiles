@@ -21,7 +21,7 @@ return {
 						backdrop = false,
 						wo = {
 							winblend = 15,
-							winhilight = "Normal:TerminalBackground",
+							winhighlight = "Normal:TerminalBackground",
 						},
 					},
 				})

@@ -1,0 +1,68 @@
+#!/usr/bin/env zsh
+
+# colors (use \033 instead of \e for awk)
+BLUE="\033[34m"
+OCHRE="\033[33m"
+ITALIC="\033[3m"
+RESET="\033[0m"
+
+if [[ -e $1 ]]; then
+	filetype=$(file --mime-type --brief $1)
+	case $filetype in
+		inode/directory)
+			eza -1al --git --group-directories-first --color=always --icons $1
+			;;
+		inode/socket)
+			lsof $1 | awk -v OCHRE="$OCHRE" -v BLUE="$BLUE" -v RESET="$RESET" "
+			NR==2 {
+					cmd=\$1; pid=\$2; user=\$3; fd=\$4; type=\$5
+
+					# rebuild NAME field
+					name=\"\"
+					for (i=9; i<=NF; i++) {
+							name = name \$i (i<NF ? \" \" : \"\")
+					}
+
+					# extract components
+					path=name
+					type=\"\"
+					state=\"\"
+
+					# extract type
+					if (match(name, /type=([^ ]+)/, m)) {
+							type=m[1]
+							sub(/ type=[^ ]+/, \"\", path)
+					}
+
+					# extract state
+					if (match(name, /\\(([^)]+)\\)/, m)) {
+							state=m[1]
+							sub(/ \\([^)]*\\)/, \"\", path)
+					}
+
+					printf \"%sCmd%s:   %s%s%s\n\",   OCHRE, RESET, BLUE, cmd, RESET
+					printf \"%sPID%s:   %s%s%s\n\",   OCHRE, RESET, BLUE, pid, RESET
+					printf \"%sUser%s:  %s%s%s\n\",   OCHRE, RESET, BLUE, user, RESET
+					printf \"%sFD%s:    %s%s%s\n\",   OCHRE, RESET, BLUE, fd, RESET
+					printf \"%sType%s:  %s%s%s\n\",   OCHRE, RESET, BLUE, type, RESET
+
+					printf \"%sType%s:  %s%s%s\n\",   OCHRE, RESET, BLUE, type, RESET
+					printf \"%sState%s: %s%s%s\n\",   OCHRE, RESET, BLUE, state, RESET
+					printf \"%sPath%s:  %s%s%s\n\",   OCHRE, RESET, BLUE, path, RESET
+			}"
+			;;
+		application/pdf)
+			pdftoppm -singlefile -jpeg -jpegopt quality=50 $1 |
+				kitten icat --clear --transfer-mode=stream --unicode-placeholder --place=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}@0x0
+			;;
+		image/*)
+			kitty icat --clear --transfer-mode=stream --unicode-placeholder --stdin=no --place=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}@0x0 $1
+			;;
+		text/*)
+			bat --plain --color=always "$1"
+			;;
+		*)
+			hexyl --border=none --terminal-width=$FZF_PREVIEW_COLUMNS $1
+			;;
+	esac
+fi

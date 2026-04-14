@@ -59,7 +59,7 @@ return {
 			cpp = { "clang_format" },
 			rust = { "rustfmt" },
 			sh = { "shfmt" },
-			zsh = { "shfmt_zsh" },
+			zsh = { "shfmt" },
 			bash = { "shfmt" },
 			fish = { "fish_indent", "spaces_to_tabs" },
 			css = { "biome" },
@@ -108,16 +108,19 @@ return {
 				command = "typstyle",
 				prepend_args = { "--line-width", "100" },
 			},
-			shfmt_zsh = {
+			shfmt = {
 				command = "shfmt",
 				args = function(_, ctx)
-					local args = { "-filename", "$FILENAME", "-ln", "zsh" }
+					local args = { "-filename", "$FILENAME" }
 					local has_editorconfig = vim.fs.find(".editorconfig", { path = ctx.dirname, upward = true })[1]
 					                         ~= nil
 					-- If there is an editorconfig, don't pass any args because shfmt will apply settings from there
 					-- when no command line args are passed.
-					if not has_editorconfig and vim.bo[ctx.buf].expandtab then
-						vim.list_extend(args, { "-i", ctx.shiftwidth })
+					if not has_editorconfig then
+						if vim.bo[ctx.buf].expandtab then
+							vim.list_extend(args, { "-i", ctx.shiftwidth })
+						end
+						vim.list_extend(args, { "--case-indent" })
 					end
 					return args
 				end,

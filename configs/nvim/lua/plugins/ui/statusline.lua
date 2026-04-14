@@ -1,7 +1,5 @@
 return {
 	"rebelot/heirline.nvim",
-	-- dependencies:
-	-- 	nvim-tree/nvim-web-devicons
 	event = "VeryLazy",
 	config = function()
 		local palette = require("kanagawa.colors").setup().palette
