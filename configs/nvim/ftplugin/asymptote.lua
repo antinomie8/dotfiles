@@ -8,7 +8,7 @@ vim.bo.includeexpr = "v:lua.require'utils.includeexpr'.asymptote(v:fname)"
 vim.b.output_format = "pdf"
 
 -- load custom queries for C++ treesitter highlighting
-local asy_queries_path = vim.fn.stdpath("config") .. "/queries/asymptote/"
+local asy_queries_path = vim.fn.stdpath("config") .. "/after/queries/asymptote/"
 local highlights = require("utils").loadfile(asy_queries_path .. "highlights.scm")
 if highlights then vim.treesitter.query.set("cpp", "highlights", highlights) end
 
