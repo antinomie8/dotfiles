@@ -4,7 +4,7 @@ local s, t, i = ls.s, ls.t, ls.i
 return {
 	s(
 		{
-			trig = "triangle",
+			trig = "ABC",
 			dscr = "triangle ABC",
 		},
 		{
@@ -20,7 +20,7 @@ return {
 			t({
 				"",
 				"",
-				[[draw(A--B--C--cycle, thickp);]],
+				[[draw(A--B--C--cycle, largep);]],
 				"",
 				[[dot("$A$", A, dir(A));]],
 				[[dot("$B$", B, dir(B));]],
@@ -30,7 +30,7 @@ return {
 	),
 	s(
 		{
-			trig = "orthocenter",
+			trig = "orthABC",
 			dscr = "H orthocenter of ABC",
 		},
 		{
@@ -55,7 +55,7 @@ return {
 	),
 	s(
 		{
-			trig = "circumcircle",
+			trig = "circumABC",
 			dscr = "Omega circumcircle of ABC",
 		},
 		{
@@ -68,7 +68,7 @@ return {
 	),
 	s(
 		{
-			trig = "incircle",
+			trig = "incircleABC",
 			dscr = "omega incircle of ABC",
 		},
 		{
@@ -76,6 +76,34 @@ return {
 				[[circle omega = incircle(A, B, C);]],
 				[[draw(omega);]],
 				"",
+			}),
+		}
+	),
+	s(
+		{
+			trig = "ABCD",
+			dscr = "quadrilateral ABCD",
+		},
+		{
+			t({
+				[[pair A = (-0.61, 1.11);]],
+				[[pair B = (-1.41, -0.3);]],
+				[[pair C = (-0.17, -0.8);]],
+				[[pair C = (-0.17, -0.8);]],
+				[[pair D = (0.79, -0.01)]],
+				"",
+				"",
+			}),
+			i(1),
+			t({
+				"",
+				"",
+				[[draw(A--B--C--D--cycle, largep);]],
+				"",
+				[[dot("$A$", A, dir(A));]],
+				[[dot("$B$", B, dir(B));]],
+				[[dot("$C$", C, dir(C));]],
+				[[dot("$D$", D, dir(D));]],
 			}),
 		}
 	),

@@ -18,8 +18,10 @@
 # dynamic.callable.function.shell
 "dynamic.callable.missing.shell" = "#c34043"
 "dynamic.path" = { underline = true }
-# dynamic.path.directory.shell
-# dynamic.path.file.shell
+# dynamic.path.file.partial
+# dynamic.path.file.complete
+# dynamic.path.directory.partial
+# dynamic.path.directory.complete
 "entity.name.function" = "#7e9cd8"
 # entity.name.function.alias.shell
 # entity.name.function.coproc.shell

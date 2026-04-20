@@ -4,6 +4,8 @@ usepackage("amssymb");
 
 // pens
 defaultpen(fontsize(10pt));
+pen widep = linewidth(1.3pt);
+pen largep = linewidth(1pt);
 pen thickp = linewidth(0.8);
 pen thinp = linewidth(0.3);
 
