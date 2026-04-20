@@ -42,6 +42,7 @@ alias py='python3'
 alias m='nvim -c Inbox'
 alias copy='wl-copy'
 alias paste='wl-paste'
+alias ssh='kitten ssh'
 
 # eza
 alias ls='eza --icons=always --group-directories-first --no-quotes'

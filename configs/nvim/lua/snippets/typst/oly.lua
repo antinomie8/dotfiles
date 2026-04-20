@@ -173,6 +173,18 @@ return {
 			}
 		)
 	),
+	s({ trig = "!A", dscr = "algorithm", snippetType = "autosnippet", cond = line_begin, hidden = true },
+		fmt(
+			[[
+				#algorithm[
+					<>
+				]
+			]],
+			{
+				i(1),
+			}
+		)
+	),
 	s(
 		{
 			trig = "voc",

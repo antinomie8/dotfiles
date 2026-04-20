@@ -17,7 +17,8 @@ bindkey -a -r ':' # disable vicmd mode
 # open cmd in editor
 autoload -Uz edit-command-line
 zle -N edit-command-line
-bindkey '^x' edit-command-line
+bindkey          '^x' edit-command-line
+bindkey -M vicmd '^x' edit-command-line
 
 # plugins
 bindkey '\ee'  autosuggest-accept                        \

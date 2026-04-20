@@ -230,7 +230,7 @@ local function conceal_math(first, last)
 				if repl then
 					return repl.cchar
 				else
-					for i = 1, #text + 1 do
+					for i = 1, #text do
 						concealed = concealed .. (map[text:sub(i, i)] or text:sub(i, i))
 					end
 				end
@@ -243,9 +243,14 @@ local function conceal_math(first, last)
 			else
 				return text
 			end
-		elseif node:type() == "number" or node:type() == "string" then
+		elseif node:type() == "number" then
 			local text = vim.treesitter.get_node_text(node, 0, {})
-			for i = 1, #text + 1 do
+			for i = 1, #text do
+				concealed = concealed .. (map[text:sub(i, i)] or text:sub(i, i))
+			end
+		elseif node:type() == "string" then
+			local text = vim.treesitter.get_node_text(node, 0, {})
+			for i = 2, #text - 1 do
 				concealed = concealed .. (map[text:sub(i, i)] or text:sub(i, i))
 			end
 		elseif node:type() == "fraction" then
@@ -267,7 +272,7 @@ local function conceal_math(first, last)
 				if repl then
 					return repl
 				else
-					for i = 1, #text + 1 do
+					for i = 1, #text do
 						concealed = concealed .. (map[text:sub(i, i)] or text:sub(i, i))
 					end
 				end

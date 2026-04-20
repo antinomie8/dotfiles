@@ -12,6 +12,8 @@ return {
 	["iff"]                       = { cchar = "⟺", hl = "TypstConcealSymbol" },
 	["pm"]                        = { cchar = "±", hl = "TypstConcealSymbol" },
 	["mp"]                        = { cchar = "∓", hl = "TypstConcealSymbol" },
+	["sumcyc"]                    = { cchar = "∑", hl = "TypstConcealSymbol" },
+	["sumsym"]                    = { cchar = "∑ₛₘ", hl = "TypstConcealSymbol" },
 
 	["AA"]                        = { cchar = "𝔸", hl = "TypstConcealSet" },
 	["Alpha"]                     = { cchar = "Α", hl = "TypstConcealSet" },

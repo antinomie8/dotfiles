@@ -1,14 +1,4 @@
-vim.api.nvim_buf_create_user_command(0, "Asy", function(arg)
-	local name = arg.args
-	if name == "" then
-		vim.ui.input({ prompt = "New figure name" }, function(input)
-			name = input
-		end)
-		if not name then
-			return
-		end
-	end
-
+local function open_asy_file(name)
 	local root = vim.fn.fnamemodify(vim.b.typst_root, ":h") or vim.fn.getcwd()
 	local fig_dir = root .. "/figures"
 	local asy_path = fig_dir .. "/" .. name .. ".asy"
@@ -36,6 +26,17 @@ vim.api.nvim_buf_create_user_command(0, "Asy", function(arg)
 	if not exists then
 		vim.api.nvim_buf_set_lines(0, 0, 0, false, vim.split(require("static.lang.asymptote.preamble"), "\n"))
 		vim.cmd("LiveRender")
+	end
+end
+
+vim.api.nvim_buf_create_user_command(0, "Asy", function(arg)
+	local name = arg.args
+	if name == "" then
+		vim.ui.input({ prompt = "New figure name" }, function(input)
+			open_asy_file(input)
+		end)
+	else
+		open_asy_file(name)
 	end
 end, {
 	nargs = "?",
