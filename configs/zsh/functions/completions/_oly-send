@@ -1,0 +1,10 @@
+#compdef oly-send
+
+# Dynamic problem list
+_oly_problems() {
+	local -a problems
+	problems=("${(@f)$(oly list 2>/dev/null)}")
+	_describe -t problems 'problem' problems
+}
+
+_oly_problems

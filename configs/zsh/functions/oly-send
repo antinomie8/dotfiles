@@ -1,0 +1,11 @@
+pdfs=()
+
+while (($# > 0)); do
+	dir="$(oly gen $1 --no-open --print-path)"
+	if (($status == 0)); then
+		pdfs+=("$dir/$(basename $dir).pdf")
+	fi
+	shift
+done
+
+transfer $pdfs

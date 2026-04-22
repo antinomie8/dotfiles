@@ -42,6 +42,7 @@ path=(
 )
 fpath=(
 	$ZDOTDIR/functions
+	$ZDOTDIR/functions/completions
 	$HOME/.local/share/zsh/completions
 	$fpath
 )
