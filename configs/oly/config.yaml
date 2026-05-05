@@ -50,10 +50,13 @@ contest_format:
     Valbonne: "POFM/Valbonne/${contest} ${year}/${source}"
     Cours en ligne: "POFM/Cours en ligne/${year}/${date}"
     Liste: "POFM/Listes/${source}"
-    TN: "POFM/Vidéos/TN/${source}"
-    Géo: "POFM/Vidéos/Géo/${source}"
-    Alg: "POFM/Vidéos/Alg/${source}"
-    Comb: "POFM/Vidéos/Comb/${source}"
+# you can also use prefixes if the contest parser doesn't give the result you want
+contest_format_prefix:
+    TN-: "POFM/Vidéos/TN/${source}"
+    Géo-: "POFM/Vidéos/Géo/${source}"
+    Alg-: "POFM/Vidéos/Alg/${source}"
+    Comb-: "POFM/Vidéos/Comb/${source}"
+    Lettre de motivation Parcoursup: "Parcoursup/${source}"
 
 # customize the colors used by the show command
 # see there for the full list of options:
