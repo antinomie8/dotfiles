@@ -1,12 +1,16 @@
---- @since 25.12.29
+--- @since 26.5.6
 
 -- Check for windows
 local is_windows = ya.target_family() == "windows"
 
 -- Define default flags and strings
-local is_password, is_encrypted, is_level = false, false, false
-local silent = false
+local is_password, is_encrypted, is_level, is_silent_success = false, false, false, false
 local default_extension = "zip"
+
+-- Allow dots when matching file extension arguments
+local function extension_pattern(ext)
+	return "%." .. ext:gsub("%.", "%%.") .. "$"
+end
 
 -- Function to check valid filename
 local function is_valid_filename(name)
@@ -344,12 +348,12 @@ return {
 						elseif flag == "l" then
 							is_level = true
 						elseif flag == "s" then
-							silent = true
+							is_silent_success = true
 						end
 					end
 				elseif arg:match("^[%w%.]+$") then
 					-- Handle default extension (e.g., 7z, zip)
-					if archive_commands["%." .. arg .. "$"] then
+					if archive_commands[extension_pattern(arg)] then
 						default_extension = arg
 					else
 						notify(string.format("Unsupported extension: %s", arg), "warn")
@@ -473,7 +477,7 @@ return {
 		for filepath, filenames in pairs(path_fnames) do
 			-- Execute the archive command for each path and its respective files
 			local archive_status, archive_err =
-			         Command(archive_cmd):arg(archive_args):arg(temp_output_url):arg(filenames):cwd(filepath):spawn():wait()
+				Command(archive_cmd):arg(archive_args):arg(temp_output_url):arg(filenames):cwd(filepath):spawn():wait()
 			if not archive_status or not archive_status.success then
 				-- Notify the user if the archiving process fails and clean up the temporary directory
 				notify(
@@ -498,11 +502,11 @@ return {
 			if archive_compress:match("^7z") then
 				local compressed_output = combine_url(temp_dir, original_name)
 				compress_status, compress_err = Command(archive_compress)
-				                                :arg(archive_compress_args)
-				                                :arg(compressed_output)
-				                                :arg(temp_output_url)
-				                                :spawn()
-				                                :wait()
+					:arg(archive_compress_args)
+					:arg(compressed_output)
+					:arg(temp_output_url)
+					:spawn()
+					:wait()
 			else
 				-- Native compression tools (gzip, xz, bzip2, etc.) compress in-place
 				compress_status, compress_err =
@@ -566,7 +570,7 @@ return {
 		cleanup_temp_dir(temp_dir)
 
 		-- Notify user of success
-		if not silent then
+		if not is_silent_success then
 			notify(string.format("Successfully created archive: %s", ya.quote(to.name)), "info")
 		end
 	end,

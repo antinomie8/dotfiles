@@ -35,13 +35,14 @@ prepend_rules = [
 	{ mime = "text/shellscript", use = [ "edit", "execute" ] },
 	{ mime = "text/lua", use = [ "edit", "execute" ] },
 	{ mime = "application/pie-executable", use = [ "edit", "execute" ] },
-	{ mime = "image/svg+xml", use = [ "edit", "view", "open" ] }
+	{ mime = "image/svg+xml", use = [ "edit", "view", "open" ] },
+	{ mime = "text/html", use = ["open", "edit"] },
 ]
 
 [plugin]
 prepend_fetchers = [
-	{ id = "git", url = "*", run = "git" },
-	{ id = "git", url = "*/", run = "git" },
+	{ group = "git", url = "*", run = "git" },
+	{ group = "git", url = "*/", run = "git" },
 ]
 prepend_previewers = [
 	{ mime = "inode/socket", run = 'faster-piper -- fzf_preview "$1"' },

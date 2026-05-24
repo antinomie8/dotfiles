@@ -83,14 +83,9 @@ for file in configs/*; do
 	fi
 done
 
-# add everything to the index
-git add .
-
 # commit if args are passed to the scripts
 if [[ $# == 2 ]]; then
-	git commit -m $1 -m $2
-	git push
+	git commit -am $1 -m $2 && git push
 elif [[ $# == 1 ]]; then
-	git commit -m $1
-	git push
+	git commit -am $1 && git push
 fi

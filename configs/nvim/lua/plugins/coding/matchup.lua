@@ -1,5 +1,5 @@
 return {
-	"antinomie8/vim-matchup",
+	"andymass/vim-matchup",
 	event = { "BufReadPost", "BufNewFile" },
 	config = function()
 		require("match-up").setup({

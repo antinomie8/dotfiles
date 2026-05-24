@@ -81,13 +81,9 @@ return {
 
 		vim.api.nvim_create_user_command("Make", function(params)
 			-- set the makeprg to CMake if CMakeLists.txt is found in a parent directory
-			local cmakelists = vim.fs.find("CMakeLists.txt", {
-				type = "file",
-				limit = math.huge,
-				upward = true,
-			})
-			if #cmakelists > 0 then
-				vim.cmd.cd(vim.fs.dirname(cmakelists[#cmakelists]))
+			local cmakelists = vim.fs.root(0, "CMakeLists.txt")
+			if cmakelists then
+				vim.cmd.cd(cmakelists)
 				vim.opt_local.makeprg = "cmake --build build/Debug"
 			end
 

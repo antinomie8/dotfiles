@@ -111,7 +111,7 @@
     ],
     "postpone_duration": 5,
     "postpone_unit": "minutes",
-    "pre_break_warning_time": 10,
+    "pre_break_warning_time": 3,
     "random_order": true,
     "short_break_duration": 20,
     "short_break_interval": 15,

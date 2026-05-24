@@ -71,13 +71,7 @@ return {
 				command = "clang-format",
 				args = function(_, ctx)
 					local args = { "-assume-filename", "$FILENAME" }
-					if
-						#vim.fs.find({ ".clang-format", "_clang-format" }, {
-							type = "file",
-							upward = true,
-							path = ctx.dirname,
-						}) == 0
-					then
+					if vim.fs.root(ctx.buf, { ".clang-format", "_clang-format" }) == nil then
 						table.insert(args,
 							"--style=file:" ..
 							(vim.env.XDG_CONFIG_HOME or (vim.env.HOME .. "/.config")) .. "/clang-format/config.yaml"
@@ -107,8 +101,7 @@ return {
 				command = "shfmt",
 				args = function(_, ctx)
 					local args = { "-filename", "$FILENAME" }
-					local has_editorconfig = vim.fs.find(".editorconfig", { path = ctx.dirname, upward = true })[1]
-					                         ~= nil
+					local has_editorconfig = vim.fs.root(ctx.buf, ".editorconfig") ~= nil
 					-- If there is an editorconfig, don't pass any args because shfmt will apply settings from there
 					-- when no command line args are passed.
 					if not has_editorconfig then
