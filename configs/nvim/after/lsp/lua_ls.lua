@@ -5,9 +5,13 @@ return {
 			return
 		end
 
-		local config = "nvim"
-		if path:match("^" .. vim.env.HOME .. "/.config/yazi") then
+		local config
+		if vim.startswith(path, vim.env.HOME .. "/.config/yazi") then
 			config = "yazi"
+		elseif vim.startswith(path, vim.env.HOME .. "/.config/hypr") then
+			config = "hypr"
+		else
+			config = "nvim"
 		end
 
 		local configs = {
@@ -50,6 +54,13 @@ return {
 					},
 					disable = {
 						"inject-field",
+					},
+				},
+			},
+			hypr = {
+				workspace = {
+					library = {
+						"/usr/share/hypr/stubs",
 					},
 				},
 			},

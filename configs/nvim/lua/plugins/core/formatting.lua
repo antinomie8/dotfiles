@@ -134,9 +134,10 @@ return {
 
 				"^" .. (vim.env.TEXMFHOME or vim.env.HOME) .. "/tex/latex.*%.tex$",
 				"^" .. (vim.env.ASYMPTOTE_HOME or vim.env.HOME .. "/.asy") .. "/config.asy$",
-				"^" .. (vim.env.ZDOTDIR or vim.env.HOME .. ".zsh") .. "/.zshrc$",
-				"^" .. (vim.env.ZDOTDIR or vim.env.HOME .. ".zsh") .. "/config/keybinds.zsh$",
-				"^" .. (vim.env.ZDOTDIR or vim.env.HOME .. ".zsh") .. "/config/completions.zsh$",
+				"^" .. (vim.env.ZDOTDIR or vim.env.HOME .. "/.zsh") .. "/.zshrc$",
+				"^" .. (vim.env.ZDOTDIR or vim.env.HOME .. "/.zsh") .. "/config/keybinds.zsh$",
+				"^" .. (vim.env.ZDOTDIR or vim.env.HOME .. "/.zsh") .. "/config/completions.zsh$",
+				"^" .. (vim.env.XDG_CONFIG_HOME or vim.env.HOME .. "/.config") .. "/quickshell/ii",
 			}
 			for _, path in ipairs(disabled_paths) do
 				if vim.api.nvim_buf_get_name(0):match(path) then
