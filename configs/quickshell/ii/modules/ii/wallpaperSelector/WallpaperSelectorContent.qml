@@ -421,7 +421,7 @@ MouseArea {
 
                         ToolbarPairedFab {
                             iconText: "close"
-                            onClicked: GlobalStates.wallpaperSelectorOpen = false
+                            onClicked: GlobalStates.wallpaperSelectorOpen = false;
                             StyledToolTip {
                                 text: Translation.tr("Cancel wallpaper selection")
                             }

@@ -28,10 +28,10 @@ Item {
     property real scale: Config.options.overview.scale
     property color activeBorderColor: Appearance.colors.colSecondary
 
-    property real workspaceImplicitWidth: (monitorData?.transform % 2 === 1) ?
+    property real workspaceImplicitWidth: (monitorData?.transform % 2 === 1) ? 
         ((monitor.height - monitorData?.reserved[0] - monitorData?.reserved[2]) * root.scale / monitor.scale) :
         ((monitor.width - monitorData?.reserved[0] - monitorData?.reserved[2]) * root.scale / monitor.scale)
-    property real workspaceImplicitHeight: (monitorData?.transform % 2 === 1) ?
+    property real workspaceImplicitHeight: (monitorData?.transform % 2 === 1) ? 
         ((monitor.width - monitorData?.reserved[1] - monitorData?.reserved[3]) * root.scale / monitor.scale) :
         ((monitor.height - monitorData?.reserved[1] - monitorData?.reserved[3]) * root.scale / monitor.scale)
     property real largeWorkspaceRadius: Appearance.rounding.large
@@ -52,7 +52,7 @@ Item {
 
     property Component windowComponent: OverviewWindow {}
     property list<OverviewWindow> windowWidgets: []
-
+    
     function getWsRow(ws) {
         // 1-indexed workspace, 0-indexed row
         var normalRow = Math.floor((ws - 1) / Config.options.overview.columns) % Config.options.overview.rows;
@@ -88,7 +88,7 @@ Item {
             z: root.workspaceZ
             anchors.centerIn: parent
             spacing: workspaceSpacing
-
+            
             Repeater {
                 model: Config.options.overview.rows
                 delegate: Row {
@@ -142,7 +142,7 @@ Item {
                                 onPressed: {
                                     if (root.draggingTargetWorkspace === -1) {
                                         GlobalStates.overviewOpen = false
-                                        Hyprland.dispatch(`workspace ${workspace.workspaceValue}`)
+                                        Hyprland.dispatch(`hl.dsp.focus({ workspace = ${workspace.workspaceValue} })`)
                                     }
                                 }
                             }
@@ -212,10 +212,10 @@ Item {
                     property bool workspaceAtRight: workspaceColIndex === Config.options.overview.columns - 1
                     property bool workspaceAtTop: workspaceRowIndex === 0
                     property bool workspaceAtBottom: workspaceRowIndex === Config.options.overview.rows - 1
-                    property bool workspaceAtTopLeft: (workspaceAtLeft && workspaceAtTop)
-                    property bool workspaceAtTopRight: (workspaceAtRight && workspaceAtTop)
-                    property bool workspaceAtBottomLeft: (workspaceAtLeft && workspaceAtBottom)
-                    property bool workspaceAtBottomRight: (workspaceAtRight && workspaceAtBottom)
+                    property bool workspaceAtTopLeft: (workspaceAtLeft && workspaceAtTop) 
+                    property bool workspaceAtTopRight: (workspaceAtRight && workspaceAtTop) 
+                    property bool workspaceAtBottomLeft: (workspaceAtLeft && workspaceAtBottom) 
+                    property bool workspaceAtBottomRight: (workspaceAtRight && workspaceAtBottom) 
                     property real distanceFromLeftEdge: xWithinWorkspaceWidget
                     property real distanceFromRightEdge: root.workspaceImplicitWidth - (xWithinWorkspaceWidget + targetWindowWidth)
                     property real distanceFromTopEdge: yWithinWorkspaceWidget
@@ -266,7 +266,7 @@ Item {
                             window.Drag.active = false
                             root.draggingFromWorkspace = -1
                             if (targetWorkspace !== -1 && targetWorkspace !== windowData?.workspace.id) {
-                                Hyprland.dispatch(`movetoworkspacesilent ${targetWorkspace}, address:${window.windowData?.address}`)
+                                Hyprland.dispatch(`hl.dsp.window.move({ workspace = ${targetWorkspace}, follow = false, window = "address:${window.windowData?.address}" })`)
                                 updateWindowPosition.restart()
                             }
                             else {
@@ -274,9 +274,9 @@ Item {
                                     updateWindowPosition.restart()
                                     return
                                 }
-                                const percentageX = Math.round((window.x - xOffset) / root.workspaceImplicitWidth * 100)
-                                const percentageY = Math.round((window.y - yOffset) / root.workspaceImplicitHeight * 100)
-                                Hyprland.dispatch(`movewindowpixel exact ${percentageX}% ${percentageY}%, address:${window.windowData?.address}`)
+                                const percentageX = (window.x - xOffset) / root.workspaceImplicitWidth
+                                const percentageY = (window.y - yOffset) / root.workspaceImplicitHeight
+                                Hyprland.dispatch(`hl.dsp.window.move({ x = "${percentageX * root.screen.width}", y = "${percentageY * root.screen.height}", window = "address:${window.windowData?.address}" })`)
                             }
                         }
                         onClicked: (event) => {
@@ -284,10 +284,10 @@ Item {
 
                             if (event.button === Qt.LeftButton) {
                                 GlobalStates.overviewOpen = false
-                                Hyprland.dispatch(`focuswindow address:${windowData.address}`)
+                                Hyprland.dispatch(`hl.dsp.focus({window = "address:${windowData.address}"})`)
                                 event.accepted = true
                             } else if (event.button === Qt.MiddleButton) {
-                                Hyprland.dispatch(`closewindow address:${windowData.address}`)
+                                Hyprland.dispatch(`hl.dsp.window.close({window = "address:${windowData.address}"})`)
                                 event.accepted = true
                             }
                         }

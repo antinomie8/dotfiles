@@ -36,7 +36,7 @@ AppButton {
     checked: active
     iconName: AppSearch.guessIcon(appEntry.appId)
     tryCustomIcon: false
-
+    
     onHoverTimedOut: {
         root.hoverPreviewRequested()
     }

@@ -30,8 +30,7 @@ Singleton {
     property bool superReleaseMightTrigger: true
     property bool wallpaperSelectorOpen: false
     property bool workspaceShowNumbers: false
-    property list<int> workspacesWithBarClosed
-
+	  property list<int> workspacesWithBarClosed
 
     onSidebarRightOpenChanged: {
         if (GlobalStates.sidebarRightOpen) {

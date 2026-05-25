@@ -40,7 +40,7 @@ ExpandableChoiceButton {
                     visible: root?.wifiNetwork?.isSecure ?? false
                     icon: "lock-closed"
                     filled: true
-                    implicitSize: 14
+                    implicitSize: 14           
                 }
             }
         }

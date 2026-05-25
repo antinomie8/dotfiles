@@ -63,7 +63,8 @@ MouseArea {
     }
     onPositionChanged: mouse => {
         // show cursor on actual movement (necessary to hide immediately)
-        if (mouseX === lastX && mouseY === lastY) return;
+        if (mouseX === lastX && mouseY === lastY)
+            return;
         cursorHidden = false;
         lastX = mouseX;
         lastY = mouseY;
@@ -101,7 +102,7 @@ MouseArea {
         }
         if (event.key === Qt.Key_Escape) { // Esc to clear
             root.context.currentText = "";
-        }
+        } 
         forceFieldFocus();
     }
     Keys.onReleased: event => {
@@ -192,7 +193,7 @@ MouseArea {
             Keys.onPressed: event => {
                 root.context.resetClearTimer();
             }
-
+            
             layer.enabled: true
             layer.effect: OpacityMask {
                 maskSource: Rectangle {
@@ -397,7 +398,7 @@ MouseArea {
         Layout.fillHeight: true
         Layout.leftMargin: 10
         Layout.rightMargin: 10
-
+        
 
         MaterialSymbol {
             anchors.verticalCenter: parent.verticalCenter

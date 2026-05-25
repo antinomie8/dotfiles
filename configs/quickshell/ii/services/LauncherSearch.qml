@@ -7,6 +7,7 @@ import QtQuick
 import Qt.labs.folderlistmodel
 import Quickshell
 import Quickshell.Io
+import Quickshell.Hyprland
 
 Singleton {
     id: root
@@ -74,12 +75,6 @@ Singleton {
             }
         },
         {
-            action: "konachanwallpaper",
-            execute: () => {
-                Quickshell.execDetached([Quickshell.shellPath("scripts/colors/random/random_konachan_wall.sh")]);
-            }
-        },
-        {
             action: "light",
             execute: () => {
                 Quickshell.execDetached([Directories.wallpaperSwitchScriptPath, "--mode", "light", "--noswitch"]);
@@ -108,7 +103,7 @@ Singleton {
         {
             action: "wallpaper",
             execute: () => {
-                GlobalStates.wallpaperSelectorOpen = true;
+                Hyprland.dispatch(`hl.dsp.global("quickshell:wallpaperSelectorToggle")`)
             }
         },
         {

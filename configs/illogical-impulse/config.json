@@ -271,7 +271,7 @@
         },
         "night": {
             "automatic": false,
-            "colorTemperature": 4782,
+            "colorTemperature": 4282,
             "from": "19:00",
             "to": "06:30"
         }
@@ -303,6 +303,10 @@
         "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
     },
     "notifications": {
+        "monitor": {
+            "enable": false,
+            "name": ""
+        },
         "timeout": 7000
     },
     "osd": {

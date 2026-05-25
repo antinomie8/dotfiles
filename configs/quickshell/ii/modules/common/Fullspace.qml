@@ -3,7 +3,6 @@ pragma ComponentBehavior: Bound
 
 import qs
 import qs.services
-import qs.modules.common.models.hyprland
 import QtQuick
 import Quickshell
 import Quickshell.Hyprland
@@ -15,24 +14,35 @@ Scope {
         console.log("[Fullspace] Initialized");
     }
 
-    HyprlandConfigOption { id: defaultGapsIn; key: "general:gaps_in" }
-    HyprlandConfigOption { id: defaultGapsOut; key: "general:gaps_out" }
-
     property var fullspaceState: ({})
 
     function applyFullspace(id) {
         Quickshell.execDetached([
-            "hyprctl", "-r", "keyword", "workspace",
-            `${id},gapsin:0,gapsout:0,rounding:false,decorate:false,border:false`
+            "hyprctl", "eval",
+            `hl.workspace_rule({
+                workspace = ${id},
+                gaps_in = 0,
+                gaps_out = 0,
+                no_rounding = true,
+                decorate = false,
+                border = false,
+            })`,
         ])
         GlobalStates.workspacesWithBarClosed[id] = true;
         fullspace.fullspaceState[id] = true;
     }
 
-    function revertWorkspace(id) {
+    function revertFullspace(id) {
         Quickshell.execDetached([
-            "hyprctl", "-r", "keyword", "workspace",
-            `${id},gapsin:${defaultGapsIn.value},gapsout:${defaultGapsOut.value},rounding:true,decorate:true,border:true`
+            "hyprctl", "eval",
+            `hl.workspace_rule({
+                workspace = ${id},
+                gaps_in = hl.get_config("general.gaps_in"),
+                gaps_out = hl.get_config("general.gaps_out"),
+                no_rounding = false,
+                decorate = true,
+                border = true,
+            })`
         ])
         delete GlobalStates.workspacesWithBarClosed[id];
         delete fullspace.fullspaceState[id];
@@ -51,7 +61,7 @@ Scope {
                     
                     if (!clients || clients.length <= 1) { // need check <= 1 because the window being closed is counted
                         console.log(`[Fullspace] Last window closed on workspace ${wsId}. Reverting rules.`);
-                        fullspace.revertWorkspace(wsId);
+                        fullspace.revertFullspace(wsId);
                     }
                 });
             }
@@ -67,7 +77,7 @@ Scope {
             if (!id) return;
 
             if (fullspace.fullspaceState[id]) {
-                fullspace.revertWorkspace(id);
+                fullspace.revertFullspace(id);
             } else {
                 fullspace.applyFullspace(id);
             }

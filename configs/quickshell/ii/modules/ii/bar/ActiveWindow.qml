@@ -31,7 +31,7 @@ Item {
 
             if (isPUA) {
                 out += `<span style="font-family:'JetBrainsMono Nerd Font'">${ch}</span>`;
-                out += " ‎" // both the space and invisible character are needed
+                out += " ‎  " // both the space and invisible character are needed
             } else {
                 out += ch;
             }
@@ -68,7 +68,7 @@ Item {
             font.pixelSize: Appearance.font.pixelSize.small
             color: Appearance.colors.colOnLayer0
             elide: Text.ElideRight
-            text: fixGlyphSpacing(root.focusingThisMonitor && root.activeWindow?.activated && root.biggestWindow ?
+            text: fixGlyphSpacing(root.focusingThisMonitor && root.activeWindow?.activated && root.biggestWindow ? 
                 root.activeWindow?.title :
                 (root.biggestWindow?.title) ?? `${Translation.tr("Workspace")} ${monitor?.activeWorkspace?.id ?? 1}`)
         }

@@ -11,18 +11,6 @@ import qs.modules.common.functions
 ContentPage {
     forceWidth: true
 
-    Process {
-        id: randomWallProc
-        property string status: ""
-        property string scriptPath: `${Directories.scriptPath}/colors/random/random_konachan_wall.sh`
-        command: ["bash", "-c", FileUtils.trimFileProtocol(randomWallProc.scriptPath)]
-        stdout: SplitParser {
-            onRead: data => {
-                randomWallProc.status = data.trim();
-            }
-        }
-    }
-
     component SmallLightDarkPreferenceButton: RippleButton {
         id: smallLightDarkPreferenceButton
         required property bool dark
@@ -67,12 +55,10 @@ ContentPage {
             Item {
                 implicitWidth: 340
                 implicitHeight: 200
-
+                
                 StyledImage {
                     id: wallpaperPreview
                     anchors.fill: parent
-                    sourceSize.width: parent.implicitWidth
-                    sourceSize.height: parent.implicitHeight
                     fillMode: Image.PreserveAspectCrop
                     source: Config.options.background.wallpaperPath
                     cache: false
@@ -292,7 +278,7 @@ ContentPage {
                     ]
                 }
             }
-
+            
         }
     }
 

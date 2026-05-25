@@ -34,7 +34,7 @@ Scope { // Scope
             running = true;
         }
         function doIt2(output) {
-            command = ["bash", "-c", "hyprctl dispatch movecursor 9999 9999"];
+            command = ["bash", "-c", "hyprctl dispatch 'hl.dsp.cursor.move({x=9999,y=9999})'"];
             hook = () => {
                 doIt3();
             }
@@ -42,7 +42,7 @@ Scope { // Scope
         }
         function doIt3(output) {
             root.pin = !root.pin;
-            command = ["bash", "-c", `sleep 0.01; hyprctl dispatch movecursor ${cursorX} ${cursorY}`];
+            command = ["bash", "-c", `sleep 0.01; hyprctl dispatch 'hl.dsp.cursor.move({x=${cursorX},y=${cursorY}})'`];
             hook = null
             running = true;
         }
@@ -83,11 +83,11 @@ Scope { // Scope
     Loader {
         id: sidebarLoader
         active: true
-
+        
         sourceComponent: PanelWindow { // Window
             id: panelWindow
             visible: GlobalStates.sidebarLeftOpen
-
+            
             property bool extend: false
             property real sidebarWidth: panelWindow.extend ? Appearance.sizes.sidebarWidthExtended : Appearance.sizes.sidebarWidth
             property var contentParent: sidebarLeftBackground
@@ -182,7 +182,7 @@ Scope { // Scope
             onVisibleChanged: {
                 if (!visible) GlobalStates.sidebarLeftOpen = false;
             }
-
+            
             Rectangle {
                 id: detachedSidebarBackground
                 anchors.fill: parent

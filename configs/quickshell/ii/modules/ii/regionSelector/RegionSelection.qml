@@ -29,7 +29,7 @@ PanelWindow {
 
     // Modes
     // TODO: Ask: sidebar AI
-    enum SnipAction { Copy, Edit, Search, CharRecognition, Record, RecordWithSound }
+    enum SnipAction { Copy, Edit, Search, CharRecognition, Record, RecordWithSound } 
     enum SelectionMode { RectCorners, Circle }
     enum Phase { Select, Post }
     property var action: RegionSelection.SnipAction.Copy
@@ -220,10 +220,10 @@ PanelWindow {
 
     Process {
         id: imageDetectionProcess
-        command: ["bash", "-c", `${Directories.scriptPath}/images/find-regions-venv.sh `
-            + `--hyprctl `
-            + `--image '${StringUtils.shellSingleQuoteEscape(root.screenshotPath)}' `
-            + `--max-width ${Math.round(root.screen.width * root.falsePositivePreventionRatio)} `
+        command: ["bash", "-c", `${Directories.scriptPath}/images/find-regions-venv.sh ` 
+            + `--hyprctl ` 
+            + `--image '${StringUtils.shellSingleQuoteEscape(root.screenshotPath)}' ` 
+            + `--max-width ${Math.round(root.screen.width * root.falsePositivePreventionRatio)} ` 
             + `--max-height ${Math.round(root.screen.height * root.falsePositivePreventionRatio)} `]
         stdout: StdioCollector {
             id: imageDimensionCollector
@@ -275,14 +275,14 @@ PanelWindow {
         if (root.action === RegionSelection.SnipAction.Copy || root.action === RegionSelection.SnipAction.Edit) {
             root.action = root.mouseButton === Qt.RightButton ? RegionSelection.SnipAction.Edit : RegionSelection.SnipAction.Copy;
         }
-
+        
         const screenshotDir = Config.options.screenSnip.savePath !== "" ? //
             Config.options.screenSnip.savePath : "";
         var screenshotAction = root.getScreenshotAction();
         const command = ScreenshotAction.getCommand(
             root.regionX * root.monitorScale, //
             root.regionY * root.monitorScale, //
-            root.regionWidth * root.monitorScale,//
+            root.regionWidth * root.monitorScale,// 
             root.regionHeight * root.monitorScale, //
             root.screenshotPath, //
             screenshotAction, //
@@ -319,95 +319,95 @@ PanelWindow {
         }
     }
 
-        MouseArea {
-            id: mouseArea
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        cursorShape: Qt.CrossCursor
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        hoverEnabled: true
+
+        // Controls
+        onPressed: (mouse) => {
+            root.dragStartX = mouse.x;
+            root.dragStartY = mouse.y;
+            root.draggingX = mouse.x;
+            root.draggingY = mouse.y;
+            root.dragging = true;
+            root.mouseButton = mouse.button;
+        }
+        onReleased: (mouse) => {
+            // Detect if it was a click -> Try to select targeted region
+            if (root.draggingX === root.dragStartX && root.draggingY === root.dragStartY) {
+                if (root.targetedRegionValid()) {
+                    root.setRegionToTargeted();
+                }
+            }
+            // Circle dragging?
+            else if (root.selectionMode === RegionSelection.SelectionMode.Circle) {
+                const padding = Config.options.regionSelector.circle.padding + Config.options.regionSelector.circle.strokeWidth / 2;
+                const dragPoints = (root.points.length > 0) ? root.points : [{ x: mouseArea.mouseX, y: mouseArea.mouseY }];
+                const maxX = Math.max(...dragPoints.map(p => p.x));
+                const minX = Math.min(...dragPoints.map(p => p.x));
+                const maxY = Math.max(...dragPoints.map(p => p.y));
+                const minY = Math.min(...dragPoints.map(p => p.y));
+                root.regionX = minX - padding;
+                root.regionY = minY - padding;
+                root.regionWidth = maxX - minX + padding * 2;
+                root.regionHeight = maxY - minY + padding * 2;
+            }
+            root.snip();
+        }
+        onPositionChanged: (mouse) => {
+            root.updateTargetedRegion(mouse.x, mouse.y);
+            if (!root.dragging) return;
+            root.draggingX = mouse.x;
+            root.draggingY = mouse.y;
+            root.dragDiffX = mouse.x - root.dragStartX;
+            root.dragDiffY = mouse.y - root.dragStartY;
+            root.points.push({ x: mouse.x, y: mouse.y });
+        }
+        
+        Loader {
+            z: 2
             anchors.fill: parent
-            cursorShape: Qt.CrossCursor
-            acceptedButtons: Qt.LeftButton | Qt.RightButton
-            hoverEnabled: true
-
-            // Controls
-            onPressed: (mouse) => {
-                root.dragStartX = mouse.x;
-                root.dragStartY = mouse.y;
-                root.draggingX = mouse.x;
-                root.draggingY = mouse.y;
-                root.dragging = true;
-                root.mouseButton = mouse.button;
-            }
-            onReleased: (mouse) => {
-                // Detect if it was a click -> Try to select targeted region
-                if (root.draggingX === root.dragStartX && root.draggingY === root.dragStartY) {
-                    if (root.targetedRegionValid()) {
-                        root.setRegionToTargeted();
-                    }
-                }
-                // Circle dragging?
-                else if (root.selectionMode === RegionSelection.SelectionMode.Circle) {
-                    const padding = Config.options.regionSelector.circle.padding + Config.options.regionSelector.circle.strokeWidth / 2;
-                    const dragPoints = (root.points.length > 0) ? root.points : [{ x: mouseArea.mouseX, y: mouseArea.mouseY }];
-                    const maxX = Math.max(...dragPoints.map(p => p.x));
-                    const minX = Math.min(...dragPoints.map(p => p.x));
-                    const maxY = Math.max(...dragPoints.map(p => p.y));
-                    const minY = Math.min(...dragPoints.map(p => p.y));
-                    root.regionX = minX - padding;
-                    root.regionY = minY - padding;
-                    root.regionWidth = maxX - minX + padding * 2;
-                    root.regionHeight = maxY - minY + padding * 2;
-                }
-                root.snip();
-            }
-            onPositionChanged: (mouse) => {
-                root.updateTargetedRegion(mouse.x, mouse.y);
-                if (!root.dragging) return;
-                root.draggingX = mouse.x;
-                root.draggingY = mouse.y;
-                root.dragDiffX = mouse.x - root.dragStartX;
-                root.dragDiffY = mouse.y - root.dragStartY;
-                root.points.push({ x: mouse.x, y: mouse.y });
-            }
-
-            Loader {
-                z: 2
-                anchors.fill: parent
-                active: root.selectionMode === RegionSelection.SelectionMode.RectCorners
-                sourceComponent: RectCornersSelectionDetails {
-                    regionX: root.regionX
-                    regionY: root.regionY
-                    regionWidth: root.regionWidth
-                    regionHeight: root.regionHeight
-                    mouseX: mouseArea.mouseX
-                    mouseY: mouseArea.mouseY
-                    color: root.selectionBorderColor
-                    overlayColor: root.overlayColor
+            active: root.selectionMode === RegionSelection.SelectionMode.RectCorners
+            sourceComponent: RectCornersSelectionDetails {
+                regionX: root.regionX
+                regionY: root.regionY
+                regionWidth: root.regionWidth
+                regionHeight: root.regionHeight
+                mouseX: mouseArea.mouseX
+                mouseY: mouseArea.mouseY
+                color: root.selectionBorderColor
+                overlayColor: root.overlayColor
                 breathingBorderOnly: root.phase === RegionSelection.Phase.Post
-                }
             }
+        }
 
-            Loader {
-                z: 2
-                anchors.fill: parent
-                active: root.selectionMode === RegionSelection.SelectionMode.Circle
-                sourceComponent: CircleSelectionDetails {
-                    color: root.selectionBorderColor
-                    overlayColor: root.overlayColor
-                    points: root.points
-                }
+        Loader {
+            z: 2
+            anchors.fill: parent
+            active: root.selectionMode === RegionSelection.SelectionMode.Circle
+            sourceComponent: CircleSelectionDetails {
+                color: root.selectionBorderColor
+                overlayColor: root.overlayColor
+                points: root.points
             }
+        }
 
         // The thing to the bottom-right with an icon
-            CursorGuide {
-                z: 9999
+        CursorGuide {
+            z: 9999
             visible: root.phase === RegionSelection.Phase.Select
-                x: root.dragging ? root.regionX + root.regionWidth : mouseArea.mouseX
-                y: root.dragging ? root.regionY + root.regionHeight : mouseArea.mouseY
-                action: root.action
-                selectionMode: root.selectionMode
-            }
+            x: root.dragging ? root.regionX + root.regionWidth : mouseArea.mouseX
+            y: root.dragging ? root.regionY + root.regionHeight : mouseArea.mouseY
+            action: root.action
+            selectionMode: root.selectionMode
+        }
 
-            // Window regions
-            Repeater {
-                model: ScriptModel {
+        // Window regions
+        Repeater {
+            model: ScriptModel {
                 values: {
                     if (root.phase === RegionSelection.Phase.Select && root.enableWindowRegions) {
                         return root.windowRegions
@@ -415,29 +415,29 @@ PanelWindow {
                         return []
                     }
                 }
-                }
-                delegate: TargetRegion {
-                    z: 2
-                    required property var modelData
-                    clientDimensions: modelData
-                    showIcon: true
+            }
+            delegate: TargetRegion {
+                z: 2
+                required property var modelData
+                clientDimensions: modelData
+                showIcon: true
                 targeted: !root.draggedAway && //
                     (root.targetedRegionX === modelData.at[0]  //
                     && root.targetedRegionY === modelData.at[1] //
                     && root.targetedRegionWidth === modelData.size[0] //
                     && root.targetedRegionHeight === modelData.size[1])
 
-                    opacity: root.draggedAway ? 0 : root.targetRegionOpacity
-                    borderColor: root.windowBorderColor
-                    fillColor: targeted ? root.windowFillColor : "transparent"
-                    text: `${modelData.class}`
-                    radius: Appearance.rounding.windowRounding
-                }
+                opacity: root.draggedAway ? 0 : root.targetRegionOpacity
+                borderColor: root.windowBorderColor
+                fillColor: targeted ? root.windowFillColor : "transparent"
+                text: `${modelData.class}`
+                radius: Appearance.rounding.windowRounding
             }
+        }
 
-            // Layer regions
-            Repeater {
-                model: ScriptModel {
+        // Layer regions
+        Repeater {
+            model: ScriptModel {
                 values: {
                     if (root.phase === RegionSelection.Phase.Select && root.enableLayerRegions) {
                         return root.layerRegions
@@ -445,28 +445,28 @@ PanelWindow {
                         return []
                     }
                 }
-                }
-                delegate: TargetRegion {
-                    z: 3
-                    required property var modelData
-                    clientDimensions: modelData
-                    targeted: !root.draggedAway &&
-                        (root.targetedRegionX === modelData.at[0]
-                        && root.targetedRegionY === modelData.at[1]
-                        && root.targetedRegionWidth === modelData.size[0]
-                        && root.targetedRegionHeight === modelData.size[1])
-
-                    opacity: root.draggedAway ? 0 : root.targetRegionOpacity
-                    borderColor: root.windowBorderColor
-                    fillColor: targeted ? root.windowFillColor : "transparent"
-                    text: `${modelData.namespace}`
-                    radius: Appearance.rounding.windowRounding
-                }
             }
+            delegate: TargetRegion {
+                z: 3
+                required property var modelData
+                clientDimensions: modelData
+                targeted: !root.draggedAway &&
+                    (root.targetedRegionX === modelData.at[0] 
+                    && root.targetedRegionY === modelData.at[1]
+                    && root.targetedRegionWidth === modelData.size[0]
+                    && root.targetedRegionHeight === modelData.size[1])
 
-            // Content regions
-            Repeater {
-                model: ScriptModel {
+                opacity: root.draggedAway ? 0 : root.targetRegionOpacity
+                borderColor: root.windowBorderColor
+                fillColor: targeted ? root.windowFillColor : "transparent"
+                text: `${modelData.namespace}`
+                radius: Appearance.rounding.windowRounding
+            }
+        }
+
+        // Content regions
+        Repeater {
+            model: ScriptModel {
                 values: {
                     if (root.phase === RegionSelection.Phase.Select && root.enableContentRegions) {
                         return root.imageRegions
@@ -474,60 +474,60 @@ PanelWindow {
                         return []
                     }
                 }
-                }
-                delegate: TargetRegion {
-                    z: 4
-                    required property var modelData
-                    clientDimensions: modelData
-                    targeted: !root.draggedAway &&
-                        (root.targetedRegionX === modelData.at[0]
-                        && root.targetedRegionY === modelData.at[1]
-                        && root.targetedRegionWidth === modelData.size[0]
-                        && root.targetedRegionHeight === modelData.size[1])
+            }
+            delegate: TargetRegion {
+                z: 4
+                required property var modelData
+                clientDimensions: modelData
+                targeted: !root.draggedAway &&
+                    (root.targetedRegionX === modelData.at[0] 
+                    && root.targetedRegionY === modelData.at[1]
+                    && root.targetedRegionWidth === modelData.size[0]
+                    && root.targetedRegionHeight === modelData.size[1])
 
-                    opacity: root.draggedAway ? 0 : root.contentRegionOpacity
-                    borderColor: root.imageBorderColor
-                    fillColor: targeted ? root.imageFillColor : "transparent"
-                    text: Translation.tr("Content region")
+                opacity: root.draggedAway ? 0 : root.contentRegionOpacity
+                borderColor: root.imageBorderColor
+                fillColor: targeted ? root.imageFillColor : "transparent"
+                text: Translation.tr("Content region")
+            }
+        }
+
+        // Controls
+        Row {
+            id: regionSelectionControls
+            z: 10
+            visible: root.phase === RegionSelection.Phase.Select
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                bottom: parent.bottom
+                bottomMargin: -height
+            }
+            opacity: 0
+            Connections {
+                target: root
+                function onVisibleChanged() {
+                    if (!visible) return;
+                    regionSelectionControls.anchors.bottomMargin = 8;
+                    regionSelectionControls.opacity = 1;
                 }
             }
+            Behavior on opacity {
+                animation: Appearance.animation.elementMoveFast.numberAnimation.createObject(this)
+            }
+            Behavior on anchors.bottomMargin {
+                animation: Appearance.animation.elementMove.numberAnimation.createObject(this)
+            }
+            spacing: 6
 
-            // Controls
-            Row {
-                id: regionSelectionControls
-                z: 10
-            visible: root.phase === RegionSelection.Phase.Select
-                anchors {
-                    horizontalCenter: parent.horizontalCenter
-                    bottom: parent.bottom
-                    bottomMargin: -height
+            OptionsToolbar {
+                Synchronizer on action {
+                    property alias source: root.action
                 }
-                opacity: 0
-                Connections {
-                    target: root
-                    function onVisibleChanged() {
-                        if (!visible) return;
-                        regionSelectionControls.anchors.bottomMargin = 8;
-                        regionSelectionControls.opacity = 1;
-                    }
+                Synchronizer on selectionMode {
+                    property alias source: root.selectionMode
                 }
-                Behavior on opacity {
-                    animation: Appearance.animation.elementMoveFast.numberAnimation.createObject(this)
-                }
-                Behavior on anchors.bottomMargin {
-                    animation: Appearance.animation.elementMove.numberAnimation.createObject(this)
-                }
-                spacing: 6
-
-                OptionsToolbar {
-                    Synchronizer on action {
-                        property alias source: root.action
-                    }
-                    Synchronizer on selectionMode {
-                        property alias source: root.selectionMode
-                    }
-                    onDismiss: root.dismiss();
-                }
+                onDismiss: root.dismiss();
+            }
             ToolbarPairedFab {
                 anchors.verticalCenter: parent.verticalCenter
                 iconText: "close"
@@ -537,6 +537,6 @@ PanelWindow {
                 }
             }
         }
-
+        
     }
 }

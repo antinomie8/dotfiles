@@ -25,7 +25,7 @@ Scope {
         }
         LazyLoader {
             id: barLoader
-            active: GlobalStates.barOpen && !GlobalStates.screenLocked && !GlobalStates.workspacesWithBarClosed[Hyprland.focusedWorkspace.id]
+            active: GlobalStates.barOpen && !GlobalStates.screenLocked  && !GlobalStates.workspacesWithBarClosed[Hyprland.focusedWorkspace.id]
             required property ShellScreen modelData
             component: PanelWindow { // Bar window
                 id: barRoot
@@ -103,7 +103,7 @@ Scope {
 
                     BarContent {
                         id: barContent
-
+                        
                         implicitHeight: Appearance.sizes.barHeight
                         anchors {
                             right: parent.right

@@ -9,7 +9,6 @@
 import "modules/common"
 import "services"
 import "panelFamilies"
-import qs.modules.common
 
 import QtQuick
 import QtQuick.Window
@@ -48,7 +47,7 @@ ShellRoot {
         property bool extraCondition: true
         active: Config.ready && Config.options.panelFamily === identifier && extraCondition
     }
-
+    
     PanelFamilyLoader {
         identifier: "ii"
         component: IllogicalImpulseFamily {}
@@ -76,3 +75,4 @@ ShellRoot {
         onPressed: root.cyclePanelFamily()
     }
 }
+

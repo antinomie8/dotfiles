@@ -15,7 +15,7 @@ Singleton {
     property bool available: false
     property alias checking: checkUpdatesProc.running
     property int count: 0
-
+    
     readonly property bool updateAdvised: available && count > Config.options.updates.adviseUpdateThreshold
     readonly property bool updateStronglyAdvised: available && count > Config.options.updates.stronglyAdviseUpdateThreshold
 

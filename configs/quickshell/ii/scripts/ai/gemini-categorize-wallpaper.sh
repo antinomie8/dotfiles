@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 if [[ -z "$1" ]]; then
-	echo "Usage: $0 <image_path> [model] [prompt]"
-	echo "Tip: set GEMINI_WALLPAPER_MODEL and/or GEMINI_WALLPAPER_PROMPT to provide defaults."
-	exit 1
+    echo "Usage: $0 <image_path> [model] [prompt]"
+    echo "Tip: set GEMINI_WALLPAPER_MODEL and/or GEMINI_WALLPAPER_PROMPT to provide defaults."
+    exit 1
 fi
 
 # Variables
@@ -22,9 +22,9 @@ API_KEY=$(secret-tool lookup 'application' 'illogical-impulse' | jq -r '.apiKeys
 
 # Encode image to base64
 if [[ "$(base64 --version 2>&1)" = *"FreeBSD"* ]]; then
-	B64FLAGS="--input"
+    B64FLAGS="--input"
 else
-	B64FLAGS="-w0"
+    B64FLAGS="-w0"
 fi
 B64DATA="$(base64 $B64FLAGS $RESIZED_IMG_PATH)"
 # echo $B64DATA
@@ -55,10 +55,10 @@ payload='{
 
 # Make the request
 response=$(curl "https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent" \
-	-H "x-goog-api-key: $API_KEY" \
-	-H 'Content-Type: application/json' \
-	-X POST \
-	-d "$payload" 2>/dev/null)
+-H "x-goog-api-key: $API_KEY" \
+-H 'Content-Type: application/json' \
+-X POST \
+-d "$payload" 2> /dev/null)
 # echo "$response" | jq
 
 # Write the result
