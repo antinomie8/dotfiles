@@ -246,6 +246,7 @@ hl.config({
 	},
 	input = {
 		kb_layout = "fr",
+		kb_options = "caps:swapescape",
 		numlock_by_default = true,
 		repeat_delay = 250,
 		repeat_rate = 35,
