@@ -74,6 +74,7 @@ Scope {
             // Unlock the screen before exiting, or the compositor will display a
             // fallback lock you can't interact with.
             GlobalStates.screenLocked = false;
+            Quickshell.execDetached(["rm", "/tmp/quickshell/islocked"])
 
             // Reset
             lockContext.reset();
@@ -93,10 +94,14 @@ Scope {
     }
 
     function lock() {
+        Quickshell.execDetached(["mkdir", "-p", "/tmp/quickshell/"])
+        Quickshell.execDetached(["touch", "/tmp/quickshell/islocked"])
+
         if (Config.options.lock.useHyprlock) {
             Quickshell.execDetached(["bash", "-c", "pidof hyprlock || hyprlock"]);
             return;
         }
+
         GlobalStates.screenLocked = true;
     }
 

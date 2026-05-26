@@ -1,4 +1,5 @@
-local ws_group = require("hyprland.utils").workspace_group
+local utils = require("hyprland.utils")
+local ws_group = utils.workspace_group
 local vars = require("hyprland.variables")
 
 local numberkey = { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 }
@@ -25,7 +26,7 @@ hl.bind("SUPER_R", hl.dsp.global("quickshell:workspaceNumber"),
 	{ ignore_mods = true, transparent = true, release = true })
 hl.bind("SUPER + Tab", hl.dsp.global("quickshell:overviewWorkspacesToggle"), { desc = "Shell: Toggle overview" })
 hl.bind("SUPER + V", hl.dsp.global("quickshell:overviewClipboardToggle"))
--- hl.bind("SUPER + Period", hl.dsp.global("quickshell:overviewEmojiToggle"))
+hl.bind("SUPER + ALT + Colon", hl.dsp.global("quickshell:overviewEmojiToggle"))
 hl.bind("SUPER + A", hl.dsp.global("quickshell:sidebarLeftToggle"), { desc = "Shell: Toggle left sidebar" })
 hl.bind("SUPER + ALT + A", hl.dsp.global("quickshell:sidebarLeftToggleDetach"))
 hl.bind("SUPER + Z", hl.dsp.global("quickshell:sidebarRightToggle"), { desc = "Shell: Toggle right sidebar" })
@@ -33,10 +34,16 @@ hl.bind("SUPER + Comma", hl.dsp.global("quickshell:cheatsheetToggle"), { desc = 
 hl.bind("SUPER + SHIFT + K", hl.dsp.global("quickshell:oskToggle"), { desc = "Shell: Toggle on-screen keyboard" })
 hl.bind("SUPER + M", hl.dsp.global("quickshell:mediaControlsToggle"), { desc = "Shell: Toggle media controls" })
 hl.bind("SUPER + G", hl.dsp.global("quickshell:overlayToggle"), { desc = "Shell: Toggle widget overlay" })
-hl.bind("XF86PowerOff", hl.dsp.global("quickshell:sessionToggle"), { desc = "Shell: Toggle session menu" })
-hl.bind("XF86PowerOff", hl.dsp.exec_cmd(qsIsAlive .. " || pkill wlogout || wlogout -p layer-shell"))
 hl.bind("SUPER + dead_circumflex", hl.dsp.global("quickshell:barToggle"), { desc = "Shell: Toggle bar" })
 hl.bind("SUPER + SHIFT + ALT + Colon", hl.dsp.exec_cmd("qs -p $HOME/.config/quickshell/$qsConfig/welcome.qml"))
+hl.bind("XF86PowerOff", function()
+	if utils.file_exists("/tmp/quickshell/islocked") then
+		hl.dispatch(hl.dsp.exec_cmd("systemctl suspend || loginctl suspend"))
+	else
+		hl.dispatch(hl.dsp.global("quickshell:sessionToggle"))
+		hl.dispatch(hl.dsp.exec_cmd(qsIsAlive .. " || pkill wlogout || wlogout -p layer-shell"))
+	end
+end, { desc = "Shell: Toggle session menu", locked = true })
 
 hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd(qsIpcCall .. " brightness increment || brightnessctl s 5%+"),
 	{ locked = true, repeating = true })
