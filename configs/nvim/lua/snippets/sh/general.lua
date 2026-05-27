@@ -210,4 +210,9 @@ return {
 			}
 		)
 	),
+	s({ trig = "NUL", dscr = "discard output", snippetType = "autosnippet" },
+		{
+			t(">/dev/null 2>&1"),
+		}
+	),
 }

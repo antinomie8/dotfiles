@@ -7,7 +7,6 @@ set dbus-raise-window false
 set guioptions none
 set statusbar-h-padding 0
 set statusbar-v-padding 0
-set page-padding 5
 set font "JetBrains Mono 11"
 
 # mappings
