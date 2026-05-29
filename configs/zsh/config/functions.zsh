@@ -198,12 +198,15 @@ function pdfconvert() {
 # zathura
 function poly() {
 	local base_dir=$HOME/Mathématiques/Polys
-	local pdfs=$(fd --base-directory $base_dir -tf -e pdf . --strip-cwd-prefix --print0 |
-		fzf --preview="~/.local/bin/fzf_preview $base_dir/{}" --query=$1 --read0 --print0 --select-1 --multi)
 	local args=()
-	while read -r -d '' line; do
-		args+=("$base_dir/$line")
-	done <<<$pdfs
+	while (($# > 0)); do
+		local pdfs=$(fd --base-directory $base_dir -tf -e pdf . --strip-cwd-prefix --print0 |
+			fzf --preview="~/.local/bin/fzf_preview $base_dir/{}" --query=$1 --read0 --print0 --select-1 --multi)
+		while read -r -d '' line; do
+			args+=("$base_dir/$line")
+		done <<<$pdfs
+		shift
+	done 
 	if ((${#args} > 0)); then
 		runapp -- zathura $args[@]
 	fi
