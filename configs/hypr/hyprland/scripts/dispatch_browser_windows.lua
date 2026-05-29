@@ -1,4 +1,4 @@
-hl.on("window.title", function(win)
+local function move_window(win)
 	if win.class == "firefox" then
 		local cats = {
 			["Maths"] = 2,
@@ -18,4 +18,7 @@ hl.on("window.title", function(win)
 			)
 		end
 	end
-end)
+end
+
+hl.on("window.title", move_window)
+hl.on("window.open", move_window)
