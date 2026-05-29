@@ -292,7 +292,10 @@ RippleButton {
                         }
                     }
 
-                    onClicked: modelData.execute()
+                    onClicked: function() {
+                        modelData.execute()
+                        GlobalStates.overviewOpen = false;
+                    }
 
                     StyledToolTip {
                         text: modelData.name
