@@ -21,6 +21,7 @@ application/json=nvim.desktop
 application/octet-stream=nvim.desktop
 application/wine-extension-ini=nvim.desktop
 application/pdf=org.pwmt.zathura-pdf-mupdf.desktop
+application/postscript=org.pwmt.zathura-ps.desktop
 inode/directory=yazi.desktop
 image/png=imv.desktop
 image/jpeg=imv.desktop

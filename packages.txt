@@ -4,6 +4,7 @@ cronie
 kmonad
 zathura
 zathura-pdf-mupdf
+zathura-ps
 obsidian
 
 # shell
