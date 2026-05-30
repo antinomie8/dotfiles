@@ -136,19 +136,13 @@ local queries = {
 	symbols = vim.treesitter.query.parse(
 		"typst",
 		[[
-			(
-				(field) @sym
-				(#not-has-ancestor? @sym field )
-			)
-			(
-				(ident) @sym
-				(#has-ancestor? @sym math )
-				(#not-has-ancestor? @sym field)
-			)
-			(
-				attach . (ident) @sym
-				(#not-has-ancestor? @sym field)
-			)
+			((field) @sym
+				(#not-has-ancestor? @sym field ))
+			((ident) @sym
+				(#has-ancestor? @sym math)
+				(#not-has-ancestor? @sym field))
+			(attach . (ident) @sym
+				(#not-has-ancestor? @sym field))
 		]]
 	),
 	scripts = {
@@ -168,40 +162,39 @@ local queries = {
 	functions = vim.treesitter.query.parse(
 		"typst",
 		[[
-			(
-				(call)
-				@func
+			((call) @func
 				(#has-ancestor? @func math)
-				(#not-has-ancestor? @func attach)
-			)
+				(#not-has-ancestor? @func attach))
 		]]
 	),
 	shorthands = vim.treesitter.query.parse(
 		"typst",
 		[[
-			(
-				(shorthand)
-				@shorthand
+			((shorthand) @shorthand
 				(#has-ancestor? @shorthand math)
-				(#not-has-ancestor? @shorthand attach)
-			)
-			(
-				(symbol) ; for ||
-				@shorthand
+				(#not-has-ancestor? @shorthand attach))
+			((symbol) @shorthand ; for ||
 				(#has-ancestor? @shorthand math)
-				(#not-has-ancestor? @shorthand attach)
-			)
+				(#not-has-ancestor? @shorthand attach))
 		]]
 	),
 	primes = vim.treesitter.query.parse(
 		"typst",
 		[[
-			(
-				(prime)
-				@prime
+			((prime) @prime
 				(#has-ancestor? @prime math)
-				(#not-has-ancestor? @prime attach)
-			)
+				(#not-has-ancestor? @prime attach))
+		]]
+	),
+	vocab = vim.treesitter.query.parse(
+		"typst",
+		[[
+			(code
+				.(call
+					.item: (ident) @func_name
+						.(group
+							.(string).).).
+				(#eq? @func_name vocab)) @vocab
 		]]
 	),
 }
@@ -386,6 +379,22 @@ local function conceal_math(first, last)
 			conceal_at_positions(buf, sr, sc + #offset, sr, sc + #offset + #primes, repl, "@operator.typst")
 		end
 	end
+
+	-- vocab
+	for _, match, metadata in queries.vocab:iter_matches(root, buf, first, last) do
+		for id, nodes in pairs(match) do
+			local name = queries.vocab.captures[id]
+			if name == "vocab" then
+				for _, node in ipairs(nodes) do
+					local sr, sc, er, ec = node:range()
+					local word_node = node:child(1):child(1):child(1) --[[@as TSNode]]
+					local word = vim.treesitter.get_node_text(word_node, 0, { metadata = metadata })
+					word = word:sub(2, #word - 1) -- strip quotes
+					conceal_at_positions(buf, sr, sc, er, ec, word, "TypstConcealVocab")
+				end
+			end
+		end
+	end
 end
 
 vim.api.nvim_buf_attach(buf, false, {
@@ -402,7 +411,7 @@ vim.keymap.set("n", "<localleader>m", function()
 	conceal_math(0, -1)
 end, { desc = "Update conceal extmarks", buffer = true })
 vim.keymap.set("v", "<localleader>m", function()
-	-- '< and '> marks send previous selection instead of current
+	-- '< and '> marks give previous selection instead of current
 	local start_line = vim.fn.line("v")
 	local end_line = vim.fn.line(".")
 	if start_line > end_line then

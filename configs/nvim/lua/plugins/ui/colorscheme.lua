@@ -110,6 +110,7 @@ return {
 					TypstConcealSurround = { link = "Delimiter" },
 					TypstConcealSet = { link = "Type" },
 					TypstConcealLetter = { link = "Special" },
+					TypstConcealVocab = { fg = palette.waveAqua1, bold = true, italic = true },
 
 					GitGraphHash = { link = "diffAdded" },
 					GitGraphTimestamp = { link = "Comment" },
