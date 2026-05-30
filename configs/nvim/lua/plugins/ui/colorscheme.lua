@@ -104,12 +104,12 @@ return {
 
 					RenderMarkdownBullet = { link = "function" },
 
-					TypstConcealDelims = { link = "Operator" },
+					TypstConcealDelim = { link = "Operator" },
 					TypstConcealSymbol = { link = "Operator" },
 					TypstConcealScript = { link = "Conceal" },
 					TypstConcealSurround = { link = "Delimiter" },
-					TypstConcealSet = { link = "Constant" },
-					TypstConcealLetters = { link = "Special" },
+					TypstConcealSet = { link = "Type" },
+					TypstConcealLetter = { link = "Special" },
 
 					GitGraphHash = { link = "diffAdded" },
 					GitGraphTimestamp = { link = "Comment" },

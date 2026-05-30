@@ -19,6 +19,15 @@ return {
 	),
 	s(
 		{
+			trig = "FTSOC ",
+			dscr = "reductio ad absurdum",
+			snippetType = "autosnippet",
+			condition = tex.in_text * tex.in_document * tex.not_in_cmd,
+		},
+		t("for the sake of contradiction")
+	),
+	s(
+		{
 			trig = "Wlog ",
 			dscr = "without loss of generality",
 			snippetType = "autosnippet",

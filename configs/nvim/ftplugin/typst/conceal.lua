@@ -14,7 +14,7 @@ local function conceal_char_at(row, col, ns, char)
 		end_col = col + 1,
 		conceal = "",
 		priority = 103,
-		hl_group = "TypstConcealDelims",
+		hl_group = "TypstConcealDelim",
 	})
 end
 
@@ -349,7 +349,7 @@ local function conceal_math(first, last)
 					end
 					return concealed
 				end
-				conceal_node_recursively(node, repl, conceal_text, "TypstConcealLetters")
+				conceal_node_recursively(node, repl, conceal_text, "TypstConcealLetter")
 			end
 		end
 	end
@@ -360,7 +360,7 @@ local function conceal_math(first, last)
 		local text = vim.treesitter.get_node_text(node, 0, { metadata = metadata })
 		local repl = symbols[text]
 		if repl and
-			#vim.api.nvim_buf_get_extmarks(buf, ns_math, { sr, sc }, { er, ec }, { overlap = true }) <= 1
+			#vim.api.nvim_buf_get_extmarks(buf, ns_math, { sr, sc }, { er, ec - 1 }, { overlap = true }) == 0
 		then
 			conceal_at_positions(buf, sr, sc, er, ec, repl.cchar, repl.hl)
 		end
