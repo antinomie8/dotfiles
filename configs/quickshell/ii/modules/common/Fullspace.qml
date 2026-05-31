@@ -10,10 +10,6 @@ import Quickshell.Hyprland
 Scope {
     id: fullspace
 
-    function load() {
-        console.log("[Fullspace] Initialized");
-    }
-
     property var fullspaceState: ({})
 
     function applyFullspace(id) {

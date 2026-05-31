@@ -14,6 +14,14 @@ Scope {
     id: bar
     property bool showBarBackground: Config.options.bar.showBackground
 
+    property bool isFocusedWorkspaceFullscreen: {
+        const ws = Hyprland.focusedWorkspace;
+        if (!ws || !ws.toplevels)
+            return false;
+        
+        return ws.toplevels.values.some(toplevel => toplevel.wayland?.fullscreen ?? false);
+    }
+
     Variants {
         // For each monitor
         model: {
@@ -25,7 +33,10 @@ Scope {
         }
         LazyLoader {
             id: barLoader
-            active: GlobalStates.barOpen && !GlobalStates.screenLocked  && !GlobalStates.workspacesWithBarClosed[Hyprland.focusedWorkspace.id]
+            active: GlobalStates.barOpen
+                    && !GlobalStates.screenLocked
+                    && !GlobalStates.workspacesWithBarClosed[Hyprland.focusedWorkspace.id]
+                    && !bar.isFocusedWorkspaceFullscreen
             required property ShellScreen modelData
             component: PanelWindow { // Bar window
                 id: barRoot
