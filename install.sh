@@ -27,12 +27,12 @@ function get_answer() {
 	local answer
 	read -r answer
 	case "$answer" in
-	[yY][eE][sS] | [yY])
-		return 0
-		;;
-	*)
-		return 1
-		;;
+		[yY][eE][sS] | [yY])
+			return 0
+			;;
+		*)
+			return 1
+			;;
 	esac
 }
 # util function for checking if a program is in $PATH
@@ -73,7 +73,7 @@ if program pacman; then
 	if program yay; then
 		package_manager="yay"
 		packages+=("cppman" "cpulimit" "dbg-macro" "hyprtime" "runapp" "thundery"
-			"xdg-desktop-portal-termfilechooser-hunkyburrito-git" "elan")    # misc
+			"xdg-desktop-portal-termfilechooser-hunkyburrito-git" "elan")     # misc
 		packages+=("zsh-abbr" "zsh-patina-git")                            # shell
 		packages+=("ttf-juliamono" "otf-garamond-math")                    # fonts
 		packages+=("codelldb-bin" "texlab" "tex-fmt" "asm-lsp" "typstyle") # Neovim
@@ -252,17 +252,17 @@ fi
 					answer=2
 				fi
 				case "$answer" in
-				1)
-					if [[ -d "$HOME/.config/$item.bak" || -f "$HOME/.config/$item.bak" ]]; then
-						rm -rf "$HOME/.config/$item.bak"
-					fi
-					mv "$HOME/.config/$item" "$HOME/.config/$item.bak"
-					cp -r "$item" "$HOME/.config/"
-					;;
-				2)
-					rm -rf "$HOME/.config/$item"
-					cp -r "$item" "$HOME/.config/"
-					;;
+					1)
+						if [[ -d "$HOME/.config/$item.bak" || -f "$HOME/.config/$item.bak" ]]; then
+							rm -rf "$HOME/.config/$item.bak"
+						fi
+						mv "$HOME/.config/$item" "$HOME/.config/$item.bak"
+						cp -r "$item" "$HOME/.config/"
+						;;
+					2)
+						rm -rf "$HOME/.config/$item"
+						cp -r "$item" "$HOME/.config/"
+						;;
 				esac
 			fi
 		fi
@@ -319,6 +319,16 @@ fi
 if [[ -n "$PYTHON_HISTORY" && ! -d "$(dirname "$PYTHON_HISTORY")" ]]; then
 	mkdir -p "$(dirname "$PYTHON_HISTORY")"
 fi
+
+# install zsh completions
+function completion() {
+	if program "$1"; then
+		$@ >~/.local/share/zsh/completions/_"$1"
+	fi
+}
+completion zola completion zsh
+completion zsh-patina completion
+completion just --completions zsh
 
 # run etc/install.sh
 echo -en "${BLUE}Do you want to run ${GREEN}./etc/install.sh${BLUE} ? (y/n) ${COLOR_RESET}"

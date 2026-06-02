@@ -14,7 +14,6 @@ git clone https://github.com/antinomie8/dotfiles ~/.config/dotfiles && ~/.config
 - `elan toolchain install leanprover/lean4:stable && elan default stable`
 - `rustup default stable`
 - `go telemetry off`
-- `just --completions zsh > ~/.local/share/zsh/completions/_just`
 <!-- - `build-fzf-tab-module` # does not respect LS_COLORS -->
 
 - change `configs/hypr/hypridle.conf` keyboard device and its path in
