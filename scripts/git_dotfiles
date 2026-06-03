@@ -46,7 +46,7 @@ configs=("asy" "bat" "btop" "browser" "clang-format" "clangd" "eza" "fastfetch" 
 # mozilla msmtp notmuch goimapnotify himalaya mirador aerc
 scripts=("assemble" "compile_sfml" "fzf_preview" "git_dotfiles" "mailto" "rgb" "termsize" "zoxide-rename")
 systemd_user_units=("mail-sync.service" "goimapnotify.service")
-desktop_entries=("mail" "neomutt" "spotify" "yazi")
+desktop_entries=("mail" "neomutt" "spotify" "vesktop" "yazi")
 
 copy_group $HOME/.config configs $configs
 copy_group $HOME/.local/bin scripts $scripts

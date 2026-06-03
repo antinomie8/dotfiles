@@ -486,7 +486,8 @@
         "invertPinnedItems": true,
         "monochromeIcons": true,
         "pinnedItems": [
-            "Fcitx"
+            "Fcitx",
+            "chrome_status_icon_1"
         ],
         "showItemId": false
     },

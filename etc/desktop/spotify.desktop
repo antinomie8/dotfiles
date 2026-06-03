@@ -4,7 +4,7 @@ Name=Spotify
 GenericName=Music Player
 Icon=spotify-client
 TryExec=spotify
-Exec=env HOME=/tmp/spotify-pki spotify --uri=%u
+Exec=sh -c 'HOME="${XDG_CACHE_HOME:-$HOME/.cache}/spotify/spotify-pki" exec spotify --uri=%u'
 Terminal=false
 MimeType=x-scheme-handler/spotify;
 Categories=Audio;Music;Player;AudioVideo;

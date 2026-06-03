@@ -94,8 +94,7 @@ return {
 			},
 			formatters = {
 				clang_format = {
-					command = "clang-format",
-					args = function(_, ctx)
+					prepend_args = function(_, ctx)
 						local args = { "-assume-filename", "$FILENAME" }
 						if vim.fs.root(ctx.buf, { ".clang-format", "_clang-format" }) == nil then
 							table.insert(args,
@@ -105,38 +104,16 @@ return {
 						end
 						return args
 					end,
-					range_args = function(self, ctx)
-						local util = require("conform.util")
-						local start_offset, end_offset = util.get_offsets_from_range(ctx.buf, ctx.range)
-						local length = end_offset - start_offset
-						return {
-							"-assume-filename",
-							"$FILENAME",
-							"--offset",
-							tostring(start_offset),
-							"--length",
-							tostring(length),
-						}
-					end,
 				},
 				typstyle = {
-					command = "typstyle",
 					prepend_args = { "--line-width", "100" },
 				},
 				shfmt = {
-					command = "shfmt",
-					args = function(_, ctx)
-						local args = { "-filename", "$FILENAME" }
+					prepend_args = function(_, ctx)
 						local has_editorconfig = vim.fs.root(ctx.buf, ".editorconfig") ~= nil
-						-- If there is an editorconfig, don't pass any args because shfmt will apply settings from there
-						-- when no command line args are passed.
 						if not has_editorconfig then
-							if vim.bo[ctx.buf].expandtab then
-								vim.list_extend(args, { "-i", ctx.shiftwidth })
-							end
-							vim.list_extend(args, { "--case-indent" })
+							return { "--case-indent" }
 						end
-						return args
 					end,
 				},
 			},

@@ -19,7 +19,7 @@
 
 /* hide "Only you can see your full profile" on github */
 @-moz-document domain("github.com") {
-	.flash.mt-4 {
+	.tmp-mt-4.flash {
 		display: none !important;
 		visibility: hidden !important;
 	}
