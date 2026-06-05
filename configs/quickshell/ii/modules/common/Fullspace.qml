@@ -10,6 +10,8 @@ import Quickshell.Hyprland
 Scope {
     id: fullspace
 
+    function load () {} // For forcing initialization
+
     property var fullspaceState: ({})
 
     function applyFullspace(id) {

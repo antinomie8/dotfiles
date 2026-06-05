@@ -25,7 +25,6 @@ git clone https://github.com/antinomie8/dotfiles ~/.config/dotfiles && ~/.config
 
 #### Systemd
 - `systemctl --user enable --now hypridle.service`
-- `systemctl --user enable --now hyprpolkitagent.service`
 - `systemctl --user enable --now hyprsunset.service`
 
 #### uv

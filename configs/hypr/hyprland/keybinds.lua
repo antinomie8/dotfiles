@@ -54,45 +54,68 @@ hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-"),
 	{ locked = true, repeating = true })
 
-hl.bind("CTRL + SUPER + T", hl.dsp.global("quickshell:wallpaperSelectorToggle"),
+hl.bind("SUPER + CTRL + T", hl.dsp.global("quickshell:wallpaperSelectorToggle"),
 	{ desc = "Shell: Change wallpaper" })
-hl.bind("CTRL + SUPER + T", hl.dsp.exec_cmd(qsIsAlive .. " || " .. qsScripts .. "/colors/switchwall.sh"))
-hl.bind("CTRL + SUPER + ALT + T", hl.dsp.global("quickshell:wallpaperSelectorRandom"),
+hl.bind("SUPER + CTRL + T", hl.dsp.exec_cmd(qsIsAlive .. " || " .. qsScripts .. "/colors/switchwall.sh"))
+hl.bind("SUPER + CTRL + ALT + T", hl.dsp.global("quickshell:wallpaperSelectorRandom"),
 	{ desc = "Shell: Random wallpaper" })
-hl.bind("CTRL + SUPER + SHIFT + D", hl.dsp.global("quickshell:toggleLightDark"),
+hl.bind("SUPER + CTRL + SHIFT + D", hl.dsp.global("quickshell:toggleLightDark"),
 	{ desc = "Shell: Toggle light/dark mode" })
-hl.bind("CTRL + SUPER + R", hl.dsp.exec_cmd("killall ydotool qs quickshell; qs -c $qsConfig &"),
+hl.bind("SUPER + CTRL + R", hl.dsp.exec_cmd("killall ydotool qs quickshell; qs -c $qsConfig &"),
 	{ desc = "Shell: Restart widgets" })
-hl.bind("CTRL + SUPER + P", hl.dsp.global("quickshell:panelFamilyCycle"), { desc = "Shell: Cycle panel family" })
+hl.bind("SUPER + CTRL + P", hl.dsp.global("quickshell:panelFamilyCycle"), { desc = "Shell: Cycle panel family" })
+
+-----------
+-- Media --
+-----------
+local mediaNextCommand =
+'playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"`'
+hl.bind("SUPER + SHIFT + N", hl.dsp.exec_cmd(mediaNextCommand), { locked = true, desc = "Media: Next track" })
+hl.bind("XF86AudioNext", hl.dsp.exec_cmd(mediaNextCommand), { locked = true })
+hl.bind("SUPER + SHIFT + B", hl.dsp.exec_cmd("playerctl previous"),
+	{ locked = true, desc = "Media: Previous track" })
+hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
+hl.bind("SUPER + SHIFT + ALT + mouse:275", hl.dsp.exec_cmd("playerctl previous"))
+hl.bind("SUPER + SHIFT + ALT + mouse:276", hl.dsp.exec_cmd(mediaNextCommand))
+hl.bind("SUPER + SHIFT + P", hl.dsp.exec_cmd("playerctl play-pause"),
+	{ locked = true, desc = "Media: Play/pause media" })
+hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
+hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
+hl.bind("SUPER + SHIFT + M", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SINK@ toggle"),
+	{ locked = true, desc = "Media: Toggle mute" })
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SINK@ toggle"), { locked = true })
+hl.bind("SUPER + ALT + M", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SOURCE@ toggle"),
+	{ locked = true, desc = "Media: Toggle mic" })
+hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SOURCE@ toggle"), { locked = true })
+hl.bind("ALT + XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SOURCE@ toggle"), { locked = true })
 
 ---------------
 -- Utilities --
 ---------------
--- Screenshot, Record, OCR, Color picker, Clipboard history
 hl.bind("SUPER + V", hl.dsp.exec_cmd(
 		qsIsAlive .. " || pkill fuzzel || cliphist list | fuzzel --match-mode fzf --dmenu | cliphist decode | wl-copy"),
 	{ desc = "Utilities: Clipboard history >> clipboard" })
-hl.bind("SUPER + Period", hl.dsp.exec_cmd(
-		qsIsAlive .. " || pkill fuzzel || " .. hyprScripts .. "/fuzzel-emoji.sh copy"),
+hl.bind("SUPER + Period", hl.dsp.exec_cmd(qsIsAlive .. " || pkill fuzzel || " .. hyprScripts .. "/fuzzel-emoji.sh copy"),
 	{ desc = "Utilities: Emoji >> clipboard" })
-hl.bind("SUPER + SHIFT + S", hl.dsp.global("quickshell:regionScreenshot"), { desc = "Utilities: Screen snip" })
-hl.bind("SUPER + SHIFT + S",
-	hl.dsp.exec_cmd(qsIsAlive .. " || pidof slurp || hyprshot --freeze --clipboard-only --mode region --silent"))
-hl.bind("SUPER + SHIFT + A", hl.dsp.global("quickshell:regionSearch"), { desc = "Utilities: Google Lens" })
+hl.bind("SUPER + SHIFT + A", hl.dsp.global("quickshell:regionSearch"), { desc = "Utilities: Search by image" })
 hl.bind("SUPER + SHIFT + A", hl.dsp.exec_cmd(qsIsAlive .. " || pidof slurp || " .. hyprScripts .. "/snip_to_search.sh"))
---# OCR
+-- OCR
 hl.bind("SUPER + SHIFT + X", hl.dsp.global("quickshell:regionOcr"),
 	{ desc = "Utilities: Character recognition >> clipboard" })
 hl.bind("SUPER + SHIFT + T", hl.dsp.global("quickshell:screenTranslate"),
 	{ desc = "Utilities: Translate screen content" })
-hl.bind("SUPER + SHIFT + X", hl.dsp.exec_cmd(
-	qsIsAlive ..
-	" || pidof slurp || grim -g \"$(slurp $SLURP_ARGS)\" \"/tmp/ocr_image.png\" && tesseract \"/tmp/ocr_image.png\" stdout -l $(tesseract --list-langs | awk 'NR>1{print $1}' | tr '\\\\n' '+' | sed 's/\\\\+$/\\\\n/') | wl-copy && rm \"/tmp/ocr_image.png\""
-))
+hl.bind("SUPER + SHIFT + X", hl.dsp.exec_cmd(qsIsAlive .. [[ ||
+	pidof slurp ||
+	grim -g "$(slurp $SLURP_ARGS)" "/tmp/ocr_image.png" &&
+	tesseract "/tmp/ocr_image.png" stdout -l $(tesseract --list-langs |
+	awk 'NR>1{print $1}' | tr '\\n' '+' |
+	sed 's/\\+$/\\n/') |
+	wl-copy &&
+	rm "/tmp/ocr_image.png"
+]]))
 -- Color picker
-hl.bind("SUPER + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"),
-	{ desc = "Utilities: Pick color #RRGGBB >> clipboard" })
--- Recording stuff
+hl.bind("SUPER + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"), { desc = "Utilities: Pick color #RRGGBB >> clipboard" })
+-- Recording
 hl.bind("SUPER + SHIFT + R", hl.dsp.global("quickshell:regionRecord"),
 	{ locked = true, desc = "Utilities: Record region (no sound)" })
 hl.bind("SUPER + SHIFT + R", hl.dsp.exec_cmd(qsIsAlive .. " || " .. qsScripts .. "/videos/record.sh"), { locked = true })
@@ -101,14 +124,25 @@ hl.bind("SUPER + ALT + R", hl.dsp.exec_cmd(qsIsAlive .. " || " .. qsScripts .. "
 hl.bind("CTRL + ALT + R", hl.dsp.exec_cmd(qsScripts .. "/videos/record.sh --fullscreen"), { locked = true })
 hl.bind("SUPER + SHIFT + ALT + R", hl.dsp.exec_cmd(qsScripts .. "/videos/record.sh --fullscreen --sound"),
 	{ locked = true, desc = "Utilities: Record screen (with sound)" })
+-- Screenshot
+local define_img_path = [[
+	dir="$(xdg-user-dir PICTURES)/Captures d'écran" &&
+	img="$dir/Screenshot "$date '+%d-%m-%Y %H:%M:%S'".png" &&
+	mkdir -p "$dir" &&
+]]
+hl.bind("SUPER + SHIFT + S", hl.dsp.global("quickshell:regionScreenshot"), { desc = "Utilities: Screen snip" })
+hl.bind("SUPER + SHIFT + S",
+	hl.dsp.exec_cmd(qsIsAlive .. " || pidof slurp || hyprshot --freeze --clipboard-only --mode region --silent"))
+hl.bind("SUPER + CTRL + S", function()
+	hl.dispatch(hl.dsp.global("quickshell:regionScreenshot"))
+	hl.dispatch(hl.dsp.exec_cmd(define_img_path and 'wl-paste >"$img"'))
+end, { desc = "Utilities: Screen snip" })
 -- Fullscreen screenshot
 local grimhyprctl = "grim -o \"$(hyprctl activeworkspace -j | jq -r '.monitor')\""
 hl.bind("Print", hl.dsp.exec_cmd(grimhyprctl .. " - | wl-copy"),
 	{ locked = true, desc = "Utilities: Screenshot >> clipboard" })
-hl.bind("CTRL + Print", hl.dsp.exec_cmd(
-	'dir="$(xdg-user-dir PICTURES)/Captures d\'écran" && img="$dir/Screenshot "$(date \'+%d-%m-%Y %H:%M:%S\')".png" && ' ..
-	'mkdir -p "$dir" && ' .. grimhyprctl .. ' "$img" && wl-copy <"$img"'
-), { locked = true, desc = "Utilities: Screenshot >> clipboard & file" })
+hl.bind("CTRL + Print", hl.dsp.exec_cmd(define_img_path .. grimhyprctl .. '"$img" && wl-copy <"$img"'),
+	{ locked = true, desc = "Utilities: Screenshot >> clipboard & file" })
 -- AI
 hl.bind("SUPER + SHIFT + ALT + mouse:273", hl.dsp.exec_cmd(hyprScripts .. "/ai/primary-buffer-query.sh"),
 	{ desc = "Utilities: Generate AI summary for selected text" }) -- (requires a running ollama model)
@@ -147,30 +181,6 @@ hl.bind("SUPER + SHIFT + ALT + A", function()
 	hl.config({ animations = { enabled = not is_enabled } })
 end, { desc = "Screen: Toggle animations" })
 
------------
--- Media --
------------
-local mediaNextCommand =
-'playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"`'
-hl.bind("SUPER + SHIFT + N", hl.dsp.exec_cmd(mediaNextCommand), { locked = true, desc = "Media: Next track" })
-hl.bind("XF86AudioNext", hl.dsp.exec_cmd(mediaNextCommand), { locked = true })
-hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
-hl.bind("SUPER + SHIFT + ALT + mouse:275", hl.dsp.exec_cmd("playerctl previous"))
-hl.bind("SUPER + SHIFT + ALT + mouse:276", hl.dsp.exec_cmd(mediaNextCommand))
-hl.bind("SUPER + SHIFT + B", hl.dsp.exec_cmd("playerctl previous"),
-	{ locked = true, desc = "Media: Previous track" })
-hl.bind("SUPER + SHIFT + P", hl.dsp.exec_cmd("playerctl play-pause"),
-	{ locked = true, desc = "Media: Play/pause media" })
-hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SINK@ toggle"), { locked = true })
-hl.bind("SUPER + SHIFT + M", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SINK@ toggle"),
-	{ locked = true, desc = "Media: Toggle mute" })
-hl.bind("ALT + XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SOURCE@ toggle"), { locked = true })
-hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SOURCE@ toggle"), { locked = true })
-hl.bind("SUPER + ALT + M", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SOURCE@ toggle"),
-	{ locked = true, desc = "Media: Toggle mic" })
-
 ------------
 -- Window --
 ------------
@@ -180,13 +190,12 @@ hl.bind("SUPER + mouse:274", hl.dsp.window.drag(), { mouse = true })
 hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true, desc = "Window: Resize" })
 
 -- SUPER + H/J/K/L: Focus in direction
-for key, dir in pairs({ ["H"] = "l", ["J"] = "d", ["K"] = "u", ["L"] = "r" }) do
-	hl.bind("SUPER + " .. key, hl.dsp.focus({ direction = dir }), { desc = "Window: Move focus" })
+for key, dir in pairs({ ["H"] = "Left", ["J"] = "Down", ["K"] = "Up", ["L"] = "Right" }) do
+	hl.bind("SUPER + " .. key, hl.dsp.focus({ direction = dir:sub(1, 1):lower() }), { desc = "Window: Move focus " .. dir })
 end
 -- SUPER + ←/↓/↑/→: Move in direction
 for _, key in ipairs({ "Left", "Down", "Up", "Right" }) do
-	hl.bind("SUPER + " .. key, hl.dsp.window.move({ direction = key:sub(1, 1):lower() }),
-		{ desc = "Window: Move " .. key })
+	hl.bind("SUPER + " .. key, hl.dsp.window.move({ direction = key:sub(1, 1):lower() }), { desc = "Window: Move " .. key })
 end
 -- SUPER + SHIFT + ←/↓/↑/→: Resize in steps
 for key, dir in pairs({ ["Left"] = { -1, 0 }, ["Down"] = { 0, 1 }, ["Up"] = { 0, -1 }, ["Right"] = { 1, 0 } }) do
@@ -240,8 +249,8 @@ for i = 1, 10 do
 end
 
 -- SUPER + SHIFT + ←/→: Send to workspace left/right
-hl.bind("SUPER + ALT + Left", hl.dsp.window.move({ workspace = "r-1" }), { desc = "Send to workspace left" })
-hl.bind("SUPER + ALT + Right", hl.dsp.window.move({ workspace = "r+1" }), { desc = "Send to workspace right" })
+hl.bind("SUPER + ALT + Left", hl.dsp.window.move({ workspace = "r-1" }), { desc = "Window: Send to workspace left" })
+hl.bind("SUPER + ALT + Right", hl.dsp.window.move({ workspace = "r+1" }), { desc = "Window: Send to workspace right" })
 -- SUPER + SHIFT + Scroll ↑/↓: Send to workspace left/right
 hl.bind("SUPER + SHIFT + mouse_down", hl.dsp.window.move({ workspace = "r-1" }))
 hl.bind("SUPER + SHIFT + mouse_up", hl.dsp.window.move({ workspace = "r+1" }))
@@ -254,10 +263,10 @@ hl.bind("SUPER + ALT + S", hl.dsp.window.move({ workspace = "special:special", f
 	{ desc = "Window: Send to scratchpad" })
 
 -- Workspace groups
-hl.bind("SUPER + ALT + code:91", ws_group.move(1), { desc = "Move and follow to next window group" })
-hl.bind("SUPER + ALT + SHIFT + code:91", ws_group.move(-1), { desc = "Move and follow to previous window group" })
-hl.bind("SUPER + ALT + CTRL + code:91", ws_group.move(1, true), { desc = "Move to next window group" })
-hl.bind("SUPER + ALT + SHIFT + CTRL + code:91", ws_group.move(-1, true), { desc = "Move to previous window group" })
+hl.bind("SUPER + ALT + kp_delete", ws_group.move(1), { desc = "Window: Move and follow to next workspace group" })
+hl.bind("SUPER + ALT + SHIFT + kp_delete", ws_group.move(-1), { desc = "Window: Move and follow to previous workspace group" })
+hl.bind("SUPER + ALT + CTRL + kp_delete", ws_group.move(1, true), { desc = "Window: Move to next workspace group" })
+hl.bind("SUPER + ALT + SHIFT + CTRL + kp_delete", ws_group.move(-1, true), { desc = "Window: Move to previous workspace group" })
 
 ---------------
 -- Workspace --
@@ -286,8 +295,8 @@ hl.bind("SUPER + S", hl.dsp.workspace.toggle_special("special"), { desc = "Works
 hl.bind("SUPER + mouse:275", hl.dsp.workspace.toggle_special("special"))
 
 -- Workspace groups
-hl.bind("SUPER + code:91", ws_group.focus(1), { desc = "Go to next window group" })
-hl.bind("SUPER + SHIFT + code:91", ws_group.focus(-1), { desc = "Go to previous window group" })
+hl.bind("SUPER + kp_delete", ws_group.focus(1), { desc = "Workspace: Go to next workspace group" })
+hl.bind("SUPER + SHIFT + kp_delete", ws_group.focus(-1), { desc = "Workspace: Go to previous workspace group" })
 
 -------------
 -- Session --
@@ -320,5 +329,5 @@ hl.define_submap("passthrough", function()
 				"notify-send 'Entered Passthrough submap' 'Keybinds disabled. hit SUPER+ALT+F1 to escape' -a 'Hyprland'"))
 			hl.dispatch(hl.dsp.submap("passthrough"))
 		end
-	end, { submap_universal = true })
+	end, { submap_universal = true, desc = "Keymap passthrough" })
 end)

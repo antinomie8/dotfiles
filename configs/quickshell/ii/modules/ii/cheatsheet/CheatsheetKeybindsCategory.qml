@@ -73,8 +73,9 @@ Column {
         "Return": "Enter",
 		"dead_circumflex": "^",
 		"comma": ",",
-		"code:91": "."
-        // "Shift": "",
+        "Exclam": "!",
+        "XF86PowerOff": "",
+        "kp_delete": ".",
       },
       !!Config.options.cheatsheet.superKey ? {
           "Super": Config.options.cheatsheet.superKey,
@@ -87,8 +88,8 @@ Column {
     function modMaskToStringList(modMask: int): list<string> {
         var list = [];
         // Funny mathematical order but we wanna have this natural user-facing order
-        if (modMask & (1 << 2)) { list.push("Ctrl"); }
         if (modMask & (1 << 6)) { list.push("Super"); }
+        if (modMask & (1 << 2)) { list.push("Ctrl"); }
         if (modMask & (1 << 0)) { list.push("Shift"); }
         if (modMask & (1 << 3)) { list.push("Alt"); }
         if (modMask & (1 << 1)) { list.push("Caps"); }
@@ -122,21 +123,26 @@ Column {
         const key = bind.key;
         if (key.includes("mouse") || key.includes("page")) return false;
         // Contains non-1 number
-        if (/\d/.test(key) && !key.includes("1")) return true;
+        if (bind.keycode > 10 && bind.keycode <= 19) return true; // doesn't work due to hyprctl BUG
+        if (key == "" && !/1\b/.test(bind.description)) return true; // temp fix
         // Contains non-left direction
+        if ((key == "J" || key == "K" || key == "L") && /(right|up|down)\b/i.test(bind.description)) return true;
         if (/^(right|up|down)\b/i.test(key)) return true;
         return false;
     }
 
     function containsFirstRepetitive(bind) {
         const key = bind.key;
-        return key.includes("1") || /left/i.test(key);
+        return key.includes("1") || /left/i.test(key) ||
+        /* bind.keycode == 10  */ bind.key == "" && /1\b/.test(bind.description) || // temp fix
+        bind.key == "H" && bind.description.includes("Left");
     }
 
-    function transformKey(key) {
+    function transformKey(key, isFirstRepetitive) {
         const replaced = root.keySubstitutions[key] || key;
-        const denumbered = replaced.replace("1", "<Number>");
-        const dedirectioned = denumbered.replace("Left", "<Direction>");
+        if (!isFirstRepetitive) return replaced;
+        const denumbered = replaced == "" ? "..." : replaced; // temp fix
+        const dedirectioned = denumbered.replace("Left", "←/↓/↑/→").replace("H", "H/J/K/L");
         return dedirectioned;
     }
 
@@ -189,7 +195,7 @@ Column {
                     }
                     delegate: KeyboardKey {
                         required property var modelData
-                        key: root.transformKey(modelData)
+                        key: root.transformKey(modelData, root.containsFirstRepetitive(bindLine.keyData))
                         pixelSize: Config.options.cheatsheet.fontSize.key
                     }
                 }
@@ -203,7 +209,7 @@ Column {
                     id: keybindKey
                     anchors.verticalCenter: parent.verticalCenter
                     visible: !keyBlacklist.includes(bindLine.keyData.key)
-                    key: root.transformKey(bindLine.keyData.key)
+                    key: root.transformKey(bindLine.keyData.key, root.containsFirstRepetitive(bindLine.keyData))
                     pixelSize: Config.options.cheatsheet.fontSize.key
                     color: Appearance.colors.colOnLayer0
                 }
