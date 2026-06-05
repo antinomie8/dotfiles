@@ -22,12 +22,12 @@ function get_answer() {
 	local answer
 	read -r answer
 	case "$answer" in
-	[yY][eE][sS] | [yY])
-		return 0
-		;;
-	*)
-		return 1
-		;;
+		[yY][eE][sS] | [yY])
+			return 0
+			;;
+		*)
+			return 1
+			;;
 	esac
 }
 # util function for checking if a program is in $PATH
@@ -61,3 +61,4 @@ fi
 
 [[ ! -L ~/.termux/font.ttf ]] && ln -s font.ttf ~/.termux/font.ttf
 [[ ! -L ~/.termux/color.properties ]] && ln -s color.properties ~/.termux/color.properties
+[[ ! -L ~/bin/termux-file-editor && $(program nvim) ]] && ln -s "$(which nvim)" ~/bin/termux-file-editor

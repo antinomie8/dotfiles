@@ -13,7 +13,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 cd "$SCRIPT_DIR" || exit
 
 # $1: file to copy relative to $SCRIPT_DIR, $2: destination
-function copy_item() {
+function copy() {
 	if ! [[ -e "$1" ]]; then
 		echo -e "${WARNING} $1 not found"
 		return 1
@@ -54,30 +54,37 @@ function program() {
 }
 
 # place system-wide configuration files
-program pacman && copy_item pacman.conf /etc
-program pacman && copy_item paccache.timer /etc/systemd/system
-program loginctl && copy_item logind.conf /etc/systemd
-program hyprland && copy_item icons/Bibata ~/.local/share/icons
-program pdflatex && copy_item texmf ~/.local/share
-program firefox && copy_item autoconfig.js /usr/lib/firefox/defaults/pref
-program firefox && copy_item firefox.cfg /usr/lib/firefox
-program yazi && copy_item desktop/yazi.desktop ~/.local/share/applications
-program yazi && copy_item icons/hicolor/48x48/apps/yazi.png ~/.local/share/icons/hicolor/48x48/apps
-program neomutt && copy_item desktop/neomutt.desktop ~/.local/share/applications
-program neomutt && copy_item icons/hicolor/48x48/apps/neomutt.png ~/.local/share/icons/hicolor/48x48/apps
-program nvim && copy_item desktop/mail.desktop ~/.local/share/applications
-program nvim && copy_item icons/hicolor/scalable/apps/mail.svg ~/.local/share/icons/hicolor/scalable/apps
-program spotify && copy_item desktop/spotify.desktop ~/.local/share/applications
-program vesktop && copy_item desktop/vesktop.desktop ~/.local/share/applications
-[[ -n "$CPLUS_INCLUDE_PATH" ]] && copy_item dbg.h "$CPLUS_INCLUDE_PATH"
+function copy_if_installed() {
+	if program "$1"; then
+		shift
+		copy "$@"
+	fi
+}
+copy_if_installed pacman pacman.conf /etc
+copy_if_installed pacman paccache.timer /etc/systemd/system
+copy_if_installed loginctl logind.conf /etc/systemd
+copy_if_installed hyprland icons/Bibata ~/.local/share/icons
+copy_if_installed pdflatex texmf ~/.local/share
+copy_if_installed firefox autoconfig.js /usr/lib/firefox/defaults/pref
+copy_if_installed firefox firefox.cfg /usr/lib/firefox
+copy_if_installed yazi desktop/yazi.desktop ~/.local/share/applications
+copy_if_installed yazi icons/hicolor/48x48/apps/yazi.png ~/.local/share/icons/hicolor/48x48/apps
+copy_if_installed neomutt desktop/neomutt.desktop ~/.local/share/applications
+copy_if_installed neomutt icons/hicolor/48x48/apps/neomutt.png ~/.local/share/icons/hicolor/48x48/apps
+copy_if_installed nvim desktop/mail.desktop ~/.local/share/applications
+copy_if_installed nvim icons/hicolor/scalable/apps/mail.svg ~/.local/share/icons/hicolor/scalable/apps
+copy_if_installed spotify desktop/spotify.desktop ~/.local/share/applications
+copy_if_installed vesktop desktop/vesktop.desktop ~/.local/share/applications
+
+[[ -n "$CPLUS_INCLUDE_PATH" ]] && copy dbg.h "$CPLUS_INCLUDE_PATH"
 if program systemctl; then
 	for file in systemd/user/*; do
 		if [[ ! -f "$file" ]]; then
-			copy_item "$file" ~/.config/systemd/user
+			copy "$file" ~/.config/systemd/user
 			echo "enabling $(basename "$file") systemd user unit"
 			systemctl --user enable "$file"
 		else
-			copy_item "$file" ~/.config/systemd/user
+			copy "$file" ~/.config/systemd/user
 		fi
 	done
 fi
@@ -121,11 +128,11 @@ if [[ -n "$WSLENV" ]]; then
 		done
 
 		# move each file to their destination
-		copy_item X11/i3 ~/.config
-		copy_item X11/rofi ~/.config
-		program picom && copy_item picom.conf /etc/xdg
+		copy X11/i3 ~/.config
+		copy X11/rofi ~/.config
+		program picom && copy picom.conf /etc/xdg
 		for i in "${!wsl_scripts[@]}"; do
-			copy_item "$i" "${wsl_scripts[$i]}"
+			copy "$i" "${wsl_scripts[$i]}"
 		done
 	)
 fi

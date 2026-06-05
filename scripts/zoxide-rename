@@ -13,7 +13,7 @@ local function help()
 Usage: zoxide-rename [OPTIONS] <old> <new> [file]
 
 Options:
-  --dry-run, -n   Show what would change, but do not modify zoxide
+  --dry-run, -n   Show what would change, but do not modify the zoxide database
 ]])
 end
 
