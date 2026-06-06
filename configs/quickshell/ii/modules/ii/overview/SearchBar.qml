@@ -19,7 +19,7 @@ RowLayout {
         searchInput.forceActiveFocus();
     }
 
-    enum SearchPrefixType { Action, App, Clipboard, Emojis, Math, ShellCommand, WebSearch, DefaultSearch }
+    enum SearchPrefixType { Action, App, Clipboard, Emojis, Math, ShellCommand, WebSearch, Pdfs, DefaultSearch }
 
     property var searchPrefixType: {
         if (root.searchingText.startsWith(Config.options.search.prefix.action)) return SearchBar.SearchPrefixType.Action;
@@ -29,6 +29,7 @@ RowLayout {
         if (root.searchingText.startsWith(Config.options.search.prefix.math)) return SearchBar.SearchPrefixType.Math;
         if (root.searchingText.startsWith(Config.options.search.prefix.shellCommand)) return SearchBar.SearchPrefixType.ShellCommand;
         if (root.searchingText.startsWith(Config.options.search.prefix.webSearch)) return SearchBar.SearchPrefixType.WebSearch;
+        if (root.searchingText.startsWith(Config.options.search.prefix.pdfs)) return SearchBar.SearchPrefixType.Pdfs;
         return SearchBar.SearchPrefixType.DefaultSearch;
     }
     
@@ -44,6 +45,7 @@ RowLayout {
             case SearchBar.SearchPrefixType.Math: return MaterialShape.Shape.PuffyDiamond;
             case SearchBar.SearchPrefixType.ShellCommand: return MaterialShape.Shape.PixelCircle;
             case SearchBar.SearchPrefixType.WebSearch: return MaterialShape.Shape.SoftBurst;
+            case SearchBar.SearchPrefixType.Pdfs: return MaterialShape.Shape.Square;
             default: return MaterialShape.Shape.Cookie7Sided;
         }
         text: switch (root.searchPrefixType) {
@@ -55,6 +57,7 @@ RowLayout {
             case SearchBar.SearchPrefixType.ShellCommand: return "terminal";
             case SearchBar.SearchPrefixType.WebSearch: return "travel_explore";
             case SearchBar.SearchPrefixType.DefaultSearch: return "search";
+            case SearchBar.SearchPrefixType.Pdfs: return "picture_as_pdf";
             default: return "search";
         }
     }

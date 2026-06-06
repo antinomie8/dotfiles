@@ -59,6 +59,10 @@ Scope {
             name: Translation.tr("Web"),
             prefix: Config.options.search.prefix.webSearch
         },
+        {
+            name: Translation.tr("PDFs"),
+            prefix: Config.options.search.prefix.pdfs
+        },
     ]
 
 }

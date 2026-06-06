@@ -15,7 +15,7 @@ Singleton {
     property string query: ""
 
     function ensurePrefix(prefix) {
-        if ([Config.options.search.prefix.action, Config.options.search.prefix.app, Config.options.search.prefix.clipboard, Config.options.search.prefix.emojis, Config.options.search.prefix.math, Config.options.search.prefix.shellCommand, Config.options.search.prefix.webSearch,].some(i => root.query.startsWith(i))) {
+        if ([Config.options.search.prefix.action, Config.options.search.prefix.app, Config.options.search.prefix.clipboard, Config.options.search.prefix.emojis, Config.options.search.prefix.math, Config.options.search.prefix.shellCommand, Config.options.search.prefix.webSearch, Config.options.search.prefix.pdfs].some(i => root.query.startsWith(i))) {
             root.query = prefix + root.query.slice(1);
         } else {
             root.query = prefix + root.query;
@@ -185,7 +185,7 @@ Singleton {
                 });
             }).filter(Boolean);
         } else if (root.query.startsWith(Config.options.search.prefix.emojis)) {
-            // Clipboard
+            // Emojis
             const searchString = StringUtils.cleanPrefix(root.query, Config.options.search.prefix.emojis);
             return Emojis.fuzzyQuery(searchString).map(entry => {
                 const emoji = entry.match(/^\s*(\S+)/)?.[1] || "";
@@ -198,6 +198,22 @@ Singleton {
                     type: Translation.tr("Emoji"),
                     execute: () => {
                         Quickshell.clipboardText = entry.match(/^\s*(\S+)/)?.[1];
+                    }
+                });
+            }).filter(Boolean);
+        } else if (root.query.startsWith(Config.options.search.prefix.pdfs)) {
+            // PDF search
+            const searchString = StringUtils.cleanPrefix(root.query, Config.options.search.prefix.pdfs);
+            return PdfSearch.fuzzyQuery(searchString).map(entry => {
+                return resultComp.createObject(null, {
+                    rawValue: entry.absolutePath,
+                    name: entry.name,
+                    iconName: "picture_as_pdf",
+                    iconType: LauncherSearchResult.IconType.Material,
+                    verb: Translation.tr("Open"),
+                    type: entry.directory ? `${Translation.tr("PDF")} • ${entry.directory}` : Translation.tr("PDF"),
+                    execute: () => {
+                        Quickshell.execDetached(["zathura", entry.absolutePath]);
                     }
                 });
             }).filter(Boolean);

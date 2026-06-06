@@ -187,6 +187,15 @@ ContentPage {
                         Config.options.search.prefix.webSearch = text;
                     }
                 }
+                MaterialTextArea {
+                    Layout.fillWidth: true
+                    placeholderText: Translation.tr("PDFs")
+                    text: Config.options.search.prefix.pdfs
+                    wrapMode: TextEdit.Wrap
+                    onTextChanged: {
+                        Config.options.search.prefix.pdfs = text;
+                    }
+                }
             }
         }
         ContentSubsection {
