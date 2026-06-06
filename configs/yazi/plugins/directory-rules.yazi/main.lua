@@ -7,6 +7,7 @@ local function setup()
 			home .. "Downloads",
 			home .. "Téléchargements",
 			data_home .. "Trash/files",
+			home .. "Médias",
 		}
 		local disable = {
 			[home .. "Téléchargements"] = { "git" },

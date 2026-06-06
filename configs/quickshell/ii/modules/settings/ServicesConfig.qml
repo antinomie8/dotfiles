@@ -98,6 +98,16 @@ ContentPage {
                 Config.options.screenRecord.savePath = text;
             }
         }
+
+        MaterialTextArea {
+            Layout.fillWidth: true
+            placeholderText: Translation.tr("Video Recording Filename Format")
+            text: Config.options.screenRecord.filenameFormat
+            wrapMode: TextEdit.Wrap
+            onTextChanged: {
+                Config.options.screenRecord.filenameFormat = text;
+            }
+        }
         
         MaterialTextArea {
             Layout.fillWidth: true
@@ -106,6 +116,16 @@ ContentPage {
             wrapMode: TextEdit.Wrap
             onTextChanged: {
                 Config.options.screenSnip.savePath = text;
+            }
+        }
+
+        MaterialTextArea {
+            Layout.fillWidth: true
+            placeholderText: Translation.tr("Screenshot Filename Format")
+            text: Config.options.screenSnip.filenameFormat
+            wrapMode: TextEdit.Wrap
+            onTextChanged: {
+                Config.options.screenSnip.filenameFormat = text;
             }
         }
     }

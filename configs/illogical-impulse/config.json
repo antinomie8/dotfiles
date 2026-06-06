@@ -364,10 +364,12 @@
         "updateInterval": 3000
     },
     "screenRecord": {
+        "filenameFormat": "Recording %d-%m-%Y %H:%M:%S",
         "savePath": "/home/antoine/Médias/Vidéos/Enregistrements d'écran/"
     },
     "screenSnip": {
-        "savePath": ""
+        "filenameFormat": "Screenshot %d-%m-%Y %H:%M:%S",
+        "savePath": "/home/antoine/Médias/Images/Captures d'écran/"
     },
     "search": {
         "engineBaseUrl": "https://www.google.com/search?q=",
@@ -386,6 +388,7 @@
             "clipboard": ";",
             "emojis": ":",
             "math": "=",
+            "pdfs": "!",
             "shellCommand": "$",
             "showDefaultActionsWithoutPrefix": true,
             "webSearch": "?"

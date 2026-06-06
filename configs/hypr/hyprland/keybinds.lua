@@ -125,23 +125,19 @@ hl.bind("CTRL + ALT + R", hl.dsp.exec_cmd(qsScripts .. "/videos/record.sh --full
 hl.bind("SUPER + SHIFT + ALT + R", hl.dsp.exec_cmd(qsScripts .. "/videos/record.sh --fullscreen --sound"),
 	{ locked = true, desc = "Utilities: Record screen (with sound)" })
 -- Screenshot
-local define_img_path = [[
-	dir="$(xdg-user-dir PICTURES)/Captures d'écran" &&
-	img="$dir/Screenshot "$date '+%d-%m-%Y %H:%M:%S'".png" &&
-	mkdir -p "$dir" &&
-]]
 hl.bind("SUPER + SHIFT + S", hl.dsp.global("quickshell:regionScreenshot"), { desc = "Utilities: Screen snip" })
 hl.bind("SUPER + SHIFT + S",
 	hl.dsp.exec_cmd(qsIsAlive .. " || pidof slurp || hyprshot --freeze --clipboard-only --mode region --silent"))
-hl.bind("SUPER + CTRL + S", function()
-	hl.dispatch(hl.dsp.global("quickshell:regionScreenshot"))
-	hl.dispatch(hl.dsp.exec_cmd(define_img_path and 'wl-paste >"$img"'))
-end, { desc = "Utilities: Screen snip" })
 -- Fullscreen screenshot
 local grimhyprctl = "grim -o \"$(hyprctl activeworkspace -j | jq -r '.monitor')\""
+local define_img_path = [[
+	dir="$(xdg-user-dir PICTURES)/Captures d'écran" &&
+	img="$dir/Screenshot $(date '+%d-%m-%Y %H:%M:%S').png" &&
+	mkdir -p "$dir" && 
+]]
 hl.bind("Print", hl.dsp.exec_cmd(grimhyprctl .. " - | wl-copy"),
 	{ locked = true, desc = "Utilities: Screenshot >> clipboard" })
-hl.bind("CTRL + Print", hl.dsp.exec_cmd(define_img_path .. grimhyprctl .. '"$img" && wl-copy <"$img"'),
+hl.bind("CTRL + Print", hl.dsp.exec_cmd(define_img_path .. grimhyprctl .. ' "$img" && wl-copy <"$img"'),
 	{ locked = true, desc = "Utilities: Screenshot >> clipboard & file" })
 -- AI
 hl.bind("SUPER + SHIFT + ALT + mouse:273", hl.dsp.exec_cmd(hyprScripts .. "/ai/primary-buffer-query.sh"),
@@ -264,9 +260,11 @@ hl.bind("SUPER + ALT + S", hl.dsp.window.move({ workspace = "special:special", f
 
 -- Workspace groups
 hl.bind("SUPER + ALT + kp_delete", ws_group.move(1), { desc = "Window: Move and follow to next workspace group" })
-hl.bind("SUPER + ALT + SHIFT + kp_delete", ws_group.move(-1), { desc = "Window: Move and follow to previous workspace group" })
+hl.bind("SUPER + ALT + SHIFT + kp_delete", ws_group.move(-1),
+	{ desc = "Window: Move and follow to previous workspace group" })
 hl.bind("SUPER + ALT + CTRL + kp_delete", ws_group.move(1, true), { desc = "Window: Move to next workspace group" })
-hl.bind("SUPER + ALT + SHIFT + CTRL + kp_delete", ws_group.move(-1, true), { desc = "Window: Move to previous workspace group" })
+hl.bind("SUPER + ALT + SHIFT + CTRL + kp_delete", ws_group.move(-1, true),
+	{ desc = "Window: Move to previous workspace group" })
 
 ---------------
 -- Workspace --
@@ -329,5 +327,5 @@ hl.define_submap("passthrough", function()
 				"notify-send 'Entered Passthrough submap' 'Keybinds disabled. hit SUPER+ALT+F1 to escape' -a 'Hyprland'"))
 			hl.dispatch(hl.dsp.submap("passthrough"))
 		end
-	end, { submap_universal = true, desc = "Keymap passthrough" })
+	end, { submap_universal = true, desc = "Miscellaneous: Keymap passthrough submap" })
 end)

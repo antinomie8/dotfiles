@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 
 CONFIG_FILE="$HOME/.config/illogical-impulse/config.json"
-JSON_PATH=".screenRecord.savePath"
 
-CUSTOM_PATH=$(jq -r "$JSON_PATH" "$CONFIG_FILE" 2>/dev/null)
+read_config_value() {
+    local json_path="$1"
+    jq -r "$json_path // empty" "$CONFIG_FILE" 2>/dev/null
+}
+
+CUSTOM_PATH="$(read_config_value ".screenRecord.savePath")"
+CUSTOM_FILENAME_FORMAT="$(read_config_value "$.screenRecord.filenameFormat")"
 
 RECORDING_DIR=""
 
@@ -15,6 +20,22 @@ fi
 
 getdate() {
     date '+%Y-%m-%d_%H.%M.%S'
+}
+getfilename() {
+    local filename_format="$CUSTOM_FILENAME_FORMAT"
+    local filename=""
+
+    if [[ -n "$filename_format" ]]; then
+        filename="$(date +"$filename_format")"
+    else
+        filename="recording_$(getdate).mp4"
+    fi
+
+    if [[ "$filename" != *.mp4 ]]; then
+        filename+=".mp4"
+    fi
+
+    printf '%s\n' "$filename"
 }
 getaudiooutput() {
     pactl list sources | grep 'Name' | grep 'monitor' | cut -d ' ' -f2
@@ -50,12 +71,14 @@ if pgrep wf-recorder > /dev/null; then
     notify-send "Recording Stopped" "Stopped" -a 'Recorder' &
     pkill wf-recorder &
 else
+    recording_file="$(getfilename)"
+
     if [[ $FULLSCREEN_FLAG -eq 1 ]]; then
-        notify-send "Starting recording" 'recording_'"$(getdate)"'.mp4' -a 'Recorder' & disown
+        notify-send "Starting recording" "$recording_file" -a 'Recorder' & disown
         if [[ $SOUND_FLAG -eq 1 ]]; then
-            wf-recorder -o "$(getactivemonitor)" --pixel-format yuv420p -f './recording_'"$(getdate)"'.mp4' -t --audio="$(getaudiooutput)"
+            wf-recorder -o "$(getactivemonitor)" --pixel-format yuv420p -f "./$recording_file" -t --audio="$(getaudiooutput)"
         else
-            wf-recorder -o "$(getactivemonitor)" --pixel-format yuv420p -f './recording_'"$(getdate)"'.mp4' -t
+            wf-recorder -o "$(getactivemonitor)" --pixel-format yuv420p -f "./$recording_file" -t
         fi
     else
         # If a manual region was provided via --region, use it; otherwise run slurp as before.
@@ -68,11 +91,11 @@ else
             fi
         fi
 
-        notify-send "Starting recording" 'recording_'"$(getdate)"'.mp4' -a 'Recorder' & disown
+        notify-send "Starting recording" "$recording_file" -a 'Recorder' & disown
         if [[ $SOUND_FLAG -eq 1 ]]; then
-            wf-recorder --pixel-format yuv420p -f './recording_'"$(getdate)"'.mp4' -t --geometry "$region" --audio="$(getaudiooutput)"
+            wf-recorder --pixel-format yuv420p -f "./$recording_file" -t --geometry "$region" --audio="$(getaudiooutput)"
         else
-            wf-recorder --pixel-format yuv420p -f './recording_'"$(getdate)"'.mp4' -t --geometry "$region"
+            wf-recorder --pixel-format yuv420p -f "./$recording_file" -t --geometry "$region"
         fi
     fi
 fi
