@@ -104,7 +104,6 @@ return {
 
 					RenderMarkdownBullet = { link = "function" },
 
-					TypstConcealDelim = { link = "Operator" },
 					TypstConcealSymbol = { link = "Operator" },
 					TypstConcealScript = { link = "Conceal" },
 					TypstConcealSurround = { link = "Delimiter" },

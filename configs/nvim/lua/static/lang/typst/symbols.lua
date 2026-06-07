@@ -16,6 +16,7 @@ return {
 	["sumsym"]                    = { cchar = "∑ₛₘ", hl = "TypstConcealSymbol" },
 	["tensor"]                    = { cchar = "⊗", hl = "TypstConcealSymbol" },
 	["setminus"]                  = { cchar = "∖", hl = "TypstConcealSymbol" },
+	["NNN"]                       = { cchar = "ℕ", hl = "TypstConcealSet" },
 
 	["AA"]                        = { cchar = "𝔸", hl = "TypstConcealSet" },
 	["Alpha"]                     = { cchar = "Α", hl = "TypstConcealSet" },
