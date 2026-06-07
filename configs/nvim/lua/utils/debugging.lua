@@ -1,3 +1,15 @@
+---@param bufnr integer
+local function dap_start(bufnr)
+	vim.schedule(function()
+		for _, win in ipairs(vim.api.nvim_list_wins()) do
+			if vim.api.nvim_win_get_buf(win) == bufnr then
+				vim.api.nvim_set_current_win(win)
+				require("dap").continue()
+			end
+		end
+	end)
+end
+
 ---@param main_buf integer
 ---@param filepath string
 local open_debugger_input = function(main_buf, filepath)
@@ -37,7 +49,7 @@ local open_debugger_input = function(main_buf, filepath)
 		callback = function()
 			vim.b[main_buf].stdio_completed = true
 			if vim.b[main_buf].compilation_completed and not require("dap").session() then
-				vim.schedule(function() require("dap").continue() end)
+				dap_start(main_buf)
 			end
 		end,
 		once = true,
@@ -97,7 +109,7 @@ local function setup(cmd)
 				vim.b[buf].compilation_completed = true
 				vim.b[buf].use_default_executable_path = true
 				if vim.b[buf].stdio_completed then
-					vim.schedule(function() require("dap").continue() end)
+					dap_start(buf)
 				end
 			end
 		end)
@@ -106,7 +118,7 @@ local function setup(cmd)
 			vim.b[buf].codelldb_stdio_redirection = true
 			vim.b[buf].stdio_completed = true
 			if vim.b[buf].compilation_completed then
-				vim.schedule(function() require("dap").continue() end)
+				dap_start(buf)
 			end
 		elseif vim.b[buf].codelldb_stdio_redirection == nil then
 			local answer = vim.fn.input("Do you want to use stdio redirection ?")
@@ -117,7 +129,7 @@ local function setup(cmd)
 				vim.b[buf].codelldb_stdio_redirection = false
 				vim.b[buf].stdio_completed = true
 				if vim.b[buf].compilation_completed then
-					vim.schedule(function() require("dap").continue() end)
+					dap_start(buf)
 				end
 			end
 		end
