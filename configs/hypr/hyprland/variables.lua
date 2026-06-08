@@ -12,7 +12,7 @@ return {
 	volumeMixer = "~/.config/hypr/hyprland/scripts/launch_first_available.sh 'pavucontrol-qt' 'pavucontrol'",
 	settingsApp =
 	"XDG_CURRENT_DESKTOP=gnome ~/.config/hypr/hyprland/scripts/launch_first_available.sh 'qs -p ~/.config/quickshell/$qsConfig/settings.qml' 'systemsettings' 'gnome-control-center' 'better-control'",
-	taskManager = "kitty -1 btop",
+	taskManager = "kitty -1 --title 'Task Manager' btop",
 
 	workspaceGroupSize = 10,
 }

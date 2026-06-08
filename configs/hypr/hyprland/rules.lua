@@ -10,27 +10,21 @@ hl.window_rule({ match = { class = ".*" }, no_blur = true })
 local center_float = {
 	float = true,
 	center = true,
-	size = {
-		"monitor_w * 0.86",
-		"monitor_h * 0.86",
-	},
 	rounding = 0,
 	border_color = "#54546d",
-	border_size = true,
+	border_size = 2,
 }
-hl.window_rule({ match = { title = "^(File Manager)$" }, table.unpack(center_float) })
-center_float.size = {
-	"monitor_w * 0.65",
-	"monitor_h * 0.65",
-}
-hl.window_rule({ match = { title = "^(Task Manager)$" }, table.unpack(center_float) })
-hl.window_rule({ match = { title = "^(Open file)$" }, table.unpack(center_float) })
-hl.window_rule({ match = { title = "^(Open files)$" }, table.unpack(center_float) })
-hl.window_rule({ match = { title = "^(Open directory)$" }, table.unpack(center_float) })
-hl.window_rule({ match = { title = "^(Open directories)$" }, table.unpack(center_float) })
-hl.window_rule({ match = { title = "^(Save as)$" }, table.unpack(center_float) })
-hl.window_rule({ match = { title = "^(Save file)$" }, table.unpack(center_float) })
-hl.window_rule({ match = { title = "^(Save files)$" }, table.unpack(center_float) })
+
+center_float.size = { "monitor_w * 0.86", "monitor_h * 0.86" }
+center_float.match = { title = "^File Manager$" }
+hl.window_rule(center_float)
+
+center_float.size = { "monitor_w * 0.65", "monitor_h * 0.65" }
+local patterns = { "^Task Manager$", "^Open files?$", "^Open director(y|ies)$", "^Save (as|files?)$" }
+for _, pattern in ipairs(patterns) do
+	center_float.match.title = pattern
+	hl.window_rule(center_float)
+end
 
 hl.window_rule({ match = { title = "^(Open File)(.*)$" }, center = true })
 hl.window_rule({ match = { title = "^(Open File)(.*)$" }, float = true })
