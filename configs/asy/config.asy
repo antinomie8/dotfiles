@@ -1,5 +1,5 @@
 import settings;
 outformat  = "pdf";
-tex        = "pdflatex";
 pdfviewer  = "zathura";
+psviewer   = "zathura";
 htmlviewer = "firefox";

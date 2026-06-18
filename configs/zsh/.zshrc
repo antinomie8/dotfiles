@@ -87,6 +87,7 @@ eval "$(fzf --zsh)"
 source $ZDOTDIR/plugins/p10k.zsh
 source $ZDOTDIR/plugins/atuin.zsh
 source $ZDOTDIR/plugins/rationalize-dot.zsh
+source $ZDOTDIR/plugins/history-search.zsh
 
 # options and modules
 opts=(
@@ -105,6 +106,7 @@ opts=(
 
 	"share_history"      # share history between sessions
 	"hist_ignore_space"  # don't save commands starting with a space
+	"hist_find_no_dups"  # don't show duplicates when searching history
 	"inc_append_history" # write directly to the history file
 	"hist_expand"        # expand !n
 )

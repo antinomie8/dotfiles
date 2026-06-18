@@ -149,6 +149,7 @@ return {
 
 		-- run with args
 		vim.api.nvim_create_user_command("RunWithArgs", function(obj)
+			-- BUG: obj.args doesn't contain backslashes
 			local args = require("utils.argparse").shell_split(vim.fn.expand(obj.args))
 			local dap_config = dap.configurations[vim.bo.filetype]
 			if dap_config then

@@ -33,7 +33,7 @@ hl.bind("SUPER + Z", hl.dsp.global("quickshell:sidebarRightToggle"), { desc = "S
 hl.bind("SUPER + Comma", hl.dsp.global("quickshell:cheatsheetToggle"), { desc = "Shell: Toggle cheatsheet" })
 hl.bind("SUPER + SHIFT + K", hl.dsp.global("quickshell:oskToggle"), { desc = "Shell: Toggle on-screen keyboard" })
 hl.bind("SUPER + M", hl.dsp.global("quickshell:mediaControlsToggle"), { desc = "Shell: Toggle media controls" })
-hl.bind("SUPER + G", hl.dsp.global("quickshell:overlayToggle"), { desc = "Shell: Toggle widget overlay" })
+hl.bind("SUPER + O", hl.dsp.global("quickshell:overlayToggle"), { desc = "Shell: Toggle widget overlay" })
 hl.bind("SUPER + dead_circumflex", hl.dsp.global("quickshell:barToggle"), { desc = "Shell: Toggle bar" })
 hl.bind("SUPER + SHIFT + ALT + Colon", hl.dsp.exec_cmd("qs -p $HOME/.config/quickshell/$qsConfig/welcome.qml"))
 hl.bind("XF86PowerOff", function()
@@ -133,7 +133,7 @@ local grimhyprctl = "grim -o \"$(hyprctl activeworkspace -j | jq -r '.monitor')\
 local define_img_path = [[
 	dir="$(xdg-user-dir PICTURES)/Captures d'écran" &&
 	img="$dir/Screenshot $(date '+%d-%m-%Y %H:%M:%S').png" &&
-	mkdir -p "$dir" && 
+	mkdir -p "$dir" &&
 ]]
 hl.bind("Print", hl.dsp.exec_cmd(grimhyprctl .. " - | wl-copy"),
 	{ locked = true, desc = "Utilities: Screenshot >> clipboard" })
@@ -258,13 +258,11 @@ hl.bind("SUPER + ALT + mouse_up", hl.dsp.window.move({ workspace = "r+1" }))
 hl.bind("SUPER + ALT + S", hl.dsp.window.move({ workspace = "special:special", follow = false }),
 	{ desc = "Window: Send to scratchpad" })
 
--- Workspace groups
-hl.bind("SUPER + ALT + kp_delete", ws_group.move(1), { desc = "Window: Move and follow to next workspace group" })
-hl.bind("SUPER + ALT + SHIFT + kp_delete", ws_group.move(-1),
-	{ desc = "Window: Move and follow to previous workspace group" })
-hl.bind("SUPER + ALT + CTRL + kp_delete", ws_group.move(1, true), { desc = "Window: Move to next workspace group" })
-hl.bind("SUPER + ALT + SHIFT + CTRL + kp_delete", ws_group.move(-1, true),
-	{ desc = "Window: Move to previous workspace group" })
+-- Window groups
+hl.bind("SUPER + G", hl.dsp.group.toggle(), { desc = "Window: Toggle group" })
+hl.bind("SUPER + Space", hl.dsp.group.next(), { desc = "Window: Cycle group" })
+
+hl.bind("SUPER + asterisk", hl.dsp.focus({ last = true }), { desc = "Window: Focus last window" })
 
 ---------------
 -- Workspace --
@@ -295,6 +293,15 @@ hl.bind("SUPER + mouse:275", hl.dsp.workspace.toggle_special("special"))
 -- Workspace groups
 hl.bind("SUPER + kp_delete", ws_group.focus(1), { desc = "Workspace: Go to next workspace group" })
 hl.bind("SUPER + SHIFT + kp_delete", ws_group.focus(-1), { desc = "Workspace: Go to previous workspace group" })
+-- those should be in window instead but better put them in the wrong category than making them not appear at all
+hl.bind("SUPER + ALT + kp_delete", ws_group.move(1), { desc = "Workspace: Move and follow to next workspace group" })
+hl.bind("SUPER + ALT + SHIFT + kp_delete", ws_group.move(-1),
+	{ desc = "Workspace: Move and follow to previous workspace group" })
+hl.bind("SUPER + ALT + CTRL + kp_delete", ws_group.move(1, true), { desc = "Workspace: Move to next workspace group" })
+hl.bind("SUPER + ALT + SHIFT + CTRL + kp_delete", ws_group.move(-1, true),
+	{ desc = "Workspace: Move to previous workspace group" })
+
+hl.bind("SUPER + N", hl.dsp.focus({ workspace = "emptynm" }), { desc = "Workspace: Next empty workspace" })
 
 -------------
 -- Session --
@@ -329,3 +336,5 @@ hl.define_submap("passthrough", function()
 		end
 	end, { submap_universal = true, desc = "Miscellaneous: Keymap passthrough submap" })
 end)
+
+hl.bind("SUPER + Left", hl.dsp.window.move({ direction = "l" }))

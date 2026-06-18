@@ -87,3 +87,16 @@ void filldraw(picture pic = currentpicture, conic g, pen fillpen = defaultpen,
 
 // use smaller default size for markangle
 markangleradiusfactor = -5;
+
+// others
+void blob(string L) {
+	// clang-format off
+	filldraw(
+		(-4,3)..(-5,1)..(-4.7,0) ..(-4.1,-2) ..(-4,-3)
+		..(-1,-3.3)..(1,-3.2)..(4,-3) ..(4.3,-1)..(4.1,0.5)
+		..(4,3) ..(2,3.3)..(0,3.1)..(-3,2.9)..cycle,
+		lightblue+opacity(0.2), black
+	);
+	// clang-format on
+	label(L, (4, 3), dir(5));
+}

@@ -2,6 +2,7 @@
 include kanagawa_theme
 
 # options
+set open-link-confirm false
 set selection-clipboard false
 set dbus-raise-window false
 set guioptions none

@@ -73,10 +73,10 @@ if program pacman; then
 	if program yay; then
 		package_manager="yay"
 		packages+=("cppman" "cpulimit" "dbg-macro" "hyprtime" "runapp" "thundery"
-			"xdg-desktop-portal-termfilechooser-hunkyburrito-git" "elan")     # misc
-		packages+=("zsh-abbr" "zsh-patina-git")                            # shell
-		packages+=("ttf-juliamono" "otf-garamond-math")                    # fonts
-		packages+=("codelldb-bin" "texlab" "tex-fmt" "asm-lsp" "typstyle") # Neovim
+			"xdg-desktop-portal-termfilechooser-hunkyburrito-git" "elan")           # misc
+		packages+=("zsh-abbr" "zsh-patina-git")                                   # shell
+		packages+=("otf-new-computer-modern" "ttf-juliamono" "otf-garamond-math") # fonts
+		packages+=("codelldb-bin" "texlab" "tex-fmt" "asm-lsp" "typstyle")        # Neovim
 		packages+=("kitty-git" "neovim-nightly-bin" "yazi-nightly-bin")
 	else
 		package_manager="sudo pacman"

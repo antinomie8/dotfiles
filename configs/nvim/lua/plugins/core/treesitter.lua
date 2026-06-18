@@ -45,7 +45,7 @@ return {
 					parsers.lean = {
 						install_info = {
 							url = "https://github.com/Julian/tree-sitter-lean",
-						}
+						},
 					}
 					parsers.tsqx = {
 						install_info = {

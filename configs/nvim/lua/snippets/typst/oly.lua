@@ -25,7 +25,6 @@ local envs = {
 	"theorem",
 	"lemma",
 	"proof",
-	"corollary",
 	"exercise",
 	"remark",
 	"definition",

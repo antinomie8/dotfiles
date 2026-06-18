@@ -26,7 +26,7 @@ local function open(path, opts)
 		local filepath = vim.b.typst_root and vim.b.typst_root or vim.api.nvim_buf_get_name(0)
 		pdf_path = filepath:gsub("%.typ$", ".pdf")
 	end
-  require("utils.pdf").open(pdf_path, opts)
+	require("utils.pdf").open(pdf_path, opts)
 end
 vim.api.nvim_buf_create_user_command(0, "OpenPdf", function(arg)
 	open(arg.fargs[1], { silent = arg.bang })
@@ -36,6 +36,8 @@ vim.keymap.set("n", "<localleader>o", "<Cmd>OpenPdf<CR>", { desc = "Open pdf", b
 -- compile and open
 vim.keymap.set("n", "<localleader>p", function()
 	compile(function(err, result, ctx)
-		open(result.path)
+		if result and result.path then
+			open(result.path)
+		end
 	end)
 end, { desc = "Export and open pdf", buffer = true })

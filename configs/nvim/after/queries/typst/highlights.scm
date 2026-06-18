@@ -7,7 +7,9 @@
 ((linebreak) @conceal
 	(#set! conceal "⏎")) ; \
 
-([ "$" "_" "*" "^" (align) ] @conceal @operator
+([ "$" "_" "^" (align) ] @conceal @operator
+	(#set! conceal ""))
+(strong "*" @conceal @operator
 	(#set! conceal ""))
 
 (shorthand) @operator  ; <= >= <=> !=

@@ -74,7 +74,9 @@ local function asy(opts)
 				)
 			end
 			if opts.open and obj.code == 0 then
-				require("utils.pdf").open(name .. ".pdf")
+				vim.schedule(function()
+					require("utils.pdf").open(name .. ".pdf")
+				end)
 			end
 		end
 	)

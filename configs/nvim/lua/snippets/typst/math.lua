@@ -173,7 +173,6 @@ return {
 		{
 			trig = "all",
 			dscr = "universal quantifier",
-			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
 		t("forall")
@@ -182,7 +181,6 @@ return {
 		{
 			trig = "ex",
 			dscr = "existensial quantifier",
-			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
 		t("exists")

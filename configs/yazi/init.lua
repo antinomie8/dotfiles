@@ -35,6 +35,10 @@ require("restore"):setup({
 	suppress_success_notification = true, -- Suppress success notification when all files or folder are restored.
 })
 
+require("zoxide"):setup({
+	update_db = true,
+})
+
 -- statusline components {{{
 function Status:mode()
 	local mode = tostring(self._tab.mode):upper()

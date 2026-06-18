@@ -28,35 +28,35 @@ language: fr
 # the pdf viewer used for 'oly gen'
 pdf_viewer: zathura
 
-# wether to open the generated pdf with pdf_viewer when running 'oly gen'
+# whether to open the generated pdf with pdf_viewer when running 'oly gen'
 open: true
 
-# wether to confirm deletion or not in 'oly rm'
+# whether to confirm deletion or not in 'oly rm'
 confirm: true
 
-# wether to only output the entries written in the current markup language in
+# whether to only output the entries written in the current markup language in
 # 'oly list'
 filter_lang: true
 
 # map contest names to other ones
 abbreviations:
-    Shortlist: ISL
+  Shortlist: ISL
 
 # directory structure to store contests
 # available variables are: date, contest, year, problem and source
 contest_format:
-    Club: "Club/${date}"
-    Test Novembre: "POFM/Tests/${year}/${contest} ${year}/${contest} ${year} ${problem}"
-    Valbonne: "POFM/Valbonne/${contest} ${year}/${source}"
-    Cours en ligne: "POFM/Cours en ligne/${year}/${date}"
-    Liste: "POFM/Listes/${source}"
+  Club: "Club/${date}"
+  Test Novembre: "POFM/Tests/${year}/${contest} ${year}/${contest} ${year} ${problem}"
+  Valbonne: "POFM/Valbonne/${contest} ${year}/${source}"
+  Cours en ligne: "POFM/Cours en ligne/${year}/${date}"
+  Liste: "POFM/Listes/${source}"
 # you can also use prefixes if the contest parser doesn't give the result you want
 contest_format_prefix:
-    TN-: "POFM/Vidéos/TN/${source}"
-    Géo-: "POFM/Vidéos/Géo/${source}"
-    Alg-: "POFM/Vidéos/Alg/${source}"
-    Comb-: "POFM/Vidéos/Comb/${source}"
-    Lettre de motivation Parcoursup: "Parcoursup/${source}"
+  TN-: "POFM/Vidéos/TN/${source}"
+  Géo-: "POFM/Vidéos/Géo/${source}"
+  Alg-: "POFM/Vidéos/Alg/${source}"
+  Comb-: "POFM/Vidéos/Comb/${source}"
+  Lettre de motivation Parcoursup: "Parcoursup/${source}"
 
 # customize the colors used by the show command
 # see there for the full list of options:
@@ -64,29 +64,31 @@ contest_format_prefix:
 # you can generate a colorscheme from a (Neo)Vim one using 
 # https://github.com/antinomie8/oly/blob/main/assets/extras/get_nvim_colors.lua
 colorscheme:
-    constant: "#7e9cd8"
-    markup.math: "#7fb4ca"
+  constant: "#7e9cd8"
+  markup.math: "#7fb4ca"
 
 # where to output the generated pdf
-# defaults to ${XDG_CACHE_HOME:-~/.cache}/oly/${source}
-# output_directory: ${PWD}/oly
+# defaults to ${XDG_CACHE_HOME:-~/.cache}/oly
+# output_directory: ${PWD}
 
 # where temporary files are written
 # defaults to ${TMPDIR:-/tmp}/oly
-# tmpdir: /tmp/oly
+# tmpdir: ${XDG_CACHE_HOME}/oly/edit
 
-# added right after \documentclass in the preview file in latex
-# meant to specify which latex packages to use
-packages: '\usepackage[french]{antoine}'
+#packages to import
+packages:
+  # latex: '\usepackage[french]{antoine}'
+  typst: '#import "@local/antoine:1.0.0": *'
 
-# You can also override preview, contents, and metadata.
+# metadata you get prompted for in 'oly add'
+# metadata: "\
+#   source: ${source}\n\
+#   topic:  ${topic}\n\
+#   tags:   []\n\
+#   url:    \n\
+#   "
+
+# You can also override preview and contents
 # preview is what gets put in the preview file
 # contents is the initial content in a file opened through 'oly add'
-# metadata is the metadata you get prompted for in 'oly add'
-# For example, you can use the following
-# metadata: "\
-# source: ${source}\n\
-# topic:  ${topic}\n\
-# tags:   []\n\
-# url:    \n\
-# "
+# both should map keys 'latex' or 'typst' (or both) to a string

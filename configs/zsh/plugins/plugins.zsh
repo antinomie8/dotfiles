@@ -3,6 +3,7 @@
 # Completions
 zsh-users/zsh-completions kind:fpath path:src
 Aloxaf/fzf-tab
+zsh-users/zsh-autosuggestions
 
 # Prompt
 romkatv/powerlevel10k
@@ -15,7 +16,3 @@ romkatv/archive kind:fpath
 # Editing
 hlissner/zsh-autopair
 olets/zsh-abbr
-
-# Features
-zsh-users/zsh-autosuggestions
-zsh-users/zsh-history-substring-search

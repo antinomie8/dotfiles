@@ -15,8 +15,6 @@ zstyle ':completion:*:descriptions'       format '[%d]'
 zstyle ':completion:*'                    list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*'                    sort false
 zstyle ':completion:*:ls:*'               list-dirs-first true
-zstyle ':completion:*:-command-:*:*'      file-patterns \
-	'*(-*x):executables' '*:all-files'      # suggest executables rather than files when completing a command
 
 # commands
 zstyle ':completion:*:*:just:*:arguments' ignored-patterns '-*'

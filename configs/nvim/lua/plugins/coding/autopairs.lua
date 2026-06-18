@@ -178,7 +178,7 @@ return {
 				{ "\\[", "\\]", ft = { "tex" }, disable_end = true, newline = true },
 				{ "\\(", "\\)", ft = { "tex" }, disable_end = true, newline = true },
 				-- typst
-				{ "$", "$", ft = { "typst" }, cond = typst.in_text, space = true, newline = true },
+				{ "$", "$", ft = { "typst" }, space = true, newline = true },
 				{ "```", "```", ft = { "typst" }, cond = typst.in_text, space = true, newline = true },
 				{ "`", "`", ft = { "typst" }, cond = typst.in_text, space = true },
 				{ "/*", "*/", ft = { "typst" }, cond = typst.in_text, newline = true },

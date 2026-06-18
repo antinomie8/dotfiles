@@ -5,6 +5,7 @@ local functions = require("static.lang.typst.calls")
 local subscripts = require("static.lang.typst.subscripts")
 local superscripts = require("static.lang.typst.superscripts")
 local symbols = require("static.lang.typst.symbols")
+local emojis = require("static.lang.typst.emojis")
 local shorthands = require("static.lang.typst.shorthands")
 
 ---@param row integer
@@ -46,7 +47,7 @@ end
 ---@param er integer
 ---@param ec integer
 ---@param conceal_text string
----@param hl string
+---@param hl string?
 local function conceal_at_positions(sr, sc, er, ec, conceal_text, hl)
 	local positions = get_char_positions_in_range(sr, sc, er, ec)
 
@@ -150,6 +151,17 @@ local queries = {
 						.(group
 							.(string).).).
 				(#eq? @func_name vocab)) @vocab
+		]]
+	),
+	emojis = vim.treesitter.query.parse(
+		"typst",
+		[[
+			((code
+				.
+				(field)
+				.) @emoji
+				(#lua-match? @emoji "^#emoji%.")
+				(#gsub! @emoji "^#emoji%.(.*)" "%1"))
 		]]
 	),
 }
@@ -327,6 +339,16 @@ local function conceal_math(first, last)
 					conceal_at_positions(sr, sc, er, ec, word, "TypstConcealVocab")
 				end
 			end
+		end
+	end
+
+	-- emojis
+	for id, node, metadata in queries.emojis:iter_captures(root, buf, first, last) do
+		local sr, sc, er, ec = node:range()
+		local text = metadata[id].text
+		local cchar = emojis[text]
+		if cchar then
+			conceal_at_positions(sr, sc, er, ec, cchar)
 		end
 	end
 end

@@ -31,18 +31,19 @@ function M.typst()
 	local line = vim.api.nvim_get_current_line()
 
 	-- package import: #import "@repo/name:version"
-	local repo, name, version = line:match('#import%s+"@([^/]+)/([^:]+):([^"]+)"')
+	local scope, name, version = line:match('#import%s+"@([^/]+)/([^:]+):([^"]+)"')
 
-	if repo and name and version then
-		local data_home = vim.env.XDG_DATA_HOME
-		                  or (vim.env.HOME and vim.fs.joinpath(vim.env.HOME, ".local", "share"))
-		                  or ""
+	if scope and name and version then
+		local dir = {
+			["local"] = vim.env.XDG_DATA_HOME or (vim.env.HOME .. "/.local/share"),
+			["preview"] = vim.env.XDG_CACHE_HOME or (vim.env.HOME .. "/.cache"),
+		}
 
 		return vim.fs.joinpath(
-			data_home,
+			dir[scope],
 			"typst",
 			"packages",
-			repo,
+			scope,
 			name,
 			version,
 			"typst.toml"

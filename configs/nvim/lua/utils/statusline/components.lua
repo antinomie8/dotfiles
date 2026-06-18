@@ -129,6 +129,7 @@ local FileName = {
 	update = {
 		"BufEnter",
 		"BufFilePost",
+		"WinResized",
 	},
 	flexible = path_component_max_length,
 	{
