@@ -1,4 +1,4 @@
----@alias lang {lang: string, icon: string, ext: string, edit: fun(path: string, stat: uv.fs_stat.result?)}
+---@alias lang {lang: string, icon: string, ext: string, edit: fun(path: string, exists: boolean)}
 
 ---@param name string
 ---@param lang lang
@@ -17,10 +17,19 @@ local function create_or_edit_figure(name, lang)
 		vim.notify(figure_dir .. " is not a directory !", vim.log.levels.ERROR, { title = lang.lang, icon = lang.icon })
 	end
 
-	local exists = vim.uv.fs_stat(figure_path)
+	local exists = vim.uv.fs_stat(figure_path) ~= nil
 	if not exists then
-		local figure_line = string.format('#figure(image("figures/%s.%s")) <%s>', name,
-			(lang.ext == "svg" and "svg" or "pdf"), name)
+		for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+			local name = vim.api.nvim_buf_get_name(buf)
+			if vim.fn.fnamemodify(name, ":p") == figure_path then
+				exists = true
+			end
+		end
+	end
+	if not exists then
+		local indentwidth = vim.api.nvim_eval(vim.opt_local.indentexpr:get()) / vim.bo.shiftwidth
+		local figure_line = string.format('%s#figure(image("figures/%s.%s")) <%s>',
+			string.rep("\t", indentwidth), name, (lang.ext == "svg" and "svg" or "pdf"), name)
 		local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
 		vim.api.nvim_buf_set_lines(0, row, row, false, { figure_line })
 	end
@@ -34,11 +43,11 @@ local langs = {
 		icon = "󰒕",
 		ext = "asy",
 		cmd = "Asy",
-		keymap = "<leader>A",
-		edit = function(path, stat)
+		keymap = "<localleader>a",
+		edit = function(path, exists)
 			vim.cmd.edit(path)
 			-- Insert initial content into the new .asy buffer
-			if not stat then
+			if not exists then
 				vim.api.nvim_buf_set_lines(0, 0, 0, false,
 					vim.split(require("static.lang.asymptote.preamble"), "\n"))
 				vim.cmd("LiveRender")
@@ -50,7 +59,7 @@ local langs = {
 		icon = "󰜡",
 		ext = "svg",
 		cmd = "Svg",
-		keymap = "<leader>F",
+		keymap = "<localleader>i",
 		edit = function(path, _)
 			local template = (vim.env.XDG_CONFIG_HOME or vim.env.HOME .. "/.config") .. "/inkscape/templates/template.svg"
 			vim.system({ "cp", template, path }):wait()
@@ -64,12 +73,12 @@ for _, lang in ipairs(langs) do
 		local name = arg.args
 		if name == "" then
 			local line = vim.api.nvim_get_current_line()
-			local match = line:match('image%("figures/(.*)%.' .. lang.ext .. '"%)')
+			local match = line:match('image%("figures/(.*)%.pdf"%)') or line:match('image%("figures/(.*)%.svg"%)')
 			if match then
 				create_or_edit_figure(match, lang)
 			else
 				vim.ui.input({ prompt = "New figure name" }, function(input)
-					if name then
+					if input then
 						create_or_edit_figure(input, lang)
 					end
 				end)
@@ -102,7 +111,7 @@ for _, lang in ipairs(langs) do
 				end
 			end
 		end,
-		desc = "Create a new Asymptote figure and insert Typst reference",
+		desc = "Create a new " .. lang.lang .. " figure and insert Typst reference",
 	})
 
 	vim.keymap.set("n", lang.keymap, "<Cmd>" .. lang.cmd .. "<CR>",

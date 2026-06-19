@@ -179,12 +179,12 @@ return {
 						score_offset = -10,
 						opts = {},
 					},
-					asymptote = {
-						name = "asymptote",
-						module = "blink.asymptote",
-						score_offset = 5,
-						opts = {},
-					},
+					-- asymptote = {
+					-- 	name = "asymptote",
+					-- 	module = "blink.asymptote",
+					-- 	score_offset = 5,
+					-- 	opts = {},
+					-- },
 					dap = {
 						name = "dap",
 						module = "blink-cmp-dap",
@@ -199,7 +199,7 @@ return {
 					typst = { inherit_defaults = true, "dictionary" },
 					gitcommit = { inherit_defaults = true, "dictionary" },
 					tex = { inherit_defaults = true, "dictionary" },
-					asymptote = { inherit_defaults = true, "asymptote" },
+					-- asymptote = { inherit_defaults = true, "asymptote" },
 					["dap-repl"] = { "dap" },
 					dapui_watches = { "dap" },
 					dapui_hover = { "dap" },
