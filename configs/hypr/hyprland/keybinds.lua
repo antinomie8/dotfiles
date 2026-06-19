@@ -174,6 +174,13 @@ hl.bind("SUPER + SHIFT + F6", hl.dsp.exec_cmd("hyprctl hyprsunset identity"),
 -- Animations
 hl.bind("SUPER + SHIFT + ALT + A", function()
 	local is_enabled = hl.get_config("animations.enabled")
+	if is_enabled then
+		hl.exec_cmd("safeeyes -d")
+		hl.dispatch(hl.dsp.global("quickshell:enableInhibit"))
+	else
+		hl.exec_cmd("safeeyes -e")
+		hl.dispatch(hl.dsp.global("quickshell:disableInhibit"))
+	end
 	hl.config({ animations = { enabled = not is_enabled } })
 end, { desc = "Screen: Toggle animations" })
 

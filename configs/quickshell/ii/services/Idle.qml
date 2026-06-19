@@ -3,6 +3,7 @@ import qs.modules.common
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
+import Quickshell.Hyprland
 
 /**
  * A nice wrapper for date and time strings.
@@ -51,5 +52,26 @@ Singleton {
                 item: null
             }
         }
+    }
+
+    GlobalShortcut {
+        name: "toggleInhibit"
+        description: "Toggle idle inhibitor"
+
+        onPressed: root.toggleInhibit()
+    }
+
+    GlobalShortcut {
+        name: "enableInhibit"
+        description: "Enable idle inhibitor"
+
+        onPressed: root.toggleInhibit(true)
+    }
+
+    GlobalShortcut {
+        name: "disableInhibit"
+        description: "Disable idle inhibitor"
+
+        onPressed: root.toggleInhibit(false)
     }
 }
