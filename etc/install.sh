@@ -67,16 +67,26 @@ copy_if_installed hyprland icons/Bibata ~/.local/share/icons
 copy_if_installed pdflatex texmf ~/.local/share
 copy_if_installed firefox autoconfig.js /usr/lib/firefox/defaults/pref
 copy_if_installed firefox firefox.cfg /usr/lib/firefox
-copy_if_installed yazi desktop/yazi.desktop ~/.local/share/applications
-copy_if_installed yazi icons/hicolor/48x48/apps/yazi.png ~/.local/share/icons/hicolor/48x48/apps
-copy_if_installed neomutt desktop/neomutt.desktop ~/.local/share/applications
-copy_if_installed neomutt icons/hicolor/48x48/apps/neomutt.png ~/.local/share/icons/hicolor/48x48/apps
-copy_if_installed nvim desktop/mail.desktop ~/.local/share/applications
-copy_if_installed nvim icons/hicolor/scalable/apps/mail.svg ~/.local/share/icons/hicolor/scalable/apps
-copy_if_installed spotify desktop/spotify.desktop ~/.local/share/applications
-copy_if_installed vesktop desktop/vesktop.desktop ~/.local/share/applications
+
+find icons/hicolor -type f -print0 | while IFS= read -r -d '' file; do
+	filename="$(basename "$file")"
+	name="${filename%.*}"
+	[[ "$name" == "mail" ]] && program="nvim" || program="$name"
+	copy_if_installed "$program" "$file" ~/.local/share/icons/hicolor/"$(dirname "$file")"
+done
+for file in desktop/*; do
+	filename="$(basename "$file")"
+	name="${filename%.*}"
+	[[ "$name" == "mail" ]] && program="nvim" || program="$name"
+	copy_if_installed "$program" "$file" ~/.local/share/applications
+done
+
+for package in typst/*; do
+	copy_if_installed typst "$package" ~/.local/share/typst/packages
+done
 
 [[ -n "$CPLUS_INCLUDE_PATH" ]] && copy dbg.h "$CPLUS_INCLUDE_PATH"
+
 if program systemctl; then
 	for file in systemd/user/*; do
 		if [[ ! -f "$file" ]]; then
