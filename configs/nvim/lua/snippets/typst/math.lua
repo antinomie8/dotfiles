@@ -98,7 +98,6 @@ return {
 		{
 			trig = "sq",
 			dscr = "square root",
-			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
 		fmt(
@@ -227,5 +226,11 @@ return {
 			i(1),
 			i(2),
 		})
+	),
+	s({ trig = "([a-zA-Z])bar", dscr = "bar", regTrig = true, snippetType = "autosnippet" },
+		{ t("bar("), f(function(_, snip) return snip.captures[1] end), t(")") }
+	),
+	s({ trig = "([a-zA-Z])hat", dscr = "hat", regTrig = true, snippetType = "autosnippet" },
+		{ t("hat("), f(function(_, snip) return snip.captures[1] end), t(")") }
 	),
 }

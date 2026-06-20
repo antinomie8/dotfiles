@@ -42,11 +42,13 @@
 
 #let O = (0, 0)
 
-#let unitcircle(..args) = circle((0, 0), radius: 1, ..args)
-
 #let right-angle(..args) = cetz-plot.plot.annotate(
 	cetz.angle.right-angle(label: none, radius: 1cm / 3, ..args),
 )
+
+#let dir(angle) = (calc.cos(angle * calc.pi / 180), calc.sin(angle * calc.pi / 180))
+
+#let unitcircle = circle.with((0, 0), radius: 1)
 
 #let brace(..args) = {
 	cetz-plot.plot.annotate(
@@ -62,5 +64,3 @@
 		content("brace.content", args.at("label"))
 	}
 }
-
-#let dir(angle) = (calc.cos(angle * calc.pi / 180), calc.sin(angle * calc.pi / 180))

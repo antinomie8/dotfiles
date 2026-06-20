@@ -6,19 +6,9 @@ local get_visual = helpers.get_visual
 
 local snippets = {
 	s({ trig = "voc", dscr = "vocabulary" },
-		{
-			t('#vocab("'),
-			d(1, get_visual),
-			t('")'),
-		}
-	),
+		{ t('#vocab("'), d(1, get_visual), t('")') }),
 	s({ trig = "!V", dscr = "vocabulary", snippetType = "autosnippet" },
-		{
-			t('#vocab("'),
-			d(1, get_visual),
-			t('")'),
-		}
-	),
+		{ t('#vocab("'), d(1, get_visual), t('")') }),
 }
 
 local envs = {

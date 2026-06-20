@@ -47,6 +47,7 @@ configs=("asy" "bat" "btop" "browser" "clang-format" "clangd" "eza" "fastfetch" 
 scripts=("assemble" "compile_sfml" "fzf_preview" "git_dotfiles" "mailto" "rgb" "termsize" "zoxide-rename")
 systemd_user_units=("mail-sync.service" "goimapnotify.service")
 desktop_entries=("mail" "neomutt" "spotify" "vesktop" "yazi")
+typst_packages=("antoine" "figures")
 
 copy_group $HOME/.config configs $configs
 copy_group $HOME/.local/bin scripts $scripts
@@ -54,9 +55,11 @@ copy_group $HOME/.config/systemd/user etc/systemd/user $systemd_user_units
 copy_group $HOME/.local/share/applications etc/desktop ${desktop_entries[@]/%/.desktop}
 copy $CPLUS_INCLUDE_PATH/dbg.h etc
 copy $HOME/.local/share/texmf etc
+copy_group $HOME/.local/share/typst/packages/local etc/typst $typst_packages
 
 # remove chosen files and directories
 find configs/neomutt/accounts -regex '\S*@\S*\.\S*' -type f -delete
+find etc/typst -regex '.*\.pdf' -type f -delete
 rm configs/quickshell/ii/.qmlls.ini
 touch configs/quickshell/ii/.qmlls.ini
 # obfuscate email adresses

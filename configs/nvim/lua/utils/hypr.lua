@@ -2,7 +2,10 @@ local hypr = {}
 
 ---@param hyprctl vim.SystemCompleted
 local function notify_errors(hyprctl)
-	if hyprctl.code ~= 0 then
+	-- for some reason hyprctl:
+	--   returns 0 even when it fails
+	--   uses stdout instead of stderr
+	if hyprctl.stderr and vim.startswith(hyprctl.stdout, "error") then
 		vim.notify(
 			hyprctl.stderr,
 			vim.log.levels.ERROR,
@@ -21,20 +24,15 @@ end
 ---| "monocle"
 ---@alias HyprlandWorkspace integer
 
-local default_layout --[[@as HyprlandLayout]]
 local workspace      --[[@as HyprlandWorkspace]]
 
----@return HyprlandLayout
-local function get_default_layout()
-	if not default_layout then
-		local handle = vim.system({ "hyprctl", "getoption", "general:layout", "-j" }, notify_errors):wait()
-		default_layout = vim.json.decode(handle.stdout).str
-	end
-	return default_layout
+---@param ws HyprlandWorkspace
+function hypr.switch_workspace(ws)
+	vim.system({ "hyprctl", "dispatch", "hl.dps.focus({ workspace = " .. ws .. " })" }, notify_errors):wait()
 end
 
 ---@return HyprlandWorkspace
-local function get_current_workspace()
+function hypr.get_current_workspace()
 	if not workspace then
 		local handle = vim.system({ "hyprctl", "activeworkspace", "-j" }, notify_errors):wait()
 		workspace = vim.json.decode(handle.stdout).id
@@ -44,20 +42,19 @@ end
 
 ---@param layout HyprlandLayout?
 function hypr.set_layout(layout)
-	layout = layout or get_default_layout()
-	workspace = workspace or get_current_workspace()
+	layout = layout or "dwindle"
+	workspace = workspace or hypr.get_current_workspace()
 
-	vim.system(
-		{ "hyprctl", "keyword", "workspace", workspace .. ",", "layout:" .. layout },
-		notify_errors
-	)
+	vim.system({ "hyprctl", "eval",
+		string.format("hl.workspace_rule({ workspace = %d, layout = '%s' })", workspace, layout),
+	}, notify_errors)
 end
 
 ---@param class string
 ---@param ws HyprlandWorkspace?
 ---@return integer? pid
 function hypr.find_win_on_ws(class, ws)
-	ws = ws or get_current_workspace()
+	ws = ws or hypr.get_current_workspace()
 
 	local clients = vim.system({ "hyprctl", "clients", "-j" }):wait()
 	local data = vim.json.decode(clients.stdout)

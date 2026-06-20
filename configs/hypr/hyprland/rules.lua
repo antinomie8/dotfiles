@@ -99,10 +99,18 @@ hl.window_rule({ match = { class = "^(steam_app).*" }, immediate = true })
 -- No shadow for tiled windows
 hl.window_rule({ match = { float = 0 }, no_shadow = true })
 
--- ######## Workspace rules ########
+-- maximize
+hl.window_rule({ match = { class = "^org.inkscape.Inkscape$", title = ".* - Inkscape$" }, maximize = true })
+hl.window_rule({ match = { class = "^org.inkscape.Inkscape$", title = "^Inkscape \\d*\\.\\d*\\.\\d*.*" }, size = { 0, 0 }, no_initial_focus = true }) -- hide inkscape loading screen
+
+---------------------
+-- Workspace rules --
+---------------------
 hl.workspace_rule({ workspace = "special:special", gaps_out = 30 })
 
--- ######## Layer rules ########
+-----------------
+-- Layer rules --
+-----------------
 hl.layer_rule({ match = { namespace = ".*" }, xray = true })
 hl.layer_rule({ match = { namespace = "walker" }, no_anim = true })
 hl.layer_rule({ match = { namespace = "selection" }, no_anim = true })

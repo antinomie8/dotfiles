@@ -53,7 +53,11 @@
 
 #let O = (0, 0)
 
-#let unitcircle(..args) = cetz.draw.circle((0, 0), radius: 1, ..args)
+#let right-angle = cetz.angle.right-angle.with(label: none, radius: 1cm / 3)
+
+#let dir(angle) = (calc.cos(angle * calc.pi / 180), calc.sin(angle * calc.pi / 180))
+
+#let unitcircle = cetz.draw.circle.with((0, 0), radius: 1)
 
 #let circle(..args, rotate: 0deg) = {
 	cetz.draw.rotate(rotate)
@@ -70,13 +74,9 @@
 	cetz.draw.circle(mid, radius: (major, minor), ..args)
 }
 
-#let right-angle(..args) = cetz.angle.right-angle(label: none, radius: 1cm / 3, ..args)
-
 #let brace(..args) = {
 	cetz.decorations.brace(flip: true, amplitude: 0.1, name: "brace", content-offset: 0.05, ..args)
 	if args.named().keys().contains("label") {
 		cetz.draw.content("brace.content", args.at("label"))
 	}
 }
-
-#let dir(angle) = (calc.cos(angle * calc.pi / 180), calc.sin(angle * calc.pi / 180))

@@ -16,13 +16,16 @@
 #let iiint = sym.integral.triple
 #let oiiint = sym.integral.vol
 
+#let sumcyc = $sum_("cyc")$
+#let sumsym = $sum_("sym")$
+#let NNN = $NN^*$
+
 #let ord = math.op("ord")
 #let pgcd = math.op("pgcd")
 #let ppcm = math.op("ppcm")
 
-#let sumcyc = $sum_("cyc")$
-#let sumsym = $sum_("sym")$
-#let NNN = $NN^*$
+#let card = math.abs
+#let bar = math.overline
 
 #let pmod(x) = $space (mod #x)$
 #let dbbracket(lhs, rhs) = {
@@ -30,7 +33,6 @@
 	if type(rhs) == array { rhs = rhs.join() }
 	math.lr[$⟦ lhs ; rhs ⟧$]
 }
-#let card = math.abs
 #let proj(point) = {
 	math.attach([$=$], t: [$#point$])
 }
@@ -96,5 +98,5 @@
 
 #let parachuted = {
 	import "@preview/marginalia:0.3.1": notefigure
-	notefigure(image("/icons/parachute.svg"), dy: 1.5em)
+	notefigure(image("/icons/parachute.svg"), dy: 1.5em, alt: "parachuted idea")
 }

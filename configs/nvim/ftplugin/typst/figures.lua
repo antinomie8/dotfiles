@@ -60,10 +60,24 @@ local langs = {
 		ext = "svg",
 		cmd = "Svg",
 		keymap = "<localleader>i",
-		edit = function(path, _)
-			local template = (vim.env.XDG_CONFIG_HOME or vim.env.HOME .. "/.config") .. "/inkscape/templates/template.svg"
-			vim.system({ "cp", template, path }):wait()
+		edit = function(path, exists)
+			if not exists then
+				local template = (vim.env.XDG_CONFIG_HOME or vim.env.HOME .. "/.config") .. "/inkscape/templates/template.svg"
+				vim.system({ "cp", template, path }):wait()
+			end
+
 			vim.system({ "inkscape", path }, { detach = true })
+
+			local handle = vim.uv.new_fs_event()
+			if not handle then return end
+			local function on_change(err, filename, events)
+				if err then
+					vim.notify("Inkscape figure watcher error: " .. err, vim.log.levels.ERROR, { title = "Inkscape", icon = "󰜡" })
+					return
+				end
+				vim.cmd.ExportPdf()
+			end
+			handle:start(path, { watch_entry = true }, vim.schedule_wrap(on_change))
 		end,
 	},
 } --[[@as table<lang>]]

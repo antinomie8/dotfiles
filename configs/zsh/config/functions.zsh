@@ -109,7 +109,7 @@ function clone() {
 		dir=$match[1] # strip trailing .git
 	fi
 
-	git clone $1 $dir && cd $dir
+	git clone $1 $dir --recurse-submodules && cd $dir
 }
 function gitdot() {
 	if [[ $# == 0 ]]; then

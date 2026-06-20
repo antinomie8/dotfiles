@@ -1,6 +1,7 @@
 #import "src/definitions.typ": *
 #import "src/environments.typ": *
 #import "src/custom.typ": *
+#import "src/elem.typ"
 
 // main setup
 #let setup(
@@ -9,7 +10,6 @@
 	author: (),
 	date: none,
 	maketitle: true,
-	title-function: title,
 	body,
 ) = {
 	if type(author) == str { author = (author,) }
@@ -111,7 +111,7 @@
 	show: thmrules.with(qed-symbol: $square$)
 
 	// title
-	show title-function: it => {
+	show elem.title: it => {
 		v(1em)
 		align(center, text(
 			size: 1em,
@@ -138,7 +138,7 @@
 		v(1.5em)
 	}
 	if (maketitle) {
-		title-function()
+		elem.title()
 	}
 
 	body

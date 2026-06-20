@@ -182,7 +182,7 @@ hl.bind("SUPER + SHIFT + ALT + A", function()
 		hl.dispatch(hl.dsp.global("quickshell:disableInhibit"))
 	end
 	hl.config({ animations = { enabled = not is_enabled } })
-end, { desc = "Screen: Toggle animations" })
+end, { desc = "Screen: Toggle animations and idle inhibitor" })
 
 ------------
 -- Window --

@@ -1,6 +1,9 @@
 local ls = require("utils.snippets.luasnip")
+local s, t, i, d, fmt = ls.s, ls.t, ls.i, ls.d, ls.fmt
+local helpers = require("utils.snippets.helpers")
+local line_begin = helpers.line_begin
+local get_visual = helpers.get_visual
 local events = require("luasnip.util.events")
-local s, i, fmt = ls.s, ls.i, ls.fmt
 
 local function ensure_figures_import()
 	local target_pkg = "@local/figures:1.0.0"
@@ -61,58 +64,34 @@ local function ensure_figures_import()
 end
 
 return {
-	s(
-		{
-			trig = "!C",
-			dscr = "canvas",
-			snippetType = "autosnippet",
-		},
-		fmt(
-			[[
-				#figure(
-					canvas({
-						import figures.drawing: *
+	s({ trig = "!F", dscr = "figure", cond = line_begin, snippetType = "autosnippet" },
+		{ t({ "#figure(", "\t" }), d(1, get_visual), t({ "", ")" }) }),
+	s({ trig = "!C", dscr = "canvas", snippetType = "autosnippet" },
+		fmt([[
+			#figure(
+				canvas({
+					import figures.drawing: *
 
-						<>
-					}),
-				)
-      ]],
-			{
-				i(1),
-			}
-		),
+					<>
+				}),
+			)
+      ]], { i(1) }),
 		{ callbacks = { [-1] = { [events.pre_expand] = ensure_figures_import } } }
 	),
-	s(
-		{
-			trig = "!Z",
-			dscr = "complex plane",
-			snippetType = "autosnippet",
-			callbacks = { [-1] = { [events.pre_expand] = ensure_figures_import } },
-		},
-		fmt(
-			[[
-				#figure(
-					complex-plane({
-						import figures.drawing: *
+	s({ trig = "!Z", dscr = "complex plane", snippetType = "autosnippet" },
+		fmt([[
+			#figure(
+				complex-plane({
+					import figures.drawing: *
 
-						<>
-					}),
-				)
+					<>
+				}),
+			)
       ]],
-			{
-				i(1),
-			}
-		),
+			{ i(1) }),
 		{ callbacks = { [-1] = { [events.pre_expand] = ensure_figures_import } } }
 	),
-	s(
-		{
-			trig = "!G",
-			dscr = "function graph",
-			snippetType = "autosnippet",
-			callbacks = { [-1] = { [events.pre_expand] = ensure_figures_import } },
-		},
+	s({ trig = "!G", dscr = "function graph", snippetType = "autosnippet" },
 		fmt(
 			[[
 				#figure(
