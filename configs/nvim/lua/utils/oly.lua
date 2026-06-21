@@ -16,9 +16,9 @@ return {
 			local lines = vim.api.nvim_buf_get_lines(buf, first, last, false)
 
 			local valid_keywords = {
+				source = true,
 				title = true,
 				subtitle = true,
-				source = true,
 				topic = true,
 				tags = true,
 				url = true,
@@ -27,6 +27,7 @@ return {
 				author = true,
 				teacher = true,
 				difficulty = true,
+				language = true,
 			}
 			local priority = 130 -- needs to override lsp semantic tokens (priority 125)
 

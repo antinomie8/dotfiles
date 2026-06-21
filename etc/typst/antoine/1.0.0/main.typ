@@ -12,6 +12,21 @@
 	maketitle: true,
 	body,
 ) = {
+	if (date != none) {
+		date = context {
+			let found = false
+			for (en, tr) in months.at(text.lang, default: months.at("en")) {
+				if (date.find(en) != none) {
+					found = true
+					show en: tr
+					date
+					break
+				}
+			}
+			if not found { date }
+		}
+	}
+
 	if type(author) == str { author = (author,) }
 	set document(title: title, author: author)
 	set page(
@@ -26,21 +41,8 @@
 					h(0.2em)
 					sym.dash.em
 					h(0.2em)
-					// date
-					context {
-						let found = false
-						for (en, tr) in months.at(text.lang, default: months.at("en")) {
-							if (date.find(en) != none) {
-								found = true
-								show en: tr
-								text(style: "italic", date)
-								break
-							}
-						}
-						if not found {
-							text(style: "italic", date)
-						}
-					}
+					set text(style: "italic")
+					date
 				}
 				h(1fr)
 				text(weight: "bold", title)
