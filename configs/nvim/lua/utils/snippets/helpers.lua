@@ -18,6 +18,18 @@ function helpers.get_visual(_, parent)
 	end
 end
 
+function helpers.get_url()
+	local get_url = function()
+		local url_pattern = "^https?://[%w%p]+$"
+		local content = vim.fn.getreg("+", 1)
+		if content:match(url_pattern) then return content end
+		local content = vim.fn.getreg('"', 1)
+		if content:match(url_pattern) then return content end
+		return "https://"
+	end
+	return sn(nil, i(1, get_url()))
+end
+
 function helpers.in_node(node_type)
 	return make_cond(function()
 		local pos = vim.api.nvim_win_get_cursor(0)

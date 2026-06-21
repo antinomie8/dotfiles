@@ -58,6 +58,9 @@ local function recover(bufnr, path)
 	if parser then
 		parser:invalidate(true)
 	end
+
+	-- delete swapfile
+	vim.uv.fs_unlink(path)
 end
 
 local function pick_swapfile(bufnr, file, swapname)

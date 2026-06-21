@@ -2,6 +2,7 @@ local ls = require("utils.snippets.luasnip")
 local s, t, i, d = ls.s, ls.t, ls.i, ls.d
 local helpers = require("utils.snippets.helpers")
 local get_visual = helpers.get_visual
+local get_url = helpers.get_url
 
 return {
 	s(
@@ -9,12 +10,13 @@ return {
 			trig = "lnk",
 			dscr = "link",
 			snippetType = "autosnippet",
+			condition = helpers.not_in_string_comment,
 		},
 		{
 			t("["),
 			d(2, get_visual),
 			t("]("),
-			i(1, "https://"),
+			d(1, get_url),
 			t(")"),
 		}
 	),

@@ -227,10 +227,44 @@ return {
 			i(2),
 		})
 	),
-	s({ trig = "([a-zA-Z])bar", dscr = "bar", regTrig = true, snippetType = "autosnippet" },
+	s({
+			trig = "([%a%)%]%}])(%d)",
+			dscr = "integer index",
+			regTrig = true,
+			wordTrig = false,
+			snippetType = "autosnippet",
+			condition = typst.in_math,
+		},
+		{
+			f(function(_, snip) return snip.captures[1] end),
+			f(function(_, snip) return "_" .. snip.captures[2] end),
+		}
+	),
+	s({
+			trig = "([a-zA-Z])bar",
+			dscr = "bar",
+			regTrig = true,
+			snippetType = "autosnippet",
+			condition = typst.in_math,
+		},
 		{ t("bar("), f(function(_, snip) return snip.captures[1] end), t(")") }
 	),
-	s({ trig = "([a-zA-Z])hat", dscr = "hat", regTrig = true, snippetType = "autosnippet" },
+	s({
+			trig = "([a-zA-Z])hat",
+			dscr = "hat",
+			regTrig = true,
+			snippetType = "autosnippet",
+			condition = typst.in_math,
+		},
 		{ t("hat("), f(function(_, snip) return snip.captures[1] end), t(")") }
+	),
+	s({ trig = "inv", dscr = "hat", wordTrig = false, condition = typst.in_math },
+		t("^-1 ")
+	),
+	s({ trig = "df", snippetType = "autosnippet", condition = typst.in_math },
+		t("dif")
+	),
+	s({ trig = "upr", dscr = "upright text", snippetType = "autosnippet" },
+		{ t("upright(\""), i(1), t("\")") }
 	),
 }
