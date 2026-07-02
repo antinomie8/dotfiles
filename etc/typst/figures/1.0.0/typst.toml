@@ -2,5 +2,3 @@
 name = "figures"
 version = "1.0.0"
 entrypoint = "lib.typ"
-authors = ["Antoine Saez Dumas"]
-license = "MIT"

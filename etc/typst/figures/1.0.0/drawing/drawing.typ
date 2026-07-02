@@ -12,7 +12,7 @@
 	if dir != none {
 		let angle = if type(dir) == int or type(dir) == float {
 			calc.atan(dir * calc.pi / 180)
-		} else { calc.atan2(dir) }
+		} else { calc.atan2(..dir) }
 		args.content.anchor = 180deg + angle
 	}
 
@@ -36,7 +36,7 @@
 
 #let blob(name: none, ..args) = {
 	// @typstyle off
-	hobby(
+	cetz.draw.hobby(
 		(-4, 3), (-5, 1), (-4.7, 0), (-4.1, -2), (-4, -3),
 		(-1, -3.3), (1, -3.2), (4, -3), (4.3, -1),
 		(4.1, 0.5), (4, 3), (2, 3.3), (0, 3.1), (-3, 2.9),

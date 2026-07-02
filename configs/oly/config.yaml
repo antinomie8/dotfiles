@@ -1,8 +1,7 @@
-################################################################################
-# This is oly's configuration file.                                            #
-# Please edit the following values.                                            #
-# You must at least set author, base_path and pdf_viewer.                      #
-################################################################################
+#####################################
+# This is oly's configuration file. #
+# Please edit the following values. #
+#####################################
 
 # the author's name in the preview and generated pdfs
 author: Antoine Saez Dumas

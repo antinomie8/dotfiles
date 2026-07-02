@@ -16,6 +16,7 @@
 	canvas: true,
 	x-label: $x$,
 	y-label: $y$,
+	marks: (start: "triangle", end: "triangle"),
 	drawing,
 ) = {
 	let canvas-content = {
@@ -36,9 +37,9 @@
 		}
 
 		// Draw the axis lines and axis labels
-		line((-n, 0), (n, 0), mark: (start: "triangle", end: "triangle"))
+		line((-n, 0), (n, 0), mark: (marks))
 		content((), x-label, anchor: "north", padding: .5em)
-		line((0, -n), (0, n), mark: (start: "triangle", end: "triangle"))
+		line((0, -n), (0, n), mark: (marks))
 		content((), y-label, anchor: "east", padding: .5em)
 
 		// Draw the number steps on the axes
@@ -69,3 +70,17 @@
 /// - style (style): additional style arguments for cetz.set-style
 /// - drawing: the canvas content
 #let complex-plane = plane.with(x-label: math.op("Re"), y-label: math.op("Im"))
+
+#let trig-circle(drawing, ..overrides) = plane(
+	x-label: none,
+	y-label: none,
+	n: 1.4,
+	length: 2cm,
+	ticks: false,
+	marks: none,
+	..overrides,
+	{
+		cetz.draw.circle((0, 0), radius: 1)
+		drawing
+	},
+)

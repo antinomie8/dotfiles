@@ -1,7 +1,6 @@
 #import "src/definitions.typ": *
 #import "src/environments.typ": *
 #import "src/custom.typ": *
-#import "src/elem.typ"
 
 // main setup
 #let setup(
@@ -106,14 +105,14 @@
 	set enum(indent: 1em)
 	set list(indent: 1em)
 
-	// Allow math blocks to break across pages
-	show math.equation: set block(breakable: true)
+	show math.equation: set text(font: fonts.math)
+	show math.equation: set block(breakable: true) // Allow math blocks to break across pages
 
 	// package settings
 	show: thmrules.with(qed-symbol: $square$)
 
 	// title
-	show elem.title: it => {
+	show std.title: it => {
 		v(1em)
 		align(center, text(
 			size: 1em,
@@ -140,7 +139,7 @@
 		v(1.5em)
 	}
 	if (maketitle) {
-		elem.title()
+		std.title()
 	}
 
 	body

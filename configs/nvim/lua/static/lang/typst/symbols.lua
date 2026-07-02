@@ -5,6 +5,7 @@ local custom = {
 	["dots"]     = { cchar = "…", hl = "TypstConcealSymbol" },
 	["dots.c"]   = { cchar = "⋯", hl = "TypstConcealSymbol" },
 	["tilde"]    = { cchar = "∼", hl = "TypstConcealSymbol" },
+	["star"]     = { cchar = "⋆", hl = "TypstConcealSymbol" },
 	["limits"]   = { cchar = "",  hl = "TypstConcealSymbol" },
 	["space"]    = { cchar = "space", hl = "Comment" },
 	["quad"]     = { cchar = "quad", hl = "Comment" },
@@ -19,7 +20,9 @@ local custom = {
 	["sumsym"]   = { cchar = "∑ₛₘ", hl = "TypstConcealSymbol" },
 	["tensor"]   = { cchar = "⊗", hl = "TypstConcealSymbol" },
 	["setminus"] = { cchar = "∖", hl = "TypstConcealSymbol" },
-	["NNN"]      = { cchar = "ℕ", hl = "TypstConcealSet" },
+	["iRR"]      = { cchar = "iℝ", hl = "TypstConcealSet" },
+	["ZpZ"]      = { cchar = "ℤ/pℤ", hl = "TypstConcealSet" },
+	["ZnZ"]      = { cchar = "ℤ/nℤ", hl = "TypstConcealSet" },
 }
 
 return setmetatable(custom, {

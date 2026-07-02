@@ -23,7 +23,7 @@ local envs = {
 	"algorithm",
 }
 
-local abbrs = {
+local abbrevs = {
 	["theorem"] = "thm",
 	["lemma"] = "lem",
 	["corollary"] = "cor",
@@ -50,7 +50,7 @@ for _, env in ipairs(envs) do
 		}
 	))
 end
-for env, abbr in ipairs(abbrs) do
+for env, abbr in pairs(abbrevs) do
 	table.insert(snippets, s(
 		{
 			trig = "!" .. abbr,
@@ -59,7 +59,7 @@ for env, abbr in ipairs(abbrs) do
 			cond = line_begin,
 		},
 		{
-			t({ "#" .. env .. "[", "", "\t" }),
+			t({ "#" .. env .. "[", "\t" }),
 			d(1, get_visual),
 			t({ "", "]" }),
 		}

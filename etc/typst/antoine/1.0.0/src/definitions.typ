@@ -2,6 +2,7 @@
 	text: ("New Computer Modern", "Noto Color Emoji"),
 	sans: ("Noto Sans", "Noto Color Emoji"),
 	mono: ("JetBrainsMono NF", "DejaVu Sans Mono"),
+	math: ("New Computer Modern Math", "Noto Color Emoji"),
 )
 
 #let colors = (

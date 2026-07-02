@@ -3,10 +3,12 @@ local function setup()
 		local cwd = cx.active.current.cwd
 		local home = os.getenv("HOME") .. "/"
 		local data_home = (os.getenv("XDG_DATA_HOME") .. "/") or (home .. ".local/share/")
+		local state_home = (os.getenv("XDG_STATE_HOME") .. "/") or (home .. ".local/state/")
 		local dirs = {
 			home .. "Downloads",
 			home .. "Téléchargements",
 			data_home .. "Trash/files",
+			state_home .. "nvim/swap",
 			home .. "Médias",
 		}
 		local disable = {

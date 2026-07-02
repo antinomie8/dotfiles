@@ -127,6 +127,8 @@ return {
 					".git/*",
 					"build/**/_deps",
 					"CMakeFiles",
+					"target/**/deps",
+					"target/**/build",
 				}
 				local cmd = { "fd", "--no-ignore", "--type", "x" }
 				for _, pattern in pairs(exclude) do
@@ -196,6 +198,13 @@ return {
 					end
 				end,
 			},
+			{
+				name = "Attach to running process",
+				type = "codelldb",
+				request = "attach",
+				pid = require("dap.utils").pick_process,
+				cwd = "${workspaceFolder}",
+			},
 		}
 
 		dap.configurations.c = dap.configurations.cpp
@@ -206,10 +215,12 @@ return {
 			local pattern
 			if vim.tbl_contains({ "c", "cpp" }, vim.bo.filetype) then
 				if vim.api.nvim_buf_get_name(0):match("Codeforces") then
-					pattern = "^[%w_]*%s+solve%s*%("
+					pattern = "^void*%s+solve%s*%("
 				else
-					pattern = "^[%w_]*%s+main%s*%("
+					pattern = "^[%w_]*%s+main%s*%(" -- can be signed or int
 				end
+			elseif vim.bo.filetype == "rust" then
+				pattern = "^fn%s+main%s*%("
 			end
 			if pattern then
 				for lnum = 1, vim.fn.line("$") do

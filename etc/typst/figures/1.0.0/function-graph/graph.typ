@@ -7,7 +7,7 @@
 #let graph(
 	preset: "default",
 	length: 1cm,
-	scale: 1,
+	scale: auto,
 	axes: (:),
 	style: (:),
 	canvas: true,
@@ -47,6 +47,12 @@
 		let preset = presets.at(preset)
 		let get = key => args.at(key, default: preset.at(key))
 
+		let scale = if scale == auto { 1cm / length } else { scale }
+		let x-max = get("x-max") * scale
+		let x-min = get("x-min") * scale
+		let y-max = get("y-max") * scale
+		let y-min = get("y-min") * scale
+
 		let axis = preset.at("axis")
 		let mark = axis.at("mark")
 		let shared-zero = get("x-tick-step") != none and get("y-tick-step") != none
@@ -57,16 +63,27 @@
 				shared-zero: shared-zero,
 				stroke: .05em,
 				..axis,
+				x-max: x-max,
+				x-min: x-min,
+				y-max: y-max,
+				y-min: y-min,
 			),
 			..style,
 		)
 		cetz.draw.set-style(axes: axes)
 
-		let size = (scale * (get("x-max") - get("x-min")), scale * (get("y-max") - get("y-min")))
+		let size = (
+			scale * (get("x-max") - get("x-min")),
+			scale * (get("y-max") - get("y-min")),
+		)
 		cetz-plot.plot.plot(
 			size: size,
 			..preset,
 			..args,
+			x-max: x-max,
+			x-min: x-min,
+			y-max: y-max,
+			y-min: y-min,
 		)
 	}
 

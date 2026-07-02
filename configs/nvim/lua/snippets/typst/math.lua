@@ -6,7 +6,7 @@ local get_visual = helpers.get_visual
 local typst = {}
 typst.in_math = helpers.in_node("math")
 
-return {
+local snippets = {
 	s(
 		{
 			trig = "sm",
@@ -96,8 +96,9 @@ return {
 	),
 	s(
 		{
-			trig = "sq",
+			trig = "rr",
 			dscr = "square root",
+			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
 		fmt(
@@ -268,3 +269,27 @@ return {
 		{ t("upright(\""), i(1), t("\")") }
 	),
 }
+
+local sets = {
+	["R+*"] = "RR_+^*",
+	["RR*"] = "RR^+",
+	["NN*"] = "NN^*",
+	["ZZ+"] = "ZZ_+",
+	["QQ+"] = "ZZ_+",
+	["RR+"] = "RR_+",
+}
+
+for trigger, replace in pairs(sets) do
+	table.insert(snippets,
+		s({
+				trig = trigger,
+				dscr = trigger,
+				wordTrig = false,
+				snippetType = "autosnippet",
+			},
+			t(replace)
+		)
+	)
+end
+
+return snippets

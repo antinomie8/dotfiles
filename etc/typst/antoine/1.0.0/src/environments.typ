@@ -1,6 +1,5 @@
 #import "definitions.typ": *
 #import "theorems.typ": *
-#import "elem.typ"
 
 // environments
 #let callout(
@@ -159,11 +158,11 @@
 					if number != none { " " + number }
 					if type(name) == str or type(name) == content {
 						if type(name) == str and name.starts-with(regex("https?://")) {
-							name = elem.link(name, text(fill: white, name))
+							name = std.link(name, text(fill: white, name))
 						}
 						" (" + name + ")"
 					}
-					if link != none { " " + elem.link(link, "🔗") }
+					if link != none { " " + std.link(link, "🔗") }
 				},
 				body,
 			)

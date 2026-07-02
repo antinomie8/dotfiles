@@ -188,7 +188,7 @@ end, { desc = "Screen: Toggle animations and idle inhibitor" })
 -- Window --
 ------------
 -- Mouse
-hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true, desc = "Window: Move" })
+hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true --[[, desc = "Window: Move"]] })
 hl.bind("SUPER + mouse:274", hl.dsp.window.drag(), { mouse = true })
 hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true, desc = "Window: Resize" })
 
@@ -310,15 +310,6 @@ hl.bind("SUPER + ALT + SHIFT + CTRL + kp_delete", ws_group.move(-1, true),
 
 hl.bind("SUPER + N", hl.dsp.focus({ workspace = "emptynm" }), { desc = "Workspace: Next empty workspace" })
 
--------------
--- Session --
--------------
-hl.bind("SUPER + ALT + L", hl.dsp.exec_cmd("loginctl lock-session"), { desc = "Session: Lock" })
-hl.bind("SUPER + SHIFT + L", hl.dsp.exec_cmd("systemctl suspend || loginctl suspend"),
-	{ locked = true, desc = "Session: Sleep" })
-hl.bind("CTRL + SHIFT + ALT + SUPER + Delete", hl.dsp.exec_cmd("systemctl poweroff || loginctl poweroff"),
-	{ desc = "Session: Shut down" })
-
 ----------
 -- Apps --
 ----------
@@ -345,3 +336,12 @@ hl.define_submap("passthrough", function()
 end)
 
 hl.bind("SUPER + Left", hl.dsp.window.move({ direction = "l" }))
+
+-------------
+-- Session --
+-------------
+hl.bind("SUPER + ALT + L", hl.dsp.exec_cmd("loginctl lock-session"), { desc = "Session: Lock" })
+hl.bind("SUPER + SHIFT + L", hl.dsp.exec_cmd("systemctl suspend || loginctl suspend"),
+	{ locked = true, desc = "Session: Sleep" })
+hl.bind("CTRL + SHIFT + ALT + SUPER + Delete", hl.dsp.exec_cmd("systemctl poweroff || loginctl poweroff"),
+	{ desc = "Session: Shut down" })

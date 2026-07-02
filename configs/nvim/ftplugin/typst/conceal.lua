@@ -279,11 +279,12 @@ local function conceal_math(first, last)
 			conceal_at_positions(child_sr, child_sc, child_er, child_ec, repl.left, "TypstConcealSurround")
 			conceal_at_positions(er, ec - 1, er, ec, repl.right, "TypstConcealSurround")
 		elseif repl then
+			if sibling:has_error() then return end -- in case of unclosed delimiter causing the whole document to get in the node
 			local string_node = sibling:named_child(0)
-			if string_node and string_node:type() == "string" then
+			if string_node and (string_node:type() == "string" or string_node:type() == "letter") then
 				local text = vim.treesitter.get_node_text(string_node, buf)
 				local concealed = ""
-				for i = 2, #text - 1 do
+				for i = 1, #text do
 					local char = text:sub(i, i)
 					concealed = concealed .. (repl[char] or char)
 				end

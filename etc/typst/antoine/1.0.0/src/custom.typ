@@ -18,7 +18,9 @@
 
 #let sumcyc = $sum_("cyc")$
 #let sumsym = $sum_("sym")$
-#let NNN = $NN^*$
+#let iRR = $i RR$
+#let ZpZ = $ZZ \/ p ZZ$
+#let ZnZ = $ZZ \/ n ZZ$
 
 #let ord = math.op("ord")
 #let pgcd = math.op("pgcd")

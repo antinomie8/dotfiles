@@ -39,6 +39,7 @@ return {
 					"qmlls",
 					"ty",
 					"yamlls",
+					"zls",
 				}
 				for _, server in ipairs(servers) do
 					vim.lsp.enable(server)
