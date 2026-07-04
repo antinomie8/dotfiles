@@ -16,11 +16,11 @@
 		// Design of lines
 		stroke: (thickness: 0.4pt, cap: "round"),
 		// // Design of angles
-		// angle: (
-		// 	radius: 0.6 * scaling-factor,
-		// 	label-radius: .39 * scaling-factor,
-		// 	label: none,
-		// ),
+		angle: (
+			radius: 0.6 * scaling-factor,
+			label-radius: .39 * scaling-factor,
+			label: none,
+		),
 		// Design of all text elements with an anchor
 		content: (padding: 0.1 * scaling-factor),
 	)

@@ -1,0 +1,8 @@
+[Unit]
+Description=Time Guard
+
+[Service]
+ExecStart=%h/.local/bin/free guard
+
+[Install]
+WantedBy=default.target

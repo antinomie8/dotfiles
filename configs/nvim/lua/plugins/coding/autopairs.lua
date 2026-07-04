@@ -29,7 +29,7 @@ return {
 
 			local typst = {}
 			typst.in_text = function(fn, obj, pair)
-				if in_node("math", "raw_span", "raw_blck", "string", "comment", "ERROR")(fn, obj, pair) then
+				if in_node("math", "raw_span", "raw_blck", "string", "comment", "label", "ERROR")(fn, obj, pair) then
 					return false
 				end
 				-- needs col - 2 instead of col - 1 else #let a| is not in code so

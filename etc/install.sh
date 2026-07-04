@@ -89,12 +89,12 @@ done
 
 if program systemctl; then
 	for file in systemd/user/*; do
-		if [[ ! -f "$file" ]]; then
-			copy "$file" ~/.config/systemd/user
-			echo "enabling $(basename "$file") systemd user unit"
-			systemctl --user enable "$file"
-		else
-			copy "$file" ~/.config/systemd/user
+		copy "$file" ~/.config/systemd/user
+		if [[ "$file" = *.timer || ("$file" =~ ^(.*)\.service$ && ! -f "${BASH_REMATCH[1]}.timer") ]]; then
+			if [[ $(systemctl --user is-active "$(basename "$file")") == 'inactive' ]]; then
+				echo "enabling $(basename "$file") systemd user unit"
+				systemctl --user enable --now "$file"
+			fi
 		fi
 	done
 fi

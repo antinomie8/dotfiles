@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+START_HOUR=23
+END_HOUR=5
+SLEEP_DELAY=30
+
+while true; do
+	CURRENT_HOUR=$(date +%H)
+
+	if [[ $CURRENT_HOUR -ge $START_HOUR ]] || [[ $CURRENT_HOUR -lt $END_HOUR ]]; then
+		notify-send -u critical "Bedtime" "Going to sleep in $SLEEP_DELAY seconds"
+		sleep 30
+		busctl call org.freedesktop.login1 /org/freedesktop/login1 org.freedesktop.login1.Manager Suspend b true
+	else
+		break
+	fi
+done

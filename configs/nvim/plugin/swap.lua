@@ -155,6 +155,9 @@ local function pick_swapfile(bufnr, file, swapname)
 			confirm = function(picker, item)
 				picker:close()
 				recover(bufnr, item.path)
+				for _, swap in ipairs(find_swapfiles(swapname)) do
+					vim.uv.fs_unlink(swap)
+				end
 			end,
 			delete = function(picker, item)
 				vim.uv.fs_unlink(item.path)

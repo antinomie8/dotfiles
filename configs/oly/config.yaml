@@ -60,7 +60,7 @@ contest_format_prefix:
 # customize the colors used by the show command
 # see there for the full list of options:
 # https://github.com/antinomie8/oly/tree/main/include/oly/config.hpp#L55-L86
-# you can generate a colorscheme from a (Neo)Vim one using 
+# you can generate a colorscheme from a (Neo)Vim one using
 # https://github.com/antinomie8/oly/blob/main/assets/extras/get_nvim_colors.lua
 colorscheme:
   constant: "#7e9cd8"
@@ -68,11 +68,11 @@ colorscheme:
 
 # where to output the generated pdf
 # defaults to ${XDG_CACHE_HOME:-~/.cache}/oly
-# output_directory: ${PWD}
+output_directory: ${XDG_CACHE_HOME}/oly/gen
 
 # where temporary files are written
 # defaults to ${TMPDIR:-/tmp}/oly
-# tmpdir: ${XDG_CACHE_HOME}/oly/edit
+tmpdir: ${XDG_CACHE_HOME}/oly/edit
 
 #packages to import
 packages:

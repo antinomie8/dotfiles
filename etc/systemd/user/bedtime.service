@@ -1,0 +1,7 @@
+[Unit]
+Description=Bedtime Enforcer Daemon
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/bedtime
+Restart=no

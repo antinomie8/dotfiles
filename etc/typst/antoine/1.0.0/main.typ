@@ -8,7 +8,7 @@
 	subtitle: none,
 	author: (),
 	date: none,
-	maketitle: true,
+	maketitle: false,
 	body,
 ) = {
 	if (date != none) {
@@ -108,8 +108,8 @@
 	show math.equation: set text(font: fonts.math)
 	show math.equation: set block(breakable: true) // Allow math blocks to break across pages
 
-	// package settings
-	show: thmrules.with(qed-symbol: $square$)
+	// packages
+	show: thmrules
 
 	// title
 	show std.title: it => {

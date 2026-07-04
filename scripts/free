@@ -1,0 +1,155 @@
+#!/usr/bin/env zsh
+
+set -e
+
+NAME="free"
+DIR="${XDG_DATA_HOME:-$HOME/.local/share}/$NAME"
+FILE="$DIR/unlock_at"
+
+mkdir -p $DIR
+
+cmd=$1
+shift
+
+function now() {
+	date +%s
+}
+
+function human_time() {
+	date -d @$1
+}
+
+function status() {
+	if [[ ! -f $FILE ]]; then
+		echo "Status: unlocked"
+		exit 0
+	fi
+
+	ts=$(<$FILE)
+	[[ $ts =~ '^[0-9]+$' ]] || {
+		echo "[focus] Invalid state file, removing"
+		rm -f $FILE
+		exit 0
+	}
+	now_ts=$(now)
+
+	if ((now_ts >= ts)); then
+		echo "Status: expired (can unlock)"
+	else
+		remain=$((ts - now_ts))
+		echo "Status: locked"
+		echo "Unlock at: $(human_time $ts)"
+		printf "Remaining: %02dh %02dm\n" $((remain / 3600)) $((remain % 3600 / 60))
+	fi
+}
+
+function guard() {
+	[[ -f $FILE ]] || exit 0
+
+	ts=$(cat $FILE)
+	now_ts=$(now)
+
+	if ((now_ts < ts)); then
+		remain=$((ts - now_ts))
+
+		echo "[focus] Locked for $((remain / 60)) more minutes"
+
+		command -v notify-send >/dev/null &&
+			notify-send $NAME "Locked for $((remain / 60)) min"
+
+		sleep 5
+		systemctl poweroff
+	fi
+}
+
+function parse_duration() {
+	local input="$1"
+
+	# Normalize "now+24h" or "now + 24 hours"
+	input="${input//now+/now + }"
+
+	# If it's already a relative expression, handle it
+	if [[ "$input" == now* ]]; then
+		date -d "$input" +%s 2>/dev/null || true
+		return
+	fi
+
+	# Handle shorthand like 24h, 90m
+	if [[ "$input" =~ ^([0-9]+)([hm])$ ]]; then
+		local value="${match[1]}"
+		local unit="${match[2]}"
+
+		if [[ "$unit" == "h" ]]; then
+			date -d "+$value hours" +%s
+		else
+			date -d "+$value minutes" +%s
+		fi
+		return
+	fi
+
+	# Fallback: pass through to date
+	date -d "$input" +%s 2>/dev/null || true
+}
+
+function lock() {
+	if [[ -z $* ]]; then
+		echo "Usage: focus lock <duration>"
+		echo "Examples:"
+		echo "  focus lock 24h"
+		echo "  focus lock now+24h"
+		echo "  focus lock tomorrow 09:00"
+		exit 1
+	fi
+
+	local input="$*"
+	local ts
+	ts=$(parse_duration "$input")
+
+	if [[ -z $ts ]]; then
+		echo "❌ Invalid duration: $input"
+		exit 1
+	fi
+
+	local human
+	human=$(date -d "@$ts")
+
+	echo "🔒 Lock until: $human"
+	echo -n "Confirm? (y/N): "
+	read -r confirm
+
+	if [[ $confirm != "y" && $confirm != "Y" ]]; then
+		echo "Cancelled."
+		exit 0
+	fi
+
+	echo "$ts" >|"$FILE"
+
+	echo "✔ Locked successfully"
+
+	guard
+}
+
+function unlock() {
+	if [[ ! -f "$FILE" ]]; then
+		echo "Already unlocked"
+		exit 0
+	fi
+
+	rm -f "$FILE"
+	echo "🔓 Unlocked"
+}
+
+case $cmd in
+	lock) lock $@ ;;
+	unlock) unlock $@ ;;
+	status) status $@ ;;
+	guard) guard $@ ;;
+	*)
+		echo "Usage:"
+		echo "  $NAME lock <duration>"
+		echo "  $NAME unlock"
+		echo "  $NAME status"
+		echo "  $NAME guard"
+		exit 1
+		;;
+esac

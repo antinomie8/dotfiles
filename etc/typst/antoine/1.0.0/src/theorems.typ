@@ -158,16 +158,41 @@
 )
 
 
-// Track whether the qed symbol has already been placed in a proof
-#let thm-qed-done = state("thm-qed-done", false)
+// Track whether the qed symbol has already been placed, for each
+// currently open proof. This is a stack: one boolean per open proof
+// environment, with the last entry corresponding to the innermost
+// (currently active) proof. A stack is needed rather than a single
+// shared flag, since otherwise a nested proof finishing (and setting
+// the flag to true) would incorrectly mark the enclosing proof(s) as
+// already having shown their qed symbol too.
+#let thm-qed-stack = state("thm-qed-stack", ())
 
-// The configured QED symbol
-#let thm-qed-symbol = state("thm-qed-symbol", $qed$)
+// The configured QED symbol for a top-level (outermost) proof
+#let thm-qed-symbol = state("thm-qed-symbol", $square$)
 
-// Show the qed symbol, update state
+// The configured QED symbol for a nested proof, i.e. one that appears
+// inside the body of another, still-open proof
+#let thm-qed-symbol-nested = state("thm-qed-symbol-nested", $square.filled$)
+
+// Show the qed symbol for the innermost currently-open proof, and mark
+// it as done. Uses the nested symbol iff more than one proof is
+// currently open (i.e. this qed belongs to a nested proof).
 #let thm-qed-show = {
-	thm-qed-done.update(true)
-	context [#thm-qed-symbol.get()]
+	thm-qed-stack.update(stack => {
+		if stack.len() == 0 {
+			stack
+		} else {
+			stack.slice(0, -1) + (true,)
+		}
+	})
+	context {
+		let stack = thm-qed-stack.get()
+		if stack.len() > 1 {
+			thm-qed-symbol-nested.get()
+		} else {
+			thm-qed-symbol.get()
+		}
+	}
 }
 
 // If placed in a block equation/enum/list, place a qed symbol to its right
@@ -201,14 +226,22 @@
 
 // bodyfmt for proofs
 #let proof-bodyfmt(body) = {
-	thm-qed-done.update(false)
+	thm-qed-stack.update(stack => stack + (false,))
 	body
 	context {
-		if thm-qed-done.at(here()) == false {
+		let stack = thm-qed-stack.get()
+		if stack.len() > 0 and stack.last() == false {
 			h(1fr)
 			thm-qed-show
 		}
 	}
+	thm-qed-stack.update(stack => {
+		if stack.len() == 0 {
+			stack
+		} else {
+			stack.slice(0, -1)
+		}
+	})
 }
 
 #let thmproof(..args) = thmplain(
@@ -219,7 +252,11 @@
 ).with(numbering: none)
 
 
-#let thmrules(qed-symbol: $qed$, doc) = {
+#let thmrules(
+	qed-symbol: $square$,
+	nested-qed-symbol: $square.filled$,
+	doc,
+) = {
 	show figure.where(kind: "thmenv"): set block(breakable: true)
 	show figure.where(kind: "thmenv"): set align(start)
 	show figure.where(kind: "thmenv"): it => it.body
@@ -257,7 +294,8 @@
 	}
 
 	show math.equation.where(block: true): eq => {
-		if thm-has-qedhere(eq) and thm-qed-done.at(eq.location()) == false {
+		let stack = thm-qed-stack.at(eq.location())
+		if thm-has-qedhere(eq) and stack.len() > 0 and stack.last() == false {
 			grid(
 				columns: (1fr, auto, 1fr),
 				[], eq, align(right + horizon)[#thm-qed-show],
@@ -284,6 +322,7 @@
 	}
 
 	thm-qed-symbol.update(qed-symbol)
+	thm-qed-symbol-nested.update(nested-qed-symbol)
 
 	doc
 }

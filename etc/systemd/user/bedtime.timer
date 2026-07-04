@@ -1,0 +1,9 @@
+[Unit]
+Description=Trigger Bedtime Enforcer at night
+
+[Timer]
+OnCalendar=*-*-* 23:00:00
+Persistent=false
+
+[Install]
+WantedBy=timers.target
