@@ -3,7 +3,7 @@ local s, t = ls.s, ls.t
 local helpers = require("utils.snippets.helpers")
 
 local typst = {}
-typst.in_math = helpers.in_node("math")
+typst.in_math = helpers.in_node("math", { "string" })
 typst.in_text = function() return not helpers.in_node("math")() end
 
 

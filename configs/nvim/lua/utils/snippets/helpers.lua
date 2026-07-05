@@ -30,12 +30,12 @@ function helpers.get_url()
 	return sn(nil, i(1, get_url()))
 end
 
-function helpers.in_node(node_type)
+function helpers.in_node(node_type, exclude)
 	return make_cond(function()
 		local pos = vim.api.nvim_win_get_cursor(0)
-		local row, col = pos[1] - 1, pos[2] - 1
+		local row, col = pos[1] - 1, pos[2] - 0
 		local node = vim.treesitter.get_node({ pos = { row, col } })
-		return require("utils.treesitter").has_ancestor(node, node_type)
+		return require("utils.treesitter").has_ancestor(node, node_type, exclude or {})
 	end)
 end
 

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -uo pipefail
+
 # colors
 ERROR='\e[38;5;196m'
 WARNING='\e[38;5;226m'
@@ -13,6 +15,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 cd "$SCRIPT_DIR" || exit 1
 
 # parse arguments
+OVERWRITE="${OVERWRITE:-}"
 while [[ $# -ge 1 ]]; do
 	if [[ "$1" == "--overwrite" || "$1" == "-o" ]]; then
 		OVERWRITE=1
@@ -58,6 +61,7 @@ if program pacman; then
 		echo -en "${BLUE}Do you want to install the Yet Another Yogurt AUR helper (y/n) ? ${COLOR_RESET}"
 		if get_answer; then
 			sudo pacman -S --needed git base-devel binutils fakeroot debugedit
+			rm -rf /tmp/yay
 			git clone https://aur.archlinux.org/yay.git /tmp/yay
 			if cd /tmp/yay; then
 				makepkg -si
@@ -73,7 +77,7 @@ if program pacman; then
 	if program yay; then
 		package_manager="yay"
 		packages+=("cppman" "cpulimit" "dbg-macro" "hyprtime" "runapp" "thundery"
-			"xdg-desktop-portal-termfilechooser-hunkyburrito-git" "elan")           # misc
+			"xdg-desktop-portal-termfilechooser-hunkyburrito-git" "elan")            # misc
 		packages+=("zsh-abbr" "zsh-patina-git")                                   # shell
 		packages+=("otf-new-computer-modern" "ttf-juliamono" "otf-garamond-math") # fonts
 		packages+=("codelldb-bin" "texlab" "tex-fmt" "asm-lsp" "typstyle")        # Neovim
@@ -90,23 +94,12 @@ if program pacman; then
 				packages+=("texlive" "texlive-langfrench")
 			fi
 		fi
-		$package_manager -S --needed --noconfirm "${packages[@]}"
+		sudo pacman -S --needed --noconfirm "${packages[@]}"
 	else
 		echo -e "${GREEN}Make sure the following packages are installed :${COLOR_RESET}"
 		echo -e "${WHITE}${packages[*]}${COLOR_RESET}"
 	fi
-
-	# install, enable and start paccache
-	if ! systemctl status paccache.timer >/dev/null 2>&1; then
-		echo -en "${BLUE}Would you like to use paccache to automatically clean up the package cache ? (y/n) ${COLOR_RESET}"
-		if get_answer; then
-			program paccache || sudo pacman -S pacman-contrib
-			[[ -f /etc/systemd/system/paccache.timer ]] || cat <./etc/paccache.timer >/etc/systemd/system/paccache.timer
-			sudo systemctl enable paccache.timer
-			sudo systemctl start paccache.timer
-		fi
-	fi
-elif [[ -n $TERMUX_VERSION ]]; then
+elif [[ -n ${TERMUX_VERSION:-} ]]; then
 	echo -en "${BLUE}It appears you are running Termux. Do you want to run ${GREEN}./etc/Termux/termux.sh${BLUE} ? (y/n) ${COLOR_RESET}"
 	if get_answer; then
 		echo
@@ -132,9 +125,9 @@ echo
 function add_line() {
 	local line="$1"
 	local dest="$2"
-	[[ -n $TERMUX_VERSION ]] && dest="$PREFIX$dest"
+	[[ -n ${TERMUX_VERSION:-} ]] && dest="${PREFIX:-}$dest"
 	if [[ -f "$dest" ]]; then
-		if ! grep --silent "$line" "$dest"; then
+		if ! grep --silent "^$line$" "$dest"; then
 			echo "$line" | sudo tee -a "$dest" >/dev/null
 		fi
 	else
@@ -157,7 +150,7 @@ if [[ ! "$SHELL" = */zsh ]]; then
 	if program zsh; then
 		echo -en "${BLUE}Do you want to make zsh your default shell ? (y/n) ${COLOR_RESET}"
 		if get_answer; then
-			chsh --shell "$(which zsh)"
+			chsh --shell "$(command -v zsh)"
 		fi
 	else
 		echo -e "${WHITE}Install zsh and make it your default shell :"
@@ -168,14 +161,14 @@ if [[ ! "$SHELL" = */zsh ]]; then
 fi
 
 # check the user has a home directory
-if [[ -z "$HOME" ]]; then
-	echo "${ERROR}Looks like you don't have a home directory. Create one ? (y/n) ${COLOR_RESET}"
+if [[ -z "${HOME:-}" ]]; then
+	echo -en "${ERROR}Looks like you don't have a home directory. Create one ? (y/n) ${COLOR_RESET}"
 	if get_answer && program mkhomedir_helper; then
 		sudo mkhomedir_helper "$USER"
 	else
-		echo "${ERROR}Aborting...${COLOR_RESET}"
+		-e echo "${ERROR}Aborting...${COLOR_RESET}"
 	fi
-	[[ -z "$HOME" ]] && exit 1
+	[[ -z "${HOME:-}" ]] && exit 1
 fi
 
 # copy scripts to ~/.local/bin
@@ -316,14 +309,15 @@ if [[ ! -d ~/.local/share/gnupg ]]; then
 fi
 
 # create python history dir
-if [[ -n "$PYTHON_HISTORY" && ! -d "$(dirname "$PYTHON_HISTORY")" ]]; then
+if [[ -n "${PYTHON_HISTORY:-}" && ! -d "$(dirname "$PYTHON_HISTORY")" ]]; then
 	mkdir -p "$(dirname "$PYTHON_HISTORY")"
 fi
 
 # install zsh completions
+mkdir -p ~/.local/share/zsh/completions
 function completion() {
 	if program "$1"; then
-		$@ >~/.local/share/zsh/completions/_"$1"
+		"$@" >~/.local/share/zsh/completions/_"$1"
 	fi
 }
 completion zola completion zsh

@@ -1,0 +1,18 @@
+[package]
+name = "blackscreen"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# winit gives proper native borderless-fullscreen support
+winit = "0.29"
+# softbuffer blits a CPU pixel buffer to the window surface
+softbuffer = "0.4"
+
+# size/footprint optimizations for the release binary.
+[profile.release]
+opt-level = "z"       # optimize for size
+lto = true            # link-time optimization, dead-code elimination across crates
+codegen-units = 1     # better optimization at the cost of compile time
+panic = "abort"       # drop unwinding machinery
+strip = true          # strip symbols from the binary

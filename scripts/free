@@ -55,7 +55,7 @@ function guard() {
 		echo "[focus] Locked for $((remain / 60)) more minutes"
 
 		command -v notify-send >/dev/null &&
-			notify-send $NAME "Locked for $((remain / 60)) min"
+			notify-send -i lock $NAME "Locked for $((remain / 60)) min"
 
 		sleep 5
 		systemctl poweroff

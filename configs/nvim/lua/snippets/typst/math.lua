@@ -4,7 +4,7 @@ local helpers = require("utils.snippets.helpers")
 local get_visual = helpers.get_visual
 
 local typst = {}
-typst.in_math = helpers.in_node("math")
+typst.in_math = helpers.in_node("math", { "string" })
 
 local snippets = {
 	s(
@@ -137,6 +137,24 @@ local snippets = {
 	),
 	s(
 		{
+			trig = "sb ",
+			dscr = "subset",
+			snippetType = "autosnippet",
+			condition = typst.in_math,
+		},
+		t("subset.eq ")
+	),
+	s(
+		{
+			trig = "cm ",
+			dscr = "function composition",
+			snippetType = "autosnippet",
+			condition = typst.in_math,
+		},
+		t("compose ")
+	),
+	s(
+		{
 			trig = "²",
 			dscr = "square",
 			wordTrig = false,
@@ -259,8 +277,17 @@ local snippets = {
 		},
 		{ t("hat("), f(function(_, snip) return snip.captures[1] end), t(")") }
 	),
-	s({ trig = "inv", dscr = "hat", wordTrig = false, condition = typst.in_math },
-		t("^-1 ")
+	s({
+			trig = "([a-zA-Z])til",
+			dscr = "tilde",
+			regTrig = true,
+			snippetType = "autosnippet",
+			condition = typst.in_math,
+		},
+		{ t("tilde("), f(function(_, snip) return snip.captures[1] end), t(")") }
+	),
+	s({ trig = "iv", dscr = "inverse", wordTrig = false, snippetType = "autosnippet", condition = typst.in_math },
+		t("^(-1)")
 	),
 	s({ trig = "df", snippetType = "autosnippet", condition = typst.in_math },
 		t("dif")

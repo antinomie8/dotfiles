@@ -323,13 +323,13 @@ hl.bind("SUPER + T", hl.dsp.exec_cmd(vars.taskManager), { desc = "App: Task mana
 hl.define_submap("passthrough", function()
 	hl.bind("SUPER + ALT + F1", function()
 		local currentsubmap = hl.get_current_submap()
+		local notify = "notify-send -a 'Hyprland' -i hyprland "
 		if currentsubmap == "passthrough" then
-			hl.dispatch(hl.dsp.exec_cmd(
-				"notify-send 'Exited Passthrough submap' 'Keybinds re-enabled' -a 'Hyprland'"))
+			hl.dispatch(hl.dsp.exec_cmd(notify .. "'Exited Passthrough submap' 'Keybinds re-enabled'"))
 			hl.dispatch(hl.dsp.submap("reset"))
 		elseif currentsubmap == "" then
-			hl.dispatch(hl.dsp.exec_cmd(
-				"notify-send 'Entered Passthrough submap' 'Keybinds disabled. hit SUPER+ALT+F1 to escape' -a 'Hyprland'"))
+			hl.dispatch(hl.dsp.exec_cmd(notify ..
+				"'Entered Passthrough submap' 'Keybinds disabled. hit SUPER+ALT+F1 to escape'"))
 			hl.dispatch(hl.dsp.submap("passthrough"))
 		end
 	end, { submap_universal = true, desc = "Miscellaneous: Keymap passthrough submap" })
