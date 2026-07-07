@@ -194,3 +194,6 @@ hl.layer_rule({ match = { namespace = "quickshell:wTaskView" }, no_anim = true }
 
 -- Launchers need to be FAST
 hl.layer_rule({ match = { namespace = "gtk4-layer-shell" }, no_anim = true })
+
+-- Scrolling
+hl.window_rule({ match = { class = "^org.pwmt.zathura$" }, scroll_touchpad = 0.1 })

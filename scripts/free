@@ -110,11 +110,8 @@ function lock() {
 		exit 1
 	fi
 
-	local human
-	human=$(date -d "@$ts")
-
-	echo "🔒 Lock until: $human"
-	echo -n "Confirm? (y/N): "
+	echo "🔒 Lock until: $(human_time $ts)"
+	echo -n "Confirm? (y/n): "
 	read -r confirm
 
 	if [[ $confirm != "y" && $confirm != "Y" ]]; then

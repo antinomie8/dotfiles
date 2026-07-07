@@ -2,9 +2,7 @@ local ls = require("utils.snippets.luasnip")
 local s, t, i, d, f, fmt = ls.s, ls.t, ls.i, ls.d, ls.f, ls.fmt
 local helpers = require("utils.snippets.helpers")
 local get_visual = helpers.get_visual
-
-local typst = {}
-typst.in_math = helpers.in_node("math", { "string" })
+local typst = require("utils.snippets.typst_utils")
 
 local snippets = {
 	s(
@@ -155,16 +153,6 @@ local snippets = {
 	),
 	s(
 		{
-			trig = "²",
-			dscr = "square",
-			wordTrig = false,
-			snippetType = "autosnippet",
-			condition = typst.in_math,
-		},
-		t("^2")
-	),
-	s(
-		{
 			trig = "â",
 			dscr = "^a",
 			wordTrig = false,
@@ -286,7 +274,7 @@ local snippets = {
 		},
 		{ t("tilde("), f(function(_, snip) return snip.captures[1] end), t(")") }
 	),
-	s({ trig = "iv", dscr = "inverse", wordTrig = false, snippetType = "autosnippet", condition = typst.in_math },
+	s({ trig = "iv", dscr = "inverse", wordTrig = true, snippetType = "autosnippet", condition = typst.in_math },
 		t("^(-1)")
 	),
 	s({ trig = "df", snippetType = "autosnippet", condition = typst.in_math },
@@ -298,12 +286,14 @@ local snippets = {
 }
 
 local sets = {
-	["R+*"] = "RR_+^*",
-	["RR*"] = "RR^+",
 	["NN*"] = "NN^*",
 	["ZZ+"] = "ZZ_+",
-	["QQ+"] = "ZZ_+",
+	["ZZ*"] = "ZZ^*",
+	["QQ+"] = "QQ_+",
+	["QQ*"] = "QQ^*",
 	["RR+"] = "RR_+",
+	["RR*"] = "RR^*",
+	["R+*"] = "RR_+^*",
 }
 
 for trigger, replace in pairs(sets) do
@@ -315,6 +305,18 @@ for trigger, replace in pairs(sets) do
 				snippetType = "autosnippet",
 			},
 			t(replace)
+		)
+	)
+end
+
+for i, exp in ipairs({ "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹", "⁰" }) do
+	table.insert(snippets,
+		s({
+				trig = exp,
+				wordTrig = false,
+				snippetType = "autosnippet",
+			},
+			t("^" .. i % 10)
 		)
 	)
 end

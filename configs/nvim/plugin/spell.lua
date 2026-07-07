@@ -93,8 +93,10 @@ vim.api.nvim_create_autocmd("BufModifiedSet", {
 vim.api.nvim_create_autocmd("OptionSet", {
 	pattern = "spelllang",
 	callback = function()
+		local opt = vim.v.option_type == "local" and vim.opt_local or vim.opt_global
+
 		local spell_dir = vim.fn.stdpath("config") .. "/lua/static/spell"
-		local langs = vim.opt.spelllang:get()
+		local langs = opt.spelllang:get()
 
 		local add_files = {}
 		for _, lang in ipairs(langs) do
@@ -102,7 +104,9 @@ vim.api.nvim_create_autocmd("OptionSet", {
 			table.insert(add_files, filename)
 		end
 
-		vim.opt.spellfile = table.concat(add_files, ",")
+		vim.schedule(function()
+			opt.spellfile = table.concat(add_files, ",")
+		end) -- avoid errors when called during startup
 	end,
 })
 vim.opt.spelllang = "en,fr"
