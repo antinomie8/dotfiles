@@ -18,11 +18,15 @@
 		supplement: identifier,
 		base: base,
 		base_level: base_level,
+		cite: none,
 	) => {
 		let name = none
-		if args != none and args.pos().len() > 0 {
+		if args.pos().len() > 0 {
 			name = args.pos().first()
-			supplement = name
+			if cite == none {
+				cite = name
+			}
+			supplement = cite
 		}
 		if refnumbering == auto {
 			refnumbering = numbering
@@ -87,7 +91,7 @@
 				+ [#metadata(identifier) <meta:thmenvcounter>],
 			kind: "thmenv",
 			outlined: false,
-			caption: name,
+			caption: cite,
 			supplement: supplement,
 			numbering: refnumbering,
 		)
