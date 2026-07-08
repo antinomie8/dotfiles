@@ -279,11 +279,12 @@ PanelWindow {
         const screenshotDir = Config.options.screenSnip.savePath !== "" ? //
             Config.options.screenSnip.savePath : "";
         var screenshotAction = root.getScreenshotAction();
+        const isRecordAction = root.action === RegionSelection.SnipAction.Record || root.action === RegionSelection.SnipAction.RecordWithSound;
         const command = ScreenshotAction.getCommand(
-            root.regionX * root.monitorScale, //
-            root.regionY * root.monitorScale, //
-            root.regionWidth * root.monitorScale,// 
-            root.regionHeight * root.monitorScale, //
+            isRecordAction ? root.monitorOffsetX + root.regionX : root.regionX * root.monitorScale, //
+            isRecordAction ? root.monitorOffsetY + root.regionY : root.regionY * root.monitorScale, //
+            isRecordAction ? root.regionWidth : root.regionWidth * root.monitorScale,//
+            isRecordAction ? root.regionHeight : root.regionHeight * root.monitorScale, //
             root.screenshotPath, //
             screenshotAction, //
             screenshotDir

@@ -44,6 +44,22 @@ getactivemonitor() {
     hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .name'
 }
 
+wf_recorder_args() {
+    # Record in RGB instead of forcing yuv420p. The default/yuv path can make
+    # desktop captures look washed out; libx264rgb preserves the captured colors
+    # much more faithfully while still writing an mp4 file.
+    printf '%s\0' --codec libx264rgb
+}
+
+run_wf_recorder() {
+    local args=()
+    while IFS= read -r -d '' arg; do
+        args+=("$arg")
+    done < <(wf_recorder_args)
+
+    wf-recorder "${args[@]}" "$@"
+}
+
 mkdir -p "$RECORDING_DIR"
 cd "$RECORDING_DIR" || exit
 
@@ -76,9 +92,9 @@ else
     if [[ $FULLSCREEN_FLAG -eq 1 ]]; then
         notify-send "Starting recording" "$recording_file" -a 'Recorder' & disown
         if [[ $SOUND_FLAG -eq 1 ]]; then
-            wf-recorder -o "$(getactivemonitor)" --pixel-format yuv420p -f "./$recording_file" -t --audio="$(getaudiooutput)"
+            run_wf_recorder -o "$(getactivemonitor)" -f "./$recording_file" --audio="$(getaudiooutput)"
         else
-            wf-recorder -o "$(getactivemonitor)" --pixel-format yuv420p -f "./$recording_file" -t
+            run_wf_recorder -o "$(getactivemonitor)" -f "./$recording_file"
         fi
     else
         # If a manual region was provided via --region, use it; otherwise run slurp as before.
@@ -93,9 +109,9 @@ else
 
         notify-send "Starting recording" "$recording_file" -a 'Recorder' & disown
         if [[ $SOUND_FLAG -eq 1 ]]; then
-            wf-recorder --pixel-format yuv420p -f "./$recording_file" -t --geometry "$region" --audio="$(getaudiooutput)"
+            run_wf_recorder -f "./$recording_file" --geometry "$region" --audio="$(getaudiooutput)"
         else
-            wf-recorder --pixel-format yuv420p -f "./$recording_file" -t --geometry "$region"
+            run_wf_recorder -f "./$recording_file" --geometry "$region"
         fi
     fi
 fi
