@@ -39,7 +39,7 @@ local function time_ago(sec)
 end
 
 ---@param bufnr (integer) buffer number
----@param path (string) path to swapfile
+---@param path  (string)  path to swapfile
 local function recover(bufnr, path)
 	-- recover
 	if path then
@@ -111,11 +111,11 @@ local function pick_swapfile(bufnr, file, swapname)
 				"nvim",
 				"-u", "NONE",
 				"--headless",
-				"-n",      -- no swapfile,
-				"-r",      -- recover
+				"-n",                             -- no swapfile,
+				"-r",                             -- recover
 				string.format("+w! %s", tmpfile), -- write to a temporary file
-				"+q!",     -- quit after writing
-				item.path, -- swap file to recover
+				"+q!",                            -- quit after writing
+				item.path,                        -- swap file to recover
 			}
 
 			vim.system(cmd, function(obj)
@@ -124,30 +124,27 @@ local function pick_swapfile(bufnr, file, swapname)
 				end
 				-- if the file doesn't exist, diff will fail with an error, so use an empty file instead
 				local cmp = vim.uv.fs_stat(file) and file or "/dev/null"
-				vim.system(
-					{ "diff", "-u", cmp, tmpfile },
-					function(diff)
-						if diff.code ~= 0 and diff.stderr and #diff.stderr > 0 then
-							vim.notify(diff.stderr, vim.log.levels.ERROR, { title = "Swapfiles", icon = " " })
-						elseif not diff.stdout then
-							return
-						end
-
-						-- modify context lines
-						local lines = vim.split(diff.stdout, "\n")
-						if #lines >= 1 and cmp == "/dev/null" then
-							lines[1] = lines[1]:sub(1, 4) .. file .. lines[1]:sub(4 + #cmp + 1)
-						end
-						if #lines >= 2 then
-							lines[2] = lines[2]:sub(1, 4) .. item.text .. lines[2]:sub(4 + #tmpfile + 1)
-						end
-
-						vim.schedule(function()
-							pcall(ctx.preview.set_lines, ctx.preview, lines)
-							ctx.preview:highlight({ ft = "diff" })
-						end)
+				vim.system({ "diff", "-u", cmp, tmpfile }, function(diff)
+					if diff.code ~= 0 and diff.stderr and #diff.stderr > 0 then
+						vim.notify(diff.stderr, vim.log.levels.ERROR, { title = "Swapfiles", icon = " " })
+					elseif not diff.stdout then
+						return
 					end
-				)
+
+					-- modify context lines
+					local lines = vim.split(diff.stdout, "\n")
+					if #lines >= 1 and cmp == "/dev/null" then
+						lines[1] = lines[1]:sub(1, 4) .. file .. lines[1]:sub(4 + #cmp + 1)
+					end
+					if #lines >= 2 then
+						lines[2] = lines[2]:sub(1, 4) .. item.text .. lines[2]:sub(4 + #tmpfile + 1)
+					end
+
+					vim.schedule(function()
+						pcall(ctx.preview.set_lines, ctx.preview, lines)
+						ctx.preview:highlight({ ft = "diff" })
+					end)
+				end)
 			end)
 		end,
 
@@ -223,10 +220,7 @@ vim.api.nvim_create_autocmd("SwapExists", {
 		local iswin = 1 == vim.fn.has("win32")
 		if not (info.error or info.pid <= 0 or (not iswin and info.user ~= user)) then
 			vim.v.swapchoice = "e" -- Choose "(E)dit".
-			vim.notify(
-				("W325: Ignoring swapfile from Nvim process %d"):format(info.pid),
-				vim.log.levels.WARN
-			)
+			vim.notify(("W325: Ignoring swapfile from Nvim process %d"):format(info.pid), vim.log.levels.WARN)
 			return
 		end
 

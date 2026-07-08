@@ -303,7 +303,6 @@ hl.config({
 		preserve_split = true,
 		smart_split = false,
 		smart_resizing = false,
-		-- precise_mouse_move = true,
 		force_split = 2,
 		default_split_ratio = 2 * ratio,
 	},

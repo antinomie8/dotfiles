@@ -119,11 +119,10 @@ hl.bind("SUPER + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"), { desc = "Utiliti
 hl.bind("SUPER + SHIFT + R", hl.dsp.global("quickshell:regionRecord"),
 	{ locked = true, desc = "Utilities: Record region (no sound)" })
 hl.bind("SUPER + SHIFT + R", hl.dsp.exec_cmd(qsIsAlive .. " || " .. qsScripts .. "/videos/record.sh"), { locked = true })
-hl.bind("SUPER + ALT + R", hl.dsp.global("quickshell:regionRecord"), { locked = true })
-hl.bind("SUPER + ALT + R", hl.dsp.exec_cmd(qsIsAlive .. " || " .. qsScripts .. "/videos/record.sh"), { locked = true })
-hl.bind("CTRL + ALT + R", hl.dsp.exec_cmd(qsScripts .. "/videos/record.sh --fullscreen"), { locked = true })
-hl.bind("SUPER + SHIFT + ALT + R", hl.dsp.exec_cmd(qsScripts .. "/videos/record.sh --fullscreen --sound"),
-	{ locked = true, desc = "Utilities: Record screen (with sound)" })
+hl.bind("SUPER + ALT + R", hl.dsp.exec_cmd(qsScripts .. "/videos/record.sh --fullscreen"),
+	{ locked = true, desc = "Utilities: Record screen" })
+hl.bind("SUPER + CTRL + R", hl.dsp.exec_cmd(qsScripts .. "/videos/record.sh --fullscreen --sound"),
+	{ locked = true, desc = "Utilities: Record screen with sound" })
 -- Screenshot
 hl.bind("SUPER + SHIFT + S", hl.dsp.global("quickshell:regionScreenshot"), { desc = "Utilities: Screen snip" })
 hl.bind("SUPER + SHIFT + S",
@@ -198,7 +197,7 @@ for key, dir in pairs({ ["H"] = "Left", ["J"] = "Down", ["K"] = "Up", ["L"] = "R
 end
 -- SUPER + ←/↓/↑/→: Move in direction
 for _, key in ipairs({ "Left", "Down", "Up", "Right" }) do
-	hl.bind("SUPER + " .. key, hl.dsp.window.move({ direction = key:sub(1, 1):lower() }), { desc = "Window: Move " .. key })
+	hl.bind("SUPER + " .. key, hl.dsp.window.swap({ direction = key:sub(1, 1):lower() }), { desc = "Window: Move " .. key })
 end
 -- SUPER + SHIFT + ←/↓/↑/→: Resize in steps
 for key, dir in pairs({ ["Left"] = { -1, 0 }, ["Down"] = { 0, 1 }, ["Up"] = { 0, -1 }, ["Right"] = { 1, 0 } }) do

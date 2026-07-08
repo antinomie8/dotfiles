@@ -197,3 +197,5 @@ hl.layer_rule({ match = { namespace = "gtk4-layer-shell" }, no_anim = true })
 
 -- Scrolling
 hl.window_rule({ match = { class = "^org.pwmt.zathura$" }, scroll_touchpad = 0.1 })
+
+hl.window_rule({ match = { class = "firefox", title = "^[Maths]" }, workspace = 2 })

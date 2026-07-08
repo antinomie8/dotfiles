@@ -241,6 +241,11 @@ local function conceal_math(first, last)
 					end
 				end
 			end
+		elseif node:type() == "prime" then
+			local text = vim.treesitter.get_node_text(node, 0)
+			local primes = text:match("[^']*('+)")
+			local repl = primes and shorthands[primes] or nil
+			concealed = conceal_script(node:child(0), map) .. repl
 		elseif node:child_count() > 0 then
 			for child, field in node:iter_children() do
 				if field ~= "sub" and field ~= "sup" then

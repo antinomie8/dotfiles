@@ -7,15 +7,16 @@ return {
 		preview = {
 			browsing = {
 				args = {
+					"--data-plane-host=127.0.0.1:0",
+					"--control-plane-host=127.0.0.1:0",
 					"--no-open",
 				},
 			},
-			invertColors = { rest = "auto", image = "never" },
 		},
 	},
 	on_attach = function(client, bufnr)
 		vim.keymap.set("n", "<localleader>O", function()
-			require("utils.typst-preview").start_preview(client)
+			require("utils.typst_preview").start_preview(client)
 		end, { desc = "Typst Web Preview" })
 
 		local function notify(message, level)

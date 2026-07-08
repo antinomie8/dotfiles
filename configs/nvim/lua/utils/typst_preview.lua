@@ -30,6 +30,10 @@ local config = {
 local debounce_timer = nil
 local last_line
 
+local function error(msg, level)
+	vim.notify(msg, level or vim.log.levels.ERROR, { title = "Tinymist", icon = "" })
+end
+
 ---Synchronizes preview scroll position with Neovim cursor
 ---@param bufnr integer
 ---@param client vim.lsp.Client
@@ -60,7 +64,7 @@ function M.scroll_preview(bufnr, client)
 		},
 	}, { bufnr = bufnr }, function(err, result)
 		if err then
-			vim.notify("Tinymist preview error: " .. tostring(err.message), vim.log.levels.ERROR)
+			error("Preview error: " .. tostring(err.message))
 		end
 	end)
 end
@@ -108,7 +112,12 @@ function M.start_preview(client)
 	local bufnr = vim.api.nvim_get_current_buf()
 
 	if not client then
-		vim.notify("Tinymist LSP client is not active on this buffer.", vim.log.levels.ERROR)
+		error("Tinymist LSP client is not active on this buffer.")
+		return
+	end
+
+	if vim.b[bufnr].typst_preview_url then
+		config.open_cmd(vim.b[bufnr].typst_preview_url)
 		return
 	end
 
@@ -116,20 +125,21 @@ function M.start_preview(client)
 
 	client:exec_cmd({
 		title = "start browsing preview server",
-		command = "tinymist.startDefaultPreview",
+		command = "tinymist.doStartPreview",
 		arguments = { vim.v.null },
 	}, { bufnr = bufnr }, function(err, result)
 		if err then
-			vim.notify("Failed to start preview: " .. tostring(err.message), vim.log.levels.ERROR)
+			error("Failed to start preview: " .. tostring(err.message))
 			return
 		end
 
 		if not result or not result.staticServerAddr then
-			vim.notify("Tinymist did not return a valid server URL.", vim.log.levels.WARN)
+			error("Tinymist did not return a valid server URL.", vim.log.levels.WARN)
 			return
 		end
 
 		local url = "http://" .. result.staticServerAddr
+		vim.b[bufnr].typst_preview_url = url
 
 		config.open_cmd(url)
 
