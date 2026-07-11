@@ -4,31 +4,98 @@
   output (uinput-sink "kmonad")
   fallthrough true
   allow-cmd true
+
+  ;; Used by the Ctrl+<number-row key> capital-accent macros further down.
+  ;; This needs a matching `kb_options = compose:menu` in Hyprland's
+  ;; `input {}` block -- that's what makes KEY_COMPOSE (kmonad's `cmp`,
+  ;; the Menu/Application key) actually behave as a Compose key. Without
+  ;; that line the macros below won't produce accented capitals.
+  cmp-seq compose
+  cmp-seq-delay 5
 )
 
 ;; --- Physical keys we care about ---
 (defsrc
+  lctl
   a    s    d    f    g    h    j    k    l    ;
+  2    7    9    0
 )
 
 ;; --- Aliases ---
 (defalias
+  ;; The actual physical Ctrl key: no tap-hold needed (it's not a letter),
+  ;; just genuinely hold real lctl AND toggle the same ctrl-ext layer used
+  ;; by the `s` home-row mod below, for as long as it's held.
+  real_ctl (around lctl (layer-toggle ctrl-ext))
+
   ;; Left hand
   alt_a  (tap-hold-next-release 180 a lalt)
-  ctl_s  (tap-hold-next-release 180 s lctl)
+
+  ;; `s` still taps to "s" and still holds to Ctrl exactly like before.
+  ;; The only change is the hold-action: `(around lctl (layer-toggle
+  ;; ctrl-ext))` genuinely presses real lctl AND toggles the `ctrl-ext`
+  ;; layer for as long as `s` is held -- both at once. That's what lets
+  ;; the 4 number-row keys behave differently while this Ctrl is down,
+  ;; without having to redefine what Ctrl does for every other key on the
+  ;; keyboard: everything else just stays transparent in `ctrl-ext` and
+  ;; rides along on the real, still-held lctl.
+  ctl_s  (tap-hold-next-release 180 s (around lctl (layer-toggle ctrl-ext)))
+
   sft_d  (tap-hold-next-release 180 d lsft)
   met_f  (tap-hold-next-release 180 f lmet)
 
   ;; Right hand
   met_j  (tap-hold-next-release 180 j rmet)
   sft_k  (tap-hold-next-release 180 k rsft)
-  ctl_l  (tap-hold-next-release 180 l rctl)
+  ;; Same trick as `s` above: genuinely hold real lctl AND toggle the
+  ;; ctrl-ext layer. Deliberately uses lctl here too (not rctl) so that
+  ;; it's held with same real modifier the cap_* macros below know how to
+  ;; release/re-press -- there's no functional downside, since nothing
+  ;; distinguishes left vs right Control for ordinary shortcuts.
+  ctl_l  (tap-hold-next-release 180 l (around lctl (layer-toggle ctrl-ext)))
   alt_;  (tap-hold-next-release 180 ; lalt)
+
+  ;; --- hold left Ctrl (the `s` key, or the real Ctrl) + é/è/ç/à  ->  É/È/Ç/À
+  ;; Each of these: momentarily releases the *real* lctl (so the Compose
+  ;; sequence isn't seen by the OS as "Ctrl+something"), taps Compose plus
+  ;; the standard X11/XCompose recipe for the capital letter, then
+  ;; re-presses lctl so Ctrl carries on working normally for whatever you
+  ;; type next, as long as you're still physically holding the Ctrl key down.
+  ;;
+  ;; IMPORTANT: kmonad's key names are QWERTY-*position*-based, not based on
+  ;; what character actually comes out under the active (French AZERTY) OS
+  ;; layout. So every element of these sequences had to be chosen based on
+  ;; what physical key produces that character on AZERTY, not on what it's
+  ;; called on a US keyboard:
+  ;;   - apostrophe (') lives unshifted on the physical `4` key on AZERTY
+  ;;   - grave (`)      needs AltGr + the physical `7` key on AZERTY
+  ;;   - comma (,)      lives unshifted on the physical `m` key on AZERTY
+  ;;   - E / C stay E / C (same physical spot on both layouts)
+  ;;   - the physical "Q" position outputs "A" on AZERTY (Q and A are swapped)
+  cap_eacute (tap-macro (release-only lctl) cmp 4 E (press-only lctl) :delay 5)  ;; é -> É
+  cap_egrave (tap-macro (release-only lctl) cmp (around ralt 7) E (press-only lctl) :delay 5)  ;; è -> È
+  cap_ccedil (tap-macro (release-only lctl) cmp m C (press-only lctl) :delay 5)  ;; ç -> Ç
+  cap_agrave (tap-macro (release-only lctl) cmp (around ralt 7) Q (press-only lctl) :delay 5)  ;; à -> À
 )
 
 ;; --- Base layer with home row mods + caps ---
 (deflayer base
+  @real_ctl
   @alt_a   @ctl_s   @sft_d   @met_f   g   h   @met_j   @sft_k   @ctl_l   @alt_;
+  _        _        _        _
+)
+
+;; --- Overlay, active only while the left-Ctrl home row mod (s) is held ---
+;; Everything below is `_` (transparent) except the 4 accent keys, meaning
+;; it falls back to whatever `base` does. Because the real lctl is
+;; genuinely held the whole time this layer is active (see the `around`
+;; above), Ctrl+C, Ctrl+V, Ctrl+Z, the other home row mods, and anything
+;; else on the keyboard keep working exactly as they do today -- this
+;; layer only needs to know about the 4 keys it actually changes.
+(deflayer ctrl-ext
+  _
+  _    _    _    _    _    _    _    _    _    _
+  @cap_eacute  @cap_egrave  @cap_ccedil  @cap_agrave
 )
 
 ;; vim: ft=lisp

@@ -6,44 +6,44 @@ local get_visual = helpers.get_visual
 local tex = require("utils.snippets.tex_utils")
 
 return {
-	s(
-		{
-			trig = "$",
-			dscr = "inline math mode",
-			wordTrig = false,
-			snippetType = "autosnippet",
-			condition = tex.in_math * tex.in_document * -- we actually have to use in_math instead
-			            make_cond(function()            -- of in_text because the dollar sign negates it
-				            local col = vim.api.nvim_win_get_cursor(0)[2]
-				            local line = vim.api.nvim_get_current_line()
-				            return (col == 0) or line:sub(col, col) ~= "\\"
-			            end),
-		},
-		{
-			t("\\("),
-			i(1),
-			t("\\)"),
-		}
-	),
-	s(
-		{
-			trig = "£",
-			dscr = "display math mode",
-			wordTrig = false,
-			snippetType = "autosnippet",
-			condition = tex.in_text * tex.in_document *
-			            make_cond(function()
-				            local col = vim.api.nvim_win_get_cursor(0)[2]
-				            local line = vim.api.nvim_get_current_line()
-				            return (col == 0) or line:sub(col, col) ~= "\\"
-			            end),
-		},
-		{
-			t("\\["),
-			i(1),
-			t("\\]"),
-		}
-	),
+	-- s(
+	-- 	{
+	-- 		trig = "$",
+	-- 		dscr = "inline math mode",
+	-- 		wordTrig = false,
+	-- 		snippetType = "autosnippet",
+	-- 		condition = tex.in_math * tex.in_document * -- we actually have to use in_math instead
+	-- 		            make_cond(function()            -- of in_text because the dollar sign negates it
+	-- 			            local col = vim.api.nvim_win_get_cursor(0)[2]
+	-- 			            local line = vim.api.nvim_get_current_line()
+	-- 			            return (col == 0) or line:sub(col, col) ~= "\\"
+	-- 		            end),
+	-- 	},
+	-- 	{
+	-- 		t("\\("),
+	-- 		i(1),
+	-- 		t("\\)"),
+	-- 	}
+	-- ),
+	-- s(
+	-- 	{
+	-- 		trig = "£",
+	-- 		dscr = "display math mode",
+	-- 		wordTrig = false,
+	-- 		snippetType = "autosnippet",
+	-- 		condition = tex.in_text * tex.in_document *
+	-- 		            make_cond(function()
+	-- 			            local col = vim.api.nvim_win_get_cursor(0)[2]
+	-- 			            local line = vim.api.nvim_get_current_line()
+	-- 			            return (col == 0) or line:sub(col, col) ~= "\\"
+	-- 		            end),
+	-- 	},
+	-- 	{
+	-- 		t("\\["),
+	-- 		i(1),
+	-- 		t("\\]"),
+	-- 	}
+	-- ),
 	s(
 		{
 			trig = "sm",
@@ -215,7 +215,7 @@ return {
 	),
 	s(
 		{
-			trig = "ty",
+			trig = "oo",
 			dscr = "lemniscate",
 			snippetType = "autosnippet",
 			condition = tex.in_math * tex.not_in_cmd,

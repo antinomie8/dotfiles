@@ -238,8 +238,8 @@ hl.config({
 		enabled = true,
 	},
 	input = {
-		kb_layout = "fr",
-		kb_options = "caps:swapescape",
+		kb_layout = "frhrm",
+		kb_options = "caps:swapescape,compose:menu",
 		numlock_by_default = true,
 		repeat_delay = 250,
 		repeat_rate = 35,

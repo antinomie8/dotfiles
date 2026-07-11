@@ -67,6 +67,7 @@ copy_if_installed hyprland icons/Bibata ~/.local/share/icons
 copy_if_installed pdflatex texmf ~/.local/share
 copy_if_installed firefox firefox/autoconfig.js /usr/lib/firefox/defaults/pref
 copy_if_installed firefox firefox/firefox.cfg /usr/lib/firefox
+copy_if_installed xkbcli X11/frhrm.xkb /usr/share/X11/xkb/symbols/frhrm
 
 # copy desktop files and icons
 find icons/hicolor -type f -print0 | while IFS= read -r -d '' file; do

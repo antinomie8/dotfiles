@@ -1,0 +1,57 @@
+# Pull in the system default Compose table for your locale first, so that
+# dead_circumflex + a/e/i/o/u (and their uppercase forms) keep working
+# exactly as before: â ê î ô û  Â Ê Î Ô Û.
+include "%L"
+
+################################
+# Circumflex fix for exponents #
+################################
+# In French, only a/e/i/o/u take a circumflex. For every other letter, one
+# press of the circumflex ("^") key followed by that letter does not yield
+# any character, so we need to press the dead key twice or hit space to
+# release ir.
+# Now typing a literal "^" immediately followed by any other letter than
+# the aforementioned ones will input both.
+
+<dead_circumflex> <b> : "^b"
+<dead_circumflex> <B> : "^B"
+<dead_circumflex> <c> : "^c"
+<dead_circumflex> <C> : "^C"
+<dead_circumflex> <d> : "^d"
+<dead_circumflex> <D> : "^D"
+<dead_circumflex> <f> : "^f"
+<dead_circumflex> <F> : "^F"
+<dead_circumflex> <g> : "^g"
+<dead_circumflex> <G> : "^G"
+<dead_circumflex> <h> : "^h"
+<dead_circumflex> <H> : "^H"
+<dead_circumflex> <j> : "^j"
+<dead_circumflex> <J> : "^J"
+<dead_circumflex> <k> : "^k"
+<dead_circumflex> <K> : "^K"
+<dead_circumflex> <l> : "^l"
+<dead_circumflex> <L> : "^L"
+<dead_circumflex> <m> : "^m"
+<dead_circumflex> <M> : "^M"
+<dead_circumflex> <n> : "^n"
+<dead_circumflex> <N> : "^N"
+<dead_circumflex> <p> : "^p"
+<dead_circumflex> <P> : "^P"
+<dead_circumflex> <q> : "^q"
+<dead_circumflex> <Q> : "^Q"
+<dead_circumflex> <r> : "^r"
+<dead_circumflex> <R> : "^R"
+<dead_circumflex> <s> : "^s"
+<dead_circumflex> <S> : "^S"
+<dead_circumflex> <t> : "^t"
+<dead_circumflex> <T> : "^T"
+<dead_circumflex> <v> : "^v"
+<dead_circumflex> <V> : "^V"
+<dead_circumflex> <w> : "^w"
+<dead_circumflex> <W> : "^W"
+<dead_circumflex> <x> : "^x"
+<dead_circumflex> <X> : "^X"
+<dead_circumflex> <y> : "^y"
+<dead_circumflex> <Y> : "^Y"
+<dead_circumflex> <z> : "^z"
+<dead_circumflex> <Z> : "^Z"

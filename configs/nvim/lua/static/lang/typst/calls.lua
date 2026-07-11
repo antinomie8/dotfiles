@@ -1,5 +1,5 @@
 return {
-	["sqrt"]      = { left = "√",     right = ""  },
+	["sqrt"]      = { left = "√(",    right = ")"  },
 	["abs"]       = { left = "|",     right = "|" },
 	["norm"]      = { left = "‖",     right = "‖" },
 	["floor"]     = { left = "⌊",     right = "⌋" },

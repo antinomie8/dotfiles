@@ -105,23 +105,8 @@ Scope {
                     rowSpacing: 15
 
                     SessionActionButton {
-                        id: sessionLock
-                        focus: sessionRoot.visible
-                        buttonIcon: "lock"
-                        buttonText: Translation.tr("Lock")
-                        onClicked: {
-                            Session.lock();
-                            sessionRoot.hide();
-                        }
-                        onFocusChanged: {
-                            if (focus)
-                                sessionRoot.subtitle = buttonText;
-                        }
-                        KeyNavigation.right: sessionSleep
-                        KeyNavigation.down: sessionHibernate
-                    }
-                    SessionActionButton {
                         id: sessionSleep
+                        focus: sessionRoot.visible
                         buttonIcon: "dark_mode"
                         buttonText: Translation.tr("Sleep")
                         onClicked: {
@@ -132,7 +117,22 @@ Scope {
                             if (focus)
                                 sessionRoot.subtitle = buttonText;
                         }
-                        KeyNavigation.left: sessionLock
+                        KeyNavigation.right: sessionLock
+                        KeyNavigation.down: sessionHibernate
+                    }
+                    SessionActionButton {
+                        id: sessionLock
+                        buttonIcon: "lock"
+                        buttonText: Translation.tr("Lock")
+                        onClicked: {
+                            Session.lock();
+                            sessionRoot.hide();
+                        }
+                        onFocusChanged: {
+                            if (focus)
+                                sessionRoot.subtitle = buttonText;
+                        }
+                        KeyNavigation.left: sessionSleep
                         KeyNavigation.right: sessionLogout
                         KeyNavigation.down: sessionShutdown
                     }

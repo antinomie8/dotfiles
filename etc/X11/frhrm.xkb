@@ -1,0 +1,23 @@
+// Custom French AZERTY variant.
+// Everything is inherited unchanged from the stock "fr(basic)" layout,
+// except AltGr+o / AltGr+Shift+o, which now produce oe / OE (œ / Œ)
+// instead of the default oslash / Oslash (ø / Ø).
+//
+// Install (as root, one-time):
+//   sudo cp frhrm /usr/share/X11/xkb/symbols/frhrm
+//
+// Then point Hyprland at it with kb_layout = frhrm (see hyprland-keyboard.conf).
+//
+// Why a new file instead of editing /usr/share/X11/xkb/symbols/fr directly?
+// That file belongs to the xkeyboard-config package and gets silently
+// overwritten on the next system update. A separate file survives updates.
+
+default partial alphanumeric_keys
+xkb_symbols "basic" {
+    include "fr(basic)"
+    name[Group1] = "French (AZERTY, oe/OE on AltGr+o)";
+
+    // Levels: [ base, Shift, AltGr, Shift+AltGr ]
+    // o and O (levels 1-2) are untouched; only the AltGr levels change.
+    key <AD09> { [ o, O, oe, OE ] };
+};

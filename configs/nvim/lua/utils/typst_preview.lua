@@ -125,7 +125,7 @@ function M.start_preview(client)
 
 	client:exec_cmd({
 		title = "start browsing preview server",
-		command = "tinymist.doStartPreview",
+		command = "tinymist.startDefaultPreview",
 		arguments = { vim.v.null },
 	}, { bufnr = bufnr }, function(err, result)
 		if err then

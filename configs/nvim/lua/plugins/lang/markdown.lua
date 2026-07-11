@@ -122,18 +122,22 @@ return {
 				"<CR>",
 				"<Cmd>InsertNewBullet<CR>",
 				mode = "i",
-				ft = { "markdown", "gitcommit" },
-				desc = "Insert new bullet",
+				ft = { "markdown", "gitcommit", "typst" },
 			},
+			-- {
+			-- 	"o",
+			-- 	"<Cmd>InsertNewBullet<CR>",
+			-- 	ft = { "markdown", "gitcommit", "typst" },
+			-- },
 			{
 				"<localleader>x",
 				"<Cmd>ToggleCheckbox<CR>",
-				ft = { "markdown", "gitcommit" },
+				ft = { "markdown", "gitcommit", "typst" },
 				desc = "Toggle Bullet",
 			},
 		},
 		config = function()
-			vim.g.bullets_enabled_file_types = { "markdown", "text", "gitcommit" }
+			vim.g.bullets_enabled_file_types = { "markdown", "text", "gitcommit", "typst" }
 			vim.g.bullets_set_mapping = 0
 		end,
 	},

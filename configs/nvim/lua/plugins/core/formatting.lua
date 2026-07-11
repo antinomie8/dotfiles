@@ -39,6 +39,7 @@ return {
 		})
 	end,
 	opts = function()
+		local config_home = (vim.env.XDG_CONFIG_HOME or vim.env.HOME .. "/.config")
 		local nvim_config = vim.fn.stdpath("config") .. "/"
 		local zsh_config = (vim.env.ZDOTDIR or vim.env.HOME .. "/.zsh") .. "/"
 		local disabled_paths = {
@@ -55,9 +56,10 @@ return {
 			zsh_config .. "config/keybinds.zsh",
 			zsh_config .. "config/completions.zsh",
 
+			config_home .. "/quickshell/ii/**",
+			config_home .. "/hypr/hyprland/execs.lua",
 			(vim.env.TEXMFHOME or vim.env.HOME) .. "/tex/latex/**/*.tex",
 			(vim.env.ASYMPTOTE_HOME or vim.env.HOME .. "/.asy") .. "/config.asy",
-			(vim.env.XDG_CONFIG_HOME or vim.env.HOME .. "/.config") .. "/quickshell/ii/**",
 		}
 		local forbidden = {}
 		for _, glob in ipairs(disabled_paths) do

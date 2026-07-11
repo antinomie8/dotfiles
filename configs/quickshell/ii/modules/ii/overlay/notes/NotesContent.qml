@@ -39,6 +39,30 @@ OverlayBackground {
         applySelection(endPos, endPos);
     }
 
+
+    function ensureCursorVisible() {
+        if (!textInput || !editorScrollView.contentItem)
+            return;
+        Qt.callLater(() => {
+            const flickable = editorScrollView.contentItem;
+            const cursorRect = textInput.positionToRectangle(textInput.cursorPosition);
+            if (!isFinite(cursorRect.y))
+                return;
+            const margin = Math.max(12, textInput.font.pixelSize);
+            const cursorLineHeight = Math.max(cursorRect.height, textInput.font.pixelSize * 1.8);
+            const cursorTop = cursorRect.y - margin;
+            const cursorBottom = cursorRect.y + cursorLineHeight + margin;
+            const visibleTop = flickable.contentY;
+            const visibleBottom = flickable.contentY + flickable.height;
+            const maxContentY = Math.max(0, flickable.contentHeight - flickable.height);
+
+            if (cursorBottom > visibleBottom)
+                flickable.contentY = Math.min(maxContentY, cursorBottom - flickable.height);
+            else if (cursorTop < visibleTop)
+                flickable.contentY = Math.max(0, cursorTop);
+        });
+    }
+
     function applySelection(cursorPos, anchorPos) {
         if (!textInput)
             return;
@@ -174,8 +198,14 @@ OverlayBackground {
                 }
                 
                 onHeightChanged: root.scheduleCopylistUpdate(true)
-                onContentHeightChanged: root.scheduleCopylistUpdate(true)
-                onCursorPositionChanged: root.scheduleCopylistUpdate()
+                onContentHeightChanged: {
+                    root.scheduleCopylistUpdate(true);
+                    root.ensureCursorVisible();
+                }
+                onCursorPositionChanged: {
+                    root.scheduleCopylistUpdate();
+                    root.ensureCursorVisible();
+                }
                 onSelectionStartChanged: root.scheduleCopylistUpdate()
                 onSelectionEndChanged: root.scheduleCopylistUpdate()
             }

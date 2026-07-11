@@ -32,6 +32,7 @@ export ASYMPTOTE_HOME="$XDG_CONFIG_HOME/asy"
 export TEXMFCONFIG="$XDG_CONFIG_HOME/texlive/texmf-config"
 export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
 export TEXMFHOME="$XDG_DATA_HOME/texmf"
+export XCOMPOSEFILE="$XDG_CONFIG_HOME"/XCompose
 
 # Path
 path=(

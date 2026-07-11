@@ -4,33 +4,29 @@ local trigger_not_preceded_by = require("luasnip.extras.expand_conditions").trig
 local tex_utils = {}
 
 tex_utils.in_math = make_cond(function()
-	-- First check if we're in math mode at all
-	if vim.fn["vimtex#syntax#in_mathzone"]() == 0 then
-		return false
-	end
-
-	-- Get syntax stack at cursor
-	local stack = vim.fn.synstack(vim.fn.line("."), vim.fn.col("."))
-	for _, id in ipairs(stack) do
-		local name = vim.fn.synIDattr(id, "name")
-		-- If inside \text{} or similar, math highlighting group changes
-		if name:match("texMathText") then
-			return false
-		end
-	end
-
-	return true
+	return require("utils.treesitter").has_ancestor(
+		vim.treesitter.get_node(),
+		{ "inline_formula", "displayed_equation", "math_environment" },
+		{ "text_mode" }
+	)
 end)
 tex_utils.in_text = make_cond(function()
-	return vim.fn["vimtex#syntax#in_mathzone"]() ~= 1
-end)
-tex_utils.in_comment = make_cond(function()
-	return vim.fn["vimtex#syntax#in_comment"]() == 1
+	return -tex_utils.in_math
 end)
 
 local function in_environment(name)
-	local is_inside = vim.fn["vimtex#env#is_inside"](name)
-	return (is_inside[1] > 0 and is_inside[2] > 0)
+	local node = vim.treesitter.get_node()
+	while node do
+		if node:type() == "generic_environment" then
+			local word_node = node:named_child(0):named_child(0):named_child(0):named_child(0)
+			local text = vim.treesitter.get_node_text(word_node, 0)
+			if text == name or text == name .. "*" then
+				return true
+			end
+		end
+		node = node:parent()
+	end
+	return false
 end
 tex_utils.in_env = make_cond(function(name)
 	return in_environment(name)

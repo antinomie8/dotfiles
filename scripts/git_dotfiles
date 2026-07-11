@@ -42,7 +42,8 @@ configs=("asy" "bat" "btop" "browser" "clang-format" "clangd" "eza" "fastfetch" 
 	"hyprland-preview-share-picker" "illogical-impulse" "imv" "kitty" "lazygit" "mpv" "neomutt"
 	"ncdu" "npm" "nvim" "oly" "quickshell" "ruff" "rustfmt" "safeeyes" "stylua" "tex-fmt" "thundery"
 	"tmux" "udiskie" "uwsm" "wget" "xdg-desktop-portal" "xdg-desktop-portal-termfilechooser" "yazi"
-	"zathura" "zsh" "fzf.conf" "kmonad.kbd" "mimeapps.list" "ripgrep.conf" "shellcheckrc" "user-dirs.dirs")
+	"zathura" "zsh" "fzf.conf" "kmonad.kbd" "mimeapps.list" "ripgrep.conf" "shellcheckrc" "user-dirs.dirs"
+	"XCompose")
 # mozilla msmtp notmuch goimapnotify himalaya mirador aerc
 scripts=("assemble" "bedtime" "compile_sfml" "fzf_preview" "free" "git_dotfiles" "mailto" "rgb" "termsize" "zoxide-rename")
 systemd_user_units=("bedtime.service" "bedtime.timer" "free.service" "mail-sync.service" "goimapnotify.service")

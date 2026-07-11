@@ -1,5 +1,5 @@
 local ls = require("utils.snippets.luasnip")
-local s, t, i, d, f, fmt = ls.s, ls.t, ls.i, ls.d, ls.f, ls.fmt
+local s, t, i, c, d, f, fmt = ls.s, ls.t, ls.i, ls.c, ls.d, ls.f, ls.fmt
 local helpers = require("utils.snippets.helpers")
 local get_visual = helpers.get_visual
 local typst = require("utils.snippets.typst_utils")
@@ -56,6 +56,27 @@ local snippets = {
 				i(1, "k = 1"),
 				i(2, "n"),
 				i(0),
+			}
+		)
+	),
+	s(
+		{
+			trig = "lm",
+			dscr = "limit",
+			snippetType = "autosnippet",
+			condition = typst.in_math,
+		},
+		fmt(
+			[[
+				lim_(<>) <>
+      ]],
+			{
+				c(1, {
+					{ i(1, "n -> +oo") },
+					{ i(1, "x -> +oo") },
+					{ i(1, "x -> 0") },
+				}),
+				i(2),
 			}
 		)
 	),
@@ -120,6 +141,15 @@ local snippets = {
 			}
 		)
 	),
+	s({
+			trig = "arr",
+			dscr = "arrow",
+			regTrig = true,
+			snippetType = "autosnippet",
+			condition = typst.in_math,
+		},
+		{ t("arrow("), d(1, get_visual), t(")") }
+	),
 	s(
 		{
 			trig = "op",
@@ -153,43 +183,30 @@ local snippets = {
 	),
 	s(
 		{
-			trig = "â",
-			dscr = "^a",
-			wordTrig = false,
-			snippetType = "autosnippet",
-			condition = typst.in_math,
-		},
-		t("^a")
-	),
-	s(
-		{
-			trig = "⁽",
-			dscr = "superscipt parenthesis",
-			wordTrig = false,
-			snippetType = "autosnippet",
-			condition = typst.in_math,
-		},
-		{
-			t("^("),
-			i(0),
-			t(")"),
-		}
-	),
-	s(
-		{
-			trig = "all",
+			trig = "all ",
 			dscr = "universal quantifier",
+			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
-		t("forall")
+		t("forall ")
 	),
 	s(
 		{
-			trig = "ex",
-			dscr = "existensial quantifier",
+			trig = "al ",
+			dscr = "universal quantifier",
+			snippetType = "autosnippet",
 			condition = typst.in_math,
 		},
-		t("exists")
+		t("forall ")
+	),
+	s(
+		{
+			trig = "ex ",
+			dscr = "existensial quantifier",
+			snippetType = "autosnippet",
+			condition = typst.in_math,
+		},
+		t("exists ")
 	),
 	s(
 		{
@@ -274,7 +291,7 @@ local snippets = {
 		},
 		{ t("tilde("), f(function(_, snip) return snip.captures[1] end), t(")") }
 	),
-	s({ trig = "iv", dscr = "inverse", wordTrig = true, snippetType = "autosnippet", condition = typst.in_math },
+	s({ trig = "inv", dscr = "inverse", wordTrig = false, snippetType = "autosnippet", condition = typst.in_math },
 		t("^(-1)")
 	),
 	s({ trig = "df", snippetType = "autosnippet", condition = typst.in_math },
@@ -282,6 +299,30 @@ local snippets = {
 	),
 	s({ trig = "upr", dscr = "upright text", snippetType = "autosnippet" },
 		{ t("upright(\""), i(1), t("\")") }
+	),
+	s(
+		{
+			trig = "â",
+			dscr = "^a",
+			wordTrig = false,
+			snippetType = "autosnippet",
+			condition = typst.in_math,
+		},
+		t("^a")
+	),
+	s(
+		{
+			trig = "⁽",
+			dscr = "superscipt parenthesis",
+			wordTrig = false,
+			snippetType = "autosnippet",
+			condition = typst.in_math,
+		},
+		{
+			t("^("),
+			i(0),
+			t(")"),
+		}
 	),
 }
 
@@ -320,5 +361,14 @@ for i, exp in ipairs({ "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹
 		)
 	)
 end
+table.insert(snippets,
+	s({
+			trig = "⁻",
+			wordTrig = false,
+			snippetType = "autosnippet",
+		},
+		{ t("^(-"), i(1), t(")") }
+	)
+)
 
 return snippets

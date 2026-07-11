@@ -29,3 +29,9 @@ git clone https://github.com/antinomie8/dotfiles ~/.config/dotfiles && ~/.config
 
 #### uv
 - `uv tool install git+https://github.com/sharkdp/shell-functools`
+
+#### btrfs
+- To be able to hibernate, create a swapfile at least the size of the RAM:
+	* `sudo btrfs filesystem mkswapfile --size 16g /swapfile`
+	Then activate it:
+	+ `sudo swapon /swapfile`
