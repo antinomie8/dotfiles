@@ -1,6 +1,6 @@
 local ls = require("utils.snippets.luasnip")
-local s, t, i, d, f, fmt, make_cond =
-      ls.s, ls.t, ls.i, ls.d, ls.f, ls.fmt, ls.make_cond
+local s, t, i, c, d, f, fmt, make_cond =
+      ls.s, ls.t, ls.i, ls.c, ls.d, ls.f, ls.fmt, ls.make_cond
 local helpers = require("utils.snippets.helpers")
 local get_visual = helpers.get_visual
 local check_not_expanded = helpers.check_not_expanded
@@ -16,7 +16,6 @@ return {
 		{
 			trig = "sm",
 			dscr = "sum",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = md.in_math,
 		},
@@ -25,7 +24,10 @@ return {
 				\sum_{<>}^{<>}<>
 			]],
 			{
-				i(1, "k = 1"),
+				c(1, {
+					{ i(1, "k = 1") },
+					{ i(1, "k = 0") },
+				}),
 				i(2, "n"),
 				i(0),
 			}
@@ -33,9 +35,26 @@ return {
 	),
 	s(
 		{
+			trig = "cycsm",
+			dscr = "cyclic sum",
+			snippetType = "autosnippet",
+			condition = md.in_math,
+		},
+		t("\\sum_{\\text{cyc}} ")
+	),
+	s(
+		{
+			trig = "symsm",
+			dscr = "symmetric sum",
+			snippetType = "autosnippet",
+			condition = md.in_math,
+		},
+		t("\\sum_{\\text{sym}} ")
+	),
+	s(
+		{
 			trig = "pd",
 			dscr = "product",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = md.in_math,
 		},
@@ -44,7 +63,10 @@ return {
 				\prod_{<>}^{<>}<>
 			]],
 			{
-				i(1, "k = 1"),
+				c(1, {
+					{ i(1, "k = 1") },
+					{ i(1, "k = 0") },
+				}),
 				i(2, "n"),
 				i(0),
 			}
@@ -52,9 +74,26 @@ return {
 	),
 	s(
 		{
+			trig = "cycpd",
+			dscr = "cyclic prod",
+			snippetType = "autosnippet",
+			condition = md.in_math,
+		},
+		t("\\prod_{\\text{cyc}} ")
+	),
+	s(
+		{
+			trig = "sympd",
+			dscr = "symmetric prod",
+			snippetType = "autosnippet",
+			condition = md.in_math,
+		},
+		t("\\prod_{\\text{sym}} ")
+	),
+	s(
+		{
 			trig = "ff",
 			dscr = "fraction",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = md.in_math,
 		},
@@ -130,7 +169,6 @@ return {
 		{
 			trig = "sq",
 			dscr = "square root",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = md.in_math,
 		},
@@ -145,7 +183,6 @@ return {
 		{
 			trig = "cbrt",
 			dscr = "cubic root",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = md.in_math,
 		},
@@ -160,7 +197,6 @@ return {
 		{
 			trig = "tx",
 			dscr = "text",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = md.in_math,
 		},
@@ -174,7 +210,6 @@ return {
 		{
 			trig = "op",
 			dscr = "operatorname",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = md.in_math,
 		},
@@ -198,7 +233,6 @@ return {
 		{
 			trig = "cd",
 			dscr = "cdot",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = md.in_math,
 		},
@@ -208,7 +242,6 @@ return {
 		{
 			trig = "Bx",
 			dscr = "QED box",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = md.in_math,
 		},
@@ -216,7 +249,7 @@ return {
 	),
 	s(
 		{
-			trig = "ty",
+			trig = "oo",
 			dscr = "lemniscate",
 			snippetType = "autosnippet",
 			condition = md.in_math,
@@ -227,7 +260,6 @@ return {
 		{
 			trig = "all ",
 			dscr = "universal quantifier",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = md.in_math,
 		},
@@ -237,23 +269,10 @@ return {
 		{
 			trig = "ex ",
 			dscr = "existensial quantifier",
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = md.in_math,
 		},
 		t("\\exists ")
-	),
-	s(
-		{
-			trig = "ds",
-			dscr = "displaystyle",
-			wordTrig = false,
-			snippetType = "autosnippet",
-			condition = md.in_math,
-		},
-		{
-			t("\\displaystyle"),
-		}
 	),
 	s(
 		{
@@ -303,7 +322,6 @@ return {
 			trig = "(\\?left)",
 			dscr = "pairs",
 			regTrig = true,
-			wordTrig = false,
 			snippetType = "autosnippet",
 			condition = md.in_math,
 		},

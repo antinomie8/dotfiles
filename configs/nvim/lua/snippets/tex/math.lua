@@ -1,6 +1,5 @@
 local ls = require("utils.snippets.luasnip")
-local s, t, i, d, f, fmt, make_cond =
-      ls.s, ls.t, ls.i, ls.d, ls.f, ls.fmt, ls.make_cond
+local s, t, i, c, d, f, fmt = ls.s, ls.t, ls.i, ls.c, ls.d, ls.f, ls.fmt
 local helpers = require("utils.snippets.helpers")
 local get_visual = helpers.get_visual
 local tex = require("utils.snippets.tex_utils")
@@ -56,7 +55,10 @@ return {
         \sum_{<>}^{<>} <>
       ]],
 			{
-				i(1, "k = 1"),
+				c(1, {
+					{ i(1, "k = 1") },
+					{ i(1, "k = 0") },
+				}),
 				i(2, "n"),
 				i(0),
 			}
@@ -92,7 +94,10 @@ return {
         \prod_{<>}^{<>} <>
       ]],
 			{
-				i(1, "k = 1"),
+				c(1, {
+					{ i(1, "k = 1") },
+					{ i(1, "k = 0") },
+				}),
 				i(2, "n"),
 				i(0),
 			}
