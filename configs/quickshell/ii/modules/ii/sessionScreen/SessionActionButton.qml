@@ -10,6 +10,17 @@ RippleButton {
     property string buttonText
     property bool keyboardDown: false
     property real size: 120
+    property Item vimLeft
+    property Item vimRight
+    property Item vimUp
+    property Item vimDown
+
+    function focusVimTarget(target) {
+        if (!target)
+            return false;
+        target.forceActiveFocus();
+        return true;
+    }
 
     buttonRadius: (button.focus || button.down) ? size / 2 : Appearance.rounding.verylarge
     colBackground: button.keyboardDown ? Appearance.colors.colSecondaryContainerActive : 
@@ -33,6 +44,14 @@ RippleButton {
             keyboardDown = true
             button.clicked()
             event.accepted = true;
+        } else if (event.key === Qt.Key_H) {
+            event.accepted = button.focusVimTarget(button.vimLeft);
+        } else if (event.key === Qt.Key_J) {
+            event.accepted = button.focusVimTarget(button.vimDown);
+        } else if (event.key === Qt.Key_K) {
+            event.accepted = button.focusVimTarget(button.vimUp);
+        } else if (event.key === Qt.Key_L) {
+            event.accepted = button.focusVimTarget(button.vimRight);
         }
     }
     Keys.onReleased: (event) => {

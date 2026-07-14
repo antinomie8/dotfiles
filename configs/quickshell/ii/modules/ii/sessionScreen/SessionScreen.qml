@@ -119,6 +119,8 @@ Scope {
                         }
                         KeyNavigation.right: sessionLock
                         KeyNavigation.down: sessionHibernate
+                        vimRight: sessionLock
+                        vimDown: sessionHibernate
                     }
                     SessionActionButton {
                         id: sessionLock
@@ -135,6 +137,9 @@ Scope {
                         KeyNavigation.left: sessionSleep
                         KeyNavigation.right: sessionLogout
                         KeyNavigation.down: sessionShutdown
+                        vimLeft: sessionSleep
+                        vimRight: sessionLogout
+                        vimDown: sessionShutdown
                     }
                     SessionActionButton {
                         id: sessionLogout
@@ -148,9 +153,12 @@ Scope {
                             if (focus)
                                 sessionRoot.subtitle = buttonText;
                         }
-                        KeyNavigation.left: sessionSleep
+                        KeyNavigation.left: sessionLock
                         KeyNavigation.right: sessionTaskManager
                         KeyNavigation.down: sessionReboot
+                        vimLeft: sessionLock
+                        vimRight: sessionTaskManager
+                        vimDown: sessionReboot
                     }
                     SessionActionButton {
                         id: sessionTaskManager
@@ -166,6 +174,8 @@ Scope {
                         }
                         KeyNavigation.left: sessionLogout
                         KeyNavigation.down: sessionFirmwareReboot
+                        vimLeft: sessionLogout
+                        vimDown: sessionFirmwareReboot
                     }
 
                     SessionActionButton {
@@ -180,8 +190,10 @@ Scope {
                             if (focus)
                                 sessionRoot.subtitle = buttonText;
                         }
-                        KeyNavigation.up: sessionLock
+                        KeyNavigation.up: sessionSleep
                         KeyNavigation.right: sessionShutdown
+                        vimUp: sessionSleep
+                        vimRight: sessionShutdown
                     }
                     SessionActionButton {
                         id: sessionShutdown
@@ -197,7 +209,10 @@ Scope {
                         }
                         KeyNavigation.left: sessionHibernate
                         KeyNavigation.right: sessionReboot
-                        KeyNavigation.up: sessionSleep
+                        KeyNavigation.up: sessionLock
+                        vimLeft: sessionHibernate
+                        vimRight: sessionReboot
+                        vimUp: sessionLock
                     }
                     SessionActionButton {
                         id: sessionReboot
@@ -214,6 +229,9 @@ Scope {
                         KeyNavigation.left: sessionShutdown
                         KeyNavigation.right: sessionFirmwareReboot
                         KeyNavigation.up: sessionLogout
+                        vimLeft: sessionShutdown
+                        vimRight: sessionFirmwareReboot
+                        vimUp: sessionLogout
                     }
                     SessionActionButton {
                         id: sessionFirmwareReboot
@@ -229,6 +247,8 @@ Scope {
                         }
                         KeyNavigation.up: sessionTaskManager
                         KeyNavigation.left: sessionReboot
+                        vimUp: sessionTaskManager
+                        vimLeft: sessionReboot
                     }
                 }
 
