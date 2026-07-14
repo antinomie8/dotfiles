@@ -32,7 +32,7 @@ function copy() {
 		$sudo cp -r "$1" "$2/" 2>/dev/null ||
 			echo -e "${ERROR} ${WHITE}You need to manually move ${SUCCESS}$1${WHITE} to ${SUCCESS}$2${COLOR_RESET}"
 	elif ! diff --brief -r --exclude='*.pdf' "$1" "$target_loc" >/dev/null 2>&1; then
-		echo -en "${INFO}Would you like to delete your current ${SUCCESS}$(basename "$1")${INFO} \
+		echo -en "${INFO}Would you like to delete your current ${SUCCESS}$1${INFO} \
 to replace it with the one in this repo ? (y/n) ${COLOR_RESET}"
 		local answer
 		read -r answer
@@ -67,7 +67,6 @@ copy_if_installed hyprland icons/Bibata ~/.local/share/icons
 copy_if_installed pdflatex texmf ~/.local/share
 copy_if_installed firefox firefox/autoconfig.js /usr/lib/firefox/defaults/pref
 copy_if_installed firefox firefox/firefox.cfg /usr/lib/firefox
-copy_if_installed xkbcli X11/frhrm.xkb /usr/share/X11/xkb/symbols/frhrm
 
 # copy desktop files and icons
 find icons/hicolor -type f -print0 | while IFS= read -r -d '' file; do
@@ -83,8 +82,12 @@ for file in desktop/*; do
 	copy_if_installed "$program" "$file" ~/.local/share/applications
 done
 
+for file in matugen/*; do
+	copy_if_installed matugen "$file" ~/.config/"$file"
+done
+
 for package in typst/*; do
-	copy_if_installed typst "$package" ~/.local/share/typst/packages
+	copy_if_installed typst "$package" ~/.local/share/typst/packages/local
 done
 
 [[ -n "${CPLUS_INCLUDE_PATH:-}" ]] && copy dbg.h "$CPLUS_INCLUDE_PATH"
@@ -97,12 +100,10 @@ if program systemctl; then
 	# install systemd user units
 	for file in systemd/user/*; do
 		copy "$file" ~/.config/systemd/user
-		if [[ "$file" = *.timer || ("$file" =~ ^(.*)\.service$ && ! -f "${BASH_REMATCH[1]}.timer") ]]; then
-			unit="$(basename "$file")"
-			if [[ $(systemctl --user is-active "$unit") == 'inactive' ]]; then
-				echo "enabling $unit systemd user unit"
-				systemctl --user enable --now "$unit"
-			fi
+		unit="$(basename "$file")"
+		if [[ $(systemctl --user is-enabled "$unit") == 'disabled' ]]; then
+			echo "enabling $unit systemd user unit"
+			systemctl --user enable --now "$unit"
 		fi
 	done
 

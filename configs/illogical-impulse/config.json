@@ -37,7 +37,7 @@
             "automatic": true,
             "backgroundTransparency": 0.11,
             "contentTransparency": 0.57,
-            "enable": false
+            "enable": true
         },
         "wallpaperTheming": {
             "enableAppsAndShell": true,

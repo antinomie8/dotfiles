@@ -45,7 +45,7 @@ configs=("asy" "bat" "btop" "browser" "clang-format" "clangd" "eza" "fastfetch" 
 	"zathura" "zsh" "fzf.conf" "kmonad.kbd" "mimeapps.list" "ripgrep.conf" "shellcheckrc" "user-dirs.dirs"
 	"XCompose")
 # mozilla msmtp notmuch goimapnotify himalaya mirador aerc
-scripts=("assemble" "bedtime" "compile_sfml" "fzf_preview" "free" "git_dotfiles" "mailto" "rgb" "termsize" "zoxide-rename")
+scripts=("assemble" "bedtime" "compile_sfml" "free" "fzf_preview" "git_dotfiles" "mailto" "memory-usage" "rgb" "termsize" "zoxide-rename")
 systemd_user_units=("bedtime.service" "bedtime.timer" "free.service" "mail-sync.service" "goimapnotify.service")
 desktop_entries=("mail" "neomutt" "spotify" "vesktop" "yazi")
 typst_packages=("antoine" "figures")

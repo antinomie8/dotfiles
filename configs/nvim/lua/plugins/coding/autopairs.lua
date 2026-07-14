@@ -43,7 +43,7 @@ return {
 					["("] = {
 						{
 							")",
-							when = function(ctx)
+							open_or_close = function(ctx)
 								if ctx.ts:is_language("cpp") then
 									return not ctx:text_before_cursor():match("%Wall")
 								elseif ctx.ts:is_language("latex") then
@@ -57,7 +57,7 @@ return {
 							"\\(",
 							"\\)",
 							languages = { "latex" },
-							when = function(ctx)
+							open_or_close = function(ctx)
 								return vim.endswith(ctx:text_before_cursor(), "\\(")
 							end,
 						},
@@ -65,7 +65,7 @@ return {
 					["["] = {
 						{
 							"]",
-							when = function(ctx)
+							open_or_close = function(ctx)
 								if vim.tbl_contains({ "bash", "zsh", "sh" }, ctx.ft) then
 									-- LuaSnip if/while [[ | ]]; then snippet
 									return not ctx:text_before_cursor():match("^%s*if ")
@@ -92,7 +92,7 @@ return {
 					["{"] = {
 						{
 							"}",
-							when = function(ctx)
+							open_or_close = function(ctx)
 								return not ctx.ts:is_language("latex")
 									or not vim.endswith(ctx:text_before_cursor(), "\\left")
 							end,
@@ -105,19 +105,13 @@ return {
 						{
 							"*",
 							languages = { "typst" },
-							-- close = BUG
 							when = function(ctx)
-								if ctx:text_before_cursor():match('^%s*#import%s*"[^"]*:"') then
-									-- wildcard operator in imports
-									return false
-								else
-									local node = get_node(ctx)
-									return require("utils.treesitter").has_ancestor(
-										node,
+								return require("utils.treesitter").has_ancestor(
+										get_node(ctx),
 										{ "content", "source_file" },
 										{ "code", "math", "string", "comment", "label", "formula" }
-									)
-								end
+									) and -- wildcard operator in imports
+									(ctx:text_before_cursor():match('^%s*#import%s*"[^"]*"%s*:') == nil)
 							end,
 						},
 						{
@@ -142,19 +136,31 @@ return {
 						},
 					},
 					["$"] = {
-						{ "$", "$", languages = { "typst", "markdown", "markdown_inline", "plaintex" } },
+						{
+							"$",
+							"$",
+							languages = { "typst", "markdown", "markdown_inline", "plaintex" },
+							open_or_close = function(ctx)
+								local node = get_node(ctx)
+								return require("utils.treesitter").has_ancestor(
+									node,
+									{ "content", "source_file", "code" },
+									{ "math", "string", "comment", "label", "formula" }
+								)
+							end,
+						},
 						{
 							"\\(",
 							"\\)",
 							languages = { "latex" },
-							when = function(ctx)
+							open_or_close = function(ctx)
 								return not vim.endswith(ctx:text_before_cursor(), "\\")
 							end,
 						},
 						{
 							"$$",
 							"$$",
-							when = function(ctx)
+							open_or_close = function(ctx)
 								return vim.endswith(ctx:text_before_cursor(), "$")
 							end,
 							languages = { "markdown", "markdown_inline", "latex", "plaintex" },
@@ -167,7 +173,7 @@ return {
 						{
 							"~~",
 							"~~",
-							when = function(ctx)
+							open_or_close = function(ctx)
 								return vim.endswith(ctx:text_before_cursor(), "~")
 							end,
 							languages = { "markdown", "markdown_inline" },
@@ -178,14 +184,10 @@ return {
 						{
 							">",
 							languages = { "cpp" },
-							when = function(ctx)
+							open_or_close = function(ctx)
 								-- pair for e.g. templates, but not for << and >> operators
 								-- e.g. 'std::cout <|', should not pair but 'std::vector<|>' should
-								return ctx:text_before_cursor():match("%a$") or (
-								-- for backspace
-									vim.endswith(ctx:text_before_cursor(), "<")
-									and vim.startswith(ctx:text_after_cursor(), ">")
-								)
+								return ctx:text_before_cursor():match("%a$")
 							end,
 							backspace = function(ctx)
 								return vim.endswith(ctx:text_before_cursor(), "<")

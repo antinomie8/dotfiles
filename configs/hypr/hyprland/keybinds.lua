@@ -10,7 +10,7 @@ local numpadkey = { 87, 88, 89, 83, 84, 85, 79, 80, 81, 90 }
 -----------
 local qsScripts = "$HOME/.config/quickshell/$qsConfig/scripts"
 local hyprScripts = "$HOME/.config/hypr/hyprland/scripts"
-local qsIpcCall = "qs -c $qsConfig ipc call"
+local qsIpcCall = "qs -c $qsConfig ipc call "
 local qsIsAlive = qsIpcCall .. " TEST_ALIVE"
 
 hl.bind("SUPER + SUPER_L", hl.dsp.global("quickshell:searchToggleRelease"), { desc = "Shell: Toggle search" })
@@ -45,9 +45,9 @@ hl.bind("XF86PowerOff", function()
 	end
 end, { desc = "Shell: Toggle session menu", locked = true })
 
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd(qsIpcCall .. " brightness increment || brightnessctl s 5%+"),
+hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd(qsIpcCall .. "brightness increment || brightnessctl s 5%+"),
 	{ locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(qsIpcCall .. " brightness decrement || brightnessctl s 5%-"),
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(qsIpcCall .. "brightness decrement || brightnessctl s 5%-"),
 	{ locked = true, repeating = true })
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%+ -l 1.5"),
 	{ locked = true, repeating = true })
@@ -182,6 +182,19 @@ hl.bind("SUPER + SHIFT + ALT + A", function()
 	end
 	hl.config({ animations = { enabled = not is_enabled } })
 end, { desc = "Screen: Toggle animations and idle inhibitor" })
+-- Transparency
+hl.bind("SUPER + ALT + T", function()
+	local is_disabled = hl.get_config("decoration.active_opacity") == 1
+	local opacity = is_disabled and 0.92 or 1
+	hl.config({
+		decoration = {
+			active_opacity = opacity,
+			inactive_opacity = opacity,
+		},
+	})
+	-- hl.dispatch(hl.dsp.global("quickshell:reloadTransparency")) -- resets transparency ???
+	hl.dispatch(hl.dsp.exec_cmd(qsIpcCall .. "appearance reloadTransparency"))
+end)
 
 ------------
 -- Window --
@@ -196,8 +209,11 @@ for key, dir in pairs({ ["H"] = "Left", ["J"] = "Down", ["K"] = "Up", ["L"] = "R
 	hl.bind("SUPER + " .. key, hl.dsp.focus({ direction = dir:sub(1, 1):lower() }), { desc = "Window: Move focus " .. dir })
 end
 -- SUPER + ←/↓/↑/→: Move in direction
+-- SUPER + CTRL + ←/↓/↑/→: Swap with window direction
 for _, key in ipairs({ "Left", "Down", "Up", "Right" }) do
-	hl.bind("SUPER + " .. key, hl.dsp.window.swap({ direction = key:sub(1, 1):lower() }), { desc = "Window: Move " .. key })
+	local dir = key:sub(1, 1):lower()
+	hl.bind("SUPER + " .. key, hl.dsp.window.move({ direction = dir }), { desc = "Window: Move " .. key })
+	hl.bind("SUPER + CTRL + " .. key, hl.dsp.window.swap({ direction = dir }), { desc = "Window: Swap " .. key })
 end
 -- SUPER + SHIFT + ←/↓/↑/→: Resize in steps
 for key, dir in pairs({ ["Left"] = { -1, 0 }, ["Down"] = { 0, 1 }, ["Up"] = { 0, -1 }, ["Right"] = { 1, 0 } }) do
@@ -261,8 +277,11 @@ hl.bind("SUPER + ALT + mouse_down", hl.dsp.window.move({ workspace = "r-1" }))
 hl.bind("SUPER + ALT + mouse_up", hl.dsp.window.move({ workspace = "r+1" }))
 
 -- Special workspace
-hl.bind("SUPER + ALT + S", hl.dsp.window.move({ workspace = "special:special", follow = false }),
-	{ desc = "Window: Send to scratchpad" })
+hl.bind("SUPER + ALT + S", function()
+	local is_special = hl.get_active_window().workspace.config_name == "special:special"
+	local ws = is_special and hl.get_active_workspace() or "special:special"
+	hl.dispatch(hl.dsp.window.move({ workspace = ws, follow = false }))
+end, { desc = "Window: Send to scratchpad" })
 
 -- Window groups
 hl.bind("SUPER + G", hl.dsp.group.toggle(), { desc = "Window: Toggle group" })
@@ -308,6 +327,7 @@ hl.bind("SUPER + ALT + SHIFT + CTRL + kp_delete", ws_group.move(-1, true),
 	{ desc = "Workspace: Move to previous workspace group" })
 
 hl.bind("SUPER + N", hl.dsp.focus({ workspace = "emptynm" }), { desc = "Workspace: Next empty workspace" })
+hl.bind("SUPER + ALT + N", hl.dsp.focus({ workspace = "emptym" }), { desc = "Workspace: First empty workspace" })
 
 ----------
 -- Apps --
@@ -322,19 +342,15 @@ hl.bind("SUPER + T", hl.dsp.exec_cmd(vars.taskManager), { desc = "App: Task mana
 hl.define_submap("passthrough", function()
 	hl.bind("SUPER + ALT + F1", function()
 		local currentsubmap = hl.get_current_submap()
-		local notify = "notify-send -a 'Hyprland' -i hyprland "
 		if currentsubmap == "passthrough" then
-			hl.dispatch(hl.dsp.exec_cmd(notify .. "'Exited Passthrough submap' 'Keybinds re-enabled'"))
+			utils.notify("Exited Passthrough submap", "Keybinds re-enabled")
 			hl.dispatch(hl.dsp.submap("reset"))
 		elseif currentsubmap == "" then
-			hl.dispatch(hl.dsp.exec_cmd(notify ..
-				"'Entered Passthrough submap' 'Keybinds disabled. hit SUPER+ALT+F1 to escape'"))
+			utils.notify("Entered Passthrough submap", "Keybinds disabled. hit SUPER+ALT+F1 to escape")
 			hl.dispatch(hl.dsp.submap("passthrough"))
 		end
 	end, { submap_universal = true, desc = "Miscellaneous: Keymap passthrough submap" })
 end)
-
-hl.bind("SUPER + Left", hl.dsp.window.move({ direction = "l" }))
 
 -------------
 -- Session --

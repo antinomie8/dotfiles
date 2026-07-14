@@ -238,7 +238,8 @@ hl.config({
 		enabled = true,
 	},
 	input = {
-		kb_layout = "frhrm",
+		kb_layout = "fr",
+		kb_variant = "oss",
 		kb_options = "caps:swapescape,compose:menu",
 		numlock_by_default = true,
 		repeat_delay = 250,
@@ -252,6 +253,15 @@ hl.config({
 			disable_while_typing = true,
 			clickfinger_behavior = false,
 			scroll_factor = 0.7,
+		},
+	},
+
+	group = {
+		groupbar = {
+			font_size = 12,
+			font_weight_active = "medium",
+			height = 5,
+			indicator_gap = 6,
 		},
 	},
 
@@ -289,7 +299,7 @@ hl.config({
 	},
 
 	xwayland = {
-		force_zero_scaling = true,
+		force_zero_scaling = false,
 	},
 })
 

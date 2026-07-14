@@ -56,6 +56,7 @@
 /home/antoine/.config/matugen/templates/gtk-3.0/gtk.css
 /home/antoine/.config/matugen/templates/gtk-4.0/gtk.css
 /home/antoine/.config/matugen/templates/hyprland/colors.conf
+/home/antoine/.config/matugen/templates/hyprland/colors.lua
 /home/antoine/.config/matugen/templates/hyprland/hyprlock-colors.conf
 /home/antoine/.config/matugen/templates/kde/color.txt
 /home/antoine/.config/matugen/templates/kde/kde-material-you-colors-wrapper.sh

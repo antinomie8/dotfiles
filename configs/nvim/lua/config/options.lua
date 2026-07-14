@@ -36,6 +36,7 @@ opt.linebreak      = true
 opt.breakat        = " "
 opt.formatoptions  = "c,q,n,2,j"
 opt.formatlistpat  = [[^\s*\%(\d\+[\]\-:.)}\t ]\|[-+]\s\)\s*]]
+opt.fileformat     = "unix" -- convert line endings to unix
 
 -- writing, undo & backup
 opt.autowrite      = false
@@ -104,4 +105,3 @@ opt.backspace      = "indent,eol,start"
 opt.wildmode       = "longest:full,full"
 opt.shortmess      = "tToOcCFI"
 opt.belloff        = "all"
-opt.fileformat     = "unix" -- convert line endings to unix

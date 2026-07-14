@@ -92,6 +92,11 @@ return {
 				quote = { raw = "[!QUOTE]", rendered = "󱆨 Quote", highlight = "MarkdownQuote", category = "obsidian" },
 				cite = { raw = "[!CITE]", rendered = "󱆨 Cite", highlight = "MarkdownQuote", category = "obsidian" },
 			},
+			link = {
+				custom = {
+					web = { icon = " ", pattern = "archlinux.org", kind = "url" },
+				},
+			},
 			code = {
 				sign = false,
 				border = "thin",

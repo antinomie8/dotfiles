@@ -1,12 +1,3 @@
--- Disable blur for xwayland context menus
-hl.window_rule({ match = { class = "^()$", title = "^()$" }, no_blur = true })
-
--- Disable blur for every window
-hl.window_rule({ match = { class = ".*" }, no_blur = true })
-
--- No shadow for tiled windows
-hl.window_rule({ match = { float = 0 }, no_shadow = true })
-
 --------------
 -- Floating --
 --------------
@@ -73,6 +64,9 @@ hl.window_rule({
 	pin = true,
 	move = { "(monitor_w*.5-window_w*.5)", "(monitor_h-window_h-12)" },
 })
+
+-- No shadow for tiled windows
+hl.window_rule({ match = { float = 0 }, no_shadow = true })
 
 ---------------------
 -- Workspace rules --

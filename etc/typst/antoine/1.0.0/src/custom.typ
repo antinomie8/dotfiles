@@ -30,6 +30,7 @@
 #let bar = math.overline
 
 #let pmod(x) = $space (mod #x)$
+#let cbrt(x) = $root(3, #x)$
 #let dbbracket(lhs, rhs) = {
 	if type(lhs) == array { lhs = lhs.join() }
 	if type(rhs) == array { rhs = rhs.join() }

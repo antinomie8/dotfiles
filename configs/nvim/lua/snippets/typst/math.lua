@@ -133,20 +133,6 @@ local snippets = {
 			}
 		)
 	),
-	s(
-		{
-			trig = "cbrt",
-			dscr = "cubic root",
-			snippetType = "autosnippet",
-			condition = typst.in_math,
-		},
-		fmt(
-			"root(3, <>)",
-			{
-				d(1, get_visual),
-			}
-		)
-	),
 	s({
 			trig = "arr",
 			dscr = "arrow",

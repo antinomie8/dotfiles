@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+for pid in /proc/[0-9]*; do
+	status="$pid/status"
+
+	rss=$(awk '/VmRSS:/ {print $2}' "$status" 2>/dev/null)
+	swap=$(awk '/VmSwap:/ {print $2}' "$status" 2>/dev/null)
+
+	rss=${rss:-0}
+	swap=${swap:-0}
+
+	exe=$(basename "$(readlink -f "$pid/exe" 2>/dev/null)")
+	[ -z "$exe" ] && continue
+
+	echo "$exe $rss $swap"
+done |
+	awk '
+{
+    rss[$1] += $2
+    swap[$1] += $3
+}
+END {
+    printf "%-25s %10s %10s %10s\n",
+           "Application", "RAM(MB)", "Swap(MB)", "Total(MB)"
+    for (app in rss)
+        printf "%-25s %10.1f %10.1f %10.1f\n",
+               app,
+               rss[app]/1024,
+               swap[app]/1024,
+               (rss[app]+swap[app])/1024
+}' |
+	sort -k4 -nr

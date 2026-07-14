@@ -1,6 +1,8 @@
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import qs.modules.common.functions
+import qs.modules.common.models.hyprland
 pragma Singleton
 pragma ComponentBehavior: Bound
 
@@ -24,15 +26,35 @@ Singleton {
         depth: 0 // 2^0 = 1 color
         rescaleSize: 10
     }
-    property real wallpaperVibrancy: (wallColorQuant.colors[0]?.hslSaturation + wallColorQuant.colors[0]?.hslLightness) / 2
-    property real autoBackgroundTransparency: { // y = 0.5768x^2 - 0.759x + 0.2896
+    HyprlandConfigOption {
+        id: inactiveOpacity
+        key: "decoration:inactive_opacity"
+    }
+    function autoBackgroundTransparency(negate = false) { // y = 0.5768x^2 - 0.759x + 0.2896
+        inactiveOpacity.fetch()
+        let hyprlandOpacity = Number(inactiveOpacity.value)
+        let isHyprlandOpaque = isNaN(hyprlandOpacity) || hyprlandOpacity == 1
+        if ((!negate && isHyprlandOpaque) || (negate && !isHyprlandOpaque)) {
+            return 0
+        }
         let x = wallpaperVibrancy
         let y = 0.5768 * (x * x) - 0.759 * (x) + 0.2896
         return Math.max(0, Math.min(0.22, y)) - 0.12 * (m3colors.darkmode ? 0 : 1)
     }
+    property real wallpaperVibrancy: (wallColorQuant.colors[0]?.hslSaturation + wallColorQuant.colors[0]?.hslLightness) / 2
     property real autoContentTransparency: 0.9
-    property real backgroundTransparency: Config?.options.appearance.transparency.enable ? Config?.options.appearance.transparency.automatic ? autoBackgroundTransparency : Config?.options.appearance.transparency.backgroundTransparency : 0
+    property real backgroundTransparency: Config?.options.appearance.transparency.enable ? Config?.options.appearance.transparency.automatic ? autoBackgroundTransparency() : Config?.options.appearance.transparency.backgroundTransparency : 0
     property real contentTransparency: Config?.options.appearance.transparency.automatic ? autoContentTransparency : Config?.options.appearance.transparency.contentTransparency
+
+    IpcHandler {
+        target: "appearance"
+        function reloadTransparency(): void {
+            // HACK: when inactiveOpacity is fetched right after the call to hl.config in ~/.config/hypr/hyprland/keybinds.lua,
+            // the config value doesn't have time to be updated, thus we have to add a negation parameter in autoBackgroundTransparency
+            root.backgroundTransparency = Config?.options.appearance.transparency.enable ? Config?.options.appearance.transparency.automatic ? root.autoBackgroundTransparency(true) : Config?.options.appearance.transparency.backgroundTransparency : 0
+            root.contentTransparency = Config?.options.appearance.transparency.automatic ? autoContentTransparency : Config?.options.appearance.transparency.contentTransparency
+        }
+    }
 
     m3colors: QtObject {
         property bool darkmode: true
