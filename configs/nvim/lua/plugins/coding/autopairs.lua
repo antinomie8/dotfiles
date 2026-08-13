@@ -8,13 +8,10 @@ return {
 		"saghen/blink.pairs",
 		event = { "InsertEnter", "CmdlineEnter" },
 		dependencies = "saghen/blink.lib",
-
-		version = "*",
 		-- download prebuilt binaries from github releases, must be on a versioned release
-		build = function() require("blink.pairs").download():pwait(60000) end,
+		-- build = function() require("blink.pairs").download():pwait(60000) end,
 		-- OR build from source
-		-- build = function() require('blink.pairs').build():pwait(60000) end,
-
+		build = function() require("blink.pairs").build():pwait(60000) end,
 		---@module 'blink.pairs'
 		---@type blink.pairs.Config
 		opts = {
@@ -22,8 +19,6 @@ return {
 				-- you can call require("blink.pairs.mappings").enable()
 				-- and require("blink.pairs.mappings").disable()
 				-- to enable/disable mappings at runtime
-				enabled = true,
-				cmdline = true,
 				-- or disable with `vim.g.pairs = false` (global) and `vim.b.pairs = false` (per-buffer)
 				-- and/or with `vim.g.blink_pairs = false` and `vim.b.blink_pairs = false`
 				disabled_filetypes = {
@@ -100,7 +95,10 @@ return {
 					},
 					["*"] = {
 						{
-							"/*", "*/", languages = { "c", "cpp", "typst", "rust", "css", "go" }, priority = 10,
+							"/*",
+							"*/",
+							languages = { "c", "cpp", "typst", "rust", "css", "go" },
+							priority = 10,
 						},
 						{
 							"*",
@@ -120,8 +118,7 @@ return {
 							when = function(ctx)
 								local node = get_node(ctx)
 								return not require("utils.treesitter").has_ancestor(node,
-										{ "latex_block", "code_span", "fenced_code_block", "ERROR" })
-									and not ctx:text_before_cursor():match("%s*")
+									{ "latex_block", "code_span", "fenced_code_block", "ERROR" })
 							end,
 						},
 						{
@@ -139,7 +136,7 @@ return {
 						{
 							"$",
 							"$",
-							languages = { "typst", "markdown", "markdown_inline", "plaintex" },
+							languages = { "typst" },
 							open_or_close = function(ctx)
 								local node = get_node(ctx)
 								return require("utils.treesitter").has_ancestor(
@@ -150,9 +147,21 @@ return {
 							end,
 						},
 						{
+							"$",
+							"$",
+							priority = 10,
+							languages = { "markdown", "markdown_inline", "plaintex", "latex" },
+							when = function(ctx)
+								return ctx.ts.lang ~= "latex" or ctx.ft == "markdown"
+							end,
+						},
+						{
 							"\\(",
 							"\\)",
 							languages = { "latex" },
+							when = function(ctx)
+								return ctx.ft ~= "markdown"
+							end,
 							open_or_close = function(ctx)
 								return not vim.endswith(ctx:text_before_cursor(), "\\")
 							end,
@@ -160,14 +169,21 @@ return {
 						{
 							"$$",
 							"$$",
+							languages = { "markdown", "markdown_inline", "plaintex" },
 							open_or_close = function(ctx)
 								return vim.endswith(ctx:text_before_cursor(), "$")
 							end,
-							languages = { "markdown", "markdown_inline", "latex", "plaintex" },
 						},
 					},
 					["£"] = {
-						{ "\\[", "\\]", languages = { "latex" } },
+						{
+							"\\[",
+							"\\]",
+							languages = { "latex" },
+							open_or_close = function(ctx)
+								return not vim.endswith(ctx:text_before_cursor(), "\\")
+							end,
+						},
 					},
 					["~"] = {
 						{
@@ -209,25 +225,8 @@ return {
 				},
 			},
 			highlights = {
-				enabled = true,
-				-- requires require('vim._core.ui2').enable({}), otherwise has no effect
-				cmdline = true,
-				-- set to { 'BlinkPairs' } to disable rainbow highlighting
-				groups = { "BlinkPairsOrange", "BlinkPairsPurple", "BlinkPairsBlue" },
-				unmatched_group = "BlinkPairsUnmatched",
-
-				-- highlights matching pairs under the cursor
-				matchparen = {
-					enabled = true,
-					-- known issue where typing won't update matchparen highlight, disabled by default
-					cmdline = false,
-					-- also include pairs not on top of the cursor, but surrounding the cursor
-					include_surrounding = false,
-					group = "BlinkPairsMatchParen",
-					priority = 250,
-				},
+				enabled = false,
 			},
-			debug = false,
 		},
 	},
 	{

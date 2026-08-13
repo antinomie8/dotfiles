@@ -13,13 +13,13 @@ local abbrs = {
 		desc = "reductio ad absurdum",
 		text = "for the sake of contradiction",
 	},
-	["wlog"] = {
-		text = {
-			"without loss of generality",
-			"sans perte de généralité",
-		},
-		uppercase = true,
-	},
+	-- ["wlog"] = {
+	-- 	text = {
+	-- 		"without loss of generality",
+	-- 		"sans perte de généralité",
+	-- 	},
+	-- 	uppercase = true,
+	-- },
 	["spdg"] = {
 		text = {
 			"sans perte de généralité",

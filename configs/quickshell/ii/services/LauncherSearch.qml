@@ -181,7 +181,6 @@ Singleton {
                                 Cliphist.deleteEntry(entry);
                             }
                         })],
-                    blurImage: shouldBlurImage
                 });
             }).filter(Boolean);
         } else if (root.query.startsWith(Config.options.search.prefix.emojis)) {

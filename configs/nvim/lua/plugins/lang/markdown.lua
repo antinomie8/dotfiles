@@ -121,30 +121,17 @@ return {
 		},
 	},
 	{
-		"bullets-vim/bullets.vim",
-		keys = {
-			{
-				"<CR>",
-				"<Cmd>InsertNewBullet<CR>",
-				mode = "i",
-				ft = { "markdown", "gitcommit", "typst" },
-			},
-			-- {
-			-- 	"o",
-			-- 	"<Cmd>InsertNewBullet<CR>",
-			-- 	ft = { "markdown", "gitcommit", "typst" },
-			-- },
-			{
-				"<localleader>x",
-				"<Cmd>ToggleCheckbox<CR>",
-				ft = { "markdown", "gitcommit", "typst" },
-				desc = "Toggle Bullet",
+		"bullets-vim/bullets.nvim",
+		ft = { "markdown", "text", "gitcommit", "typst" },
+		opts = {
+			enabled_file_types = { "markdown", "text", "gitcommit", "typst" },
+			set_mappings = false,
+			custom_mappings = {
+				{ "i", "<CR>", "<Plug>(bullets-newline)" },
+				{ "n", "o", "<Plug>(bullets-newline)" },
+				{ "n", "<localleader>x", "<Plug>(bullets-toggle-checkbox)" },
 			},
 		},
-		config = function()
-			vim.g.bullets_enabled_file_types = { "markdown", "text", "gitcommit", "typst" }
-			vim.g.bullets_set_mapping = 0
-		end,
 	},
 	{
 		"obsidian-nvim/obsidian.nvim",

@@ -38,7 +38,7 @@ return {
 					goto continue
 				end
 
-				local whitespace, keyword = line:match("^(%s*)([a-zA-Z]+):%s*(.*)")
+				local whitespace, keyword = line:match("^(%s*)(%a+):%s*(.*)")
 				if not keyword then
 					if vim.api.nvim_win_get_cursor(0)[1] == lnum then -- editing the current line
 						goto continue

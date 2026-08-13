@@ -176,7 +176,7 @@ return {
 							return vim.tbl_contains(lang, "en")
 						end,
 						min_keyword_length = 3,
-						score_offset = -10,
+						score_offset = -100,
 						opts = {},
 					},
 					-- asymptote = {

@@ -1,17 +1,28 @@
 #!/bin/zsh
 
-START_HOUR=23
-END_HOUR=5
-SLEEP_DELAY=15
+START_TIME=2230
+END_TIME=0500
+INITIAL_SLEEP_DELAY=5
+SLEEP_DELAY=0
+
+function guard() {
+	CURRENT_TIME=$(date +%H%M)
+
+	# 10# forces base 10 parsing to avoid parsing as octal in some cases
+	if [[ 10#$CURRENT_TIME -ge 10#$START_TIME ]] || [[ 10#$CURRENT_TIME -lt 10#$END_TIME ]]; then
+		notify-send -u critical -i bed "Bedtime" "Going to sleep in $1 seconds"
+		sleep $1
+		systemctl sleep
+		return 1
+	else
+		return 0
+	fi
+}
+
+guard $INITIAL_SLEEP_DELAY
 
 while true; do
-	CURRENT_HOUR=$(date +%H)
-
-	if [[ $CURRENT_HOUR -ge $START_HOUR ]] || [[ $CURRENT_HOUR -lt $END_HOUR ]]; then
-		notify-send -u critical -i bed "Bedtime" "Going to sleep in $SLEEP_DELAY seconds"
-		sleep 30
-		busctl call org.freedesktop.login1 /org/freedesktop/login1 org.freedesktop.login1.Manager Suspend b true
-	else
+	if guard $SLEEP_DELAY; then
 		break
 	fi
 done

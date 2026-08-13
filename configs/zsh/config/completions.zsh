@@ -117,7 +117,7 @@ zstyle ':fzf-tab:complete:*:options'    fzf-preview
 # commands preview
 zstyle ':fzf-tab:complete:(\\|*/|)man:*'    fzf-preview 'MANWIDTH=$FZF_PREVIEW_COLUMNS man $word'
 zstyle ':fzf-tab:complete:help:*'           fzf-preview '$word --help 2>/dev/null | bat --plain --language=help'
-zstyle ':fzf-tab:complete:(oly|oly-send):*' fzf-preview '
+zstyle ':fzf-tab:complete:(oly|oly-*|oly-send):*' fzf-preview '
 	case $group in
 		"[problem]") oly show $word --color=always ;;
 		"[subcommand]") oly $word --help ;;

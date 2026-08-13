@@ -18,7 +18,7 @@
 (defsrc
   lctl
   a    s    d    f    g    h    j    k    l    ;
-  2    7    9    0
+  2    3    4    7    9    0
 )
 
 ;; --- Aliases ---
@@ -76,13 +76,21 @@
   cap_egrave (tap-macro (release-only lctl) cmp (around ralt 7) E (press-only lctl) :delay 5)  ;; è -> È
   cap_ccedil (tap-macro (release-only lctl) cmp m C (press-only lctl) :delay 5)  ;; ç -> Ç
   cap_agrave (tap-macro (release-only lctl) cmp (around ralt 7) Q (press-only lctl) :delay 5)  ;; à -> À
+
+  ;; " lives unshifted on the physical `3` key on AZERTY, ' unshifted on `4`.
+  ;; kmonad has no literal "less-than" key name on a US board -- the </> key
+  ;; on AZERTY is the extra ISO key between left Shift and Z, which kmonad
+  ;; calls `lsgt` ("less/greater"): unshifted it's <, shifted it's >.
+  ;; Classic Compose recipe for guillemets is just doubling the bracket.
+  cap_guillopen  (tap-macro (release-only lctl) cmp lsgt lsgt (press-only lctl) :delay 5)  ;; " -> «
+  cap_guillclose (tap-macro (release-only lctl) cmp (around lsft lsgt) (around lsft lsgt) (press-only lctl) :delay 5)  ;; ' -> »
 )
 
 ;; --- Base layer with home row mods + caps ---
 (deflayer base
   @real_ctl
   @alt_a   @ctl_s   @sft_d   @met_f   g   h   @met_j   @sft_k   @ctl_l   @alt_;
-  _        _        _        _
+  _        _        _        _        _        _
 )
 
 ;; --- Overlay, active only while the left-Ctrl home row mod (s) is held ---
@@ -95,7 +103,7 @@
 (deflayer ctrl-ext
   _
   _    _    _    _    _    _    _    _    _    _
-  @cap_eacute  @cap_egrave  @cap_ccedil  @cap_agrave
+  @cap_eacute  @cap_guillopen  @cap_guillclose  @cap_egrave  @cap_ccedil  @cap_agrave
 )
 
 ;; vim: ft=lisp

@@ -4,10 +4,12 @@ user_pref("devtools.debugger.remote-enabled", true);                            
 user_pref("extension.pocket.enabled", false);                                               // disable Pocket
 user_pref("extensions.webextensions.addons-restricted-domains@mozilla.com.disabled", true); // allow addons to run in restricted domains
 user_pref("widget.use-xdg-desktop-portal.file-picker", 1);                                  // use xdg-desktop-portal-termfilechooser
-user_pref("browser.sessionstore.max_windows_undo", 20);                                     // how many closed windows to remember
-user_pref("browser.low_commit_space_threshold_percent", 35);                                // trigger tab unloading when less than this much memory is left
 user_pref("middlemouse.paste", false);                                                      // disable middle click paste
 user_pref("widget.gtk.middle-click-enabled", false);                                        // disable middle click close tab
+user_pref("browser.sessionstore.max_windows_undo", 20);                                     // how many closed windows to remember
+user_pref("browser.low_commit_space_threshold_percent", 35);                                // trigger tab unloading when less than this much memory is left
+user_pref("browser.tabs.unloadOnLowMemory", true);                                          // unload tabs when low on memory
+user_pref("browser.screenshots.dir", "~/Médias/Images/Captures d'écran");                   // where screenshots are saved
 
 // dark mode for pdf.js
 user_pref("pdfjs.forcePageColors", true);

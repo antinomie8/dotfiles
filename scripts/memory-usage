@@ -20,13 +20,12 @@ done |
     swap[$1] += $3
 }
 END {
-    printf "%-25s %10s %10s %10s\n",
-           "Application", "RAM(MB)", "Swap(MB)", "Total(MB)"
     for (app in rss)
-        printf "%-25s %10.1f %10.1f %10.1f\n",
+        printf "%-35.35s %10.1f %10.1f %10.1f\n",
                app,
                rss[app]/1024,
                swap[app]/1024,
                (rss[app]+swap[app])/1024
 }' |
-	sort -k4 -nr
+	sort -k4 -nr |
+	(printf "%-35s %10s %10s %10s\n" "Application" "RAM(MB)" "Swap(MB)" "Total(MB)"; cat)

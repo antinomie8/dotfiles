@@ -81,6 +81,7 @@ local snippets = {
 					{ i(1, "n -> +oo") },
 					{ i(1, "x -> +oo") },
 					{ i(1, "x -> 0") },
+					{ i(1, "x -> -oo") },
 				}),
 				i(2),
 			}
@@ -144,7 +145,7 @@ local snippets = {
 	),
 	s(
 		{
-			trig = "op",
+			trig = "oop",
 			dscr = "operatorname",
 			snippetType = "autosnippet",
 			condition = typst.in_math,
@@ -257,7 +258,7 @@ local snippets = {
 		}
 	),
 	s({
-			trig = "([a-zA-Z])bar",
+			trig = "(%a%a?)bar",
 			dscr = "bar",
 			regTrig = true,
 			snippetType = "autosnippet",
@@ -266,7 +267,7 @@ local snippets = {
 		{ t("bar("), f(function(_, snip) return snip.captures[1] end), t(")") }
 	),
 	s({
-			trig = "([a-zA-Z])hat",
+			trig = "(%a)hat",
 			dscr = "hat",
 			regTrig = true,
 			snippetType = "autosnippet",
@@ -275,7 +276,7 @@ local snippets = {
 		{ t("hat("), f(function(_, snip) return snip.captures[1] end), t(")") }
 	),
 	s({
-			trig = "([a-zA-Z])til",
+			trig = "(%a)til",
 			dscr = "tilde",
 			regTrig = true,
 			snippetType = "autosnippet",
@@ -320,13 +321,17 @@ local snippets = {
 
 local sets = {
 	["NN*"] = "NN^*",
-	["ZZ+"] = "ZZ_+",
 	["ZZ*"] = "ZZ^*",
-	["QQ+"] = "QQ_+",
+	["ZZ-"] = "ZZ^-",
 	["QQ*"] = "QQ^*",
-	["RR+"] = "RR_+",
+	["QQ+"] = "QQ^+",
+	["QQ-"] = "QQ^-",
+	["Q+*"] = "QQ_+^*",
 	["RR*"] = "RR^*",
+	["RR+"] = "RR^+",
+	["RR-"] = "RR^-",
 	["R+*"] = "RR_+^*",
+	["CC*"] = "CC^*",
 }
 
 for trigger, replace in pairs(sets) do

@@ -21,13 +21,19 @@
 #let iRR = $i RR$
 #let ZpZ = $ZZ \/ p ZZ$
 #let ZnZ = $ZZ \/ n ZZ$
+#let diff = $dif / (dif x)$
+#let dx = $dif x$
+#let dy = $dif y$
+#let dt = $dif t$
 
 #let ord = math.op("ord")
+#let sgn = math.op("sgn")
 #let pgcd = math.op("pgcd")
 #let ppcm = math.op("ppcm")
 
 #let card = math.abs
 #let bar = math.overline
+#let conj = math.overline
 
 #let pmod(x) = $space (mod #x)$
 #let cbrt(x) = $root(3, #x)$
@@ -39,6 +45,9 @@
 #let proj(point) = {
 	math.attach([$=$], t: [$#point$])
 }
+#let open(x, y) = $lr(\]#x\; #y\[)$
+#let leftopen(x, y) = $lr(\]#x\; #y\])$
+#let rightopen(x, y) = $lr(\[#x\; #y\[)$
 
 // commands
 #let vocab = text.with(weight: "bold", ..colors.env.vocab)
@@ -59,9 +68,14 @@
 	box(text(top-edge: "bounds", $wrapper(math.cal(it))$))
 })
 
-#let boxed(x, ..args) = box(stroke: .05em, outset: (x: 2pt, y: 4pt), x, ..args)
+#let boxed(x, ..args) = box(stroke: .05em, outset: (x: 2pt, y: 3pt), x, ..args)
 #let bigbox(x, color: auto, ..args) = {
-	align(center, box(stroke: (thickness: .07em, paint: auto), inset: .8em, x, ..args))
+	align(center, box(
+		stroke: (thickness: .07em, paint: auto),
+		inset: .8em,
+		x,
+		..args,
+	))
 }
 
 #let toc = {
@@ -99,7 +113,18 @@
 	link("oly://gen?name=" + name, text)
 }
 
-#let parachuted = {
-	import "@preview/marginalia:0.3.1": notefigure
-	notefigure(image("/icons/parachute.svg"), dy: 1.5em, alt: "parachuted idea")
+#let hatch(size, stroke: .3pt) = {
+	import "@preview/modpattern:0.2.0": modpattern
+	if type(size) != array { size = (size, size) }
+	modpattern(size: size)[
+		#move(dx: 50%, line(start: (0%, 100%), end: (100%, 0%), stroke: stroke))
+	]
 }
+
+#let side-icon(name: none, path: none, ..args) = {
+	import "@preview/marginalia:0.3.1": notefigure
+	let path = if path != none { path } else { "/icons/" + name + ".svg" }
+	notefigure(image(path), dy: 1.5em, ..args)
+}
+#let parachuted = side-icon(name: "parachute")
+#let overkill = side-icon(name: "tank")

@@ -105,5 +105,6 @@ return {
 		toggle = {
 			notify = false,
 		},
+		quickfile = {},
 	},
 }

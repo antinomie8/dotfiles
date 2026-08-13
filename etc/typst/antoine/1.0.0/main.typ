@@ -101,6 +101,10 @@
 		v(-0.5em)
 	}
 
+	// make divider not span the whole page width
+	show divider: set align(center)
+	show divider: line(length: 85%)
+
 	// Indent lists
 	set enum(indent: 1em)
 	set list(indent: 1em)

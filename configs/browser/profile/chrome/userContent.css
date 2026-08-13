@@ -31,3 +31,19 @@
 		display: none !important;
 	}
 }
+
+/* hide things wanting to make you create an account on Twitter */
+@-moz-document domain("x.com") {
+	aside.fixed.bottom-0.isolate.z-40,
+	button.border-normal.shadow-popup.bg-modal,
+	div.fixed.inset-x-0.bottom-0.bg-gray-1100 {
+		display: none !important;
+	}
+}
+
+/* hide youtube logo */
+@-moz-document domain("youtube.com") {
+	#logo-icon {
+		display: none !important;
+	}
+}

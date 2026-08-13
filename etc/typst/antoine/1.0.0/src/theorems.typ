@@ -20,12 +20,11 @@
 		base_level: base_level,
 		cite: none,
 	) => {
-		let name = none
-		if args.pos().len() > 0 {
-			name = args.pos().first()
-			if cite == none {
-				cite = name
-			}
+		let name = args.pos().first(default: none)
+		if cite == none {
+			cite = name
+		}
+		if cite != none {
 			supplement = cite
 		}
 		if refnumbering == auto {

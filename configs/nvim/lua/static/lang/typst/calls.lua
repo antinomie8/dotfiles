@@ -8,8 +8,11 @@ return {
 	["hat"]       = { left = "∠(",    right = ")" },
 
 	["pmod"]      = { left = "(mod ", right = ")" },
-	["dbbracket"] = { left = "⟦",     right = "⟧" },
 	["card"]      = { left = "|",     right = "|" },
+	["dbbracket"] = { left = "⟦",     right = "⟧" },
+	["open"]      = { left = "]",     right = "[" },
+	["leftopen"]  = { left = "]",     right = "]" },
+	["rightopen"] = { left = "[",     right = "[" },
 
 	-- Mathematical Calligraphic (aka cal)
 	cal = {

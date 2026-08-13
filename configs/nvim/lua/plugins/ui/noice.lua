@@ -87,8 +87,6 @@ return {
 			},
 			markdown = {
 				hover = {
-					["|(%S-)|"] = vim.cmd.help, -- vim help links
-					["%[.-%]%((%S-)%)"] = require("noice.util").open, -- markdown links
 					["%%(%S-) "] = require("utils.cppman").open,
 					["@c ([^ .]+)"] = require("utils.cppman").open,
 					["\\<a href=\"([^>]*)\">.-\\</a>"] = function(match)

@@ -144,5 +144,3 @@ hl.window_rule({
 	size = { 0, 0 },
 	no_initial_focus = true,
 }) -- hide inkscape loading screen
-
--- hl.window_rule({ match = { class = "org.pwmt.zathura" }, scroll_touchpad = 0.1 })

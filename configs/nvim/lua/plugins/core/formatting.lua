@@ -42,11 +42,13 @@ return {
 		local config_home = (vim.env.XDG_CONFIG_HOME or vim.env.HOME .. "/.config")
 		local nvim_config = vim.fn.stdpath("config") .. "/"
 		local zsh_config = (vim.env.ZDOTDIR or vim.env.HOME .. "/.zsh") .. "/"
+		local typst_local_packages = (vim.env.XDG_DATA_HOME or vim.env.HOME .. "/.local/share") .. "/typst/packages/"
 		local disabled_paths = {
 			nvim_config .. "lua/config/options.lua",
 			nvim_config .. "lua/plugins/coding/dial.lua",
 			nvim_config .. "lua/plugins/coding/surround.lua",
 			nvim_config .. "lua/plugins/ui/dashboard.lua",
+			nvim_config .. "lua/snippets/abbreviations.lua",
 			nvim_config .. "lua/static/**/*.lua",
 			nvim_config .. "after/plugin/icons.lua",
 			nvim_config .. "after/queries/asymptote/highlights.scm",
@@ -58,6 +60,7 @@ return {
 
 			config_home .. "/quickshell/ii/**",
 			config_home .. "/hypr/hyprland/execs.lua",
+			typst_local_packages .. "local/figures/1.0.0/function-graph/drawing.typ",
 			(vim.env.TEXMFHOME or vim.env.HOME) .. "/tex/latex/**/*.tex",
 			(vim.env.ASYMPTOTE_HOME or vim.env.HOME .. "/.asy") .. "/config.asy",
 		}
@@ -106,9 +109,6 @@ return {
 						end
 						return args
 					end,
-				},
-				typstyle = {
-					prepend_args = { "--line-width", "100" },
 				},
 				shfmt = {
 					prepend_args = function(_, ctx)

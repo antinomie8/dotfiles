@@ -58,9 +58,11 @@ local function ensure_figures_import()
 
 	if is_imported then return end
 
-	local insert_row = last_import_row == -1 and 0 or (last_import_row + 1)
-
-	vim.api.nvim_buf_set_lines(buf, insert_row, insert_row, false, { insert_str })
+	if last_import_row ~= -1 then
+		vim.api.nvim_buf_set_lines(buf, last_import_row + 1, last_import_row + 1, false, { insert_str })
+	else
+		vim.api.nvim_buf_set_lines(buf, 0, 0, false, { insert_str, "" })
+	end
 end
 
 return {
@@ -76,7 +78,7 @@ return {
 				}),
 			)
       ]], { i(1) }),
-		{ callbacks = { [-1] = { [events.pre_expand] = ensure_figures_import } } }
+		{ callbacks = { [-1] = { [events.enter] = ensure_figures_import } } }
 	),
 	s({ trig = "!Z", dscr = "complex plane", snippetType = "autosnippet" },
 		fmt([[
@@ -89,7 +91,7 @@ return {
 			)
       ]],
 			{ i(1) }),
-		{ callbacks = { [-1] = { [events.pre_expand] = ensure_figures_import } } }
+		{ callbacks = { [-1] = { [events.enter] = ensure_figures_import } } }
 	),
 	s({ trig = "!G", dscr = "function graph", snippetType = "autosnippet" },
 		fmt(
@@ -97,16 +99,27 @@ return {
 				#figure(
 					graph({
 						import figures.function-graph: *
+						import calc: *
 
-						<>
+						plot.add(domain: (-2, 7), x =>> <>)
 					}),
 				)
       ]],
-			{
-				i(1, [[let f = preset.cubic
-		plot.add(domain: (-2, 7), style: (stroke: 0.05em + rgb("#0000FF")), samples: 200, f)]]),
-			}
+			{ i(1) }
 		),
-		{ callbacks = { [-1] = { [events.pre_expand] = ensure_figures_import } } }
+		{ callbacks = { [-1] = { [events.enter] = ensure_figures_import } } }
+	),
+	s({ trig = "!trig", dscr = "unit circle", snippetType = "autosnippet" },
+		fmt([[
+			#figure(
+				trig-circle({
+					import figures.drawing: *
+
+					<>
+				}),
+			)
+      ]],
+			{ i(1) }),
+		{ callbacks = { [-1] = { [events.enter] = ensure_figures_import } } }
 	),
 }

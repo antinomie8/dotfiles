@@ -21,7 +21,10 @@
 
 #let dot(..args) = {
 	let points = args.pos()
-	let args = argparse((label: ("padding", "fill", "anchor", "dir"), dot: ("label",)), args)
+	let args = argparse(
+		(label: ("padding", "fill", "anchor", "dir"), dot: ("label",)),
+		args,
+	)
 
 	args.default.insert("fill", args.label.at("fill", default: black))
 
@@ -45,7 +48,6 @@
 		stroke: black,
 		..args,
 	)
-	// @typstyle on
 	if name != none {
 		label((4, 3), name, dir: 5, padding: 0.7em)
 	}
@@ -55,7 +57,10 @@
 
 #let right-angle = cetz.angle.right-angle.with(label: none, radius: 1cm / 3)
 
-#let dir(angle) = (calc.cos(angle * calc.pi / 180), calc.sin(angle * calc.pi / 180))
+#let dir(angle) = (
+	calc.cos(angle * calc.pi / 180),
+	calc.sin(angle * calc.pi / 180),
+)
 
 #let unitcircle = cetz.draw.circle.with((0, 0), radius: 1)
 
@@ -74,9 +79,35 @@
 	cetz.draw.circle(mid, radius: (major, minor), ..args)
 }
 
-#let brace(..args) = {
-	cetz.decorations.brace(flip: true, amplitude: 0.1, name: "brace", content-offset: 0.05, ..args)
-	if args.named().keys().contains("label") {
-		cetz.draw.content("brace.content", args.at("label"))
+#let brace(start, end, ..args) = {
+	cetz.decorations.brace(
+		start,
+		end,
+		amplitude: 0.1,
+		name: "brace",
+		content-offset: -0.02,
+		..args,
+	)
+	if args.named().keys().contains("content") {
+		let flip = args.at("flip", default: false)
+		let pt = sub(end, start)
+		let angle = 0
+		let anchor = if calc.abs(im(pt)) < 10e-9 {
+			// horizontal
+			if flip != (re(pt) > 0) { "south" } else { "north" }
+		} else if calc.abs(re(pt)) < 10e-9 {
+			// vertical
+			if flip != (im(pt) > 0) { "east" } else { "west" }
+		} else {
+			let arg = arg(pt)
+			angle = if (calc.abs(arg) < calc.pi / 2) { arg } else { calc.pi + arg }
+			if flip != (calc.abs(arg) < calc.pi / 2) { "south" } else { "north" }
+		}
+		cetz.draw.content(
+			"brace.content",
+			args.at("content"),
+			angle: args.at("angle", default: angle * 1rad),
+			anchor: args.at("anchor", default: anchor),
+		)
 	}
 }

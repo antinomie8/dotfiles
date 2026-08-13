@@ -3,6 +3,7 @@
 #import "@preview/cetz-plot:0.1.4"
 
 #import "/drawing/canvas.typ": canvas as cetz-canvas
+#import "plot.typ": plot
 
 #let graph(
 	preset: "default",
@@ -14,16 +15,30 @@
 	..args,
 ) = {
 	let canvas-content = {
+		let scale = if scale == auto { 1 } else { scale }
 		let presets = (
 			"default": (
 				axis: (mark: (end: "curved-stealth", fill: black, scale: 0.8)),
 				axis-style: "school-book",
 				x-tick-step: none,
 				y-tick-step: none,
-				x-max: 7.4,
-				x-min: -2,
-				y-max: 3.4,
-				y-min: -2.3,
+				x-max: 7.4 * scale,
+				x-min: -2 * scale,
+				y-max: 3.4 * scale,
+				y-min: -2.3 * scale,
+			),
+			"left": (
+				axis: (
+					mark: (end: "curved-stealth", fill: black, scale: 0.8),
+					padding: 0,
+				),
+				axis-style: "left",
+				x-tick-step: none,
+				y-tick-step: none,
+				x-min: 0 * scale,
+				y-min: 0 * scale,
+				x-max: 7.4 * scale,
+				y-max: 4.2 * scale,
 			),
 			"complex-plane": (
 				axis: (
@@ -35,23 +50,19 @@
 				axis-style: "school-book",
 				x-tick-step: 1,
 				y-tick-step: 1,
-				x-max: 5,
-				x-min: -5,
-				y-max: 5,
-				y-min: -5,
+				x-max: 5 * scale,
+				x-min: -5 * scale,
+				y-max: 5 * scale,
+				y-min: -5 * scale,
 				x-label: $"Re"$,
 				y-label: $"Im"$,
-				y-format: x => if (x == 1) { $i$ } else if (x == -1) { $-i$ } else { $#x i$ },
+				y-format: x => if (x == 1) { $i$ } else if (x == -1) { $-i$ } else {
+					$#x i$
+				},
 			),
 		)
 		let preset = presets.at(preset)
 		let get = key => args.at(key, default: preset.at(key))
-
-		let scale = if scale == auto { 1cm / length } else { scale }
-		let x-max = get("x-max") * scale
-		let x-min = get("x-min") * scale
-		let y-max = get("y-max") * scale
-		let y-min = get("y-min") * scale
 
 		let axis = preset.at("axis")
 		let mark = axis.at("mark")
@@ -63,10 +74,6 @@
 				shared-zero: shared-zero,
 				stroke: .05em,
 				..axis,
-				x-max: x-max,
-				x-min: x-min,
-				y-max: y-max,
-				y-min: y-min,
 			),
 			..style,
 		)
@@ -76,14 +83,10 @@
 			scale * (get("x-max") - get("x-min")),
 			scale * (get("y-max") - get("y-min")),
 		)
-		cetz-plot.plot.plot(
+		plot(
 			size: size,
 			..preset,
 			..args,
-			x-max: x-max,
-			x-min: x-min,
-			y-max: y-max,
-			y-min: y-min,
 		)
 	}
 

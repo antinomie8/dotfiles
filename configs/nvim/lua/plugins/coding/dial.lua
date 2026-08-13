@@ -16,6 +16,16 @@ return {
 		local default = {
 			augend.integer.alias.decimal, -- nonnegative decimal number
 			augend.integer.alias.hex,  -- nonnegative hex number
+			augend.integer.new({
+				radix = 16,
+				prefix = "0x",
+				natural = true,
+				case = "upper",
+			}),
+			augend.hexcolor.new({
+				case = "upper",
+			}),
+
 			augend.date.new({
 				pattern = "%d/%m/%Y",
 				default_kind = "day",
@@ -36,13 +46,28 @@ return {
 			}),
 
 			augend.constant.new({
-				elements = { "and", "or" },
-				word = true,
+				elements = { "&&", "||" },
+				word = false,
 				cyclic = true,
 			}),
 			augend.constant.new({
-				elements = { "&&", "||" },
+				elements = { ">=", "<=" },
 				word = false,
+				cyclic = true,
+			}),
+			augend.constant.new({
+				elements = { ">", "<" },
+				word = false,
+				cyclic = true,
+			}),
+			augend.constant.new({
+				elements = { "+", "-" },
+				word = false,
+				cyclic = true,
+			}),
+			augend.constant.new({
+				elements = { "and", "or" },
+				word = true,
 				cyclic = true,
 			}),
 			augend.constant.new({
@@ -54,15 +79,6 @@ return {
 				elements = { "True", "False" },
 				word = true,
 				cyclic = true,
-			}),
-			augend.integer.new({
-				radix = 16,
-				prefix = "0x",
-				natural = true,
-				case = "upper",
-			}),
-			augend.hexcolor.new({
-				case = "upper",
 			}),
 		}
 

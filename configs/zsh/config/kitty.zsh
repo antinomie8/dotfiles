@@ -25,7 +25,7 @@ function _tui_handle_spacing() {
 #########################################
 
 function nvim() {
-	if (( ${@[(Ie)--headless]} )); then
+	if ((${@[(Ie)--headless]})); then
 		command nvim $@
 	else
 		_tui_handle_spacing nvim $@
@@ -47,7 +47,7 @@ function btop() {
 	_tui_handle_spacing btop $@
 }
 alias neomutt="TERM=xterm-direct _tui_handle_spacing neomutt"
-local tuis=(yazi ncdu aerc tmux)
+local tuis=(yazi ncdu aerc tmux opencode)
 for tui in $tuis; do
 	alias $tui="_tui_handle_spacing $tui"
 done

@@ -66,7 +66,7 @@ function Status:name()
 	local h = self._current.hovered
 	if not h then return ui.Line({}) end
 
-	local icon = h:icon()
+	local icon = th.icon:match(h)
 	local url = tostring(h.url)
 	local home = os.getenv("HOME")
 	if home and url:sub(1, #home) == home then
@@ -201,7 +201,7 @@ function Header:flags()
 	local finder = self._tab.finder
 
 	local t = {}
-	if cwd.is_search then
+	if cwd.spec.is_search then
 		t[#t + 1] = string.format("search: %s", cwd.domain)
 	end
 	if filter then
@@ -417,7 +417,7 @@ end
 
 -- don't color the icon the same color as the current line
 function Entity:icon()
-	local icon = self._file:icon()
+	local icon = th.icon:match(self._file)
 	if not icon then
 		return ""
 	else

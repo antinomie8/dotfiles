@@ -14,6 +14,7 @@ local custom = {
 	["quad"]       = { cchar = "quad", hl = "Comment" },
 	["mod"]        = { cchar = "mod", hl = "Delimiter" },
 	["dif"]        = { cchar = "d", hl = "Operator" },
+	["int"]        = { cchar = "∫", hl = "Operator" },
 
 	["pm"]         = symbols["plus.minus"],
 	["mp"]         = symbols["minus.plus"],
@@ -27,6 +28,7 @@ local custom = {
 	["iRR"]        = { cchar = "iℝ", hl = "TypstConcealSet" },
 	["ZpZ"]        = { cchar = "ℤ/pℤ", hl = "TypstConcealSet" },
 	["ZnZ"]        = { cchar = "ℤ/nℤ", hl = "TypstConcealSet" },
+	["diff"]       = { cchar = "d/dx", hl = "Operator" },
 }
 
 return setmetatable(custom, {

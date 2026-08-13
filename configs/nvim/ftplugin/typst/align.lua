@@ -6,6 +6,11 @@ local ALIGN_OPS = {
 	[">="] = true,
 }
 
+local function error(msg, level)
+	vim.notify(msg, level and level or vim.log.levels.ERROR,
+		{ title = "typst align", icon = "" })
+end
+
 --- Build an indent string that reaches display column `col` (0-indexed),
 --- respecting the buffer's 'expandtab'/'tabstop'.
 local function indent_to_col(bufnr, col)
@@ -33,19 +38,14 @@ local function visual_col(line, bytecol, tabstop)
 	return vcol
 end
 
---- Walk up from `node` and return the nearest ancestor (or `node` itself)
---- whose type is "formula" and whose parent is "math". That is the
---- outermost formula of the enclosing `$ ... $` (or `$ ... $` block),
---- which is exactly the node we want to scan for top-level relation
---- operators.
+---@param node TSNode?
+---@return TSNode? formula
 local function find_top_formula(node)
-	local cur = node
-	while cur do
-		local parent = cur:parent()
-		if parent and parent:type() == "math" and cur:type() == "formula" then
-			return cur
+	while node do
+		if node and node:type() == "formula" then
+			return node
 		end
-		cur = parent
+		node = node:parent()
 	end
 	return nil
 end
@@ -53,14 +53,16 @@ end
 --- Collect, in document order, the direct children of `formula` that
 --- represent a top-level relation operator: `=`, `<`, `>` are `symbol`
 --- nodes, while `<=` and `>=` are a single `shorthand` node.
+---@param formula TSNode
+---@param bufnr integer
+---@return TSNode[]
 local function collect_relation_symbols(formula, bufnr)
 	local matches = {}
-	for i = 0, formula:named_child_count() - 1 do
-		local child = formula:named_child(i)
+	for _, child in ipairs(formula:named_children()) do
 		local ctype = child:type()
 		if ctype == "symbol" or ctype == "shorthand" then
 			local text = vim.treesitter.get_node_text(child, bufnr)
-			if (ctype == "symbol" or ctype == "shorthand") and ALIGN_OPS[text] then
+			if ALIGN_OPS[text] then
 				table.insert(matches, child)
 			end
 		end
@@ -102,7 +104,7 @@ local function align_math_equation()
 
 	local ok, parser = pcall(vim.treesitter.get_parser, bufnr, "typst")
 	if not ok or not parser then
-		vim.notify("typst_align: no typst tree-sitter parser for this buffer", vim.log.levels.ERROR)
+		error("no typst tree-sitter parser for this buffer")
 		return
 	end
 	parser:parse()
@@ -111,19 +113,19 @@ local function align_math_equation()
 	local row, col = cursor[1] - 1, cursor[2]
 	local node = vim.treesitter.get_node({ bufnr = bufnr, pos = { row, col } })
 	if not node then
-		vim.notify("typst_align: no tree-sitter node at cursor", vim.log.levels.ERROR)
+		error("no tree-sitter node at cursor")
 		return
 	end
 
 	local formula = find_top_formula(node)
 	if not formula then
-		vim.notify("typst_align: cursor is not inside a math formula", vim.log.levels.WARN)
+		error("cursor is not inside a math formula", vim.log.levels.WARN)
 		return
 	end
 
 	local matches = collect_relation_symbols(formula, bufnr)
 	if #matches == 0 then
-		vim.notify("typst_align: no top-level =, <, >, <=, >= found in this formula", vim.log.levels.WARN)
+		error("no top-level " .. table.concat(ALIGN_OPS, ", ") .. " found in this formula", vim.log.levels.WARN)
 		return
 	end
 
@@ -176,141 +178,10 @@ local function align_math_equation()
 		end
 	end
 
-	vim.notify(string.format("typst_align: aligned %d relation(s)", #matches), vim.log.levels.INFO)
-end
-
---- Does `line` begin with optional whitespace, "&", optional whitespace,
---- then one of the relation operators?
-local function line_starts_with_align_op(line)
-	for _, op in ipairs(ALIGN_OPS) do
-		if line:match("^%s*&%s*" .. op) then
-			return true
-		end
-	end
-	return false
-end
-
---- Is the position (row, col) inside a "math" node?
-local function pos_in_math(bufnr, row, col)
-	local ok, parser = pcall(vim.treesitter.get_parser, bufnr, "typst")
-	if not ok or not parser then return false end
-	parser:parse()
-	local node = vim.treesitter.get_node({ bufnr = bufnr, pos = { row, col } })
-	local cur = node
-	while cur do
-		if cur:type() == "math" then return true end
-		cur = cur:parent()
-	end
-	return false
-end
-
---- 0-indexed byte column of the first non-whitespace character on `line`
---- (0 if the line is entirely whitespace/empty).
-local function first_nonws_col(line)
-	local first = line:find("%S")
-	return first and (first - 1) or 0
-end
-
---- Is `row` the last line of the top-level formula enclosing it (i.e. the
---- last line of content before the math block's closing "$")?
-local function is_last_line_of_math(bufnr, row)
-	local line = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ""
-	local col = first_nonws_col(line)
-	local ok, parser = pcall(vim.treesitter.get_parser, bufnr, "typst")
-	if not ok or not parser then return false end
-	parser:parse()
-	local node = vim.treesitter.get_node({ bufnr = bufnr, pos = { row, col } })
-	if not node then return false end
-	local formula = find_top_formula(node)
-	if not formula then return false end
-	local _, _, end_row = formula:range()
-	return row == end_row
-end
-
---- Trigger for `o`: current line ends with "\", OR begins with "&<op>",
---- OR is the last line of the enclosing math block.
-local function should_open_below(bufnr, row)
-	local line = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ""
-	local col = first_nonws_col(line)
-	if not pos_in_math(bufnr, row, col) then return false end
-	if line:match("\\%s*$") then return true end
-	if line_starts_with_align_op(line) then return true end
-	if is_last_line_of_math(bufnr, row) then return true end
-	return false
-end
-
---- Trigger for `O`: current line begins with "&<op>" (nothing else).
-local function should_open_above(bufnr, row)
-	local line = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ""
-	if not line_starts_with_align_op(line) then return false end
-	local col = first_nonws_col(line)
-	return pos_in_math(bufnr, row, col)
-end
-
---- If `row` doesn't already end (ignoring trailing whitespace) with a
---- backslash, trim trailing whitespace and append " \".
-local function ensure_trailing_backslash(bufnr, row)
-	local line = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ""
-	if line:match("\\%s*$") then
-		return -- already there
-	end
-	local trimmed = line:gsub("%s+$", "")
-	vim.api.nvim_buf_set_lines(bufnr, row, row + 1, false, { trimmed .. " \\" })
-end
-
---- Insert a "<indent>&= | \" line at buffer row `insert_row` (0-indexed,
---- text pushed down to make room) and return the text before the cursor
---- placeholder ("<indent>&= ").
-local function open_align_line(bufnr, insert_row, indent)
-	local before_cursor = indent .. "&= "
-	local after_cursor = " \\"
-	vim.api.nvim_buf_set_lines(bufnr, insert_row, insert_row, false, { before_cursor .. after_cursor })
-	return before_cursor
-end
-
---- `o`/`O` replacement, math-aware:
----   o: if the current line ends with "\", begins with "&<op>", or is the
----      last line of the enclosing math block, ensure it ends with " \"
----      and open a "&= | \" continuation line BELOW it (| = cursor).
----   O: if the current line begins with "&<op>", open a "&= | \" line
----      ABOVE it instead (no backslash bookkeeping on the current line).
---- Anywhere else, falls back to plain o / O.
-local function smart_open(direction)
-	local bufnr = vim.api.nvim_get_current_buf()
-	local row = vim.api.nvim_win_get_cursor(0)[1] - 1
-	local line = vim.api.nvim_buf_get_lines(bufnr, row, row + 1, false)[1] or ""
-	local indent = line:match("^%s*") or ""
-
-	if direction == "below" and should_open_below(bufnr, row) then
-		ensure_trailing_backslash(bufnr, row)
-		local before_cursor = open_align_line(bufnr, row + 1, indent)
-		vim.api.nvim_win_set_cursor(0, { row + 2, #before_cursor })
-		vim.cmd.startinsert()
-		return
-	end
-
-	if direction == "above" and should_open_above(bufnr, row) then
-		local before_cursor = open_align_line(bufnr, row, indent)
-		vim.api.nvim_win_set_cursor(0, { row + 1, #before_cursor })
-		vim.cmd.startinsert()
-		return
-	end
-
-	-- Not a math alignment context: defer to Neovim's real o / O so indent
-	-- expressions, autopairs, etc. all behave normally.
-	if direction == "above" then
-		vim.api.nvim_feedkeys("O", "n", false)
-	else
-		vim.api.nvim_feedkeys("o", "n", false)
-	end
+	error(string.format("aligned %d relation%s", #matches, #matches == 1 and "" or "s"), vim.log.levels.INFO)
 end
 
 -- keymaps
 vim.keymap.set("n", "<localleader>=", function()
 	align_math_equation()
 end, { buffer = true, desc = "Align Typst math relation chain" })
-
-vim.keymap.set("n", "o", function() smart_open("below") end,
-	{ buffer = true, desc = "Open line below" })
-vim.keymap.set("n", "O", function() smart_open("above") end,
-	{ buffer = true, desc = "Open line above" })

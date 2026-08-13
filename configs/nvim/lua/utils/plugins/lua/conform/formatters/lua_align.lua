@@ -27,7 +27,7 @@ return {
 				elseif anchor:find("=$") then
 					local indent = anchor:match("^%s*")
 					local align_spaces
-					local keyword = anchor:match("^" .. indent .. "[a-z]* ")
+					local keyword = anchor:match("^" .. indent .. "%l* ")
 					if keyword then
 						align_spaces = string.rep(" ", #keyword)
 					else

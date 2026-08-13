@@ -1,4 +1,4 @@
-local setup_mock_statusline = function()
+local function setup_mock_statusline()
 	-- Skip if we already entered vim
 	if vim.v.vim_did_enter == 1 then return end
 

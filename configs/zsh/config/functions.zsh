@@ -12,6 +12,17 @@ function compile() {
 		asm)
 			local compiler="assemble"
 			;;
+		tex)
+			latexmk -pdf -silent -interaction=nonstopmode $1
+
+			for file in ${1:r}.*; do
+				ext=${file:e}
+				if [[ $ext != pdf && $ext != tex ]]; then
+					rm $file
+				fi
+			done
+			return
+			;;
 		*)
 			echo "file extension not recognized"
 			;;
