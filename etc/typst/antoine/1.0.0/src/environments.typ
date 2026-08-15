@@ -185,7 +185,7 @@
 					text(..args, ". ")
 				}
 			}
-			if boxed {
+			context if boxed and document-class.get() != "pofm" {
 				callout(
 					..calloutargs,
 					..additional_calloutargs,

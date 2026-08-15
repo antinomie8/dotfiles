@@ -6,14 +6,16 @@
 #let setup(
 	title: none,
 	subtitle: none,
+	name: none,
 	author: (),
 	date: none,
-	maketitle: false,
 	class: "normal",
+	maketitle: false,
 	body,
 ) = {
 	document-class.update(class)
 
+	// Translate month in date
 	if (date != none) {
 		date = context {
 			let found = false
@@ -30,6 +32,7 @@
 	}
 
 	if type(author) == str { author = (author,) }
+
 	set document(title: title, author: author)
 	set page(
 		paper: "a4",
@@ -47,7 +50,7 @@
 					date
 				}
 				h(1fr)
-				text(weight: "bold", title)
+				text(weight: "bold", if name == none { title } else { name })
 				box(width: 100%, align(center, line(length: 100%, stroke: 0.4pt)))
 			}
 		},
@@ -60,7 +63,6 @@
 	set text(
 		font: fonts.text,
 		size: if class == "normal" { 11pt } else if class == "pofm" { 12pt },
-		fallback: false,
 	)
 	show raw: set text(font: fonts.mono)
 

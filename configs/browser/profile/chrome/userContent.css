@@ -17,7 +17,7 @@
 	}
 }
 
-/* hide "Only you can see your full profile" on github */
+/* hide "Only you can see your full profile" on GitHub */
 @-moz-document domain("github.com") {
 	.tmp-mt-4.flash {
 		display: none !important;
@@ -41,9 +41,23 @@
 	}
 }
 
-/* hide youtube logo */
+/* hide annoying stuff on youtube */
 @-moz-document domain("youtube.com") {
-	#logo-icon {
+	#logo-icon,
+	#country-code,
+	ytd-guide-section-renderer.style-scope:nth-child(1)
+		> div:nth-child(2)
+		> ytd-guide-entry-renderer:nth-child(2) /* Shorts */,
+	ytd-guide-section-renderer.style-scope:nth-child(4) /* More from YouTube */,
+	.ytSearchboxComponentSuggestionsContainer /* Search results */,
+	ytd-notification-topbar-button-renderer.style-scope /* Notifications bell */ {
+		display: none !important;
+	}
+}
+
+/* Hide Whatsapp locked chats */
+@-moz-document domain("web.whatsapp.com") {
+	button.xjb2p0i /* locked chats */ {
 		display: none !important;
 	}
 }

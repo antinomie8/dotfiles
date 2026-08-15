@@ -19,6 +19,7 @@ return {
 				source = true,
 				title = true,
 				subtitle = true,
+				name = true,
 				topic = true,
 				tags = true,
 				url = true,
