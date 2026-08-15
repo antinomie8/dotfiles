@@ -9,8 +9,11 @@
 	author: (),
 	date: none,
 	maketitle: false,
+	class: "normal",
 	body,
 ) = {
+	document-class.update(class)
+
 	if (date != none) {
 		date = context {
 			let found = false
@@ -32,7 +35,7 @@
 		paper: "a4",
 		margin: auto,
 		header: context {
-			if not maketitle or here().position().page != 1 {
+			if not maketitle or here().position().page != 1 or class == "pofm" {
 				set text(size: 0.8em)
 				set align(left)
 				text(style: "normal", author.join(", "))
@@ -56,7 +59,7 @@
 	)
 	set text(
 		font: fonts.text,
-		size: 11pt,
+		size: if class == "normal" { 11pt } else if class == "pofm" { 12pt },
 		fallback: false,
 	)
 	show raw: set text(font: fonts.mono)
@@ -116,33 +119,41 @@
 	show: thmrules
 
 	// title
-	show std.title: it => {
-		v(1em)
-		align(center, text(
-			size: 1em,
-			weight: "bold",
-			font: fonts.sans,
-			it,
-		))
-		align(center, text(
-			size: 0.6em,
-			weight: "bold",
-			font: fonts.sans,
-			subtitle,
-		))
-		align(center, text(
-			size: 15pt,
-			weight: "regular",
-			smallcaps(author.join(", ")),
-		))
-		align(center, text(
-			size: 11pt,
-			weight: "regular",
-			date,
-		))
-		v(1.5em)
-	}
 	if (maketitle) {
+		show std.title: it => if class == "normal" {
+			v(1em)
+			align(center, text(
+				size: 1em,
+				weight: "bold",
+				font: fonts.sans,
+				it,
+			))
+			align(center, text(
+				size: 0.6em,
+				weight: "bold",
+				font: fonts.sans,
+				subtitle,
+			))
+			align(center, text(
+				size: 15pt,
+				weight: "regular",
+				smallcaps(author.join(", ")),
+			))
+			align(center, text(
+				size: 11pt,
+				weight: "regular",
+				date,
+			))
+			v(1.5em)
+		} else if class == "pofm" {
+			v(0.9em)
+			align(center, smallcaps(text(
+				font: "New Computer Modern 08",
+				weight: "bold",
+				size: 22pt,
+				title,
+			)))
+		}
 		std.title()
 	}
 

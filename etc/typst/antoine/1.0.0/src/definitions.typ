@@ -1,3 +1,5 @@
+#let document-class = state("document class", "normal")
+
 #let fonts = (
 	text: ("New Computer Modern", "Noto Color Emoji"),
 	sans: ("Noto Sans", "Noto Color Emoji"),

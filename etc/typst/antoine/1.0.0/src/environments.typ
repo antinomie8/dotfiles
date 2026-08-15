@@ -167,18 +167,22 @@
 				body,
 			)
 		} else {
-			let header = {
-				let args = arguments(weight: "bold", style: style, fill: color)
+			let header = context {
+				let args = if document-class.get() == "normal" {
+					arguments(weight: "bold", style: style, fill: color)
+				} else if document-class.get() == "pofm" {
+					arguments(style: "italic", fill: color, font: "ITC Zapf Chancery Std Roman", size: 14pt)
+				}
 
 				text(get_env_name(env_name), ..args)
 				if number != none {
 					text(..args, " " + number)
 				}
 				if type(name) == str or type(name) == content {
-					text(style: style, fill: color, " (" + name + ")")
+					text(size: 11pt, style: style, fill: color, " (" + name + ")")
 				}
 				if linebreak { [\ ] } else {
-					text(..args, ": ")
+					text(..args, ". ")
 				}
 			}
 			if boxed {
@@ -234,11 +238,7 @@
 
 #let (theorem, _theorem) = un-numbered(thm-box("theorem", linebreak: true, ..colors.env.theorem))
 #let (corollary, _corollary) = un-numbered(thm-box("corollary", ..colors.env.theorem))
-#let (proposition, _proposition) = un-numbered(thm-box(
-	"proposition",
-	linebreak: true,
-	..colors.env.theorem,
-))
+#let (proposition, _proposition) = un-numbered(thm-box("proposition", linebreak: true, ..colors.env.theorem))
 #let (example, _example) = un-numbered(thm-box("example", radius: 0em, ..colors.env.example))
 
 #let (definition, _definition) = un-numbered(thm-plain("definition", ..colors.env.plain))
@@ -248,20 +248,9 @@
 #let (exercise, _exercise) = un-numbered(thm-plain("exercise", boxed: true, ..colors.env.exercise))
 #let (question, _question) = un-numbered(thm-plain("question", boxed: true))
 #let (lemma, _lemma) = un-numbered(thm-plain("lemma", boxed: true, ..colors.env.lemma))
-#let (problem, _problem) = un-numbered(thm-plain(
-	"problem",
-	display-title: true,
-	boxed: true,
-	border-radius: 6pt,
-	stroke-width: 0pt,
-	border-width: 0.7pt,
-	shadow: true,
-	..colors.env.problem,
-))
+#let (problem, _problem) = un-numbered(thm-plain("problem", display-title: true, boxed: true, border-radius: 6pt, stroke-width: 0pt, border-width: 0.7pt, shadow: true, ..colors.env.problem))
 
-#let reformulation = thm-plain("reformulation", boxed: true, ..colors.env.reformulation).with(
-	numbering: none,
-)
+#let reformulation = thm-plain("reformulation", boxed: true, ..colors.env.reformulation).with(numbering: none)
 #let algorithm = thm-plain("algorithm", boxed: true, ..colors.env.algorithm).with(numbering: none)
 #let properties = thm-plain("properties", ..colors.env.plain).with(numbering: none)
 
