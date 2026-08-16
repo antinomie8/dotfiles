@@ -4,7 +4,7 @@
 	title: "Title",
 	subtitle: "subtitle",
 	author: "Antoine Saez Dumas",
-	date: datetime.today().display("[day] [month repr:long] [year]"),
+	date: auto,
 	maketitle: true,
 )
 

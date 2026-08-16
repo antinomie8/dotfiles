@@ -8,29 +8,30 @@
 	subtitle: none,
 	name: none,
 	author: (),
-	date: none,
+	date: auto,
 	class: "normal",
 	maketitle: false,
 	body,
 ) = {
 	document-class.update(class)
 
-	// Translate month in date
+	if date == auto {
+		date = datetime.today().display("[day] [month repr:long] [year]")
+	}
 	if (date != none) {
+		// Translate month in date
 		date = context {
-			let found = false
-			for (en, tr) in months.at(text.lang, default: months.at("en")) {
-				if (date.find(en) != none) {
-					found = true
-					show en: tr
-					date
-					break
+			let apply-rules(body, rules) = {
+				if rules.len() == 0 {
+					body
+				} else {
+					show rules.first().at(0): rules.first().at(1)
+					apply-rules(body, rules.slice(1))
 				}
 			}
-			if not found { date }
+			apply-rules(date, months.at(text.lang, default: (:)).pairs())
 		}
 	}
-
 	if type(author) == str { author = (author,) }
 
 	set document(title: title, author: author)
@@ -110,8 +111,8 @@
 	show divider: set align(center)
 	show divider: line(length: 85%)
 
-	// Indent lists
-	set enum(indent: 1em)
+	// Indent lists and use letters instead of numbers for numbering
+	set enum(indent: 1em, numbering: "a)")
 	set list(indent: 1em)
 
 	show math.equation: set text(font: fonts.math)
