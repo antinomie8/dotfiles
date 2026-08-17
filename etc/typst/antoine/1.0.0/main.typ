@@ -14,6 +14,7 @@
 	body,
 ) = {
 	document-class.update(class)
+	let class = classes.at(class)
 
 	if date == auto {
 		date = datetime.today().display("[day] [month repr:long] [year]")
@@ -39,7 +40,11 @@
 		paper: "a4",
 		margin: auto,
 		header: context {
-			if not maketitle or here().position().page != 1 or class == "pofm" {
+			if (
+				not maketitle
+					or here().position().page != 1
+					or class.at("first-page-header", default: false)
+			) {
 				set text(size: 0.8em)
 				set align(left)
 				text(style: "normal", author.join(", "))
@@ -58,32 +63,30 @@
 		header-ascent: 15%,
 		numbering: "1",
 	)
-	set par(
-		justify: true,
-	)
-	set text(
-		font: fonts.text,
-		size: if class == "normal" { 11pt } else if class == "pofm" { 12pt },
-	)
+	set par(justify: true)
+	set text(font: fonts.text, size: class.at("text-size", default: 11pt))
 	show raw: set text(font: fonts.mono)
 
 	// Section headers
-	set heading(numbering: "I.1")
-	show heading: it => {
-		block({
-			if (it.numbering != none) {
-				text(
-					fill: colors.headers,
-					counter(heading).display(),
-				)
-				h(0.3em)
-			}
-			it.body
-			v(0.4em)
-		})
-	}
-	show heading: set text(font: fonts.sans, weight: "bold", size: 12pt)
-	show heading.where(level: 1): set text(size: 14pt)
+	show: class.at("rules", default: body => {
+		set heading(numbering: "I.1")
+		show heading: it => {
+			block({
+				if (it.numbering != none) {
+					text(
+						fill: colors.headers,
+						counter(heading).display(),
+					)
+					h(0.3em)
+				}
+				it.body
+				v(0.4em)
+			})
+		}
+		show heading: set text(font: fonts.sans, weight: "bold", size: 12pt)
+		body
+	})
+	show heading.where(level: 1): set text(size: 16pt)
 	show heading.where(level: 2): set text(size: 13pt)
 
 	// Colorize hyperlinks
@@ -123,7 +126,7 @@
 
 	// title
 	if (maketitle) {
-		show std.title: it => if class == "normal" {
+		show std.title: class.at("title-display", default: it => {
 			v(1em)
 			align(center, text(
 				size: 1em,
@@ -148,15 +151,7 @@
 				date,
 			))
 			v(1.5em)
-		} else if class == "pofm" {
-			v(0.9em)
-			align(center, smallcaps(text(
-				font: "New Computer Modern 08",
-				weight: "bold",
-				size: 22pt,
-				title,
-			)))
-		}
+		})
 		std.title()
 	}
 

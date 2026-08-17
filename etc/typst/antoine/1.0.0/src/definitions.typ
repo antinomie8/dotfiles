@@ -1,4 +1,34 @@
 #let document-class = state("document class", "normal")
+#let classes = (
+	"normal": (),
+	"pofm": (
+		first-page-header: true,
+		rules: body => {
+			show heading: it => block({
+				it.body
+				v(0.3em)
+			})
+			body
+		},
+		title-display: it => {
+			v(0.9em)
+			align(center, smallcaps(text(
+				font: "New Computer Modern 08",
+				weight: "bold",
+				size: 22pt,
+				it,
+			)))
+			v(0.4em)
+		},
+		text-size: 12pt,
+		env-header-args: arguments(
+			style: "italic",
+			font: "ITC Zapf Chancery Std Roman",
+			size: 14pt,
+		),
+		boxed-envs: false,
+	),
+)
 
 #let fonts = (
 	text: ("New Computer Modern", "Noto Color Emoji"),

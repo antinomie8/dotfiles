@@ -136,8 +136,9 @@
 		display-title: display-title,
 		link: none,
 		..additional_calloutargs,
-	) => {
-		body = {
+	) => context {
+		let class = classes.at(document-class.get())
+		let body = {
 			// colorize boxed stroke
 			show box: it => {
 				if type(it.stroke) == stroke and it.stroke.paint == auto {
@@ -168,11 +169,11 @@
 			)
 		} else {
 			let header = context {
-				let args = if document-class.get() == "normal" {
-					arguments(weight: "bold", style: style, fill: color)
-				} else if document-class.get() == "pofm" {
-					arguments(style: "italic", fill: color, font: "ITC Zapf Chancery Std Roman", size: 14pt)
-				}
+				let args = class.at("env-header-args", default: arguments(
+					weight: "bold",
+					style: style,
+				))
+				args = arguments(fill: color, ..args)
 
 				text(get_env_name(env_name), ..args)
 				if number != none {
@@ -185,7 +186,7 @@
 					text(..args, ". ")
 				}
 			}
-			context if boxed and document-class.get() != "pofm" {
+			context if boxed and class.at("boxed-envs", default: true) {
 				callout(
 					..calloutargs,
 					..additional_calloutargs,
@@ -236,23 +237,74 @@
 	base.with(numbering: none),
 )
 
-#let (theorem, _theorem) = un-numbered(thm-box("theorem", linebreak: true, ..colors.env.theorem))
-#let (corollary, _corollary) = un-numbered(thm-box("corollary", ..colors.env.theorem))
-#let (proposition, _proposition) = un-numbered(thm-box("proposition", linebreak: true, ..colors.env.theorem))
-#let (example, _example) = un-numbered(thm-box("example", radius: 0em, ..colors.env.example))
+#let (theorem, _theorem) = un-numbered(thm-box(
+	"theorem",
+	linebreak: true,
+	..colors.env.theorem,
+))
+#let (corollary, _corollary) = un-numbered(thm-box(
+	"corollary",
+	..colors.env.theorem,
+))
+#let (proposition, _proposition) = un-numbered(thm-box(
+	"proposition",
+	linebreak: true,
+	..colors.env.theorem,
+))
+#let (example, _example) = un-numbered(thm-box(
+	"example",
+	radius: 0em,
+	..colors.env.example,
+))
 
-#let (definition, _definition) = un-numbered(thm-plain("definition", ..colors.env.plain))
-#let (notation, _notation) = un-numbered(thm-plain("notation", ..colors.env.plain))
-#let (conjecture, _conjecture) = un-numbered(thm-plain("conjecture", style: "italic"))
+#let (definition, _definition) = un-numbered(thm-plain(
+	"definition",
+	..colors.env.plain,
+))
+#let (notation, _notation) = un-numbered(thm-plain(
+	"notation",
+	..colors.env.plain,
+))
+#let (conjecture, _conjecture) = un-numbered(thm-plain(
+	"conjecture",
+	style: "italic",
+))
 #let (remark, _remark) = un-numbered(thm-plain("remark", boxed: true))
-#let (exercise, _exercise) = un-numbered(thm-plain("exercise", boxed: true, ..colors.env.exercise))
+#let (exercise, _exercise) = un-numbered(thm-plain(
+	"exercise",
+	boxed: true,
+	..colors.env.exercise,
+))
 #let (question, _question) = un-numbered(thm-plain("question", boxed: true))
-#let (lemma, _lemma) = un-numbered(thm-plain("lemma", boxed: true, ..colors.env.lemma))
-#let (problem, _problem) = un-numbered(thm-plain("problem", display-title: true, boxed: true, border-radius: 6pt, stroke-width: 0pt, border-width: 0.7pt, shadow: true, ..colors.env.problem))
+#let (lemma, _lemma) = un-numbered(thm-plain(
+	"lemma",
+	boxed: true,
+	..colors.env.lemma,
+))
+#let (problem, _problem) = un-numbered(thm-plain(
+	"problem",
+	display-title: true,
+	boxed: true,
+	border-radius: 6pt,
+	stroke-width: 0pt,
+	border-width: 0.7pt,
+	shadow: true,
+	..colors.env.problem,
+))
 
-#let reformulation = thm-plain("reformulation", boxed: true, ..colors.env.reformulation).with(numbering: none)
-#let algorithm = thm-plain("algorithm", boxed: true, ..colors.env.algorithm).with(numbering: none)
-#let properties = thm-plain("properties", ..colors.env.plain).with(numbering: none)
+#let reformulation = thm-plain(
+	"reformulation",
+	boxed: true,
+	..colors.env.reformulation,
+).with(numbering: none)
+#let algorithm = thm-plain(
+	"algorithm",
+	boxed: true,
+	..colors.env.algorithm,
+).with(numbering: none)
+#let properties = thm-plain("properties", ..colors.env.plain).with(
+	numbering: none,
+)
 
 #let proof = thmproof("proof", get_env_name("proof"))
 #let solution = thmproof("solution", get_env_name("solution"))
