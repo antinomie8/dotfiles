@@ -1,13 +1,12 @@
 #let document-class = state("document class", "normal")
 #let classes = (
-	"normal": (),
+	"normal": (:),
 	"pofm": (
 		first-page-header: true,
 		rules: body => {
-			show heading: it => block({
+			show heading: it => {
 				it.body
-				v(0.3em)
-			})
+			}
 			body
 		},
 		title-display: it => {

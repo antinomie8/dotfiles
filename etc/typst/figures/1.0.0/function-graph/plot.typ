@@ -52,7 +52,7 @@
 							spec.label.content,
 						),
 						anchor: spec.label.at("anchor", default: none),
-						padding: spec.label.at("padding", default: none),
+						padding: spec.label.at("padding", default: 0.13),
 						angle: spec.label.at("angle", default: 0deg),
 					)
 				}

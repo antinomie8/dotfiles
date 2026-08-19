@@ -27,6 +27,8 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("udiskie")
 	hl.exec_cmd("kmonad $HOME/.config/kmonad.kbd")
 
+	hl.exec_cmd("bedtime")
+
 	-- scripts
 	require("hyprland.scripts.dispatch_browser_windows")
 end)

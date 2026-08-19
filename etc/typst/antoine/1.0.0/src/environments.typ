@@ -168,7 +168,7 @@
 				body,
 			)
 		} else {
-			let header = context {
+			let header = {
 				let args = class.at("env-header-args", default: arguments(
 					weight: "bold",
 					style: style,
@@ -186,7 +186,7 @@
 					text(..args, ". ")
 				}
 			}
-			context if boxed and class.at("boxed-envs", default: true) {
+			if boxed and class.at("boxed-envs", default: true) {
 				callout(
 					..calloutargs,
 					..additional_calloutargs,

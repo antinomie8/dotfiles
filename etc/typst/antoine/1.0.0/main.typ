@@ -70,24 +70,23 @@
 	// Section headers
 	show: class.at("rules", default: body => {
 		set heading(numbering: "I.1")
-		show heading: it => {
-			block({
-				if (it.numbering != none) {
-					text(
-						fill: colors.headers,
-						counter(heading).display(),
-					)
-					h(0.3em)
-				}
-				it.body
-				v(0.4em)
-			})
-		}
 		show heading: set text(font: fonts.sans, weight: "bold", size: 12pt)
+		show heading: it => {
+			if (it.numbering != none) {
+				text(
+					fill: colors.headers,
+					counter(heading).display(),
+				)
+				h(0.3em)
+			}
+			it.body
+			v(0em)
+		}
 		body
 	})
 	show heading.where(level: 1): set text(size: 16pt)
-	show heading.where(level: 2): set text(size: 13pt)
+	show heading.where(level: 2): set text(size: 14pt)
+	show heading.where(level: 3): set text(size: 13pt)
 
 	// Colorize hyperlinks
 	show link: it => {
