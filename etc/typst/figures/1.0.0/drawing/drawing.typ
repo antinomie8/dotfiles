@@ -1,4 +1,7 @@
 #import "@preview/cetz:0.5.2"
+#import cetz.draw: *
+#import cetz.angle: *
+#import cetz.decorations: *
 
 #import "/utils/internal.typ": argparse
 #import "/utils/complex.typ": *
@@ -111,3 +114,8 @@
 		)
 	}
 }
+
+#import "/coordinates/plane.typ": complex-plane, plane, trig-circle
+#let plane = plane.with(canvas: false)
+#let complex-plane = complex-plane.with(canvas: false)
+#let trig-circle = trig-circle.with(canvas: false)

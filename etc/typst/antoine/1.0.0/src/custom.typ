@@ -80,7 +80,6 @@
 
 #let toc = {
 	show outline.entry: it => {
-		set text(fill: colors.toc.entries)
 		link(
 			it.element.location(),
 			{
@@ -90,8 +89,13 @@
 					weight = "bold"
 				}
 				it.indented(
-					text(font: fonts.sans, weight: "semibold", it.prefix()),
-					text(weight: weight, it.inner()),
+					text(
+						font: fonts.sans,
+						fill: colors.toc.entries,
+						weight: "semibold",
+						it.prefix(),
+					),
+					text(weight: weight, fill: colors.toc.entries, it.inner()),
 				)
 			},
 		)
@@ -100,7 +104,7 @@
 		title: text(
 			weight: "semibold",
 			fill: colors.toc.title,
-			size: 1.4em,
+			size: 14pt,
 			font: fonts.sans,
 			get_env_name("toc"),
 		),

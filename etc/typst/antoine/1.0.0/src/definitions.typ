@@ -42,7 +42,7 @@
 	hyperlink: blue,
 	strong: rgb("#000055"),
 	toc: (
-		title: rgb("#008a55"),
+		title: rgb("#00007f"),
 		entries: rgb("#00007f"),
 	),
 	env: (

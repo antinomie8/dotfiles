@@ -301,6 +301,10 @@ hl.config({
 	xwayland = {
 		force_zero_scaling = false,
 	},
+
+	ecosystem = {
+		no_donation_nag = true,
+	},
 })
 
 -- Layouts

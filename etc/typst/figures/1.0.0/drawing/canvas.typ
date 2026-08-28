@@ -1,10 +1,4 @@
 #import "@preview/cetz:0.5.2"
-#import cetz.draw: *
-#import cetz.angle: *
-#import cetz.decorations: *
-
-#import "/utils/complex.typ": *
-#import "drawing.typ": *
 
 #let canvas(drawing, ..args) = cetz.canvas(..args, {
 	let scaling-factor = 1cm / args.at("length", default: 1cm)

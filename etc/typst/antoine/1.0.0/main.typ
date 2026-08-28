@@ -66,12 +66,16 @@
 	set par(justify: true)
 	set text(font: fonts.text, size: class.at("text-size", default: 11pt))
 	show raw: set text(font: fonts.mono)
+	set table(stroke: 0.7pt)
 
 	// Section headers
 	show: class.at("rules", default: body => {
 		set heading(numbering: "I.1")
 		show heading: set text(font: fonts.sans, weight: "bold", size: 12pt)
 		show heading: it => {
+			if it.level == 1 {
+				v(0.2em)
+			}
 			if (it.numbering != none) {
 				text(
 					fill: colors.headers,
@@ -80,45 +84,48 @@
 				h(0.3em)
 			}
 			it.body
-			v(0em)
+			v(if it.level == 1 { -0.4em } else { 0em })
 		}
 		body
 	})
-	show heading.where(level: 1): set text(size: 16pt)
-	show heading.where(level: 2): set text(size: 14pt)
-	show heading.where(level: 3): set text(size: 13pt)
+	show heading.where(level: 1): set text(size: 14pt)
+	show heading.where(level: 2): set text(size: 13pt)
+	show heading.where(level: 3): set text(size: 12pt)
+
+	// Equations
+	set math.equation(alt: "equation", supplement: none)
+	show math.equation: set text(font: fonts.math)
+	show math.equation: set block(breakable: true) // Allow math blocks to break across pages
 
 	// Colorize hyperlinks
 	show link: it => {
-		set text(fill: if (type(it.dest) == label) { colors.label } else {
+		set text(fill: if (type(it.dest) == label) {
+			colors.label
+		} else {
 			colors.hyperlink
 		})
 		it
 	}
 	show ref: it => {
-		link(it.target, it)
+		if it.element != none and it.element.alt == "equation" {
+			link(it.target, "(" + it + ")")
+		} else {
+			link(it.target, it)
+		}
 	}
 
 	// Change quote display
 	set quote(block: true)
-	show quote: set pad(x: 2em, y: 0em)
-	show quote: it => {
-		set text(style: "italic")
-		v(-1em)
-		it
-		v(-0.5em)
-	}
+	show quote: set pad(left: 2em, top: -1em, bottom: -0.5em)
+	show quote: set text(style: "italic")
 
-	// make divider not span the whole page width
+	// Make divider not span the whole page width
 	show divider: set align(center)
 	show divider: line(length: 85%)
 
 	// Indent lists and use letters instead of numbers for numbering
 	set enum(indent: 1em, numbering: "a)")
 	set list(indent: 1em)
-
-	show math.equation: set text(font: fonts.math)
-	show math.equation: set block(breakable: true) // Allow math blocks to break across pages
 
 	// packages
 	show: thmrules
@@ -128,13 +135,13 @@
 		show std.title: class.at("title-display", default: it => {
 			v(1em)
 			align(center, text(
-				size: 1em,
+				size: 18pt,
 				weight: "bold",
 				font: fonts.sans,
 				it,
 			))
 			align(center, text(
-				size: 0.6em,
+				size: 13pt,
 				weight: "bold",
 				font: fonts.sans,
 				subtitle,
@@ -144,6 +151,7 @@
 				weight: "regular",
 				smallcaps(author.join(", ")),
 			))
+			v(-0.2em)
 			align(center, text(
 				size: 11pt,
 				weight: "regular",

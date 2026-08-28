@@ -8,6 +8,10 @@
 /// - style (style): additional style arguments for cetz.set-style
 /// - drawing: the canvas content
 #let plane(
+	x-min: none,
+	x-max: none,
+	y-min: none,
+	y-max: none,
 	n: 4.65,
 	lattice: false,
 	ticks: true,
@@ -19,34 +23,39 @@
 	marks: (start: "triangle", end: "triangle"),
 	drawing,
 ) = {
-	let canvas-content = {
-		import cetz.draw: *
+	if x-min == none { x-min = -n }
+	if x-max == none { x-max = n }
+	if y-min == none { y-min = -n }
+	if y-max == none { y-max = n }
 
+	let canvas-content = {
 		// Style overrides
+		import cetz.draw: *
 		set-style(..style)
 
 		// Draw the integer lattice
 		if lattice {
 			grid(
-				(-n, -n),
-				(n, n),
-				shift: calc.fract(n),
+				(x-min, y-min),
+				(x-max, y-max),
+				shift: (shift-x: calc.fract(-x-min), shift-y: calc.fract(-y-min) + 1),
 				step: 1,
 				stroke: gray + 0.2pt,
 			)
 		}
 
 		// Draw the axis lines and axis labels
-		line((-n, 0), (n, 0), mark: (marks))
+		line((x-min, 0), (x-max, 0), mark: (marks))
 		content((), x-label, anchor: "north", padding: .5em)
-		line((0, -n), (0, n), mark: (marks))
+		line((0, y-min), (0, y-max), mark: (marks))
 		content((), y-label, anchor: "east", padding: .5em)
 
 		// Draw the number steps on the axes
 		if ticks {
-			let max = calc.floor(if calc.fract(n) == 0 { n - 1 } else { n })
-			for c in range(-max, max + 1) {
+			for c in range(calc.ceil(x-min + 0.01), calc.floor(x-max - 0.01) + 1) {
 				line((c, 3pt), (c, -3pt))
+			}
+			for c in range(calc.ceil(y-min + 0.01), calc.floor(y-max - 0.01) + 1) {
 				line((3pt, c), (-3pt, c))
 			}
 		}
@@ -64,11 +73,6 @@
 	}
 }
 
-/// Draws a complex plane
-/// - n (int): the size of the grid
-/// - lattice (boolean): whether to draw the Gaussian integers lattice
-/// - style (style): additional style arguments for cetz.set-style
-/// - drawing: the canvas content
 #let complex-plane = plane.with(x-label: math.op("Re"), y-label: math.op("Im"))
 
 #let trig-circle(drawing, ..overrides) = plane(

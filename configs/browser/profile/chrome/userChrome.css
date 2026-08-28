@@ -1,6 +1,51 @@
 :root {
 	--sidebar-background-color: #1f1f28 !important;
 	--sidebar-border-color: #54546d !important;
+
+	/* Blue → crystalBlue */
+  --tab-group-blue: #7E9CD8 !important;
+  --tab-group-blue-invert: #7E9CD8 !important;
+  --tab-group-blue-pale: color-mix(in srgb, #7E9CD8 25%, white) !important;
+
+  /* Purple → oniViolet */
+  --tab-group-purple: #957FB8 !important;
+  --tab-group-purple-invert: #957FB8 !important;
+  --tab-group-purple-pale: color-mix(in srgb, #957FB8 25%, white) !important;
+
+  /* Cyan → waveAqua2 */
+  --tab-group-cyan: #7AA89F !important;
+  --tab-group-cyan-invert: #7AA89F !important;
+  --tab-group-cyan-pale: color-mix(in srgb, #7AA89F 25%, white) !important;
+
+  /* Orange → surimiOrange */
+  --tab-group-orange: #FFA066 !important;
+  --tab-group-orange-invert: #FFA066 !important;
+  --tab-group-orange-pale: color-mix(in srgb, #FFA066 25%, white) !important;
+
+  /* Yellow → carpYellow */
+  --tab-group-yellow: #E6C384 !important;
+  --tab-group-yellow-invert: #E6C384 !important;
+  --tab-group-yellow-pale: color-mix(in srgb, #E6C384 25%, white) !important;
+
+  /* Pink → sakuraPink */
+  --tab-group-pink: #D27E99 !important;
+  --tab-group-pink-invert: #D27E99 !important;
+  --tab-group-pink-pale: color-mix(in srgb, #D27E99 25%, white) !important;
+
+  /* Green → springGreen */
+  --tab-group-green: #98BB6C !important;
+  --tab-group-green-invert: #98BB6C !important;
+  --tab-group-green-pale: color-mix(in srgb, #98BB6C 25%, white) !important;
+
+  /* Red → peachRed */
+  --tab-group-red: #FF5D62 !important;
+  --tab-group-red-invert: #FF5D62 !important;
+  --tab-group-red-pale: color-mix(in srgb, #FF5D62 25%, white) !important;
+
+  /* Gray → katanaGray */
+  --tab-group-gray: #717C7C !important;
+  --tab-group-gray-invert: #717C7C !important;
+  --tab-group-gray-pale: color-mix(in srgb, #717C7C 25%, white) !important;
 }
 
 /* hide webpage loading notifications in the bottom left corner */

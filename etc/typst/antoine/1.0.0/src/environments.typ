@@ -7,8 +7,9 @@
 	headless: false,
 	header-inset: 0.5em,
 	width: auto,
-	stroke-width: 3pt,
+	stroke-width: 2pt,
 	border-radius: 0pt,
+	left-border-rounding: true,
 	border-width: 0pt,
 	content-inset: 1em,
 	header-color: black,
@@ -41,6 +42,10 @@
 			top-right: border-radius,
 			top-left: if (stroke-width == 0pt) { border-radius } else { 0pt },
 		),
+		stroke: (
+			bottom: none,
+			rest: border-width + border-color,
+		),
 		inset: header-inset,
 		{
 			let args = arguments(fill: header-text-color, weight: "bold", title)
@@ -63,12 +68,23 @@
 		fill: body-color,
 		inset: content-inset,
 		radius: (
-			top-right: if (title != none) { 0pt } else { border-radius },
-			top-left: if (title != none or stroke-width != 0pt) { 0pt } else {
+			top-right: if (title == none) { border-radius } else { 0pt },
+			top-left: if (
+				title == none and (stroke-width == 0pt or left-border-rounding)
+			) { border-radius } else { 0pt },
+			bottom-left: if (stroke-width == 0pt or left-border-rounding) {
 				border-radius
-			},
-			bottom-left: if (stroke-width == 0pt) { border-radius } else { 0pt },
+			} else { 0pt },
 			bottom-right: border-radius,
+		),
+		stroke: (
+			left: if (stroke-width != 0pt) {
+				(thickness: stroke-width, paint: stroke-color, cap: "butt")
+			} else { border-width + border-color },
+			top: if (title == none) { border-width + border-color } else {
+				none
+			},
+			rest: border-width + border-color,
 		),
 		above: 0pt,
 		content,
@@ -77,21 +93,6 @@
 	let callout = block(
 		breakable: breakable,
 		width: width,
-		radius: (
-			right: border-radius,
-			left: if (stroke-width == 0pt) {
-				border-radius
-			} else { 0pt },
-		),
-		stroke: (
-			left: if (stroke-width == 0pt) {
-				border-width + border-color
-			} else { (thickness: stroke-width, paint: stroke-color, cap: "butt") },
-			top: if (title != none) { border-width + header-color } else {
-				border-width + border-color
-			},
-			rest: border-width + border-color,
-		),
 		clip: clip-content,
 		{
 			set align(start)
@@ -102,16 +103,16 @@
 
 	if shadow {
 		import "@preview/shadowed:0.3.0": shadow
-		return shadow(
+		callout = shadow(
 			radius: border-radius,
 			fill: rgb("#d9d9d9"),
 			dx: shadow-offset,
 			dy: shadow-offset,
 			callout,
 		)
-	} else {
-		return callout
 	}
+
+	return callout
 }
 
 #let thm-plain(
@@ -287,7 +288,7 @@
 	boxed: true,
 	border-radius: 6pt,
 	stroke-width: 0pt,
-	border-width: 0.7pt,
+	border-width: 0.6pt,
 	shadow: true,
 	..colors.env.problem,
 ))
