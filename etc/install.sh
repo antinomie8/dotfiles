@@ -90,17 +90,17 @@ for package in typst/*; do
 	copy_if_installed typst "$package" ~/.local/share/typst/packages/local
 done
 
-(
+INSTALL_LOCATION="/usr/share/fonts/ITC-Zapf-Chancery"
+if [[ ! -d "$INSTALL_LOCATION" ]]; then
 	FONT_URL="https://en.bestfonts.pro/fonts_files/61633725968473b9a2a54c5a/font.zip"
 	DOWNLOAD_PATH="/tmp/itc-zapf-chancery.zip"
-	INSTALL_LOCATION="/usr/share/fonts/ITC-Zapf-Chancery"
 	EXTRACT_DIR=$(mktemp -d /tmp/itc-zapf-chancery-extract.XXXXXX)
 
 	curl -fsSL "$FONT_URL" -o "$DOWNLOAD_PATH"
 	unzip -q -o "$DOWNLOAD_PATH" -d "$EXTRACT_DIR"
 
 	sudo mkdir -p "$INSTALL_LOCATION"
-	font_files=("${(@f)$(find "$EXTRACT_DIR" -type f -name 'ZapfChanceryStd-*')}")
+	mapfile -t font_files < <(find "$EXTRACT_DIR" -type f -name 'ZapfChanceryStd-*')
 	for f in "${font_files[@]}"; do
 		sudo cp -f "$f" "$INSTALL_LOCATION/"
 	done
@@ -112,13 +112,9 @@ done
 	sudo fc-cache -f "$INSTALL_LOCATION" >/dev/null
 
 	rm -rf "$EXTRACT_DIR"
-)
+fi
 
 [[ -n "${CPLUS_INCLUDE_PATH:-}" ]] && copy dbg.h "$CPLUS_INCLUDE_PATH"
-
-if [[ ! -f ~/.local/share/cargo/bin/blackscreen ]]; then
-	(cd blackscreen && cargo install --path .)
-fi
 
 if program systemctl; then
 	# install systemd user units

@@ -21,6 +21,7 @@ local envs = {
 	"notation",
 	"solution",
 	"algorithm",
+	"question",
 }
 
 local abbrevs = {
@@ -28,8 +29,9 @@ local abbrevs = {
 	["lemma"] = "lem",
 	["corollary"] = "cor",
 	["proposition"] = "prop",
-	["exercise"] = "exer",
+	["example"] = "ex",
 	["definition"] = "def",
+	["problem"] = "pb",
 	["solution"] = "sol",
 	["algorithm"] = "algo",
 }

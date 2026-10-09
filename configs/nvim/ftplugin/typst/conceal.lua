@@ -1,5 +1,7 @@
 local buf = vim.api.nvim_get_current_buf()
 local ns_math = vim.api.nvim_create_namespace("typst_math_conceal")
+local ns_overflow = vim.api.nvim_create_namespace("typst_math_conceal_overflow")
+local overflow_specs = {}
 
 local functions = require("static.lang.typst.calls")
 local subscripts = require("static.lang.typst.subscripts")
@@ -60,12 +62,18 @@ local function conceal_at_positions(sr, sc, er, ec, conceal_text, hl)
 		priority = 101,
 	})
 
-	-- split translated text into characters
 	local tch = vim.fn.split(conceal_text, "\\zs")
-	local n = math.min(#tch, #positions)
-	for i = 1, n do
-		local pos = positions[i]
-		if pos then
+	if #tch == 0 then return end
+
+	-- conceal extmarks only support a single replacement character, so spread
+	-- them one-per-hidden-char; any overflow is appended as inline virt_text
+	local overflow
+	if #positions == 0 then
+		overflow = conceal_text
+	else
+		local n = math.min(#tch, #positions)
+		for i = 1, n do
+			local pos = positions[i]
 			pcall(vim.api.nvim_buf_set_extmark, buf, ns_math, pos.row, pos.col, {
 				end_row = pos.row,
 				end_col = pos.col + #pos.ch,
@@ -73,6 +81,47 @@ local function conceal_at_positions(sr, sc, er, ec, conceal_text, hl)
 				hl_group = hl,
 				priority = 102,
 			})
+		end
+		if #tch > #positions then
+			overflow = table.concat(tch, "", #positions + 1, #tch)
+			local last = positions[#positions]
+			sr, sc, er, ec = last.row, last.col + #last.ch, last.row, last.col + #last.ch
+		end
+	end
+	if overflow then
+		local chunk = { overflow }
+		if hl then chunk = { overflow, hl } end
+		local ok, id = pcall(vim.api.nvim_buf_set_extmark, buf, ns_overflow, sr, sc, {
+			virt_text = { chunk },
+			virt_text_pos = "inline",
+			priority = 102,
+		})
+		if ok and id then
+			table.insert(overflow_specs, { id = id, text = overflow, hl = hl, shown = true })
+		end
+	end
+end
+
+---hide/show overflow virt_text depending on cursor position and 'concealcursor'
+local function sync_overflow()
+	if not vim.api.nvim_buf_is_valid(buf) then return end
+	local ccur = vim.api.nvim_get_option_value("concealcursor", { win = 0 })
+	local m = vim.api.nvim_get_mode().mode:sub(1, 1)
+	if m == "V" or m == "\22" or m == "\19" then m = "v" end
+	local hidden = ccur:find(m, 1, true) ~= nil
+	local crow = vim.api.nvim_win_get_cursor(0)[1] - 1
+	for _, spec in ipairs(overflow_specs) do
+		local pos = vim.api.nvim_buf_get_extmark_by_id(buf, ns_overflow, spec.id, {})
+		if pos[1] then
+			local show = not (hidden and pos[1] == crow)
+			if show ~= spec.shown then
+				local opts = { id = spec.id, virt_text_pos = "inline", priority = 102 }
+				if show then
+					opts.virt_text = { spec.hl and { spec.text, spec.hl } or { spec.text } }
+				end
+				pcall(vim.api.nvim_buf_set_extmark, buf, ns_overflow, pos[1], pos[2], opts)
+				spec.shown = show
+			end
 		end
 	end
 end
@@ -176,6 +225,16 @@ local function conceal_math(first, last)
 	local root = tree:root()
 
 	vim.api.nvim_buf_clear_namespace(buf, ns_math, first, last)
+	vim.api.nvim_buf_clear_namespace(buf, ns_overflow, first, last)
+
+	-- drop overflow specs whose extmark was just cleared
+	local live = {}
+	for _, spec in ipairs(overflow_specs) do
+		if #vim.api.nvim_buf_get_extmark_by_id(buf, ns_overflow, spec.id, {}) > 0 then
+			table.insert(live, spec)
+		end
+	end
+	overflow_specs = live
 
 	-- subscripts and superscripts
 	---@param node TSNode?
@@ -357,11 +416,22 @@ local function conceal_math(first, last)
 			conceal_at_positions(sr, sc, er, ec, cchar)
 		end
 	end
+
+	sync_overflow()
 end
 
 vim.api.nvim_buf_attach(buf, false, {
 	on_lines = function(_, _, _, first, last)
 		conceal_math(first, last)
+	end,
+})
+
+local augroup = vim.api.nvim_create_augroup("typst_math_conceal_overflow_" .. buf, { clear = true })
+vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "ModeChanged", "BufEnter", "WinEnter" }, {
+	group = augroup,
+	buffer = buf,
+	callback = function()
+		sync_overflow()
 	end,
 })
 

@@ -175,15 +175,18 @@ local function exrc()
 		limit = math.huge,
 	})
 	for _, file in ipairs(files) do
-		read(file, function(trusted)
-			if trusted then
-				if vim.endswith(file, ".lua") then
-					assert(loadstring(trusted, "@" .. file))()
-				else
-					vim.api.nvim_exec2(trusted, {})
+		local size = vim.fn.getfsize(file)
+		if size ~= 0 then
+			read(file, function(trusted)
+				if trusted then
+					if vim.endswith(file, ".lua") then
+						assert(loadstring(trusted, "@" .. file))()
+					else
+						vim.api.nvim_exec2(trusted, {})
+					end
 				end
-			end
-		end)
+			end)
+		end
 	end
 end
 

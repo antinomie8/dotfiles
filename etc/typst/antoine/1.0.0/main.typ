@@ -17,7 +17,9 @@
 	let class = classes.at(class)
 
 	if date == auto {
-		date = datetime.today().display("[day] [month repr:long] [year]")
+		date = datetime
+			.today()
+			.display("[day padding:none] [month repr:long] [year]")
 	}
 	if (date != none) {
 		// Translate month in date
@@ -38,7 +40,7 @@
 	set document(title: title, author: author)
 	set page(
 		paper: "a4",
-		margin: auto,
+		margin: (x: 4em, y: 5em),
 		header: context {
 			if (
 				not maketitle
@@ -67,15 +69,14 @@
 	set text(font: fonts.text, size: class.at("text-size", default: 11pt))
 	show raw: set text(font: fonts.mono)
 	set table(stroke: 0.7pt)
+	set table.cell(align: center)
 
 	// Section headers
 	show: class.at("rules", default: body => {
 		set heading(numbering: "I.1")
 		show heading: set text(font: fonts.sans, weight: "bold", size: 12pt)
 		show heading: it => {
-			if it.level == 1 {
-				v(0.2em)
-			}
+			if it.level == 1 { v(0.2em) } else { v(0em) }
 			if (it.numbering != none) {
 				text(
 					fill: colors.headers,
@@ -96,6 +97,20 @@
 	set math.equation(alt: "equation", supplement: none)
 	show math.equation: set text(font: fonts.math)
 	show math.equation: set block(breakable: true) // Allow math blocks to break across pages
+	show math.attach: it => {
+		// display fractions horizontally in subscripts and superscripts
+		let f = it.fields()
+		let base = f.remove("base")
+		let t = f.at("t", default: none)
+		if t != none and t.func() == math.frac and not t.has("style") {
+			f.insert("t", math.frac(t.num, t.denom, style: "horizontal"))
+			math.attach(base, ..f)
+		} else {
+			it
+		}
+	}
+	show math.gt.eq: math.gt.eq.slant
+	show math.lt.eq: math.lt.eq.slant
 
 	// Colorize hyperlinks
 	show link: it => {
@@ -121,7 +136,7 @@
 
 	// Make divider not span the whole page width
 	show divider: set align(center)
-	show divider: line(length: 85%)
+	show divider: set line(length: 85%)
 
 	// Indent lists and use letters instead of numbers for numbering
 	set enum(indent: 1em, numbering: "a)")
@@ -129,6 +144,12 @@
 
 	// packages
 	show: thmrules
+
+	// display exponents
+	show regex("[0-9]+(er|ème|eme|st|nd)\b"): it => {
+		let m = it.text.match(regex("^([0-9]+)(er|ème|eme)$"))
+		[#m.captures.at(0)#super[#m.captures.at(1)]]
+	}
 
 	// title
 	if (maketitle) {

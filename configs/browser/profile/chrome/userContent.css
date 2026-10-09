@@ -1,4 +1,4 @@
-/* hide things on firefox home page */
+/* hide things on Firefox home page */
 @-moz-document url("about:newtab"), url("about:home") {
 	.wallpaper-attribution,
 	.logo,
@@ -41,7 +41,7 @@
 	}
 }
 
-/* hide annoying stuff on youtube */
+/* hide annoying stuff on Youtube */
 @-moz-document domain("youtube.com") {
 	#logo-icon,
 	#country-code,
@@ -57,7 +57,15 @@
 
 /* Hide Whatsapp locked chats */
 @-moz-document domain("web.whatsapp.com") {
-	button.xjb2p0i /* locked chats */ {
+	button.xjb2p0i /* locked chats */,
+	.xs2akgl /* notifications are off */ {
+		display: none !important;
+	}
+}
+
+/* Hide annoying Wordpress bloat */
+@-moz-document domain("gowers.wordpress.com") {
+	#actionbar {
 		display: none !important;
 	}
 }

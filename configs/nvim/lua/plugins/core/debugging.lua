@@ -19,6 +19,12 @@ return {
 				virt_text_pos = "eol", -- "inline" or "eol"
 			},
 		},
+		{
+			"https://codeberg.org/mfussenegger/nvim-dap-python",
+			config = function()
+				require("dap-python").setup("python3") -- requires python-debugpy package
+			end,
+		},
 	},
 	cmd = { "DapContinue", "DapToggleBreakpoint", "RunWithArgs" },
 	keys = {

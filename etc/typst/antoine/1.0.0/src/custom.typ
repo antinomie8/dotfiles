@@ -52,6 +52,7 @@
 // commands
 #let vocab = text.with(weight: "bold", ..colors.env.vocab)
 #let bf(x) = $bold(upright(#x))$
+#let u = underline
 #let cal(it) = math.class("normal", context {
 	show math.equation: set text(
 		font: ("Garamond-Math", "New Computer Modern Math"),
@@ -129,10 +130,11 @@
 	]
 }
 
-#let side-icon(name: none, path: none, ..args) = {
+#let side-icon(name: none, path: none, height: 2em, ..args) = {
 	import "@preview/marginalia:0.3.1": notefigure
 	let path = if path != none { path } else { "/icons/" + name + ".svg" }
-	notefigure(image(path), dy: 1.5em, ..args)
+	notefigure(box(height: height, image(path)), dy: 1.5em, ..args)
 }
-#let parachuted = side-icon(name: "parachute")
-#let overkill = side-icon(name: "tank")
+#let parachuted = side-icon(name: "parachute", height: 2.2em)
+#let overkill = side-icon(name: "tank", height: 1.8em)
+#let contradiction = side-icon(name: "contradiction")

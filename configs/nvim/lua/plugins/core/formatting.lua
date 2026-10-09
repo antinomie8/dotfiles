@@ -60,6 +60,7 @@ return {
 
 			config_home .. "/quickshell/ii/**",
 			config_home .. "/hypr/hyprland/execs.lua",
+			typst_local_packages .. "local/antoine/1.0.0/src/environments.typ",
 			typst_local_packages .. "local/figures/1.0.0/function-graph/drawing.typ",
 			(vim.env.TEXMFHOME or vim.env.HOME) .. "/tex/latex/**/*.tex",
 			(vim.env.ASYMPTOTE_HOME or vim.env.HOME .. "/.asy") .. "/config.asy",
@@ -73,6 +74,7 @@ return {
 			formatters_by_ft = {
 				asymptote = { "clang_format", "asymptote" },
 				cpp = { "clang_format" },
+				c = { "clang_format" },
 				rust = { "rustfmt" },
 				sh = { "shfmt" },
 				zsh = { "shfmt" },

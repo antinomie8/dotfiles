@@ -167,7 +167,7 @@ function nfd() {
 	for arg in $@ ; do
 	  lines+=(
 			${(f)"$(
-				fd . --hidden --print0 --strip-cwd-prefix=always --type=f |
+				fd . --hidden --print0 --strip-cwd-prefix=always --type=f -E '*.pdf' |
 				fzf --read0 --multi --select-1 --query=$arg
 			)"}
 		)

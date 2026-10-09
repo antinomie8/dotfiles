@@ -309,7 +309,7 @@ hl.config({
 
 -- Layouts
 local cell_size = 21
-local num_col = 86
+local num_col = 87
 local monitor_width = 3200
 local ratio = (cell_size * num_col) / monitor_width
 hl.config({

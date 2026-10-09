@@ -61,7 +61,7 @@ hl.bind("SUPER + CTRL + ALT + T", hl.dsp.global("quickshell:wallpaperSelectorRan
 	{ desc = "Shell: Random wallpaper" })
 hl.bind("SUPER + CTRL + SHIFT + D", hl.dsp.global("quickshell:toggleLightDark"),
 	{ desc = "Shell: Toggle light/dark mode" })
-hl.bind("SUPER + CTRL + R", hl.dsp.exec_cmd("killall ydotool qs quickshell; qs -c $qsConfig &"),
+hl.bind("SUPER + CTRL + ALT + R", hl.dsp.exec_cmd("killall ydotool qs quickshell; qs -c $qsConfig &"),
 	{ desc = "Shell: Restart widgets" })
 hl.bind("SUPER + CTRL + P", hl.dsp.global("quickshell:panelFamilyCycle"), { desc = "Shell: Cycle panel family" })
 
@@ -175,10 +175,10 @@ hl.bind("SUPER + SHIFT + ALT + A", function()
 	local is_enabled = hl.get_config("animations.enabled")
 	if is_enabled then
 		hl.exec_cmd("safeeyes -d")
-		hl.dispatch(hl.dsp.global("quickshell:enableInhibit"))
+		-- hl.dispatch(hl.dsp.global("quickshell:enableInhibit"))
 	else
 		hl.exec_cmd("safeeyes -e")
-		hl.dispatch(hl.dsp.global("quickshell:disableInhibit"))
+		-- hl.dispatch(hl.dsp.global("quickshell:disableInhibit"))
 	end
 	hl.config({ animations = { enabled = not is_enabled } })
 end, { desc = "Screen: Toggle animations and idle inhibitor" })
@@ -360,3 +360,20 @@ hl.bind("SUPER + SHIFT + L", hl.dsp.exec_cmd("systemctl suspend || loginctl susp
 	{ locked = true, desc = "Session: Sleep" })
 hl.bind("CTRL + SHIFT + ALT + SUPER + Delete", hl.dsp.exec_cmd("systemctl poweroff || loginctl poweroff"),
 	{ desc = "Session: Shut down" })
+
+-- turn screen off
+hl.define_submap("screenoff", function()
+	hl.bind("catchall", function()
+		hl.dispatch(hl.dsp.exec_cmd("brightnessctl -rd asus::kbd_backlight"))
+		hl.dispatch(hl.dsp.dpms({ action = "enable" }))
+		hl.dispatch(hl.dsp.submap("reset"))
+	end)
+end)
+
+hl.bind("SUPER + ALT + B", function()
+	hl.timer(function()
+		hl.dispatch(hl.dsp.exec_cmd("brightnessctl -sd asus::kbd_backlight set 0"))
+		hl.dispatch(hl.dsp.dpms({ action = "disable" }))
+	end, { timeout = 300, type = "oneshot" })
+	hl.dispatch(hl.dsp.submap("screenoff"))
+end, { desc = "Toggle black screen + kbd backlight" })

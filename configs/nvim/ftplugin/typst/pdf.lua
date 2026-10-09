@@ -36,6 +36,9 @@ vim.keymap.set("n", "<localleader>o", "<Cmd>OpenPdf<CR>", { desc = "Open pdf", b
 -- compile and open
 vim.keymap.set("n", "<localleader>p", function()
 	compile(function(err, result, ctx)
+		if err then
+			vim.notify(err, vim.log.levels.ERROR)
+		end
 		if result and result.path then
 			open(result.path)
 		end

@@ -53,7 +53,7 @@
 		),
 		example: (
 			accent: rgb("#964108"),
-			stroke: rgb("#964108") + 0.5pt,
+			stroke: rgb("#964108") + 0.7pt,
 			fill: rgb("#fcf8f8"),
 		),
 		problem: (
@@ -111,6 +111,7 @@
 	),
 )
 #let get_env_name(env) = {
+	if type(env) != str { return env }
 	return context env_names
 		.at(text.lang, default: env_names.at("en"))
 		.at(env, default: upper(env.at(0)) + env.slice(1)) // capitalize first letter

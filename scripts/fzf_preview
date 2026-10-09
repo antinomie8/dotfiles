@@ -10,7 +10,7 @@ if [[ -e $1 ]]; then
 	filetype=$(file --mime-type --brief $1)
 	case $filetype in
 		inode/directory)
-			eza -1al --git --group-directories-first --color=always --icons $1
+			eza -1al --git --group-directories-first --color=always --icons=always $1
 			;;
 		inode/socket)
 			lsof $1 | awk -v OCHRE="$OCHRE" -v BLUE="$BLUE" -v RESET="$RESET" "

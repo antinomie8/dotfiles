@@ -53,6 +53,7 @@ progress_error  = { fg = "#e82424", bg = "#2a2a37" }
 [which]
 cols            = 3
 mask            = { bg = "#16161d" }
+border          = { fg = "#54546d" }
 cand            = { fg = "#7e9cd8" }
 rest            = { fg = "#727169" }
 desc            = { fg = "#54546d" }

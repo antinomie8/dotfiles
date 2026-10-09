@@ -142,7 +142,7 @@ return {
 								return require("utils.treesitter").has_ancestor(
 									node,
 									{ "content", "source_file", "code" },
-									{ "math", "string", "comment", "label", "formula" }
+									{ "string", "comment", "label", "formula" }
 								)
 							end,
 						},

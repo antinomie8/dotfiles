@@ -14,19 +14,22 @@ require("smart-enter"):setup({ open_multi = true })
 
 require("directory-rules"):setup()
 
-th.git = th.git or {}
-th.git.added_sign = " "
-th.git.modified_sign = " "
-th.git.deleted_sign = "󱟃 "
-th.git.updated_sign = " "
-th.git.untracked_sign = " "
-th.git.ignored_sign = " "
-th.git.added = ui.Style():fg("#76946a")
-th.git.modified = ui.Style():fg("#dca561")
-th.git.deleted = ui.Style():fg("#c34043")
-th.git.updated = ui.Style():fg("#e82424")
-th.git.untracked = ui.Style():fg("#957fb8")
-th.git.ignored = ui.Style():fg("#727169")
+local function setup_git_theme()
+	th.git = th.git or {}
+	th.git.added_sign = " "
+	th.git.modified_sign = " "
+	th.git.deleted_sign = "󱟃 "
+	th.git.updated_sign = " "
+	th.git.untracked_sign = " "
+	th.git.ignored_sign = " "
+	th.git.added = ui.Style():fg("#76946a")
+	th.git.modified = ui.Style():fg("#dca561")
+	th.git.deleted = ui.Style():fg("#c34043")
+	th.git.updated = ui.Style():fg("#e82424")
+	th.git.untracked = ui.Style():fg("#957fb8")
+	th.git.ignored = ui.Style():fg("#727169")
+end
+setup_git_theme()
 require("git"):setup({ order = 500 })
 
 require("restore"):setup({
@@ -45,19 +48,19 @@ function Status:mode()
 
 	local style = self:style()
 	return ui.Line({
-		ui.Span(th.status.sep_left.open):fg(style.main:bg()):bg("reset"),
+		ui.Span(th.status.sep_left.open):fg(style.main:bg()):bg(App.bg()),
 		ui.Span(" " .. mode .. " "):style(style.main),
 		ui.Span(th.status.sep_left.close):fg(style.main:bg()):bg(style.alt:bg()),
 	})
 end
 
-function Status:size()
+function Status:length()
 	-- local h = self._current.hovered
-	-- local size = h and (h:size() or h.cha.len) or 0
+	-- local len = h and h.cha.len or 0
 
 	local style = self:style()
 	return ui.Line({
-		-- ui.Span(" " .. ya.readable_size(size) .. " "):style(style.alt),
+		-- ui.Span(" " .. ya.readable_size(len) .. " "):style(style.alt),
 		ui.Span(th.status.sep_left.close):fg(style.alt:bg()),
 	})
 end
@@ -153,7 +156,7 @@ function Status:position()
 	return ui.Line({
 		ui.Span(th.status.sep_right.open):fg(style.main:bg()):bg(style.alt:bg()),
 		ui.Span(" " .. icon .. date .. " "):style(style.main),
-		ui.Span(th.status.sep_right.close):fg(style.main:bg()):bg("reset"),
+		ui.Span(th.status.sep_right.close):fg(style.main:bg()):bg(App.bg()),
 	})
 end
 
@@ -197,12 +200,13 @@ end
 
 function Header:flags()
 	local cwd = self._current.cwd
+	local data = cwd.spec.is_view and cwd.spec.data
 	local filter = self._current.files.filter
 	local finder = self._tab.finder
 
 	local t = {}
-	if cwd.spec.is_search then
-		t[#t + 1] = string.format("search: %s", cwd.domain)
+	if type(data) == "table" then
+		t[#t + 1] = string.format("search: %s", data[1])
 	end
 	if filter then
 		t[#t + 1] = string.format("filter: %s", filter)
@@ -297,10 +301,10 @@ Header:children_add(function(self)
 			local left_sep = ui.Span(th.tabs.sep_inner.open):style(th.tabs.inactive)
 			local right_sep = ui.Span(th.tabs.sep_inner.close):style(th.tabs.inactive)
 			if i == 1 then
-				left_sep = left_sep:bg("reset")
+				left_sep = left_sep:bg(App.bg())
 			end
 			if i == #cx.tabs then
-				right_sep = right_sep:bg("reset")
+				right_sep = right_sep:bg(App.bg())
 			end
 			lines[#lines + 1] = ui.Line({
 				left_sep,
@@ -349,19 +353,30 @@ function Tabs.height() return 0 end -- hide tab bar
 -- }}}
 
 -- change linemode style {{{
-th.linemode = ui.Style():fg("#54546d")
+-- Use a local so the gray survives `theme` reloads (which rebuild `th`
+-- and drop custom fields). Keep `th.linemode` in sync for anything else
+-- that reads it.
+local LINEMODE_STYLE = ui.Style():fg("#54546d")
+local function setup_linemode_theme() th.linemode = LINEMODE_STYLE end
+setup_linemode_theme()
+-- NOTE: `ps.sub` allows only one subscription per topic per plugin,
+-- so git + linemode re-application must share this single "theme" handler.
+ps.sub("theme", function()
+	setup_git_theme()
+	setup_linemode_theme()
+end)
 
 function Linemode:mime()
-	return ui.Span(self._file:mime() or ""):style(th.linemode)
+	return ui.Span(self._file:mime() or ""):style(LINEMODE_STYLE)
 end
 
 function Linemode:size()
 	local size = self._file:size()
 	if size then
-		return ui.Span(ya.readable_size(size)):style(th.linemode)
+		return ui.Span(ya.readable_size(size)):style(LINEMODE_STYLE)
 	else
 		local folder = cx.active:history(self._file.url)
-		return folder and ui.Span(tostring(#folder.files)):style(th.linemode) or ""
+		return folder and ui.Span(tostring(#folder.files)):style(LINEMODE_STYLE) or ""
 	end
 end
 
@@ -370,9 +385,9 @@ function Linemode:btime()
 	if time == 0 then
 		return ""
 	elseif os.date("%Y", time) == os.date("%Y") then
-		return ui.Span(os.date("%d/%m %H:%M", time)--[[@as string]]):style(th.linemode)
+		return ui.Span(os.date("%d/%m %H:%M", time)--[[@as string]]):style(LINEMODE_STYLE)
 	else
-		return ui.Span(os.date("%d/%m  %Y", time)--[[@as string]]):style(th.linemode)
+		return ui.Span(os.date("%d/%m  %Y", time)--[[@as string]]):style(LINEMODE_STYLE)
 	end
 end
 
@@ -381,20 +396,20 @@ function Linemode:mtime()
 	if time == 0 then
 		return ""
 	elseif os.date("%Y", time) == os.date("%Y") then
-		return ui.Span(os.date("%d/%m %H:%M", time)--[[@as string]]):style(th.linemode)
+		return ui.Span(os.date("%d/%m %H:%M", time)--[[@as string]]):style(LINEMODE_STYLE)
 	else
-		return ui.Span(os.date("%d/%m  %Y", time)--[[@as string]]):style(th.linemode)
+		return ui.Span(os.date("%d/%m  %Y", time)--[[@as string]]):style(LINEMODE_STYLE)
 	end
 end
 
 function Linemode:permissions()
-	return ui.Span(self._file.cha:perm() or ""):style(th.linemode)
+	return ui.Span(self._file.cha:perm() or ""):style(LINEMODE_STYLE)
 end
 
 function Linemode:owner()
 	local user = ya.user_name and ya.user_name(self._file.cha.uid) or self._file.cha.uid
 	local group = ya.group_name and ya.group_name(self._file.cha.gid) or self._file.cha.gid
-	return ui.Span(string.format("%s:%s", user, group)):style(th.linemode)
+	return ui.Span(string.format("%s:%s", user, group)):style(LINEMODE_STYLE)
 end
 
 function Entity:found()
@@ -410,14 +425,14 @@ function Entity:found()
 	end
 
 	local s = string.format("[%d/%s]", found[1] + 1, found[2] >= 100 and "99+" or found[2])
-	return ui.Line({ "  ", ui.Span(s):style(th.mgr.find_position) }):style(th.linemode)
+	return ui.Line({ "  ", ui.Span(s):style(th.mgr.find_position) }):style(LINEMODE_STYLE)
 end
 
 -- }}}
 
 -- don't color the icon the same color as the current line
 function Entity:icon()
-	local icon = th.icon:match(self._file)
+	local icon = th.icon:match(self._file, { hovered = self._file.is_hovered })
 	if not icon then
 		return ""
 	else

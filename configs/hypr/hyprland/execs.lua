@@ -1,4 +1,5 @@
--- put former exec-once commands inside the func and former exec commands outside
+require("hyprland.scripts.dispatch_browser_windows")
+
 hl.on("hyprland.start", function()
 	-- Bar, wallpaper
 	hl.exec_cmd("$HOME/.config/hypr/hyprland/scripts/start_geoclue_agent.sh")
@@ -28,7 +29,4 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("kmonad $HOME/.config/kmonad.kbd")
 
 	hl.exec_cmd("bedtime")
-
-	-- scripts
-	require("hyprland.scripts.dispatch_browser_windows")
 end)
