@@ -47,11 +47,11 @@ prepend_fetchers = [
 	{ group = "git", url = "*/", run = "git" },
 ]
 prepend_previewers = [
-	{ mime = "inode/socket", run = 'faster-piper -- fzf_preview "$1"' },
+	{ mime = "inode/socket", run = 'piper -- fzf_preview "$1"' },
 	{ mime = "message/*", run = "code" },
 ]
 append_previewers = [
-	{ url = "*", run = 'faster-piper -- hexyl --border=none --terminal-width=$w "$1"' },
+	{ url = "*", run = 'piper -- hexyl --border=none --terminal-width=$w "$1"' },
 ]
 
 [input]
