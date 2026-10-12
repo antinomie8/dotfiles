@@ -2,7 +2,7 @@
 
 START_TIME=2130
 END_TIME=0500
-INITIAL_SLEEP_DELAY=5
+INITIAL_SLEEP_DELAY=15
 SLEEP_DELAY=0
 
 function guard() {
@@ -10,8 +10,10 @@ function guard() {
 
 	# 10# forces base 10 parsing to avoid parsing as octal in some cases
 	if [[ 10#$CURRENT_TIME -ge 10#$START_TIME ]] || [[ 10#$CURRENT_TIME -lt 10#$END_TIME ]]; then
-		notify-send -u critical -i bed "Bedtime" "Going to sleep in $1 seconds"
-		sleep $1
+		if [[ "$1" > 0 ]]; then
+			notify-send -u critical -i bed "Bedtime" "Going to sleep in $1 seconds"
+			sleep $1
+		fi
 		systemctl sleep
 		return 1
 	else
@@ -21,8 +23,6 @@ function guard() {
 
 guard $INITIAL_SLEEP_DELAY
 
-while true; do
-	if guard $SLEEP_DELAY; then
-		break
-	fi
+until guard $SLEEP_DELAY; do
+	true
 done

@@ -58,7 +58,23 @@
 /* Hide Whatsapp locked chats */
 @-moz-document domain("web.whatsapp.com") {
 	button.xjb2p0i /* locked chats */,
-	.xs2akgl /* notifications are off */ {
+	.xs2akgl /* notifications are off */,
+	header.x12xzxwr
+		> div:nth-child(1)
+		> div:nth-child(1)
+		> div:nth-child(1)
+		> div:nth-child(6)
+		> span:nth-child(1)
+		> div:nth-child(1)
+		> div:nth-child(2),
+	header.x12xzxwr
+		> div:nth-child(1)
+		> div:nth-child(1)
+		> div:nth-child(1)
+		> div:nth-child(4)
+		> span:nth-child(1)
+		> div:nth-child(1)
+		> div:nth-child(2) {
 		display: none !important;
 	}
 }
