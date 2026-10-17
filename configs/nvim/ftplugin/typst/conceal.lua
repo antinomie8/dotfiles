@@ -197,8 +197,8 @@ local queries = {
 			(code
 				.(call
 					.item: (ident) @func_name
-						.(group
-							.(string).).).
+						.(_
+							.(_).).).
 				(#eq? @func_name vocab)) @vocab
 		]]
 	),
@@ -398,9 +398,11 @@ local function conceal_math(first, last)
 			if name == "vocab" then
 				for _, node in ipairs(nodes) do
 					local sr, sc, er, ec = node:range()
-					local word_node = node:child(1):child(1):child(1) --[[@as TSNode]]
-					local word = vim.treesitter.get_node_text(word_node, 0, { metadata = metadata })
-					word = word:sub(2, #word - 1) -- strip quotes
+					local parent_node = node:child(1):child(1) --[[@as TSNode]]
+					local word = vim.treesitter.get_node_text(parent_node:child(1) --[[@as TSNode]], 0, { metadata = metadata })
+					if parent_node:type() == "string" then
+						word = word:sub(2, #word - 1) -- strip quotes
+					end
 					conceal_at_positions(sr, sc, er, ec, word, "TypstConcealVocab")
 				end
 			end

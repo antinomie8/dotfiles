@@ -80,6 +80,17 @@
 }
 
 /* Hide annoying Wordpress bloat */
+@-moz-document domain("wordpress.com") {
+	#marketingbar {
+		display: none !important;
+	}
+
+	html,
+	body {
+		margin-top: 0 !important;
+		padding-top: 0 !important;
+	}
+}
 @-moz-document domain("gowers.wordpress.com") {
 	#actionbar {
 		display: none !important;
