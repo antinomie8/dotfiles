@@ -50,7 +50,7 @@ Scope {
         target: Hyprland
 
         function onRawEvent(event) {
-            if (event.name === "closewindow") {
+            if (event.name === "closewindow" || event.name == "movewindow") {
                 const activeFullspaces = Object.keys(fullspace.fullspaceState);
                 
                 activeFullspaces.forEach(wsId => {

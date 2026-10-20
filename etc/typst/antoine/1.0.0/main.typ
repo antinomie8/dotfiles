@@ -144,6 +144,13 @@
 
 	// packages
 	show: thmrules
+	import "@preview/marginalia:0.2.3"
+	show: marginalia.setup.with(
+		inner: (far: 4mm, width: 10mm, sep: 4mm),
+		outer: (far: 4mm, width: 10mm, sep: 4mm),
+		top: 2.5cm,
+		bottom: 2.5cm,
+	)
 
 	// display exponents
 	show regex("[0-9]+(er|ème|eme|st|nd)\b"): it => {

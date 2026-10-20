@@ -31,6 +31,6 @@ cp -f ./kitty/split_window.py "$SMART_SPLITS_KITTY_PATH/"
 		{ "C-Right", function() require("smart-splits").swap_buf_right() end },
 	},
 	opts = {
-		default_amount = 2,
+		resize = { amount = 2 },
 	},
 }

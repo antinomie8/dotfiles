@@ -30,6 +30,7 @@
 #let sgn = math.op("sgn")
 #let pgcd = math.op("pgcd")
 #let ppcm = math.op("ppcm")
+#let Spec = math.op("Spec")
 
 #let card = math.abs
 #let bar = math.overline
@@ -138,3 +139,4 @@
 #let parachuted = side-icon(name: "parachute", height: 2.2em)
 #let overkill = side-icon(name: "tank", height: 1.8em)
 #let contradiction = side-icon(name: "contradiction")
+#let todo = side-icon(name: "writing")
