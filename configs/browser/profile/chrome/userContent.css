@@ -1,3 +1,15 @@
+/* Hide clutter in pdf.js */
+@-moz-document url-prefix("") {
+	.newBadge,
+	[data-l10n-id="pdfjs-new-badge-content"] {
+		display: none !important;
+	}
+
+	section.linkAnnotation {
+		border: none !important;
+	}
+}
+
 /* hide things on Firefox home page */
 @-moz-document url("about:newtab"), url("about:home") {
 	.wallpaper-attribution,

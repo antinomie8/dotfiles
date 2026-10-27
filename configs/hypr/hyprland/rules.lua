@@ -47,6 +47,10 @@ hl.window_rule({ match = { class = "Zotero" }, float = true, size = { "(monitor_
 hl.window_rule({ match = { class = "plasma-changeicons" }, float = true, no_initial_focus = true, move = { 999999, 999999 } })
 hl.window_rule({ match = { title = "^(Copying — Dolphin)$" }, move = { 40, 80 } }) -- stupid dolphin copy
 
+-- Tiling
+-- Ignore app maximize requests so restored window states do not override tiling.
+hl.window_rule({ match = { class = ".*" }, suppress_event = "maximize" })
+
 -- Picture-in-Picture
 hl.window_rule({
 	match = { title = "[Pp]icture[-\\s]?[Ii]n[-\\s]?[Pp]icture.*" },
@@ -99,6 +103,7 @@ hl.layer_rule({ match = { namespace = "logout_dialog" }, blur = true }) -- wlogo
 hl.layer_rule({ match = { namespace = "quickshell:.*" }, blur_popups = true })
 hl.layer_rule({ match = { namespace = "quickshell:.*" }, blur = true })
 hl.layer_rule({ match = { namespace = "quickshell:.*" }, ignore_alpha = 0.79 })
+hl.layer_rule({ match = { namespace = "quickshell:background" }, blur = false })
 hl.layer_rule({ match = { namespace = "quickshell:bar" }, animation = "slide" })
 hl.layer_rule({ match = { namespace = "quickshell:actionCenter" }, no_anim = true })
 hl.layer_rule({ match = { namespace = "quickshell:cheatsheet" }, animation = "slide bottom" })

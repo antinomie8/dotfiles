@@ -131,6 +131,7 @@
 		name,
 		number,
 		body,
+		title: none,
 		color: calloutargs.at("accent-color", default: black),
 		linebreak: linebreak,
 		style: style,
@@ -157,7 +158,7 @@
 				..calloutargs,
 				..additional_calloutargs,
 				title: {
-					get_env_name(env_name)
+					get_env_name(env_name, override: title)
 					if number != none { " " + number }
 					if type(name) == str or type(name) == content {
 						if type(name) == str and name.starts-with(regex("https?://")) {
@@ -177,7 +178,14 @@
 				))
 				args = arguments(fill: color, ..args)
 
-				text(get_env_name(env_name), ..args)
+				let first-letter-size = class.at("env-first-letter-size", default: (:)).at(env_name, default: none)
+				if first-letter-size != none {
+					let (first-letter, rest) = get_env_name(env_name, split-first-letter: true)
+					text(first-letter, ..args, size: first-letter-size)
+					text(rest, ..args)
+				} else {
+					text(get_env_name(env_name, override: title), ..args)
+				}
 				if number != none {
 					text(..args, " " + number)
 				}

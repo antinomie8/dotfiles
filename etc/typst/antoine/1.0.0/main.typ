@@ -146,10 +146,10 @@
 	show: thmrules
 	import "@preview/marginalia:0.2.3"
 	show: marginalia.setup.with(
-		inner: (far: 4mm, width: 10mm, sep: 4mm),
-		outer: (far: 4mm, width: 10mm, sep: 4mm),
-		top: 2.5cm,
-		bottom: 2.5cm,
+		inner: (far: 0.8em, width: 2.4em, sep: 0.8em),
+		outer: (far: 0.8em, width: 2.4em, sep: 0.8em),
+		top: 5em,
+		bottom: 5em,
 	)
 
 	// display exponents

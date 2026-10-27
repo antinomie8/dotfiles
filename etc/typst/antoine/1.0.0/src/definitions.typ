@@ -26,6 +26,9 @@
 			size: 14pt,
 		),
 		boxed-envs: false,
+		env-first-letter-size: (
+			exercise: 18pt,
+		),
 	),
 )
 
@@ -48,7 +51,7 @@
 	env: (
 		theorem: (
 			accent: rgb("#5787a0"),
-			stroke: rgb("#0000ff"),
+			stroke: rgb("#475aff"),
 			fill: rgb("#f1f9fa"),
 		),
 		example: (
@@ -110,11 +113,22 @@
 		"toc": "Table of contents",
 	),
 )
-#let get_env_name(env) = {
+
+#let get_env_name(env, override: none, split-first-letter: false) = {
 	if type(env) != str { return env }
-	return context env_names
-		.at(text.lang, default: env_names.at("en"))
-		.at(env, default: upper(env.at(0)) + env.slice(1)) // capitalize first letter
+	if split-first-letter {
+		let env_name = if override != none { override } else {
+			env_names
+				.at(text.lang, default: env_names.at("en"))
+				.at(env, default: upper(env.at(0)) + env.slice(1))
+		}
+		return (env_name.first(), env_name.slice(1)) // capitalize first letter
+	}
+	return if override != none { override } else {
+		context env_names
+			.at(text.lang, default: env_names.at("en"))
+			.at(env, default: upper(env.at(0)) + env.slice(1)) // capitalize first letter
+	}
 }
 
 #let months = (

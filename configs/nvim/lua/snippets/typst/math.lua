@@ -290,8 +290,11 @@ local snippets = {
 	s({ trig = "df", snippetType = "autosnippet", condition = typst.in_math },
 		t("dif")
 	),
-	s({ trig = "upr", dscr = "upright text", snippetType = "autosnippet" },
+	s({ trig = "upr ", dscr = "upright text", snippetType = "autosnippet", condition = typst.in_math },
 		{ t("upright(\""), i(1), t("\")") }
+	),
+	s({ trig = "(%u)%*", dscr = "asterisk", regTrig = true, snippetType = "autosnippet", condition = typst.in_math },
+		{ f(function(_, snip) return snip.captures[1] end), t("^*") }
 	),
 	s(
 		{

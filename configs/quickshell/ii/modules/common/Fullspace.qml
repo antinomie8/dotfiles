@@ -46,23 +46,32 @@ Scope {
         delete fullspace.fullspaceState[id];
     }
 
-    Connections {
-        target: Hyprland
-
-        function onRawEvent(event) {
-            if (event.name === "closewindow" || event.name == "movewindow") {
-                const activeFullspaces = Object.keys(fullspace.fullspaceState);
-                
-                activeFullspaces.forEach(wsId => {
-                    const id = parseInt(wsId)
-                    const clients = HyprlandData.hyprlandClientsForWorkspace(id);
-                    
-                    if (!clients || clients.length <= 1) { // need check <= 1 because the window being closed is counted
-                        console.log(`[Fullspace] Last window closed on workspace ${wsId}. Reverting rules.`);
-                        fullspace.revertFullspace(wsId);
-                    }
-                });
+    /**
+     * Reverts every fullspace workspace that has no mapped windows left
+     * (e.g. the last window was closed or moved to another workspace).
+     * Judged on the client list snapshot in HyprlandData.
+     */
+    function revertEmptyFullspaces() {
+        for (const id of Object.keys(fullspace.fullspaceState).map(Number)) {
+            const empty = !HyprlandData.windowList?.some(win => win.mapped && win.workspace?.id === id);
+            if (empty) {
+                console.log(`[Fullspace] Last window gone from workspace ${id}. Reverting rules.`);
+                fullspace.revertFullspace(id);
             }
+        }
+    }
+
+    /**
+     * HyprlandData refreshes its window list on every Hyprland event that can
+     * empty a workspace (closewindow, movewindow, ...). Hooking the check to
+     * the data becoming fresh avoids racing a raw event with a still stale
+     * hyprctl snapshot.
+     */
+    Connections {
+        target: HyprlandData
+
+        function onWindowListChanged() {
+            fullspace.revertEmptyFullspaces();
         }
     }
 

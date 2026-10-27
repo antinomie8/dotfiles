@@ -11,7 +11,7 @@ user_pref("browser.low_commit_space_threshold_percent", 35);                    
 user_pref("browser.tabs.unloadOnLowMemory", true);                                          // unload tabs when low on memory
 user_pref("browser.screenshots.dir", "~/Médias/Images/Captures d'écran");                   // where screenshots are saved
 
-// dark mode for pdf.js
+user_pref("pdfjs.sidebarViewOnLoad", 0);
 user_pref("pdfjs.forcePageColors", true);
 user_pref("pdfjs.pageColorsBackground", "#1f1f28");
 user_pref("pdfjs.pageColorsForeground", "#b8b4d0");
