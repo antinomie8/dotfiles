@@ -254,7 +254,7 @@
         "translator": {
             "engine": "auto",
             "sourceLanguage": "auto",
-            "targetLanguage": "Français"
+            "targetLanguage": "English"
         },
         "ui": "auto"
     },

@@ -67,7 +67,7 @@
 	}
 }
 
-/* Hide Whatsapp locked chats */
+/* Hide Whatsapp locked & archived chats */
 @-moz-document domain("web.whatsapp.com") {
 	button.xjb2p0i /* locked chats */,
 	.xs2akgl /* notifications are off */,
@@ -105,6 +105,14 @@
 }
 @-moz-document domain("gowers.wordpress.com") {
 	#actionbar {
+		display: none !important;
+	}
+}
+
+/* Hide Jane Street ad on Everybody Codes */
+@-moz-document domain("everybody.codes") {
+	.sponsor,
+	.main-adds > ui-adds:nth-child(1) > div:nth-child(1) > small:nth-child(3) {
 		display: none !important;
 	}
 }
