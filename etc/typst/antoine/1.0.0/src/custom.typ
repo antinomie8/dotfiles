@@ -132,11 +132,16 @@
 }
 
 #let side-icon(name: none, path: none, height: 2em, ..args) = {
-	import "@preview/marginalia:0.3.1": notefigure
+	import "@preview/marge:0.1.0": sidenote
 	let path = if path != none { path } else { "/icons/" + name + ".svg" }
-	notefigure(box(height: height, image(path)), dy: 1.5em, ..args)
+	sidenote(
+		box(height: height, image(path)),
+		side: right,
+		padding: (left: 1em, right: 1em),
+		..args,
+	)
 }
-#let parachuted = side-icon(name: "parachute", height: 2.2em)
-#let overkill = side-icon(name: "tank", height: 1.8em)
-#let contradiction = side-icon(name: "contradiction")
-#let todo = side-icon(name: "writing")
+#let parachuted    = side-icon(name: "parachute", height: 2.2em, dy: -.5em)
+#let overkill      = side-icon(name: "tank", height: 1.8em, dy: -.4em)
+#let contradiction = side-icon(name: "contradiction", dy: -.3em)
+#let todo          = side-icon(name: "writing", dy: -.4em)

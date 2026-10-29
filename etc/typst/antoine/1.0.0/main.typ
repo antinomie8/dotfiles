@@ -143,14 +143,7 @@
 	set list(indent: 1em)
 
 	// packages
-	show: thmrules
-	import "@preview/marginalia:0.2.3"
-	show: marginalia.setup.with(
-		inner: (far: 0.8em, width: 2.4em, sep: 0.8em),
-		outer: (far: 0.8em, width: 2.4em, sep: 0.8em),
-		top: 5em,
-		bottom: 5em,
-	)
+	show: thm.thm-rules.with(qed-symbol: $square$, qed-symbol-nested: $qed$)
 
 	// display exponents
 	show regex("[0-9]+(er|ème|eme|st|nd)\b"): it => {

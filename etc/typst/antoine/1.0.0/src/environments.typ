@@ -1,5 +1,19 @@
 #import "definitions.typ": *
-#import "theorems.typ": *
+#import "@preview/ctheorems:2.0.0" as thm
+
+#let qedhere = thm.qedhere
+
+#let thm-env = thm.thm.with(
+	ref-fmt: thm => {
+		if thm.ref-supplement != none and thm.ref-supplement != [!] {
+			link(thm.loc, text(fill: colors.label)[#thm.ref-supplement #thm.number])
+		} else if thm.name == none or thm.ref-supplement == [!] {
+			link(thm.loc, text(fill: colors.label)[#thm.supplement #thm.number])
+		} else {
+			link(thm.loc, text(fill: colors.label, thm.name))
+		}
+	},
+)
 
 // environments
 #let callout(
@@ -22,7 +36,7 @@
 	title: none,
 	icon: none,
 	content,
-) = context {
+) = {
 	let body-color = if body-color != none {
 		body-color
 	} else if accent-color == black {
@@ -123,22 +137,16 @@
 	boxed: false,
 	display-title: false,
 	..calloutargs,
-) = thmenv(
-	env_name,
-	"heading",
-	none,
-	(
-		name,
-		number,
-		body,
-		title: none,
+) = thm-env.with(
+	counter: env_name,
+	supplement: get_env_name(env_name),
+	fmt: (
 		color: calloutargs.at("accent-color", default: black),
 		linebreak: linebreak,
 		style: style,
 		boxed: boxed,
 		display-title: display-title,
-		link: none,
-		..additional_calloutargs,
+		thm,
 	) => context {
 		let class = classes.at(document-class.get())
 		let body = {
@@ -151,22 +159,24 @@
 					it
 				}
 			}
-			body
+			thm.body
 		}
 		if display-title {
 			callout(
 				..calloutargs,
-				..additional_calloutargs,
+				// ..additional_calloutargs,
 				title: {
-					get_env_name(env_name, override: title)
-					if number != none { " " + number }
-					if type(name) == str or type(name) == content {
-						if type(name) == str and name.starts-with(regex("https?://")) {
-							name = std.link(name, text(fill: white, name))
+					get_env_name(env_name)
+					if thm.number != none { [ #thm.number] }
+					if type(thm.name) == str or type(thm.name) == content {
+						if type(thm.name) == str and thm.name.starts-with(regex("https?://")) {
+							thm.name = std.link(thm.name, text(fill: white, thm.name))
 						}
-						" (" + name + ")"
+						" (" + thm.name + ")"
 					}
-					if link != none { " " + std.link(link, "🔗") }
+					if thm.args.at("link", default: none) != none {
+						" " + std.link(thm.args.at("link"), "🔗")
+					}
 				},
 				body,
 			)
@@ -184,13 +194,13 @@
 					text(first-letter, ..args, size: first-letter-size)
 					text(rest, ..args)
 				} else {
-					text(get_env_name(env_name, override: title), ..args)
+					text(get_env_name(env_name), ..args)
 				}
-				if number != none {
-					text(..args, " " + number)
+				if thm.number != none {
+					text(..args, [ #thm.number])
 				}
-				if type(name) == str or type(name) == content {
-					text(size: 11pt, style: style, fill: color, " (" + name + ")")
+				if type(thm.name) == str or type(thm.name) == content {
+					text(size: 11pt, style: style, fill: color, " (" + thm.name + ")")
 				}
 				if linebreak { [\ ] } else {
 					text(..args, separator)
@@ -199,7 +209,6 @@
 			if boxed and class.at("boxed-envs", default: true) {
 				callout(
 					..calloutargs,
-					..additional_calloutargs,
 					header + body,
 				)
 			} else {
@@ -207,30 +216,32 @@
 			}
 		}
 	},
-).with(supplement: get_env_name(env_name))
+)
 
 #let thm-box(
 	env_name,
 	accent: color.black,
 	linebreak: false,
-	..thmboxargs,
-) = thmbox(
-	env_name,
-	get_env_name(env_name),
+	..thmargs,
+) = thm-env.with(
+	counter: env_name,
+	base: "heading",
+	inset: 1.2em,
+	radius: 0.3em,
 	supplement: get_env_name(env_name),
-	// base = if (counter(heading).get().at(1)) { "heading" } else { none },
-	titlefmt: (content, delta: none) => context {
+	title-fmt: (content, delta: none) => context {
 		text(weight: "bold", fill: accent, content)
 	},
-	namefmt: content => text(
+	name-fmt: content => text(
 		fill: accent,
 		"(" + content + ")",
 	),
+	body-fmt: x => x,
 	separator: if linebreak { [\ ] } else {
 		text(weight: "bold", fill: accent, ":")
 	},
-	breakable: true,
-	..thmboxargs,
+	block-args: (breakable: true),
+	..thmargs,
 )
 
 // predefined environments
@@ -274,8 +285,8 @@
 #let algorithm = thm-plain("algorithm", boxed: true, ..colors.env.algorithm).with(numbering: none)
 #let properties = thm-plain("properties", ..colors.env.plain).with(numbering: none)
 
-#let proof = thmproof("proof", get_env_name("proof"))
-#let solution = thmproof("solution", get_env_name("solution"))
+#let proof = thm.proof.with(supplement: get_env_name("proof"), separator: ":")
+#let solution = thm.proof.with(supplement: get_env_name("solution"), separator: ":")
 
 #let eqn(it) = {
 	set math.equation(numbering: "(1)")
