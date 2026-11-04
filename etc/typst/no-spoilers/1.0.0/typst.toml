@@ -1,0 +1,8 @@
+[package]
+name = "no-spoilers"
+version = "1.0.0"
+entrypoint = "lib.typ"
+
+[template]
+path = "template"
+entrypoint = "main.typ"

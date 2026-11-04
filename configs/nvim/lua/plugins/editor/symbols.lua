@@ -2,7 +2,7 @@ return {
 	{
 		"stevearc/aerial.nvim",
 		keys = {
-			{ "<leader>a", "<Cmd>AerialToggle!<CR>", desc = "Toggle code outline window" },
+			{ "<Tab>", "<Cmd>AerialToggle!<CR>", desc = "Toggle code outline window" },
 		},
 		cmd = {
 			"AerialToggle",
@@ -43,7 +43,6 @@ return {
 			-- },
 			icons = require("static.icons").symbols,
 			autojump = true,
-			manage_folds = true,
 			link_folds_to_tree = true,
 			link_tree_to_folds = true,
 			guides = {

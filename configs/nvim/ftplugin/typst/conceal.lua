@@ -364,7 +364,7 @@ local function conceal_math(first, last)
 		local text = vim.treesitter.get_node_text(node, 0, { metadata = metadata })
 		local repl = symbols[text]
 		if repl and
-			#vim.api.nvim_buf_get_extmarks(buf, ns_math, { sr, sc }, { er, ec - 1 }, { overlap = true }) == 0
+			#vim.api.nvim_buf_get_extmarks(buf, ns_math, { sr, sc + 1 }, { er, ec - 1 }, { overlap = true }) == 0
 		then
 			conceal_at_positions(sr, sc, er, ec, repl.cchar, repl.hl)
 		end

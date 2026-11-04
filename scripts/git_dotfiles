@@ -48,7 +48,7 @@ configs=("asy" "bat" "btop" "browser" "clang-format" "clangd" "eza" "fastfetch" 
 scripts=("assemble" "bedtime" "compile_sfml" "free" "fzf_preview" "git_dotfiles" "mailto" "memory-usage" "rgb" "termsize" "zoxide-rename")
 systemd_user_units=("bedtime.service" "bedtime.timer" "free.service" "mail-sync.service" "goimapnotify.service")
 desktop_entries=("mail" "neomutt" "spotify" "vesktop" "yazi")
-typst_packages=("antoine" "figures")
+typst_packages=("antoine" "figures" "no-spoilers")
 
 copy_group $HOME/.config configs $configs
 copy_group $HOME/.local/bin scripts $scripts

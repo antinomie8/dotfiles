@@ -29,6 +29,8 @@ local custom = {
 	["ZpZ"]        = { cchar = "ℤ/pℤ", hl = "TypstConcealSet" },
 	["ZnZ"]        = { cchar = "ℤ/nℤ", hl = "TypstConcealSet" },
 	["diff"]       = { cchar = "d/dx", hl = "Operator" },
+
+	["qedhere"]    = { cchar = "□", hl = "Punctuation" }
 }
 
 return setmetatable(custom, {

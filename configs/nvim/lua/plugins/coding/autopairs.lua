@@ -200,10 +200,10 @@ return {
 						{
 							">",
 							languages = { "cpp" },
-							open_or_close = function(ctx)
+							when = function(ctx)
 								-- pair for e.g. templates, but not for << and >> operators
 								-- e.g. 'std::cout <|', should not pair but 'std::vector<|>' should
-								return ctx:text_before_cursor():match("%a$")
+								return ctx:text_before_cursor():match("[%a<]$")
 							end,
 							backspace = function(ctx)
 								return vim.endswith(ctx:text_before_cursor(), "<")

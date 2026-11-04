@@ -95,3 +95,12 @@
 
 // Rotate by angle theta
 #let rot(v, theta) = mul(v, expi(theta))
+
+/// Take orthonormal projection of p on line through a and b
+///  - p (complex) A complex number
+///  - a (complex) A complex number
+///  - b (complex) A complex number
+/// -> complex
+#let proj(p, a, b) = {
+	mul(Re(mul(p, expi(-arg(sub(b, a))))), expi(arg(sub(b, a))))
+}

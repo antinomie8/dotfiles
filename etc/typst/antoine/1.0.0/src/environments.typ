@@ -2,10 +2,13 @@
 #import "@preview/ctheorems:2.0.0" as thm
 
 #let qedhere = thm.qedhere
+#let tag = thm.tag
 
 #let thm-env = thm.thm.with(
 	ref-fmt: thm => {
-		if thm.ref-supplement != none and thm.ref-supplement != [!] {
+		if thm.ref-supplement == [:] or thm.ref-supplement == [.] {
+			link(thm.loc, text(fill: colors.label)[#thm.supplement #thm.number#thm.ref-supplement])
+		} else if thm.ref-supplement != none and thm.ref-supplement != [!] {
 			link(thm.loc, text(fill: colors.label)[#thm.ref-supplement #thm.number])
 		} else if thm.name == none or thm.ref-supplement == [!] {
 			link(thm.loc, text(fill: colors.label)[#thm.supplement #thm.number])
@@ -205,6 +208,9 @@
 				if linebreak { [\ ] } else {
 					text(..args, separator)
 				}
+			}
+			if thm.args.at("ref", default: none) != none {
+				header = link(thm.args.at("ref"), header)
 			}
 			if boxed and class.at("boxed-envs", default: true) {
 				callout(
