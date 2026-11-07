@@ -29,9 +29,15 @@
 	}
 }
 
-/* hide "Only you can see your full profile" on GitHub */
+/* hide feed and "Only you can see your full profile" on GitHub */
 @-moz-document domain("github.com") {
-	.tmp-mt-4.flash {
+	.tmp-mt-4.flash,
+	div.tmp-mb-3:nth-child(1)
+		> nav:nth-child(1)
+		> nav-list:nth-child(1)
+		> ul:nth-child(1)
+		> li:nth-child(2),
+	.feed-right-column {
 		display: none !important;
 		visibility: hidden !important;
 	}

@@ -21,7 +21,6 @@
 #let iRR = $i RR$
 #let ZpZ = $ZZ \/ p ZZ$
 #let ZnZ = $ZZ \/ n ZZ$
-#let diff = $dif / (dif x)$
 #let dx = $dif x$
 #let dy = $dif y$
 #let dt = $dif t$

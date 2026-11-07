@@ -122,7 +122,9 @@
 		it
 	}
 	show ref: it => {
-		if it.element != none and it.element.alt == "equation" {
+		if (
+			it.element != none and it.element.at("alt", default: none) == "equation"
+		) {
 			link(it.target, "(" + it + ")")
 		} else {
 			link(it.target, it)
