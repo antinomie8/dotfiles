@@ -50,7 +50,10 @@
 #let rightopen(x, y) = $lr(\[#x\; #y\[)$
 
 // commands
-#let vocab = text.with(weight: "bold", ..colors.env.vocab)
+#let vocab(it) = {
+	show math.equation: set text(weight: "bold")
+	text(weight: "bold", ..colors.env.vocab, it)
+}
 #let bf(x) = $bold(upright(#x))$
 #let u = underline
 #let cal(it) = math.class("normal", context {
