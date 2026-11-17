@@ -1,8 +1,82 @@
 #import "definitions.typ": *
 #import "@preview/ctheorems:2.0.0" as thm
 
-#let qedhere = thm.qedhere
-#let tag = thm.tag
+#let thm-fmt(
+  /// Theorem data.
+  /// See @thm.fmt for details.
+  /// -> dictionary
+  thm,
+  /// Named arguments for the block.
+  /// -> dictionary
+  block-args: (:),
+  /// Formatting for the environment name.
+  /// -> function
+  name-fmt: x => [(#x)],
+  /// Formatting for the environment title (head and number).
+  /// -> function
+  title-fmt: strong,
+  /// Formatting for the environment body.
+  /// -> function
+  body-fmt: x => x,
+  /// Separator between title and body.
+  /// -> content
+  separator: [*.* ],
+	/// Function that returns the actual content
+	/// -> function
+	render: (title, name, separator, body, block-args) => {
+		block(
+			width: 100%,
+			..block-args,
+			[#box[#title]#name#separator#body]
+		)	
+	},
+) = {
+  // Swallow formatting arguments passed directly to the `thm`
+  block-args = thm.args.remove("block-args", default: block-args)
+  name-fmt   = thm.args.remove("name-fmt",   default: name-fmt)
+  title-fmt  = thm.args.remove("title-fmt",  default: title-fmt)
+  body-fmt   = thm.args.remove("body-fmt",   default: body-fmt)
+  separator  = thm.args.remove("separator",  default: separator)
+
+  let name = []
+  if thm.name != none {
+    name = [ #name-fmt(thm.name)]
+  }
+
+  let title = thm.supplement
+  if not thm.number == none {
+    title += [ #thm.number]
+  }
+  title = title-fmt(title)
+  let body = body-fmt(thm.body)
+
+	render(title, name, separator, body, block-args + thm.args)
+}
+
+#let thm-proof = thm.proof.with(
+	block-args: (
+		stroke: ( left: .5pt + colors.env.proof),
+		inset: ( left: 1em),
+		outset: ( left: -.5em, y: .15em),
+	),
+	body-fmt: thm.proof-body-fmt,
+	separator: none,
+	title-fmt: text.with(fill: colors.env.proof, weight: "bold"),
+	fmt: thm-fmt.with(render: (title, name, separator, body, block-args) => {
+		let oneline = block-args.remove("oneline", default: false)
+		if oneline {
+			[#box[#title]#name#separator#body]
+		} else {
+			[#box[#title]#name#separator]
+			block(
+				width: 100%,
+				above: .5em,
+				..block-args,
+				body
+			)
+		}
+	}),
+)
 
 #let thm-env = thm.thm.with(
 	ref-fmt: thm => {
@@ -18,13 +92,15 @@
 	},
 )
 
+#let qedhere = thm.qedhere
+#let tag = thm.tag
+
 // environments
 #let callout(
 	breakable: true,
-	headless: false,
 	header-inset: 0.5em,
 	width: auto,
-	stroke-width: 3pt,
+	stroke-width: 1.5pt,
 	border-radius: 0pt,
 	left-border-rounding: true,
 	border-width: 0pt,
@@ -50,56 +126,17 @@
 	let stroke-color = accent-color
 	let border-color = accent-color
 
-	let header_block = block(
-		sticky: true,
-		below: 0pt,
-		fill: header-color,
-		width: 100%,
-		radius: (
-			top-right: border-radius,
-			top-left: if (stroke-width == 0pt) { border-radius } else { 0pt },
-		),
-		inset: header-inset,
-		{
-			let args = arguments(fill: header-text-color, weight: "bold", title)
-			if icon == none {
-				text(..args)
-			} else {
-				grid(
-					columns: (auto, auto),
-					align: (horizon, left + horizon),
-					gutter: 1em,
-					box(height: 1em)[ #icon ], text(..args),
-				)
-			}
-		},
-	)
-
-	let content_block(content) = block(
+	let content_block = block(
 		breakable: breakable,
 		width: 100%,
 		fill: body-color,
-		inset: content-inset,
+		inset: (left: content-inset + stroke-width, rest: content-inset),
+		outset: (left: -stroke-width),
 		radius: (
 			top-right: if (title != none) { 0pt } else { border-radius },
-			top-left: if (title != none or stroke-width != 0pt) { 0pt } else {
-				border-radius
-			},
+			top-left: if (title != none or stroke-width != 0pt) { 0pt } else { border-radius },
 			bottom-left: if (stroke-width == 0pt) { border-radius } else { 0pt },
 			bottom-right: border-radius,
-		),
-		above: 0pt,
-		content,
-	)
-
-	let callout = block(
-		breakable: breakable,
-		width: width,
-		radius: (
-			right: border-radius,
-			left: if (stroke-width == 0pt) {
-				border-radius
-			} else { 0pt },
 		),
 		stroke: (
 			left: if (stroke-width == 0pt) {
@@ -110,13 +147,60 @@
 			},
 			rest: border-width + border-color,
 		),
-		clip: clip-content,
-		{
-			set align(start)
-			if (not headless and title != none) { header_block }
-			content_block(content)
-		},
+		content,
 	)
+
+	let callout = if title == none {
+		content_block
+	} else {
+		let header_block = block(
+			sticky: true,
+			below: 0pt,
+			fill: header-color,
+			width: 100%,
+			radius: (
+				top-right: border-radius,
+				top-left: if (stroke-width == 0pt) { border-radius } else { 0pt },
+			),
+			inset: header-inset,
+			stroke: (
+				left: if (stroke-width == 0pt) {
+					border-width + border-color
+				} else { (thickness: stroke-width, paint: stroke-color, cap: "butt") },
+				rest: border-width + border-color,
+			),
+			{
+				let args = arguments(fill: header-text-color, weight: "bold", title)
+				if icon == none {
+					text(..args)
+				} else {
+					grid(
+						columns: (auto, auto),
+						align: (horizon, left + horizon),
+						gutter: 1em,
+						box(height: 1em)[ #icon ], text(..args),
+					)
+				}
+			},
+		)
+
+		block(
+			breakable: breakable,
+			width: width,
+			radius: (
+				right: border-radius,
+				left: if (stroke-width == 0pt) {
+					border-radius
+				} else { 0pt },
+			),
+			clip: clip-content,
+			{
+				set align(start)
+				header_block
+				content_block
+			},
+		)
+	}
 
 	if shadow {
 		import "@preview/shadowed:0.3.0": shadow
@@ -227,27 +311,28 @@
 #let thm-box(
 	env_name,
 	accent: color.black,
-	linebreak: false,
-	..thmargs,
+	..thm-args,
 ) = thm-env.with(
 	counter: env_name,
 	base: "heading",
 	inset: 1.2em,
 	radius: 0.3em,
 	supplement: get_env_name(env_name),
-	title-fmt: (content, delta: none) => context {
-		text(weight: "bold", fill: accent, content)
-	},
-	name-fmt: content => text(
-		fill: accent,
-		"(" + content + ")",
-	),
-	body-fmt: x => x,
-	separator: if linebreak { [\ ] } else {
-		text(weight: "bold", fill: accent, ":")
-	},
-	block-args: (breakable: true),
-	..thmargs,
+	title-fmt: text.with(weight: "bold", fill: accent),
+	name-fmt: content => text(fill: accent, "(" + content + ")"),
+	fmt: thm-fmt.with(render: (title, name, separator, body, block-args) => {
+		show: pad.with(top: 0.8em, bottom: 0em)
+		show: block.with(
+			breakable: true,
+			width: 100%,
+			stroke: (thickness: 1pt, paint: accent),
+			inset: 1em,
+			// ..block-args,
+		)
+		place(top, dx: .1em, dy: -1.8em, block(fill: white, inset: 5pt, title + name))
+		body
+	}),
+	..thm-args,
 )
 
 // predefined environments
@@ -264,12 +349,12 @@
 	base.with(numbering: none),
 )
 
-#let (theorem, _theorem) = un-numbered(thm-box("theorem", linebreak: true, ..colors.env.theorem))
+#let (theorem, _theorem) = un-numbered(thm-box("theorem", ..colors.env.theorem))
 #let (corollary, _corollary) = un-numbered(thm-box("corollary", ..colors.env.theorem))
-#let (proposition, _proposition) = un-numbered(thm-box("proposition", linebreak: true, ..colors.env.theorem))
+#let (proposition, _proposition) = un-numbered(thm-box("proposition", ..colors.env.theorem))
 #let (example, _example) = un-numbered(thm-box("example", radius: 0em, ..colors.env.example))
 
-#let (definition, _definition) = un-numbered(thm-plain("definition", ..colors.env.plain))
+#let (definition, _definition) = un-numbered(thm-box("definition", ..colors.env.definition))
 #let (notation, _notation) = un-numbered(thm-plain("notation", ..colors.env.plain))
 #let (conjecture, _conjecture) = un-numbered(thm-plain("conjecture", style: "italic"))
 #let (remark, _remark) = un-numbered(thm-plain("remark", boxed: true))
@@ -291,8 +376,8 @@
 #let algorithm = thm-plain("algorithm", boxed: true, ..colors.env.algorithm).with(numbering: none)
 #let properties = thm-plain("properties", ..colors.env.plain).with(numbering: none)
 
-#let proof = thm.proof.with(supplement: get_env_name("proof"), separator: ":")
-#let solution = thm.proof.with(supplement: get_env_name("solution"), separator: ":")
+#let proof = thm-proof.with(supplement: get_env_name("proof"))
+#let solution = thm-proof.with(supplement: get_env_name("solution"))
 
 #let eqn(it) = {
 	set math.equation(numbering: "(1)")

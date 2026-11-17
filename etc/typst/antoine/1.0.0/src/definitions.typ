@@ -34,12 +34,13 @@
 
 #let fonts = (
 	text: ("New Computer Modern", "Noto Color Emoji"),
-	sans: ("Noto Sans", "Noto Color Emoji"),
+	sans: ("New Computer Modern Sans", "Noto Color Emoji"),
 	mono: ("JetBrainsMono NF", "DejaVu Sans Mono"),
 	math: ("New Computer Modern Math", "Noto Color Emoji"),
 )
 
 #let colors = (
+	page: rgb("#54546d"),
 	headers: rgb("#bf0040"),
 	label: rgb("#7f0000"),
 	hyperlink: blue,
@@ -49,8 +50,9 @@
 		entries: rgb("#00007f"),
 	),
 	env: (
+		proof: rgb("#0a0aaa"),
 		theorem: (
-			accent: rgb("#5787a0"),
+			accent: rgb("#475aff"),
 			stroke: rgb("#475aff"),
 			fill: rgb("#f1f9fa"),
 		),
@@ -58,6 +60,10 @@
 			accent: rgb("#964108"),
 			stroke: rgb("#964108") + 0.7pt,
 			fill: rgb("#fcf8f8"),
+		),
+		definition: (
+			accent: rgb("#008a55"),
+			stroke: rgb("#008a55"),
 		),
 		problem: (
 			body-color: rgb("#f2ecf5"),
@@ -67,7 +73,7 @@
 		lemma: (accent-color: rgb("#008a55")),
 		exercise: (accent-color: rgb("#00007f")),
 		algorithm: (accent-color: rgb("#00bfa5")),
-		vocab: (fill: rgb("#0000ff")),
+		vocab: (fill: rgb("#008a55")),
 		plain: (accent-color: rgb("#000066")),
 	),
 )

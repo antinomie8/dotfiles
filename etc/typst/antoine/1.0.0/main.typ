@@ -36,6 +36,7 @@
 		}
 	}
 	if type(author) == str { author = (author,) }
+	if name == none { name = title }
 
 	set document(title: title, author: author)
 	set page(
@@ -47,20 +48,26 @@
 					or here().position().page != 1
 					or class.at("first-page-header", default: false)
 			) {
-				set text(size: 0.8em)
+				set text(size: 9pt, fill: colors.page)
 				set align(left)
-				text(style: "normal", author.join(", "))
-				if (date != none) {
-					h(0.2em)
-					sym.dash.em
-					h(0.2em)
-					set text(style: "italic")
-					date
-				}
-				h(1fr)
-				text(weight: "bold", if name == none { title } else { name })
-				box(width: 100%, align(center, line(length: 100%, stroke: 0.4pt)))
+				grid(
+					inset: (y: -.6em),
+					align: (left, center, right),
+					columns: (1fr, auto, 1fr),
+					text(style: "normal", author.join(", ")),
+					text(weight: "bold", smallcaps(name)),
+					text(style: "italic", date),
+				)
+				box(width: 100%, align(center, line(
+					length: 100%,
+					stroke: 0.4pt + colors.page,
+				)))
 			}
+		},
+		footer: context {
+			set align(center)
+			set text(fill: colors.page)
+			counter(page).display()
 		},
 		header-ascent: 15%,
 		numbering: "1",
@@ -133,7 +140,7 @@
 
 	// Change quote display
 	set quote(block: true)
-	show quote: set pad(left: 2em, top: -1em, bottom: -0.5em)
+	show quote: set pad(left: 10em, top: -1em, bottom: -0.5em)
 	show quote: set text(style: "italic")
 
 	// Make divider not span the whole page width
@@ -145,7 +152,10 @@
 	set list(indent: 1em)
 
 	// packages
-	show: thm.thm-rules.with(qed-symbol: $square$, qed-symbol-nested: $qed$)
+	show: thm.thm-rules.with(
+		qed-symbol: text(fill: colors.env.proof)[$square$],
+		qed-symbol-nested: text(fill: colors.env.proof)[$qed$],
+	)
 
 	// display exponents
 	show regex("[0-9]+(er|ème|eme|st|nd)\b"): it => {
@@ -170,7 +180,7 @@
 				subtitle,
 			))
 			align(center, text(
-				size: 15pt,
+				size: 13pt,
 				weight: "regular",
 				smallcaps(author.join(", ")),
 			))
