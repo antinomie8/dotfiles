@@ -20,3 +20,13 @@
 <Up> = pan 0 50
 <Left> = pan 50 0
 <Right> = pan -50 0
+
+<Ctrl+plus> = zoom 1
+<Ctrl+minus> = zoom 1
+
+<Ctrl+e> = pan 0  100
+<Ctrl+y> = pan 0 -100
+<Ctrl+u> = pan 0  1000
+<Ctrl+d> = pan 0 -1000
+<Ctrl+b> = pan 0  2000
+<Ctrl+f> = pan 0 -2000

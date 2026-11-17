@@ -40,7 +40,7 @@
 )
 
 #let colors = (
-	page: rgb("#54546d"),
+	page: luma(30%),
 	headers: rgb("#bf0040"),
 	label: rgb("#7f0000"),
 	hyperlink: blue,
