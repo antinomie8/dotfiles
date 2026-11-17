@@ -1,20 +1,15 @@
 -- Zen mode
 vim.api.nvim_create_user_command("Zen", function()
 	if not vim.g.zen_mode then
-		vim.g.zen_mode = true
-		vim.opt.laststatus = 0
-		vim.opt.showtabline = 0
+		vim.opt.number, vim.opt.relativenumber = false, false
+		vim.opt.laststatus, vim.opt.showtabline = 0, 0
+		vim.opt.signcolumn = "no"
 		vim.opt.winbar = nil
-		if vim.env.TMUX then
-			vim.system({ "tmux", "set", "-g", "status", "off" })
-		end
 	else
-		vim.g.zen_mode = false
-		vim.opt.laststatus = 3
-		vim.opt.showtabline = 2
+		vim.opt.number, vim.opt.relativenumber = true, true
+		vim.opt.laststatus, vim.opt.showtabline = 3, 2
+		vim.opt.signcolumn = "yes"
 		vim.opt.winbar = "winbar=%{%v:lua.dropbar()%}"
-		if vim.env.TMUX then
-			vim.system({ "tmux", "set", "-g", "status", "on" })
-		end
 	end
+	vim.g.zen_mode = not vim.g.zen_mode
 end, {})

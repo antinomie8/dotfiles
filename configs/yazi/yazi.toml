@@ -27,7 +27,8 @@ open = [ { run = "xdg-open %s", orphan = true, desc = "Open" } ]
 view = [ { run = "imv %s", orphan = true, desc = "View" } ]
 execute = [ { run = "%s", desc = "Execute" } ]
 recover = [ { run = "nvim -r %s", block = true, desc = "Recover swapfile" } ]
-add_sub = [ { run  = ''' printf "sub-add '%%s'\n" %s1 | socat - /tmp/mpv.sock ''', desc = "Add subtitles to mpv" } ]
+add_sub = [ { run = ''' printf "sub-add '%%s'\n" %s1 | socat - /tmp/mpv.sock ''', desc = "Add subtitles to mpv" } ]
+typst_compile = [ { run = "typst compile %s", desc = "Compile" } ]
 
 [open]
 prepend_rules = [
@@ -39,6 +40,7 @@ prepend_rules = [
 	{ mime = "application/pie-executable", use = [ "edit", "execute" ] },
 	{ mime = "image/svg+xml", use = [ "edit", "view", "open" ] },
 	{ mime = "text/html", use = ["open", "edit"] },
+	{ mime = "text/typst", use = ["edit", "typst_compile"] }
 ]
 
 [plugin]

@@ -7,6 +7,7 @@ set selection-clipboard clipboard
 set selection-notification false
 set dbus-raise-window false
 set guioptions none
+set page-v-padding 3
 set statusbar-h-padding 0
 set statusbar-v-padding 0
 set font "JetBrains Mono 11"

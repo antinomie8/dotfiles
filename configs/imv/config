@@ -14,3 +14,9 @@
 
 # Rotate the currently open image by 90 degrees
 <Ctrl+r> = exec mogrify -rotate 90 "$imv_current_file"
+
+# Arrow keys move instead of zoom
+<Down> = pan 0 -50
+<Up> = pan 0 50
+<Left> = pan 50 0
+<Right> = pan -50 0
