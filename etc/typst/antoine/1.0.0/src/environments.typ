@@ -311,6 +311,9 @@
 #let thm-box(
 	env_name,
 	accent: color.black,
+	/// Thickness of the top/bottom border where the box is split across pages
+	/// -> length
+	break-thickness: .3pt,
 	..thm-args,
 ) = thm-env.with(
 	counter: env_name,
@@ -321,16 +324,53 @@
 	title-fmt: text.with(weight: "bold", fill: accent),
 	name-fmt: content => text(fill: accent, "(" + content + ")"),
 	fmt: thm-fmt.with(render: (title, name, separator, body, block-args) => {
+		let full = 1pt
 		show: pad.with(top: 0.8em, bottom: 0em)
-		show: block.with(
-			breakable: true,
-			width: 100%,
-			stroke: (thickness: 1pt, paint: accent),
-			inset: 1em,
-			// ..block-args,
-		)
-		place(top, dx: .1em, dy: -1.8em, block(fill: white, inset: 5pt, title + name))
-		body
+		context {
+			// This box's location identifies it: every fragment's footer leaves a
+			// marker holding it, so a header/footer can tell whether another
+			// fragment of the *same* box (even with nested boxes) lies before/after.
+			// Markers never change between layout passes, so this can't cause
+			// convergence problems (unlike counters keyed on a counter value).
+			let box-id = here()
+			// The side borders stick out by half their width past the edge of the
+			// row, so the rule is shifted outwards (dir: -1 up, 1 down) to make its
+			// outer edge flush with the end of the sides. Zero shift when full-width.
+			let rule(thickness, dir) = move(
+				dy: dir * (full - thickness) / 2,
+				line(length: 100%, stroke: (thickness: thickness, paint: accent)),
+			)
+			let mine(markers) = markers.any(m => m.value == box-id)
+			block(
+				breakable: true,
+				width: 100%,
+				// ..block-args,
+				grid(
+					columns: 1fr,
+					inset: 0pt,
+					stroke: (x: (thickness: full, paint: accent)),
+					// Repeated on every page: thin unless this is the first fragment
+					// (= no footer of this box before it).
+					grid.header(repeat: true, context {
+						let before = query(selector(<thm-box-fragment>).after(box-id).before(here()))
+						rule(if mine(before) { break-thickness } else { full }, -1)
+					}),
+					grid.cell(inset: 1em, {
+						place(top, dx: .1em, dy: -1.8em, block(fill: white, inset: 5pt, title + name))
+						body
+					}),
+					// Repeated on every page: thin unless this is the last fragment
+					// (= no footer of this box after it).
+					grid.footer(repeat: true, {
+						[#metadata(box-id) <thm-box-fragment>]
+						context {
+							let after = query(selector(<thm-box-fragment>).after(here()))
+							rule(if mine(after) { break-thickness } else { full }, 1)
+						}
+					}),
+				),
+			)
+		}
 	}),
 	..thm-args,
 )
