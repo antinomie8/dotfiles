@@ -23,7 +23,7 @@
   separator: [*.* ],
 	/// Function that returns the actual content
 	/// -> function
-	render: (title, name, separator, body, block-args) => {
+	render: (title, name, separator, body, block-args, style) => {
 		block(
 			width: 100%,
 			..block-args,
@@ -38,6 +38,9 @@
   body-fmt   = thm.args.remove("body-fmt",   default: body-fmt)
   separator  = thm.args.remove("separator",  default: separator)
 
+	let style = thm.args.remove("style", default: none)
+	if style == "plain" { title-fmt = text.with(style: "italic") }
+
   let name = []
   if thm.name != none {
     name = [ #name-fmt(thm.name)]
@@ -50,7 +53,7 @@
   title = title-fmt(title)
   let body = body-fmt(thm.body)
 
-	render(title, name, separator, body, block-args + thm.args)
+	render(title, name, separator, body, block-args + thm.args, style)
 }
 
 #let thm-proof = thm.proof.with(
@@ -62,9 +65,10 @@
 	body-fmt: thm.proof-body-fmt,
 	separator: none,
 	title-fmt: text.with(fill: colors.env.proof, weight: "bold"),
-	fmt: thm-fmt.with(render: (title, name, separator, body, block-args) => {
-		let oneline = block-args.remove("oneline", default: false)
-		if oneline {
+	fmt: thm-fmt.with(render: (title, name, separator, body, block-args, style) => {
+		if style == "plain" {
+			[#box[#title]#name.#body]
+		} else if style == "oneline" {
 			[#box[#title]#name#separator#body]
 		} else {
 			[#box[#title]#name#separator]
@@ -325,7 +329,7 @@
 	supplement: get_env_name(env_name),
 	title-fmt: text.with(weight: "bold", fill: accent),
 	name-fmt: content => text(fill: accent, "(" + content + ")"),
-	fmt: thm-fmt.with(render: (title, name, separator, body, block-args) => {
+	fmt: thm-fmt.with(render: (title, name, separator, body, block-args, style) => {
 		let full = 1pt
 		show: pad.with(top: 0.8em, bottom: 0em)
 		context {
