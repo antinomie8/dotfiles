@@ -86,12 +86,12 @@
 			if it.level == 1 { v(0.2em) } else { v(0em) }
 			if (it.numbering != none) {
 				text(
-					fill: colors.headers,
+					fill: colors.heading.number,
 					counter(heading).display(),
 				)
 				h(0.3em)
 			}
-			it.body
+			text(fill: colors.heading.text, it.body)
 			v(if it.level == 1 { -0.4em } else { 0em })
 		}
 		body

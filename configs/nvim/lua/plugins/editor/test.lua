@@ -7,7 +7,7 @@ return {
 		{
 			"<localleader>add",
 			"<Cmd>CompetiTest add_testcase<CR>",
-			ft = { "c", "cpp", "asm", "rust" },
+			ft = { "c", "cpp", "asm", "rust", "ocaml" },
 			desc = "Add testcase",
 		},
 		{
@@ -16,20 +16,20 @@ return {
 				vim.cmd("hi Cursor blend=100")
 				vim.cmd("CompetiTest delete_testcase")
 			end,
-			ft = { "c", "cpp", "asm", "rust" },
+			ft = { "c", "cpp", "asm", "rust", "ocaml" },
 			desc = "Delete testcase",
 		},
 		{
 			"<localleader>run",
 			"<Cmd>CompetiTest run<CR>",
-			ft = { "c", "cpp", "asm", "rust" },
+			ft = { "c", "cpp", "asm", "rust", "ocaml" },
 			desc = "Run the code on tests",
 		},
 		{ "<localleader>shw", "<Cmd>CompetiTest show_ui<CR>", ft = { "c", "cpp", "asm" }, desc = "Show ui" },
 		{
 			"<localleader>tst",
 			"<Cmd>CompetiTest run_no_compile<CR>",
-			ft = { "c", "cpp", "asm", "rust" },
+			ft = { "c", "cpp", "asm", "rust", "ocaml" },
 			desc = "Test without recompiling",
 		},
 		{
@@ -38,7 +38,7 @@ return {
 				vim.cmd("hi Cursor blend=100")
 				vim.cmd("CompetiTest edit_testcase")
 			end,
-			ft = { "c", "cpp", "asm", "rust" },
+			ft = { "c", "cpp", "asm", "rust", "ocaml" },
 			desc = "Edit testcase",
 		},
 	},
@@ -170,6 +170,7 @@ return {
 			cpp = { exec = "./$(FNOEXT)" },
 			asm = { exec = "./$(FNOEXT).out" },
 			rust = { exec = "./$(FNOEXT)" },
+			ocaml = { exec = "ocaml", args = { "$(FNAME)" } },
 			python = { exec = "python", args = { "$(FNAME)" } },
 			java = { exec = "java", args = { "$(FNOEXT)" } },
 		},
