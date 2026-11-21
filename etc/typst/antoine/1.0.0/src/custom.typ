@@ -56,21 +56,10 @@
 }
 #let bf(x) = $bold(upright(#x))$
 #let u = underline
-#let cal(it) = math.class("normal", context {
-	show math.equation: set text(
-		font: ("Garamond-Math", "New Computer Modern Math"),
-		stylistic-set: 3,
-	)
-	let scaling = 100% * (1em.to-absolute() / text.size)
-	let wrapper = if scaling < 60% {
-		math.sscript
-	} else if scaling < 100% {
-		math.script
-	} else {
-		it => it
-	}
-	box(text(top-edge: "bounds", $wrapper(math.cal(it))$))
-})
+#let scr(it) = math.class("normal", box({
+  show math.equation: set text(stylistic-set: 1)
+  $cal(it)$
+}))
 
 #let boxed(x, ..args) = box(stroke: .05em, outset: (x: 2pt, y: 3pt), x, ..args)
 #let bigbox(x, color: auto, ..args) = {

@@ -41,7 +41,10 @@
 
 #let colors = (
 	page: luma(30%),
-	headers: rgb("#bf0040"),
+	heading: (
+		number: luma(50%),
+		text: rgb("#476B98"),
+	),
 	label: rgb("#7f0000"),
 	hyperlink: blue,
 	strong: rgb("#000055"),
@@ -74,7 +77,7 @@
 		exercise: (accent-color: rgb("#00007f")),
 		algorithm: (accent-color: rgb("#00bfa5")),
 		vocab: (fill: rgb("#008a55")),
-		plain: (accent-color: rgb("#000066")),
+		plain: (accent-color: rgb("#0a0aaa")),
 	),
 )
 

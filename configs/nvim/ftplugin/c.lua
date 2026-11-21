@@ -1,3 +1,7 @@
+if vim.bo.filetype == "cpp" then
+	return
+end
+
 -- Switch to header files using gf
 vim.opt_local.suffixesadd:append({ ".h" })
 

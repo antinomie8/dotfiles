@@ -66,6 +66,7 @@ return {
 				"lua",
 				"markdown",
 				"markdown_inline",
+				"ocaml",
 				"python",
 				"regex",
 				"typst",

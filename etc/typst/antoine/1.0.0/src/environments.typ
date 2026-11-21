@@ -223,12 +223,12 @@
 	style: "normal",
 	boxed: false,
 	display-title: false,
-	..calloutargs,
+	..callout-args,
 ) = thm-env.with(
 	counter: env_name,
 	supplement: get_env_name(env_name),
 	fmt: (
-		color: calloutargs.at("accent-color", default: black),
+		color: callout-args.at("accent-color", default: black),
 		linebreak: linebreak,
 		style: style,
 		boxed: boxed,
@@ -250,19 +250,18 @@
 		}
 		if display-title {
 			callout(
-				..calloutargs,
-				// ..additional_calloutargs,
+				..callout-args,
 				title: {
 					get_env_name(env_name)
 					if thm.number != none { [ #thm.number] }
 					if type(thm.name) == str or type(thm.name) == content {
 						if type(thm.name) == str and thm.name.starts-with(regex("https?://")) {
-							thm.name = std.link(thm.name, text(fill: white, thm.name))
+							thm.name = link(thm.name, text(fill: white, thm.name))
 						}
 						" (" + thm.name + ")"
 					}
 					if thm.args.at("link", default: none) != none {
-						" " + std.link(thm.args.at("link"), "🔗")
+						" " + link(thm.args.at("link"), "🔗")
 					}
 				},
 				body,
@@ -286,6 +285,9 @@
 				if thm.number != none {
 					text(..args, [ #thm.number])
 				}
+				if thm.args.at("link", default: none) != none {
+					" " + link(thm.args.at("link"), "🔗")
+				}
 				if type(thm.name) == str or type(thm.name) == content {
 					text(size: 11pt, style: style, fill: color, " (" + thm.name + ")")
 				}
@@ -298,7 +300,7 @@
 			}
 			if boxed and class.at("boxed-envs", default: true) {
 				callout(
-					..calloutargs,
+					..callout-args,
 					header + body,
 				)
 			} else {

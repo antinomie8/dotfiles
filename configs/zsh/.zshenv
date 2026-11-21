@@ -12,7 +12,6 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
 
 # program-specific variables
-export CPLUS_INCLUDE_PATH="$HOME/Informatique/Library"
 export MANPAGER="nvim +Man!"
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
@@ -22,6 +21,7 @@ export FZF_DEFAULT_OPTS_FILE="$XDG_CONFIG_HOME/fzf.conf"
 export ZSH_PATINA_CONFIG_PATH="$ZDOTDIR/plugins/zsh-patina.toml"
 export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
 export MBSYNCRC="$XDG_CONFIG_HOME/isync/mbsyncrc"
+export CPLUS_INCLUDE_PATH="$HOME/Informatique/Library"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export GOPATH="$XDG_DATA_HOME/go"
@@ -32,6 +32,7 @@ export ASYMPTOTE_HOME="$XDG_CONFIG_HOME/asy"
 export TEXMFCONFIG="$XDG_CONFIG_HOME/texlive/texmf-config"
 export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
 export TEXMFHOME="$XDG_DATA_HOME/texmf"
+export OPAMROOT="$XDG_DATA_HOME/opam"
 export XCOMPOSEFILE="$XDG_CONFIG_HOME"/XCompose
 
 # Path
