@@ -124,8 +124,7 @@ Column {
         const key = bind.key;
         if (key.includes("mouse") || key.includes("page")) return false;
         // Contains non-1 number
-        if (bind.keycode > 10 && bind.keycode <= 19) return true; // doesn't work due to hyprctl BUG
-        if (key == "" && !/1\b/.test(bind.description)) return true; // temp fix
+        if (bind.keycode > 10 && bind.keycode <= 19) return true;
         // Contains non-left direction
         if ((key == "J" || key == "K" || key == "L") && /(right|up|down)\b/i.test(bind.description)) return true;
         if (/^(right|up|down)\b/i.test(key)) return true;
@@ -135,15 +134,14 @@ Column {
     function containsFirstRepetitive(bind) {
         const key = bind.key;
         return key.includes("1") || /left/i.test(key) ||
-        /* bind.keycode == 10  */ bind.key == "" && /1\b/.test(bind.description) || // temp fix
+        bind.keycode == 10 ||
         bind.key == "H" && bind.description.includes("Left");
     }
 
     function transformKey(key, isFirstRepetitive) {
         const replaced = root.keySubstitutions[key] || key;
         if (!isFirstRepetitive) return replaced;
-        const denumbered = replaced == "" ? "..." : replaced; // temp fix
-        const dedirectioned = denumbered.replace("Left", "←/↓/↑/→").replace("H", "H/J/K/L");
+        const dedirectioned = replaced.replace("Left", "←/↓/↑/→").replace("H", "H/J/K/L");
         return dedirectioned;
     }
 
@@ -210,7 +208,9 @@ Column {
                     id: keybindKey
                     anchors.verticalCenter: parent.verticalCenter
                     visible: !keyBlacklist.includes(bindLine.keyData.key)
-                    key: root.transformKey(bindLine.keyData.key, root.containsFirstRepetitive(bindLine.keyData))
+                    key: bindLine.keyData.key
+                        ? root.transformKey(bindLine.keyData.key, root.containsFirstRepetitive(bindLine.keyData))
+                        : bindLine.keyData.keycode == 10 ? "..." : `code:${bindLine.keyData.keycode}`
                     pixelSize: Config.options.cheatsheet.fontSize.key
                     color: Appearance.colors.colOnLayer0
                 }

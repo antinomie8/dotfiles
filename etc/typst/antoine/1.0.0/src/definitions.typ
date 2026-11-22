@@ -129,9 +129,9 @@
 		let env_name = if override != none { override } else {
 			env_names
 				.at(text.lang, default: env_names.at("en"))
-				.at(env, default: upper(env.at(0)) + env.slice(1))
+				.at(env, default: upper(env.at(0)) + env.slice(1)) // capitalize first letter
 		}
-		return (env_name.first(), env_name.slice(1)) // capitalize first letter
+		return (env_name.first(), env_name.slice(1))
 	}
 	return if override != none { override } else {
 		context env_names

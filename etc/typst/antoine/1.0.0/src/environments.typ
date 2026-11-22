@@ -166,7 +166,8 @@
 				top-right: border-radius,
 				top-left: if (stroke-width == 0pt) { border-radius } else { 0pt },
 			),
-			inset: header-inset,
+			outset: (left: -stroke-width),
+			inset: (left: header-inset + stroke-width, rest: header-inset),
 			stroke: (
 				left: if (stroke-width == 0pt) {
 					border-width + border-color
