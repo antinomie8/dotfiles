@@ -92,6 +92,11 @@ run  = "plugin smart-filter"
 desc = "Smart filter"
 
 [[mgr.prepend_keymap]]
+on   = "Z"
+run  = "plugin zoxide-preview"
+desc = "Jump to a directory via zoxide"
+
+[[mgr.prepend_keymap]]
 on   = "<C-S-d>"
 run  = "plugin diff"
 desc = "Diff the selected with the hovered file"
