@@ -332,10 +332,11 @@ hl.bind("SUPER + ALT + N", hl.dsp.focus({ workspace = "emptym" }), { desc = "Wor
 -- Apps --
 ----------
 hl.bind("SUPER + Return", hl.dsp.exec_cmd(vars.terminal), { desc = "App: Terminal" })
-hl.bind("SUPER + E", hl.dsp.exec_cmd(vars.fileManager), { desc = "App: File manager" })
+hl.bind("SUPER + X", hl.dsp.exec_cmd(vars.fileManager), { desc = "App: File manager" })
 hl.bind("SUPER + B", hl.dsp.exec_cmd(vars.browser), { desc = "App: Browser" })
 hl.bind("SUPER + I", hl.dsp.exec_cmd(vars.settingsApp), { desc = "App: Settings app" })
 hl.bind("SUPER + T", hl.dsp.exec_cmd(vars.taskManager), { desc = "App: Task manager" })
+hl.bind("SUPER + E", hl.dsp.exec_cmd(vars.terminal .. " -- oly --scheme"), { desc = "App: Oly" })
 
 -- Passthrough
 hl.define_submap("passthrough", function()

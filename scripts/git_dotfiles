@@ -38,14 +38,15 @@ function copy_group() {
 }
 
 # lists of files to copy
-configs=("asy" "bat" "btop" "browser" "clang-format" "clangd" "eza" "fastfetch" "git" "hypr"
-	"hyprland-preview-share-picker" "illogical-impulse" "imv" "kitty" "lazygit" "mpv" "neomutt"
-	"ncdu" "npm" "nvim" "oly" "quickshell" "ruff" "rustfmt" "safeeyes" "stylua" "tex-fmt" "thundery"
-	"tmux" "udiskie" "uwsm" "wget" "xdg-desktop-portal" "xdg-desktop-portal-termfilechooser" "yazi"
-	"zathura" "zsh" "fzf.conf" "kmonad.kbd" "mimeapps.list" "ripgrep.conf" "shellcheckrc" "user-dirs.dirs"
-	"XCompose")
+configs=("asy" "bat" "btop" "clang-format" "clangd" "eza" "fastfetch" "git" "hypr"
+	"hyprland-preview-share-picker" "illogical-impulse" "imv" "kitty" "lazygit" "mpv"
+	"neomutt" "ncdu" "npm" "nvim" "oly" "quickshell" "ruff" "rustfmt" "safeeyes" "stylua"
+	"tex-fmt" "thundery" "tmux" "udiskie" "uwsm" "wget" "xdg-desktop-portal"
+	"xdg-desktop-portal-termfilechooser" "yazi" "zathura" "zsh" "fzf.conf" "kmonad.kbd"
+	"mimeapps.list" "ripgrep.conf" "shellcheckrc" "user-dirs.dirs" "XCompose")
 # mozilla msmtp notmuch goimapnotify himalaya mirador aerc
-scripts=("assemble" "bedtime" "compile_sfml" "free" "fzf_preview" "git_dotfiles" "mailto" "memory-usage" "rgb" "termsize" "zoxide-rename")
+scripts=("assemble" "bedtime" "compile_sfml" "free" "fzf_preview" "git_dotfiles"
+	"mailto" "memory-usage" "rgb" "termsize" "zoxide-rename")
 systemd_user_units=("bedtime.service" "bedtime.timer" "free.service" "mail-sync.service" "goimapnotify.service")
 desktop_entries=("mail" "neomutt" "spotify" "vesktop" "yazi")
 typst_packages=("antoine" "figures" "no-spoilers")

@@ -14,7 +14,29 @@ COLOR_RESET='\e[0m'
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 cd "$SCRIPT_DIR" || exit
 
-# $1: file to copy relative to $SCRIPT_DIR, $2: destination
+# util function for getting user input
+function get_answer() {
+	local answer
+	read -r answer
+	case "$answer" in
+		[yY][eE][sS] | [yY])
+			return 0
+			;;
+		*)
+			return 1
+			;;
+	esac
+}
+# util function for checking if a program is in $PATH
+function program() {
+	if command -v "$1" >/dev/null 2>&1; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+# $1: file to copy relative to $SCRIPT_DIR, $2: destination, $3: arg passed to diff (optional)
 function copy() {
 	if ! [[ -e "$1" ]]; then
 		echo -e "${WARNING} $1 not found"
@@ -31,26 +53,13 @@ function copy() {
 	if [[ ! -e $target_loc ]]; then
 		$sudo cp -r "$1" "$2/" 2>/dev/null ||
 			echo -e "${ERROR} ${WHITE}You need to manually move ${SUCCESS}$1${WHITE} to ${SUCCESS}$2${COLOR_RESET}"
-	elif ! diff --brief -r --exclude='*.pdf' "$1" "$target_loc" >/dev/null 2>&1; then
+	elif ! diff --brief -r --exclude='*.pdf' "${3:---}" "$1" "$target_loc" >/dev/null 2>&1; then
 		echo -en "${INFO}Would you like to delete your current ${SUCCESS}$1${INFO} \
 to replace it with the one in this repo ? (y/n) ${COLOR_RESET}"
-		local answer
-		read -r answer
-		case "$answer" in
-			[yY][eE][sS] | [yY])
-				$sudo cp -r "$1" "$2/" 2>/dev/null ||
-					echo -e "${ERROR} ${WHITE}You need to manually move ${SUCCESS}$1${WHITE} to ${SUCCESS}$2${COLOR_RESET}"
-				;;
-		esac
-	fi
-}
-
-# util function for checking if a program is in $PATH
-function program() {
-	if command -v "$1" >/dev/null 2>&1; then
-		return 0
-	else
-		return 1
+		if get_answer; then
+			$sudo cp -r "$1" "$2/" 2>/dev/null ||
+				echo -e "${ERROR} ${WHITE}You need to manually move ${SUCCESS}$1${WHITE} to ${SUCCESS}$2${COLOR_RESET}"
+		fi
 	fi
 }
 
@@ -65,8 +74,29 @@ copy_if_installed pacman arch/pacman.conf /etc
 copy_if_installed loginctl systemd/logind.conf /etc/systemd
 copy_if_installed hyprland icons/Bibata ~/.local/share/icons
 copy_if_installed pdflatex texmf ~/.local/share
-copy_if_installed firefox firefox/autoconfig.js /usr/lib/firefox/defaults/pref
-copy_if_installed firefox firefox/firefox.cfg /usr/lib/firefox
+
+if program firefox; then
+	copy mozilla/firefox/homepage/browser-homepage.html ~/.config/mozilla/firefox
+	copy mozilla/firefox/homepage/homepage-wallpaper.png ~/.config/mozilla/firefox
+
+	copy mozilla/firefox/homepage/autoconfig.js /usr/lib/firefox/defaults/pref
+	copy mozilla/firefox/homepage/firefox.cfg /usr/lib/firefox --ignore-matching-lines='var newTabURL = "file://'
+	if grep --silent "{BROWSER_HOMEPAGE_DIRECTORY}" /usr/lib/firefox/firefox.cfg; then
+		sudo sed "s@{BROWSER_HOMEPAGE_DIRECTORY}@$HOME/.config/mozilla/firefox@" -i /usr/lib/firefox/firefox.cfg --silent
+	fi
+fi
+# run sync_profile script
+for app in {firefox,thunderbird} in; do
+	if [[ -d ~/.config/mozilla/$app ]]; then
+		if ! find ~/.config/mozilla/$app -type l -name "chrome" -xtype d >/dev/null; then
+			echo -en "${INFO}Would you like to sync ${SUCCESS}$app${INFO} profile files \
+with the ones in this repo ? (y/n) ${COLOR_RESET}"
+			if get_answer; then
+				./mozilla/sync_profile $app
+			fi
+		fi
+	fi
+done
 
 # copy desktop files and icons
 find icons/hicolor -type f -print0 | while IFS= read -r -d '' file; do
@@ -90,6 +120,7 @@ for package in typst/*; do
 	copy_if_installed typst "$package" ~/.local/share/typst/packages/local
 done
 
+# install font
 INSTALL_LOCATION="/usr/share/fonts/ITC-Zapf-Chancery"
 if [[ ! -d "$INSTALL_LOCATION" ]]; then
 	FONT_URL="https://en.bestfonts.pro/fonts_files/61633725968473b9a2a54c5a/font.zip"

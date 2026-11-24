@@ -1,0 +1,116 @@
+#!/bin/bash
+
+set -o pipefail
+
+# colors
+ERROR='\e[38;5;196m'
+WARNING='\e[38;5;226m'
+BLUE='\e[38;5;39m'
+GREEN='\e[38;5;46m'
+COLOR_RESET='\x1b[0m'
+
+# Choose which application's profile to sync. Defaults to Firefox for compatibility.
+APPLICATION=${1:-firefox}
+case "$APPLICATION" in
+	firefox)
+		APPLICATION_NAME=Firefox
+		SOURCE_DIR=firefox/profile
+		LINUX_PROFILE_DIR=${XDG_CONFIG_HOME:-$HOME/.config}/mozilla/firefox
+		LINUX_PROFILE_FALLBACK=$HOME/.mozilla/firefox
+		WINDOWS_PROFILE_SUFFIX='AppData/Roaming/Mozilla/Firefox/Profiles'
+		EXCLUDED_DIRS=("Crash Reports" "Pending Pings" "Profile Groups")
+		;;
+	thunderbird)
+		APPLICATION_NAME=Thunderbird
+		SOURCE_DIR=thunderbird/profile
+		LINUX_PROFILE_DIR=${XDG_CONFIG_HOME:-$HOME/.config}/thunderbird
+		LINUX_PROFILE_FALLBACK=$HOME/.thunderbird
+		WINDOWS_PROFILE_SUFFIX='AppData/Roaming/Thunderbird/Profiles'
+		EXCLUDED_DIRS=("Crash Reports" "Pending Pings")
+		;;
+	*)
+		echo "Usage: $0 [firefox|thunderbird]" >&2
+		exit 2
+		;;
+esac
+
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+SOURCE_DIR="$SCRIPT_DIR/$SOURCE_DIR"
+
+# Find the profile directory.
+if [[ -z "$WSLENV" ]]; then
+	if [[ -d "$LINUX_PROFILE_DIR" ]]; then
+		PROFILES_DIR=$LINUX_PROFILE_DIR
+	else
+		PROFILES_DIR=$LINUX_PROFILE_FALLBACK
+	fi
+else
+	# get the Windows username
+	while true; do
+		echo -en "${BLUE}What is your Windows username ? ${COLOR_RESET}"
+		read -r win_username
+		if [[ -n "$win_username" && -d "/mnt/c/Users/$win_username" ]]; then
+			break
+		else
+			echo -e "${WARNING}Home directory not found. Try again...${COLOR_RESET}"
+		fi
+	done
+
+	PROFILES_DIR=/mnt/c/Users/"$win_username"/$WINDOWS_PROFILE_SUFFIX
+fi
+
+# check there is at least one directory in $FIREFOX_PROFILES_DIR
+exists_profile=false
+for item in "$PROFILES_DIR"/*; do
+	if [[ -d "$item" ]]; then
+		excluded=false
+		for excluded_dir in "${EXCLUDED_DIRS[@]}"; do
+			[[ "${item##*/}" == "$excluded_dir" ]] && excluded=true
+		done
+		if ! $excluded; then
+			exists_profile=true
+			break
+		fi
+	fi
+done
+$exists_profile || {
+	echo -e "${ERROR}Where even is your $APPLICATION_NAME profile?${COLOR_RESET}"
+	exit 1
+}
+
+# let the user select a profile through fzf
+PROFILE_DIR=$(
+	fd --hidden --max-depth 1 -td . "$PROFILES_DIR" |
+		while IFS= read -r profile; do
+			excluded=false
+			for excluded_dir in "${EXCLUDED_DIRS[@]}"; do
+				[[ "${profile##*/}" == "$excluded_dir" ]] && excluded=true
+			done
+			$excluded || printf '%s\n' "$profile"
+		done |
+		fzf --select-1
+)
+if [[ -z "$PROFILE_DIR" ]]; then
+	echo -e "${ERROR}Please select a $APPLICATION_NAME profile.${COLOR_RESET}"
+	exit 1
+fi
+
+if [[ -z "$WSLENV" ]]; then
+	# create symbolic links
+	for item in "$SOURCE_DIR"/*; do
+		stripped="${item%/}" # strip trailing slash (if any)
+		name="${stripped##*/}"
+		[[ -e "$PROFILE_DIR/$name" || -L "$PROFILE_DIR/$name" ]] && rm -rf "${PROFILE_DIR:?}/$name"
+		ln -s "$item" "$PROFILE_DIR/$name"
+	done
+else
+	# copy everything
+	for item in "$SOURCE_DIR"/*; do
+		stripped="${item%/}" # strip trailing slash (if any)
+		name="${stripped##*/}"
+		[[ -e "$PROFILE_DIR/$name" || -L "$PROFILE_DIR/$name" ]] && rm -rf "${PROFILE_DIR:?}/$name"
+		cp -r "$item" "$PROFILE_DIR/$name" # use rsync instead ?
+	done
+fi
+
+echo -e "${GREEN}Done !"

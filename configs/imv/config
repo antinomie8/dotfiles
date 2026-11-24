@@ -21,12 +21,23 @@
 <Left> = pan 50 0
 <Right> = pan -50 0
 
-<Ctrl+plus> = zoom 1
-<Ctrl+minus> = zoom 1
-
 <Ctrl+e> = pan 0  100
 <Ctrl+y> = pan 0 -100
 <Ctrl+u> = pan 0  1000
 <Ctrl+d> = pan 0 -1000
 <Ctrl+b> = pan 0  2000
 <Ctrl+f> = pan 0 -2000
+
+<space> = pan 0 -500
+gg = pan 0 1000000
+<Shift+G> = pan 0 -1000000
+
+# Zoom
+<Ctrl+equal> = zoom 1
+<Ctrl+Shift+plus> = zoom 3
+<Ctrl+minus> = zoom -1
+<Ctrl+Shift+6> = zoom -3
+<KP_Add> = zoom 1
+<KP_Subtract> = zoom -1
+<Ctrl+KP_Add> = zoom 1
+<Ctrl+KP_Subtract> = zoom -1

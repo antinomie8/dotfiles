@@ -25,6 +25,12 @@ edit = [
 play = [ { run = "xdg-open %s", orphan = true, desc = "Play" } ]
 open = [ { run = "xdg-open %s", orphan = true, desc = "Open" } ]
 view = [ { run = "imv %s", orphan = true, desc = "View" } ]
+rotate_image = [
+	{ run = 'magick mogrify -auto-orient -rotate 90 -- %s', desc = "Rotate 90° clockwise (overwrite)" },
+	{ run = 'magick mogrify -auto-orient -rotate -90 -- %s', desc = "Rotate 90° counterclockwise (overwrite)" },
+	{ run = 'magick mogrify -auto-orient -rotate 180 -- %s', desc = "Rotate 180 (overwrite)" },
+]
+concat_images = [ { run = 'ya emit plugin concat-images', desc = "Concatenate images vertically" } ]
 execute = [ { run = "%s", desc = "Execute" } ]
 recover = [ { run = "nvim -r %s", block = true, desc = "Recover swapfile" } ]
 add_sub = [ { run = ''' printf "sub-add '%%s'\n" %s1 | socat - /tmp/mpv.sock ''', desc = "Add subtitles to mpv" } ]
@@ -39,6 +45,7 @@ prepend_rules = [
 	{ mime = "text/lua", use = [ "edit", "execute" ] },
 	{ mime = "application/pie-executable", use = [ "edit", "execute" ] },
 	{ mime = "image/svg+xml", use = [ "edit", "view", "open" ] },
+	{ mime = "image/*", use = [ "view", "open", "rotate_image", "concat_images" ] },
 	{ mime = "text/html", use = ["open", "edit"] },
 	{ mime = "text/typst", use = ["edit", "typst_compile"] }
 ]
