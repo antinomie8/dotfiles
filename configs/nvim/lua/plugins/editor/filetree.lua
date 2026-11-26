@@ -44,7 +44,22 @@ return {
 			sort_case_insensitive = false,
 			sort_function = function(a, b)
 				if a.type == b.type then
-					return a.path:lower() < b.path:lower()
+					-- natural sort
+					local x, y = a.path:lower(), b.path:lower()
+					local i, j = 1, 1
+					while i <= #x and j <= #y do
+						local xn, yn = x:match("^%d+", i), y:match("^%d+", j)
+						if xn and yn then
+							local a, b = tonumber(xn), tonumber(yn)
+							if a ~= b then return a < b end
+							i, j = i + #xn, j + #yn
+						else
+							local xc, yc = x:sub(i, i), y:sub(j, j)
+							if xc ~= yc then return xc < yc end
+							i, j = i + 1, j + 1
+						end
+					end
+					return #x - i < #y - j
 				else
 					return a.type < b.type
 				end

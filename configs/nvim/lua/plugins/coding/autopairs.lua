@@ -52,6 +52,7 @@ return {
 							"\\(",
 							"\\)",
 							languages = { "latex" },
+							close = false, -- Backslash starts LaTeX commands, not a closing-pair jump.
 							open_or_close = function(ctx)
 								return vim.endswith(ctx:text_before_cursor(), "\\(")
 							end,
@@ -99,6 +100,20 @@ return {
 							"*/",
 							languages = { "c", "cpp", "typst", "rust", "css", "go" },
 							priority = 10,
+						},
+						{
+							"(*",
+							"*",
+							languages = { "ocaml" },
+							-- Reuse the closing parenthesis already inserted by the ( mapping.
+							when = function(ctx)
+								return ctx:is_before_cursor("(") and ctx:is_after_cursor(")")
+							end,
+						},
+						{
+							"(*",
+							"*)",
+							languages = { "ocaml" },
 						},
 						{
 							"*",
@@ -159,6 +174,7 @@ return {
 							"\\(",
 							"\\)",
 							languages = { "latex" },
+							close = false,
 							when = function(ctx)
 								return ctx.ft ~= "markdown"
 							end,
@@ -180,6 +196,7 @@ return {
 							"\\[",
 							"\\]",
 							languages = { "latex" },
+							close = false,
 							open_or_close = function(ctx)
 								return not vim.endswith(ctx:text_before_cursor(), "\\")
 							end,
@@ -203,7 +220,7 @@ return {
 							when = function(ctx)
 								-- pair for e.g. templates, but not for << and >> operators
 								-- e.g. 'std::cout <|', should not pair but 'std::vector<|>' should
-								return ctx:text_before_cursor():match("[%a<]$")
+								return ctx:text_before_cursor():match("%a$")
 							end,
 							backspace = function(ctx)
 								return vim.endswith(ctx:text_before_cursor(), "<")
